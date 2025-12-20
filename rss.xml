@@ -6,7 +6,7 @@
     <description>Personal website and blog</description>
     <language>en-us</language>
     <atom:link href="http://localhost:8000//rss.php" rel="self" type="application/rss+xml"/>
-    <lastBuildDate>Fri, 19 Dec 2025 23:37:31 +0000</lastBuildDate>
+    <lastBuildDate>Sat, 20 Dec 2025 00:27:30 +0000</lastBuildDate>
     <item>
       <title>Intro to Voting Theory: Chapter 1</title>
       <link>http://localhost:8000//post_frame.php?post=voting-systems</link>
