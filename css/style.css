@@ -1,0 +1,53 @@
+/**
+ * Main Stylesheet
+ * Imports all other stylesheets in order
+ */
+
+/* Import base styles first */
+@import url('base.css');
+
+/* Then import component styles */
+@import url('header-style.css');
+@import url('blog-style.css');
+@import url('blog-post-style.css');
+@import url('index-style.css');
+@import url('footer-style.css');
+@import url('animations.css');
+
+/* Override simple-grid if needed */
+.container {
+    max-width: 900px;
+    margin: 0 auto;
+    padding: 0 var(--spacing-md);
+}
+
+@media (min-width: 768px) {
+    .container {
+        padding: 0 var(--spacing-lg);
+}
+}
+
+/* Keep simple-grid for layout but with minimal styling */
+.row {
+    margin: 0;
+}
+
+.col-12 {
+    width: 100%;
+    padding: 0;
+}
+
+/* Print styles */
+@media print {
+    .no-print {
+        display: none !important;
+}
+
+    .sidebar {
+        display: none !important;
+    }
+    
+    body {
+        background: white;
+}
+}

@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>Nicola Lo Russo</title>
+    <link>http://localhost:8000/</link>
+    <description>Personal website and blog</description>
+    <language>en-us</language>
+    <atom:link href="http://localhost:8000//rss.php" rel="self" type="application/rss+xml"/>
+    <lastBuildDate>Fri, 19 Dec 2025 23:37:31 +0000</lastBuildDate>
+    <item>
+      <title>Intro to Voting Theory: Chapter 1</title>
+      <link>http://localhost:8000//post_frame.php?post=voting-systems</link>
+      <guid isPermaLink="true">http://localhost:8000//post_frame.php?post=voting-systems</guid>
+      <pubDate>Mon, 31 Mar 2025 00:00:00 +0000</pubDate>
+      <description>Same voters&#039; preferences, different winners? How voting systems can totally change the result.</description>
+      <author>nlorusso@ethz.ch (Nicola Lo Russo)</author>
+    </item>
+    <item>
+      <title>Of Risks and Asteroids: Analyzing the Impact Probability of 2024 YR4</title>
+      <link>http://localhost:8000//post_frame.php?post=risk-asteroid</link>
+      <guid isPermaLink="true">http://localhost:8000//post_frame.php?post=risk-asteroid</guid>
+      <pubDate>Wed, 19 Feb 2025 00:00:00 +0000</pubDate>
+      <description>Analyzing the impact probability of asteroid YR4 in 2032 and what it really means.</description>
+      <author>nlorusso@ethz.ch (Nicola Lo Russo)</author>
+    </item>
+    <item>
+      <title>About Bayes&#039; Theorem, Disease Testing, and the Prosecutor&#039;s Fallacy</title>
+      <link>http://localhost:8000//post_frame.php?post=bayes-theorem</link>
+      <guid isPermaLink="true">http://localhost:8000//post_frame.php?post=bayes-theorem</guid>
+      <pubDate>Tue, 19 Nov 2024 00:00:00 +0000</pubDate>
+      <description>Bayes&#039; Theorem applied to rare disease diagnosis, and the dangers of the Prosecutor&#039;s Fallacy.</description>
+      <author>nlorusso@ethz.ch (Nicola Lo Russo)</author>
+    </item>
+    <item>
+      <title>The Unfair Coin</title>
+      <link>http://localhost:8000//post_frame.php?post=unfair-coin</link>
+      <guid isPermaLink="true">http://localhost:8000//post_frame.php?post=unfair-coin</guid>
+      <pubDate>Sun, 03 Nov 2024 00:00:00 +0000</pubDate>
+      <description>You are given 1000 coins: 999 are fair and 1 is rigged...</description>
+      <author>nlorusso@ethz.ch (Nicola Lo Russo)</author>
+    </item>
+    <item>
+      <title>A Logic Puzzle</title>
+      <link>http://localhost:8000//post_frame.php?post=watson-riddle</link>
+      <guid isPermaLink="true">http://localhost:8000//post_frame.php?post=watson-riddle</guid>
+      <pubDate>Mon, 28 Oct 2024 00:00:00 +0000</pubDate>
+      <description>A solution to a logic puzzle published by Oxford University Press in October 2024.</description>
+      <author>nlorusso@ethz.ch (Nicola Lo Russo)</author>
+    </item>
+  </channel>
+</rss>

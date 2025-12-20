@@ -1,0 +1,270 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Bayes&#039; Theorem applied to rare disease diagnosis, and the dangers of the Prosecutor&#039;s Fallacy.">
+    <meta name="author" content="Nicola Lo Russo">
+    
+        <link rel="canonical" href="http://localhost:8000/admin_generate.html">
+        
+    <title>About Bayes&#039; Theorem, Disease Testing, and the Prosecutor&#039;s Fallacy - Nicola Lo Russo</title>
+    
+        <meta property="og:type" content="article">
+    <meta property="og:site_name" content="Nicola Lo Russo">
+    <meta property="og:title" content="About Bayes&#039; Theorem, Disease Testing, and the Prosecutor&#039;s Fallacy">
+    <meta property="og:description" content="Bayes&#039; Theorem applied to rare disease diagnosis, and the dangers of the Prosecutor&#039;s Fallacy.">
+    <meta property="og:url" content="http://localhost:8000/admin_generate.html">
+    <meta name="twitter:card" content="summary">
+    <meta name="twitter:title" content="About Bayes&#039; Theorem, Disease Testing, and the Prosecutor&#039;s Fallacy">
+    <meta name="twitter:description" content="Bayes&#039; Theorem applied to rare disease diagnosis, and the dangers of the Prosecutor&#039;s Fallacy.">
+    
+    <!-- External Stylesheets -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
+    
+    <!-- Internal Stylesheets -->
+    <link rel="stylesheet" href="css/simple-grid.css">
+    <link rel="stylesheet" href="css/style.css">
+            <link rel="stylesheet" href="css/footer-style.css">
+            <link rel="stylesheet" href="css/header-style.css">
+            <link rel="stylesheet" href="css/blog-post-style.css">
+            <link rel="stylesheet" href="css/post-navigation.css">
+        
+    <!-- JavaScript -->
+    <script src="js/email_decrypt.js"></script>
+            <script src="js/mathjax-config.js"></script>
+        <script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+            
+    <!-- Favicon -->
+    <link rel="icon" href="images/nico.png" type="image/png">
+</head>
+<body>
+
+<script type="application/ld+json">{
+    "@context": "https://schema.org",
+    "@type": "BlogPosting",
+    "headline": "About Bayes' Theorem, Disease Testing, and the Prosecutor's Fallacy",
+    "datePublished": "2024-11-19T00:00:00+00:00",
+    "author": {
+        "@type": "Person",
+        "name": "Nicola Lo Russo"
+    },
+    "publisher": {
+        "@type": "Person",
+        "name": "Nicola Lo Russo"
+    },
+    "description": "Bayes' Theorem applied to rare disease diagnosis, and the dangers of the Prosecutor's Fallacy."
+}</script><header>
+    <div>
+        <div style="text-align: center;">
+            <h1>Nicola Lo Russo</h1>
+                            <p class="site-tagline">Personal website</p>
+                        <p class="no-print"></p>
+            <div class="header-icons">
+                <a id="email-link" onClick="writeEmail()" style="cursor: pointer;">
+                    <i class="fas fa-envelope"></i>
+                    <i class="icon-text">nlorusso [at] ethz.ch</i>
+                </a>
+                <a href="https://www.linkedin.com/in/nicola-lo-russo-7a4849127/" target="_blank" rel="noopener noreferrer">
+                    <i class="fab fa-linkedin"></i>
+                    <i class="icon-text">Nicola Lo Russo</i>
+                </a>
+            </div>
+        </div>
+    </div>
+    <nav class="minimal-menu">
+        <div class="menu-item">
+            <a href="index.html">
+                <span style="border-bottom: 2px solid var(--color-accent)">Home</span>
+            </a>
+        </div>
+        <div class="menu-item">
+            <a href="cv.html">
+                <span >About Me</span>
+            </a>
+        </div>
+        
+                
+            </nav>
+</header>
+
+
+<div class="container">
+    <div class="row justify">
+        <div class="col-12">
+            <!-- Back to blog link -->
+            <div class="post-meta-header">
+                <a href="index.html" class="back-link">← Back to Blog</a>
+                <span class="reading-time">4 min read</span>
+            </div>
+            
+            <div class="post-content">
+                                
+
+        <h1>About Bayes' Theorem, Disease Testing, and the Prosecutor's Fallacy</h1>
+
+        <div class="riddle-box">
+            <h2>Scenario</h2>
+            <p>A medical test is designed to detect a rare disease, that affects only 1 in 1000 people. The test correctly identifies 99% of those with the disease, and identifies correctly 95% of those without it. In mathematical terms, the test has:</p>
+            <ul>
+                <li>99% sensitivity (correct identification of those with the disease).</li>
+                <li>95% specificity (correct identification of those without the disease).</li>
+            </ul>
+            <p>If a patient tests positive, what is the probability they actually have the disease?</p>
+        </div>
+
+
+        <h2>Intuition</h2>
+        <p>At first glance, one might assume that a positive test result would indicate a high likelihood of having the disease. However, the reality is more nuanced, and we need to be careful not to fall into the so-called <a href="https://en.wikipedia.org/wiki/Base_rate_fallacy"><em>"base rate fallacy"</em></a>.</p>
+
+        <p>Let’s consider a screening of a population of 1000 people. Out of this group, we know that only 1 person has the disease, reflecting our prior knowledge about the disease's rarity (<em>P(D)</em>, the <strong>prior</strong>). This means that the probability of having the disease before conducting the test is 0.1%, or 1 in 1000.</p>
+
+        <p>Now, let’s analyze what happens during testing. The test is designed to correctly identify those with the disease 99% of the time (<em>P(T | D)</em>, the <strong>likelihood</strong> for positive results when the disease is present). In this case, the 1 infected person is correctly flagged by the test as positive. On the other hand, the test also has a 5% false positive rate, meaning that among the 999 uninfected people, approximately 49 will be incorrectly flagged as positive.</p>
+
+        <p>The final step is to consider all the positive test results together—both true positives and false positives. Out of the 50 positive test results (1 true positive and 49 false positives), the <strong>evidence</strong> (<em>P(T)</em>) is the overall probability of observing a positive result. By combining the prior, likelihood, and evidence, Bayes’ theorem helps us compute the probability of actually having the disease given a positive test result.</p>
+
+        <p>Therefore, the probability of actually having the disease, given a positive test result, is:</p>
+        <p>\[
+        P(D \mid T) = 1/50 = 2\%
+        \]</p>
+
+    <div class="center-img">
+    <img src="posts/bayes-theorem/screening_test_bayes.jpg" alt="screening-test"  class="img-large">
+    <p class="img-caption">In blue negative tests results, in orange false positives, in green true positives.</p>
+    </div>
+
+        <h2>Formal Solution</h2>
+        <p>More formally, to compute the probability of having the disease given a positive test result, we rely on the following formula.</p>
+
+        <h3>Bayes' Theorem</h3>
+        <p>\[
+        P(D \mid T) = \frac{P(T \mid D) \cdot P(D)}{P(T \mid D) \cdot P(D) + P(T \mid \neg D) \cdot P(\neg D)}
+        \]</p>
+        <p>where:
+            <ul>
+                <li>\( P(D \mid T) \): Probability of having the disease given a positive test.</li>
+                <li>\( P(T \mid D) \): Probability of testing positive if you have the disease (sensitivity).</li>
+                <li>\( P(D) \): Probability of having the disease (prevalence).</li>
+                <li>\( P(T \mid \neg D) \): Probability of testing positive if you don't have the disease (false positive rate).</li>
+                <li>\( P(\neg D) \): Probability of not having the disease.</li>
+            </ul>
+        </p>
+
+        <h3>Calculation</h3>
+        <p>Let:
+        \[
+        P(D) = 0.001, \, P(\neg D) = 0.999, \, P(T \mid D) = 0.99, \, P(T \mid \neg D) = 1 - 0.95
+        \]
+        Substituting into Bayes' theorem, the probability is approximately <b>2%</b>.</p>
+
+        <!-- Playground Section -->
+        <div class="playground">
+            <h2>Playground</h2>
+            <p>Adjust the parameters to see how the probability changes:</p>
+
+            <label for="prevalence">Prevalence of the disease (e.g., 1 in 1,000 = 0.001):</label>
+            <input type="number" id="prevalence" step="0.0001" value="0.001"><br><br>
+
+            <label for="sensitivity">Sensitivity of the test (e.g., 99% = 0.99):</label>
+            <input type="number" id="sensitivity" step="0.01" value="0.99"><br><br>
+
+            <label for="specificity">Specificity of the test (e.g., 95% = 0.95):</label>
+            <input type="number" id="specificity" step="0.01" value="0.95"><br><br>
+
+            <button onclick="calculateProbability()">Calculate Probability</button>
+
+            <div id="playgroundResult" class="result-box" style="margin-top: 15px;"></div>
+        </div>
+
+    <script>
+        function calculateProbability() {
+            // Retrieve user inputs
+            const prevalence = parseFloat(document.getElementById("prevalence").value);
+            const sensitivity = parseFloat(document.getElementById("sensitivity").value);
+            const specificity = parseFloat(document.getElementById("specificity").value);
+
+            // Calculate probabilities
+            const pD = prevalence; // Probability of having the disease
+            const pNotD = 1 - pD; // Probability of not having the disease
+            const pT_given_D = sensitivity; // Sensitivity
+            const pT_given_NotD = 1 - specificity; // False positive rate
+
+            // Applying Bayes' theorem
+            const numerator = pT_given_D * pD;
+            const denominator = (pT_given_D * pD) + (pT_given_NotD * pNotD);
+            const probability = numerator / denominator;
+
+            // Display the result
+            document.getElementById("playgroundResult").innerHTML = `<strong>Probability of having the disease given a positive test:</strong> ${(probability * 100).toFixed(2)}%`;
+        }
+    </script>
+
+    <!-- Add space -->
+    <br><br>
+
+    <h2>Why Bayes Matters</h2>
+    <p>As we have seen, in the context of medical testing, Bayes' theorem helps us interpret the significance of test results and avoid common misconceptions. But the implications of Bayes' theorem (and its misuses) extend far beyond healthcare.</p>
+    <p> Misapplying Bayes’ theorem can lead to significant errors also in judgment and decision-making. A famous fallacy arising from such misuse is the <strong>Prosecutor’s Fallacy</strong>.</p>
+    <p>This fallacy occurs when the probability of observing certain evidence if a defendant is innocent is confused with the probability that the defendant is innocent given the evidence. In legal contexts, this misinterpretation can lead to wrongful convictions.</p>
+    <p>For example, in the infamous Clark Case, Sally Clark was wrongfully convicted of murdering her two children based on flawed statistical reasoning. The prosecution argued that the chance of two siblings dying of Sudden Infant Death Syndrome (SIDS) was 1 in 73 million. This was presented as the probability of Clark’s innocence. However, this interpretation was incorrect, as it failed to consider other relevant factors, including the likelihood of such deaths in the general population and the possibility of wrongful accusations. The correct application of Bayes’ theorem could have prevented this miscarriage of justice.</p>
+</p>
+
+<!-- References -->
+<h2>References</h2>
+<p>Below are resources and articles related to the topics discussed:</p>
+<ol>
+    <li>
+        <strong>Bayes' Theorem:</strong> 
+        <a href="https://en.wikipedia.org/wiki/Bayes%27_theorem" target="_blank" rel="noopener noreferrer">
+            [1a]
+        </a>
+        <a href="https://oscarbonilla.com/2009/05/visualizing-bayes-theorem/" target="_blank" rel="noopener noreferrer">
+            [1b]
+    </li>
+    <li>
+        <strong>Base Rate Fallacy:</strong> 
+        <a href="https://en.wikipedia.org/wiki/Base_rate_fallacy" target="_blank" rel="noopener noreferrer">
+            [2]
+        </a>
+    </li>
+    <li>
+        <strong>Prosecutor's Fallacy:</strong> 
+        <a href="https://en.wikipedia.org/wiki/Prosecutor%27s_fallacy" target="_blank" rel="noopener noreferrer">
+            [3]
+        </a>
+    </li>
+    <li>
+        <strong>Sally Clark Case:</strong> 
+        <a href="https://en.wikipedia.org/wiki/Sally_Clark" target="_blank" rel="noopener noreferrer">
+            [4a]
+        </a>
+        <a href="https://ccrc.gov.uk/decision/clark-sally/" target="_blank" rel="noopener noreferrer">
+        [4b]
+    </li>
+</ol>
+            </div>
+            
+            <!-- Post Navigation -->
+                        <nav class="post-navigation">
+                                    <div class="nav-next">
+                        <span class="nav-label">Newer</span>
+                        <a href="post_frame.html">
+                            Of Risks and Asteroids: Analyzing the Impact Probability of 2024 YR4 →
+                        </a>
+                    </div>
+                                                    <div class="nav-prev">
+                        <span class="nav-label">Older</span>
+                        <a href="post_frame.html">
+                            ← The Unfair Coin                        </a>
+                    </div>
+                            </nav>
+                    </div>
+    </div>
+</div>
+
+<footer>
+    <p>© 2025 Nicola Lo Russo</p>
+</footer>
+
+</body>
+</html>

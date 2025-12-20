@@ -1,0 +1,264 @@
+/**
+ * Blog Post Styles
+ * Clean, readable post content
+ */
+
+/* Post content container */
+.post-content {
+    max-width: 680px;
+    margin: 0 auto;
+    line-height: 1.75;
+}
+
+/* Images */
+.center-img {
+    text-align: center;
+    margin: var(--spacing-lg) 0;
+}
+
+img {
+    display: block;
+    max-width: 100%;
+    height: auto;
+    margin: var(--spacing-md) auto;
+    border-radius: 4px;
+}
+
+.img-small {
+    width: 25%;
+    max-width: 200px;
+}
+
+.img-medium {
+    width: 50%;
+    max-width: 400px;
+}
+
+.img-large {
+    width: 75%;
+    max-width: 600px;
+}
+
+.img-full-width {
+    width: 100%;
+}
+
+.img-caption {
+    color: var(--color-text-muted);
+    font-size: 0.875rem;
+    font-weight: 400;
+    margin-top: var(--spacing-xs);
+    font-style: italic;
+    text-align: center;
+}
+
+/* Typography in posts */
+.post-content h1 {
+    font-size: 2.25rem;
+    font-weight: 300;
+    letter-spacing: -0.03em;
+    line-height: 1.2;
+    margin-top: 0;
+    margin-bottom: var(--spacing-md);
+    padding-bottom: var(--spacing-sm);
+    /* Removed border for cleaner look */
+}
+
+.post-content h2 {
+    font-size: 1.75rem;
+    font-weight: 500;
+    letter-spacing: -0.01em;
+    line-height: 1.3;
+    margin-top: var(--spacing-xl);
+    margin-bottom: var(--spacing-md);
+    padding-bottom: var(--spacing-xs);
+    /* Removed border for cleaner look */
+}
+
+.post-content h3 {
+    font-size: 1.25rem;
+    font-weight: 500;
+    margin-top: var(--spacing-lg);
+    margin-bottom: var(--spacing-sm);
+}
+
+.post-content p {
+    margin-bottom: var(--spacing-md);
+    text-align: justify;
+    hyphens: auto;
+    line-height: 1.75;
+}
+
+/* Better spacing for paragraphs containing display math */
+.post-content p mjx-container[display="true"],
+.post-content p .MathJax[display="true"] {
+    display: block;
+    margin: var(--spacing-md) 0 !important;
+}
+
+/* Extra spacing after paragraphs with display math */
+.post-content p:has(mjx-container[display="true"]),
+.post-content p:has(.MathJax[display="true"]) {
+    margin-bottom: var(--spacing-lg);
+}
+
+/* Fallback for browsers without :has() support */
+@supports not selector(:has(*)) {
+    .post-content p {
+        margin-bottom: var(--spacing-md);
+    }
+}
+
+/* Code blocks */
+.post-content pre {
+    background-color: var(--color-bg-alt);
+    border: 1px solid var(--color-border);
+    border-radius: 4px;
+    padding: var(--spacing-md);
+    overflow-x: auto;
+    margin: var(--spacing-md) 0;
+    font-size: 0.9rem;
+    line-height: 1.6;
+}
+
+.post-content code {
+    background-color: var(--color-bg-alt);
+    padding: 0.2em 0.4em;
+    border-radius: 3px;
+    font-size: 0.9em;
+    border: 1px solid var(--color-border);
+}
+
+.post-content pre code {
+    background-color: transparent;
+    padding: 0;
+    border: none;
+}
+
+/* Lists */
+.post-content ul, .post-content ol {
+    margin: var(--spacing-md) 0;
+    padding-left: 2rem;
+}
+
+.post-content li {
+    margin-bottom: var(--spacing-xs);
+    line-height: 1.8;
+}
+
+/* Blockquotes */
+.post-content blockquote {
+    border-left: 3px solid var(--color-accent);
+    padding-left: var(--spacing-md);
+    margin: var(--spacing-md) 0;
+    color: var(--color-text-secondary);
+    font-style: italic;
+}
+
+/* Special boxes (for puzzles, scenarios, etc.) */
+.riddle-box, .voting-box, .playground {
+    background-color: var(--color-bg-alt);
+    border-left: 3px solid var(--color-accent);
+    padding: var(--spacing-md);
+    margin: var(--spacing-lg) 0;
+    border-radius: 4px;
+}
+
+.riddle-box h2, .voting-box h2 {
+    font-size: 1.25rem;
+    margin-top: 0;
+    margin-bottom: var(--spacing-sm);
+    border-bottom: none;
+    color: var(--color-accent);
+}
+
+/* Links */
+.post-content a {
+    color: var(--color-accent);
+    text-decoration: underline;
+    text-underline-offset: 2px;
+    text-decoration-thickness: 1px;
+}
+
+.post-content a:hover {
+    color: var(--color-accent-hover);
+    text-decoration-thickness: 2px;
+}
+
+/* MathJax Styling */
+.MathJax {
+    font-size: 1.05em !important;
+    color: var(--color-text-primary) !important;
+}
+
+/* Inline math */
+.MathJax[display="false"] {
+    font-size: 1.05em !important;
+    margin: 0 0.2em !important;
+}
+
+/* Display math (block equations) */
+.MathJax[display="true"] {
+    font-size: 1.15em !important;
+    margin: var(--spacing-md) 0 !important;
+    text-align: center !important;
+    overflow-x: auto;
+    overflow-y: hidden;
+}
+
+/* Math container spacing */
+mjx-container {
+    display: inline-block !important;
+    margin: 0.2em 0 !important;
+}
+
+/* Display math containers */
+mjx-container[display="true"] {
+    display: block !important;
+    margin: var(--spacing-md) auto !important;
+    text-align: center !important;
+    max-width: 100%;
+    overflow-x: auto;
+}
+
+/* Inline math containers */
+mjx-container[display="false"] {
+    display: inline !important;
+    margin: 0 0.15em !important;
+    vertical-align: baseline !important;
+}
+
+/* Better spacing around equations in paragraphs */
+p mjx-container[display="true"],
+p .MathJax[display="true"] {
+    margin: var(--spacing-md) 0 !important;
+}
+
+/* Equation numbering (if used) */
+.MathJax_Display {
+    margin: var(--spacing-md) 0 !important;
+}
+
+/* Improve rendering quality */
+mjx-math {
+    font-family: 'Computer Modern', 'Latin Modern Math', 'STIX', 'TeX', serif !important;
+}
+
+/* Tables */
+.post-content table {
+    width: 100%;
+    border-collapse: collapse;
+    margin: var(--spacing-md) 0;
+}
+
+.post-content table th,
+.post-content table td {
+    padding: var(--spacing-xs) var(--spacing-sm);
+    border: 1px solid var(--color-border);
+    text-align: left;
+}
+
+.post-content table th {
+    background-color: var(--color-bg-alt);
+    font-weight: 500;
+}

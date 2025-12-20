@@ -1,0 +1,336 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Same voters&#039; preferences, different winners? How voting systems can totally change the result.">
+    <meta name="author" content="Nicola Lo Russo">
+    
+        <link rel="canonical" href="http://localhost:8000/admin_generate.html">
+        
+    <title>Intro to Voting Theory: Chapter 1 - Nicola Lo Russo</title>
+    
+        <meta property="og:type" content="article">
+    <meta property="og:site_name" content="Nicola Lo Russo">
+    <meta property="og:title" content="Intro to Voting Theory: Chapter 1">
+    <meta property="og:description" content="Same voters&#039; preferences, different winners? How voting systems can totally change the result.">
+    <meta property="og:url" content="http://localhost:8000/admin_generate.html">
+    <meta name="twitter:card" content="summary">
+    <meta name="twitter:title" content="Intro to Voting Theory: Chapter 1">
+    <meta name="twitter:description" content="Same voters&#039; preferences, different winners? How voting systems can totally change the result.">
+    
+    <!-- External Stylesheets -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
+    
+    <!-- Internal Stylesheets -->
+    <link rel="stylesheet" href="css/simple-grid.css">
+    <link rel="stylesheet" href="css/style.css">
+            <link rel="stylesheet" href="css/footer-style.css">
+            <link rel="stylesheet" href="css/header-style.css">
+            <link rel="stylesheet" href="css/blog-post-style.css">
+            <link rel="stylesheet" href="css/post-navigation.css">
+        
+    <!-- JavaScript -->
+    <script src="js/email_decrypt.js"></script>
+            <script src="js/mathjax-config.js"></script>
+        <script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+            
+    <!-- Favicon -->
+    <link rel="icon" href="images/nico.png" type="image/png">
+</head>
+<body>
+
+<script type="application/ld+json">{
+    "@context": "https://schema.org",
+    "@type": "BlogPosting",
+    "headline": "Intro to Voting Theory: Chapter 1",
+    "datePublished": "2025-03-31T00:00:00+00:00",
+    "author": {
+        "@type": "Person",
+        "name": "Nicola Lo Russo"
+    },
+    "publisher": {
+        "@type": "Person",
+        "name": "Nicola Lo Russo"
+    },
+    "description": "Same voters' preferences, different winners? How voting systems can totally change the result."
+}</script><header>
+    <div>
+        <div style="text-align: center;">
+            <h1>Nicola Lo Russo</h1>
+                            <p class="site-tagline">Personal website</p>
+                        <p class="no-print"></p>
+            <div class="header-icons">
+                <a id="email-link" onClick="writeEmail()" style="cursor: pointer;">
+                    <i class="fas fa-envelope"></i>
+                    <i class="icon-text">nlorusso [at] ethz.ch</i>
+                </a>
+                <a href="https://www.linkedin.com/in/nicola-lo-russo-7a4849127/" target="_blank" rel="noopener noreferrer">
+                    <i class="fab fa-linkedin"></i>
+                    <i class="icon-text">Nicola Lo Russo</i>
+                </a>
+            </div>
+        </div>
+    </div>
+    <nav class="minimal-menu">
+        <div class="menu-item">
+            <a href="index.html">
+                <span style="border-bottom: 2px solid var(--color-accent)">Home</span>
+            </a>
+        </div>
+        <div class="menu-item">
+            <a href="cv.html">
+                <span >About Me</span>
+            </a>
+        </div>
+        
+                
+            </nav>
+</header>
+
+
+<div class="container">
+    <div class="row justify">
+        <div class="col-12">
+            <!-- Back to blog link -->
+            <div class="post-meta-header">
+                <a href="index.html" class="back-link">← Back to Blog</a>
+                <span class="reading-time">4 min read</span>
+            </div>
+            
+            <div class="post-content">
+                                
+
+        <h1>Intro to Voting Theory: Chapter 1</h1>
+
+        <div class="voting-box">
+            <h2>Why This?</h2>
+            <p>In my undergrad, I started studying voting theory. I was quite impressed by how the same group of people, voting honestly, can end up with completely different winners depending on the system used. This is a small intro, not too formal, just to play around with ideas and see for yourself how messy (and fascinating) collective choice can get.</p>
+        </div>
+
+        <h2>The Voting Systems</h2>
+        <p>Here's a quick tour of some common (and not-so-common) voting rules:</p>
+        <ul>
+            <li><strong>Plurality:</strong> Everyone picks one candidate. Most votes wins. Simple, but often unfair.</li>
+            <li><strong>Borda Count:</strong> Voters rank candidates. Higher ranks get more points. Think of it like Eurovision.</li>
+            <li><strong>STV (Single Transferable Vote):</strong> Ranked voting where the least popular gets eliminated and votes get transferred until someone gets a majority.</li>
+            <li><strong>Llull's Rule:</strong> Every candidate is matched one-on-one with every other. Win the most pairwise duels to win overall.</li>
+            <li><strong>Plurality with Veto:</strong> You vote for someone and veto another. Winner has best net score.</li>
+        </ul>
+
+        <h2>The Condorcet Winner</h2>
+        <p>This is a key concept in voting theory. A <strong>Condorcet winner</strong> is a candidate who would win a one-on-one match against every other candidate. In other words, if we did head-to-head duels, this candidate would beat all opponents.</p>
+
+        <p>Sounds like a fair winner, right? The problem is — a Condorcet winner <em>doesn’t always exist</em>. In some elections, preferences are cyclical: A beats B, B beats C, but C beats A. This is known as a <em>Condorcet cycle</em>, and it shows just how tricky collective choice can be.</p>
+
+        <p>We’re including a check for the Condorcet winner, if there is one. You’ll notice how some voting systems choose them — and others ignore them entirely.</p>
+
+        <div class="playground">
+            <h2>Try It Yourself</h2>
+            <p>Change the preferences below and hit compute. You’ll see how each method picks a (potentially different) winner.</p>
+
+            <label for="voters">Number of voters:</label><br>
+            <input type="number" id="voters" value="1" min="1" onchange="generateConflictPreferences()"><br><br>
+
+            <label for="candidates">Number of candidates:</label><br>
+            <input type="number" id="candidates" value="1" min="1" onchange="generateConflictPreferences()"><br><br>
+
+            <label for="preferences">Preferences (one line per voter, e.g., A>B>C>D):</label><br>
+            <textarea id="preferences"></textarea><br><br>
+
+            <button onclick="computeResults()">Compute Results</button>
+
+            <div id="results" class="result-box"></div>
+        </div>
+
+
+    <script>
+        function parsePreferences(prefStr) {
+            return prefStr.trim().split('\n').map(line => line.trim().split('>'));
+        }
+
+        function getCandidates(prefList) {
+            const set = new Set();
+            prefList.forEach(p => p.forEach(c => set.add(c)));
+            return Array.from(set);
+        }
+
+        function resolveWinner(scores) {
+            const sorted = Object.entries(scores).sort((a, b) => b[1] - a[1]);
+            if (sorted.length < 1) return "No winner";
+            const topScore = sorted[0][1];
+            const tied = sorted.filter(e => e[1] === topScore).map(e => e[0]);
+            if (tied.length > 1) return `No clear winner (tie between ${tied.join(', ')})`;
+            return sorted[0][0];
+        }
+
+        function plurality(prefList) {
+            const scores = {};
+            prefList.forEach(p => {
+                scores[p[0]] = (scores[p[0]] || 0) + 1;
+            });
+            return resolveWinner(scores);
+        }
+
+        function borda(prefList, candidates) {
+            const scores = {};
+            prefList.forEach(p => {
+                p.forEach((c, i) => {
+                    scores[c] = (scores[c] || 0) + (candidates.length - i);
+                });
+            });
+            return resolveWinner(scores);
+        }
+
+        function pluralityWithVeto(prefList) {
+            const scores = {};
+            prefList.forEach(p => {
+                const fav = p[0], veto = p[p.length - 1];
+                scores[fav] = (scores[fav] || 0) + 1;
+                scores[veto] = (scores[veto] || 0) - 1;
+            });
+            return resolveWinner(scores);
+        }
+
+        function pairwiseWins(prefList, candidates) {
+            const wins = {};
+            candidates.forEach(a => {
+                wins[a] = 0;
+                candidates.forEach(b => {
+                    if (a === b) return;
+                    let aVotes = 0, bVotes = 0;
+                    prefList.forEach(p => {
+                        if (p.indexOf(a) < p.indexOf(b)) aVotes++;
+                        else bVotes++;
+                    });
+                    if (aVotes > bVotes) wins[a]++;
+                });
+            });
+            return resolveWinner(wins);
+        }
+
+        function condorcetWinner(prefList, candidates) {
+            for (let c of candidates) {
+                let isWinner = true;
+                for (let opponent of candidates) {
+                    if (c === opponent) continue;
+                    let cVotes = 0, oVotes = 0;
+                    for (let p of prefList) {
+                        if (p.indexOf(c) < p.indexOf(opponent)) cVotes++;
+                        else oVotes++;
+                    }
+                    if (cVotes <= oVotes) {
+                        isWinner = false;
+                        break;
+                    }
+                }
+                if (isWinner) return c;
+            }
+            return "No Condorcet winner";
+        }
+
+        function stv(prefList, candidates) {
+            let active = [...candidates];
+            let votes = prefList.map(p => p.filter(c => active.includes(c)));
+
+            while (active.length > 1) {
+                const counts = {};
+                let totalVotes = 0;
+                votes.forEach(v => {
+                    const top = v.find(c => active.includes(c));
+                    if (top) {
+                        counts[top] = (counts[top] || 0) + 1;
+                        totalVotes++;
+                    }
+                });
+
+                for (let [cand, count] of Object.entries(counts)) {
+                    if (count > totalVotes / 2) return cand;
+                }
+
+                const sorted = Object.entries(counts).sort((a, b) => a[1] - b[1]);
+                if (sorted.length > 1 && sorted[0][1] === sorted[1][1]) {
+                    const tied = sorted.filter(e => e[1] === sorted[0][1]).map(e => e[0]);
+                    return `No clear winner (tie in elimination between ${tied.join(', ')})`;
+                }
+                const toEliminate = sorted[0][0];
+                active = active.filter(c => c !== toEliminate);
+                votes = votes.map(v => v.filter(c => c !== toEliminate));
+            }
+
+            return active[0] || "No winner";
+        }
+
+        function computeResults() {
+            const prefList = parsePreferences(document.getElementById("preferences").value);
+            const candidates = getCandidates(prefList);
+
+            const results = {
+                "Condorcet Winner": condorcetWinner(prefList, candidates),
+                "Plurality": plurality(prefList),
+                "Borda Count": borda(prefList, candidates),
+                "Plurality with Veto": pluralityWithVeto(prefList),
+                "Llull's Rule (Pairwise Wins)": pairwiseWins(prefList, candidates),
+                "STV": stv(prefList, candidates),
+            };
+
+            let html = '<h3>Results</h3><ul>';
+            for (let [method, winner] of Object.entries(results)) {
+                html += `<li><strong>${method}:</strong> ${winner}</li>`;
+            }
+            html += '</ul>';
+
+            document.getElementById("results").innerHTML = html;
+        }
+
+        function generateConflictPreferences() {
+            const numVoters = parseInt(document.getElementById("voters").value);
+            const numCandidates = parseInt(document.getElementById("candidates").value);
+            if (!numVoters || !numCandidates) {
+                document.getElementById("preferences").value = "";
+                return;
+            }
+
+            const C = Array.from({ length: numCandidates }, (_, i) => String.fromCharCode(65 + i));
+            const profiles = [];
+
+            const baseProfiles = numCandidates === 2
+                ? [ [C[0], C[1]], [C[1], C[0]] ]
+                : [
+                    [...C],
+                    [C[1], C[0], ...C.slice(2)],
+                    [C[2], C[1], C[0], ...C.slice(3)],
+                    [...C].reverse(),
+                    [C[1], C[2], C[0], ...C.slice(3)]
+                ];
+
+            for (let i = 0; i < numVoters; i++) {
+                const base = baseProfiles[i % baseProfiles.length];
+                profiles.push([...base].join('>'));
+            }
+
+            document.getElementById("preferences").value = profiles.join('\n');
+        }
+
+        window.onload = generateConflictPreferences;
+    </script>
+            </div>
+            
+            <!-- Post Navigation -->
+                        <nav class="post-navigation">
+                                                    <div class="nav-prev">
+                        <span class="nav-label">Older</span>
+                        <a href="post_frame.html">
+                            ← Of Risks and Asteroids: Analyzing the Impact Probability of 2024 YR4                        </a>
+                    </div>
+                            </nav>
+                    </div>
+    </div>
+</div>
+
+<footer>
+    <p>© 2025 Nicola Lo Russo</p>
+</footer>
+
+</body>
+</html>

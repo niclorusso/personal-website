@@ -1,0 +1,74 @@
+/**
+ * Animations
+ * Subtle, elegant animations for enhanced UX
+ */
+
+/* Fade-in animation for content */
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+        transform: translateY(10px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+/* Fade-in for blog posts with stagger */
+.post {
+    animation: fadeIn 0.4s ease-out backwards;
+}
+
+.post:nth-child(1) {
+    animation-delay: 0.05s;
+}
+
+.post:nth-child(2) {
+    animation-delay: 0.1s;
+}
+
+.post:nth-child(3) {
+    animation-delay: 0.15s;
+}
+
+.post:nth-child(4) {
+    animation-delay: 0.2s;
+}
+
+.post:nth-child(5) {
+    animation-delay: 0.25s;
+}
+
+.post:nth-child(6) {
+    animation-delay: 0.3s;
+}
+
+/* Fade-in for main content */
+.main-content section {
+    animation: fadeIn 0.5s ease-out;
+}
+
+/* Smooth scale on interactive elements */
+.header-icons a,
+.menu-item a {
+    transform: scale(1);
+    transition: transform var(--transition-fast);
+}
+
+.header-icons a:hover,
+.menu-item a:hover {
+    transform: scale(1.02);
+}
+
+/* Prevent animation on reduced motion preference */
+@media (prefers-reduced-motion: reduce) {
+    *,
+    *::before,
+    *::after {
+        animation-duration: 0.01ms !important;
+        animation-iteration-count: 1 !important;
+        transition-duration: 0.01ms !important;
+    }
+}
+
