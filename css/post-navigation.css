@@ -28,12 +28,22 @@
     font-family: var(--font-mono);
 }
 
+.post-description {
+    font-size: 1.125rem;
+    color: var(--color-text-secondary);
+    font-weight: 400;
+    line-height: 1.6;
+    margin-bottom: var(--spacing-sm);
+    margin-top: calc(var(--spacing-xs) * -1);
+    font-style: italic;
+}
+
 .post-date {
     font-size: 0.875rem;
     color: var(--color-text-muted);
     font-family: var(--font-mono);
     margin-bottom: var(--spacing-md);
-    margin-top: calc(var(--spacing-xs) * -1);
+    margin-top: var(--spacing-xs);
 }
 
 .post-navigation {
