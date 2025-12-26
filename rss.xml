@@ -6,7 +6,7 @@
     <description>Personal website and blog</description>
     <language>en-us</language>
     <atom:link href="http://localhost:8000//rss.php" rel="self" type="application/rss+xml"/>
-    <lastBuildDate>Fri, 26 Dec 2025 14:48:13 +0000</lastBuildDate>
+    <lastBuildDate>Fri, 26 Dec 2025 14:53:37 +0000</lastBuildDate>
     <item>
       <title>My 2025 in books</title>
       <link>http://localhost:8000//post_frame.php?post=books-2025</link>
