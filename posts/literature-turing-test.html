@@ -1,0 +1,742 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Can you tell the difference between human-written literature and AI-generated text? Test your skills across 10 famous authors.">
+    <meta name="author" content="Nicola Lo Russo">
+    
+        <link rel="canonical" href="https://nicolalorusso.ch/posts/literature-turing-test.html">
+        
+    <title>Literature Turing Test - Nicola Lo Russo</title>
+    
+        <meta property="og:type" content="article">
+    <meta property="og:site_name" content="Nicola Lo Russo">
+    <meta property="og:title" content="Literature Turing Test">
+    <meta property="og:description" content="Can you tell the difference between human-written literature and AI-generated text? Test your skills across 10 famous authors.">
+    <meta property="og:url" content="https://nicolalorusso.ch/posts/literature-turing-test.html">
+    <meta name="twitter:card" content="summary">
+    <meta name="twitter:title" content="Literature Turing Test">
+    <meta name="twitter:description" content="Can you tell the difference between human-written literature and AI-generated text? Test your skills across 10 famous authors.">
+    
+    <!-- External Stylesheets -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
+    
+    <!-- Internal Stylesheets -->
+    <link rel="stylesheet" href="../css/simple-grid.css">
+    <link rel="stylesheet" href="../css/style.css">
+            <link rel="stylesheet" href="../css/footer-style.css">
+            <link rel="stylesheet" href="../css/header-style.css">
+            <link rel="stylesheet" href="../css/blog-post-style.css">
+            <link rel="stylesheet" href="../css/post-navigation.css">
+        
+    <!-- JavaScript -->
+    <script src="../js/email_decrypt.js"></script>
+            <script src="../js/mathjax-config.js"></script>
+        <script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+            
+    <!-- Favicon -->
+    <link rel="icon" href="../images/nico.png" type="image/png">
+</head>
+<body>
+
+<script type="application/ld+json">{
+    "@context": "https://schema.org",
+    "@type": "BlogPosting",
+    "headline": "Literature Turing Test",
+    "datePublished": "2026-01-09T00:00:00+00:00",
+    "author": {
+        "@type": "Person",
+        "name": "Nicola Lo Russo"
+    },
+    "publisher": {
+        "@type": "Person",
+        "name": "Nicola Lo Russo"
+    },
+    "description": "Can you tell the difference between human-written literature and AI-generated text? Test your skills across 10 famous authors."
+}</script><header>
+    <div>
+        <div style="text-align: center;">
+            <h1><a href="../index.html" style="text-decoration: none; color: inherit;">Nicola Lo Russo</a></h1>
+                            <p class="site-tagline">Personal website</p>
+                        <p class="no-print"></p>
+            <div class="header-icons">
+                <a id="email-link" onClick="writeEmail()" style="cursor: pointer;">
+                    <i class="fas fa-envelope"></i>
+                    <i class="icon-text">nlorusso [at] ethz.ch</i>
+                </a>
+                <a href="https://www.linkedin.com/in/nicola-lo-russo-7a4849127/" target="_blank" rel="noopener noreferrer">
+                    <i class="fab fa-linkedin"></i>
+                    <i class="icon-text">Nicola Lo Russo</i>
+                </a>
+            </div>
+        </div>
+    </div>
+    <nav class="minimal-menu">
+        <div class="menu-item">
+            <a href="../index.html">
+                <span style="border-bottom: 2px solid var(--color-accent)">Home</span>
+            </a>
+        </div>
+        <div class="menu-item">
+            <a href="../cv.html">
+                <span >About Me</span>
+            </a>
+        </div>
+            </nav>
+</header>
+
+
+<div class="container">
+    <div class="row justify">
+        <div class="col-12">
+            <!-- Back to blog link -->
+            <div class="post-meta-header">
+                <a href="../index.html" class="back-link">← Back to Blog</a>
+                <span class="reading-time">15 min read</span>
+            </div>
+            
+            <div class="post-content">
+                                
+<style>
+    .turing-game {
+        background-color: var(--color-bg-alt);
+        border-radius: 8px;
+        padding: var(--spacing-lg);
+        margin: var(--spacing-xl) 0;
+    }
+
+    .game-header {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        margin-bottom: var(--spacing-md);
+        padding-bottom: var(--spacing-sm);
+        border-bottom: 1px solid var(--color-border);
+    }
+
+    .round-info {
+        font-size: 0.95rem;
+        color: var(--color-text-secondary);
+    }
+
+    .score-display {
+        font-weight: 600;
+        color: var(--color-accent);
+    }
+
+    .author-label {
+        text-align: center;
+        font-size: 1.15rem;
+        margin-bottom: var(--spacing-md);
+    }
+
+    .author-label span {
+        color: var(--color-accent);
+        font-weight: 600;
+    }
+
+    .texts-grid {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: var(--spacing-md);
+    }
+
+    @media (max-width: 700px) {
+        .texts-grid {
+            grid-template-columns: 1fr;
+        }
+    }
+
+    .text-option {
+        background: white;
+        border: 2px solid var(--color-border);
+        border-radius: 6px;
+        padding: var(--spacing-md);
+        cursor: pointer;
+        transition: border-color 0.15s, transform 0.15s;
+        position: relative;
+    }
+
+    .text-option:hover:not(.revealed) {
+        border-color: var(--color-accent);
+        transform: translateY(-2px);
+    }
+
+    .text-option.revealed {
+        cursor: default;
+    }
+
+    .text-option.correct {
+        border-color: #22c55e;
+        background-color: #f0fdf4;
+    }
+
+    .text-option.incorrect {
+        border-color: #ef4444;
+        background-color: #fef2f2;
+    }
+
+    .text-option.human-marker {
+        border-color: #22c55e;
+    }
+
+    .option-label {
+        font-size: 0.8rem;
+        font-weight: 600;
+        color: var(--color-text-muted);
+        text-transform: uppercase;
+        letter-spacing: 0.5px;
+        margin-bottom: var(--spacing-xs);
+    }
+
+    .option-text {
+        font-style: italic;
+        line-height: 1.7;
+        color: var(--color-text-primary);
+    }
+
+    .option-source {
+        margin-top: var(--spacing-sm);
+        font-size: 0.85rem;
+        color: var(--color-text-muted);
+        display: none;
+    }
+
+    .revealed .option-source {
+        display: block;
+    }
+
+    .result-tag {
+        position: absolute;
+        top: var(--spacing-xs);
+        right: var(--spacing-xs);
+        padding: 2px 8px;
+        border-radius: 4px;
+        font-size: 0.75rem;
+        font-weight: 600;
+        display: none;
+    }
+
+    .revealed .result-tag {
+        display: inline-block;
+    }
+
+    .result-tag.human {
+        background-color: #22c55e;
+        color: white;
+    }
+
+    .result-tag.ai {
+        background-color: #6b7280;
+        color: white;
+    }
+
+    .insight-panel {
+        background-color: #fef9c3;
+        border: 1px solid #eab308;
+        border-radius: 6px;
+        padding: var(--spacing-md);
+        margin-top: var(--spacing-md);
+        display: none;
+    }
+
+    .insight-panel.show {
+        display: block;
+    }
+
+    .insight-panel h4 {
+        margin: 0 0 var(--spacing-xs) 0;
+        color: #854d0e;
+        font-size: 0.95rem;
+    }
+
+    .insight-panel p {
+        margin: 0;
+        color: #713f12;
+        line-height: 1.6;
+        font-size: 0.95rem;
+        text-align: left;
+    }
+
+    .game-btn {
+        background-color: var(--color-accent);
+        color: white;
+        border: none;
+        padding: 10px 24px;
+        font-size: 0.95rem;
+        border-radius: 5px;
+        cursor: pointer;
+        display: block;
+        margin: var(--spacing-md) auto 0;
+        transition: background-color 0.15s;
+    }
+
+    .game-btn:hover {
+        background-color: var(--color-accent-hover, #1e3a8a);
+    }
+
+    .start-view, .results-view {
+        text-align: center;
+        padding: var(--spacing-lg) var(--spacing-md);
+    }
+
+    .start-view h3, .results-view h3 {
+        margin-top: 0;
+    }
+
+    .final-score {
+        font-size: 3rem;
+        font-weight: 700;
+        color: var(--color-accent);
+        margin: var(--spacing-md) 0;
+    }
+
+    .score-msg {
+        color: var(--color-text-secondary);
+        margin-bottom: var(--spacing-lg);
+    }
+
+    .breakdown {
+        text-align: left;
+        max-width: 400px;
+        margin: 0 auto;
+    }
+
+    .breakdown-row {
+        display: flex;
+        justify-content: space-between;
+        padding: var(--spacing-xs) 0;
+        border-bottom: 1px solid var(--color-border);
+    }
+
+    .breakdown-row .status {
+        font-weight: 600;
+    }
+
+    .breakdown-row .status.ok {
+        color: #22c55e;
+    }
+
+    .breakdown-row .status.fail {
+        color: #ef4444;
+    }
+
+    .breakdown-row.expandable {
+        cursor: pointer;
+    }
+
+    .breakdown-row.expandable:hover {
+        background-color: var(--color-bg-alt);
+    }
+
+    .round-detail {
+        display: none;
+        padding: var(--spacing-sm) 0;
+        border-bottom: 1px solid var(--color-border);
+        font-size: 0.9rem;
+        line-height: 1.6;
+    }
+
+    .round-detail.show {
+        display: block;
+    }
+
+    .round-detail .text-pair {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: var(--spacing-sm);
+        margin: var(--spacing-sm) 0;
+    }
+
+    @media (max-width: 500px) {
+        .round-detail .text-pair {
+            grid-template-columns: 1fr;
+        }
+    }
+
+    .round-detail .text-box {
+        background: white;
+        border: 1px solid var(--color-border);
+        border-radius: 4px;
+        padding: var(--spacing-xs);
+        font-style: italic;
+        font-size: 0.85rem;
+    }
+
+    .round-detail .text-box.human-box {
+        border-color: #22c55e;
+    }
+
+    .round-detail .text-box.selected-box {
+        border-width: 2px;
+    }
+
+    .round-detail .text-label-small {
+        font-size: 0.75rem;
+        font-weight: 600;
+        color: var(--color-text-muted);
+        margin-bottom: 4px;
+    }
+
+    .round-detail .insight-small {
+        font-size: 0.85rem;
+        color: var(--color-text-secondary);
+        margin-top: var(--spacing-xs);
+    }
+
+    .hidden {
+        display: none !important;
+    }
+</style>
+
+<h1>Literature Turing Test</h1>
+
+<div class="riddle-box">
+    <p>Below you will find ten pairs of texts. In each pair, one passage is from a real literary work, and the other was generated by AI in the style of that author. Try to identify which is which.</p>
+</div>
+
+<p>There's been a lot of talk lately about AI writing being indistinguishable from human writing, and while that might be true for generic content like product descriptions or email replies, literature seems like it should be harder to fake, given that each great writer has a particular cadence and set of idiosyncrasies that took a lifetime to develop.</p>
+
+<p>This page is a small experiment to test that intuition: ten rounds, ten authors, and in each round you'll see two passages written in that author's style, one authentic and one generated by AI, and your task is simply to identify which one came from a human hand.</p>
+
+<p>I chose authors that represent a range of styles and periods, from Shakespeare's Renaissance verse to Hemingway's modernist terseness, from Woolf's stream of consciousness to Twain's Missouri vernacular, because I wanted to see whether certain kinds of writing are more resistant to imitation than others.</p>
+
+<h2>The Turing Test</h2>
+<p>The original Turing test, which Alan Turing proposed in 1950 in his paper "Computing Machinery and Intelligence," works like this: if a human judge, communicating through text alone, cannot reliably distinguish between a machine and another human, then the machine can be said to exhibit intelligent behavior, or at least something functionally equivalent to it.</p>
+
+<p>Since then, people have proposed numerous variations on the basic idea, including the reverse Turing test (which is essentially what CAPTCHAs do, requiring humans to prove they're not machines), the total Turing test (which adds perception and physical manipulation to the requirements), and various domain-specific versions that ask whether AI can write convincing poetry, generate plausible academic papers, or produce code that looks like it was written by a particular programmer.</p>
+
+<p>What I'm attempting here is a literary variant of the test.</p>
+
+<div class="turing-game">
+    <div id="startView" class="start-view">
+        <h3>Take the test</h3>
+        <p>Click on the passage you believe was written by a human author. After each choice, you'll learn whether you were correct.</p>
+        <label style="display: flex; align-items: center; justify-content: center; gap: 8px; margin: var(--spacing-md) 0; cursor: pointer;">
+            <input type="checkbox" id="hideScore" style="width: 16px; height: 16px; cursor: pointer;">
+            <span style="font-size: 0.9rem; color: var(--color-text-secondary);">Hide score until the end</span>
+        </label>
+        <button class="game-btn" onclick="startGame()">Start</button>
+    </div>
+
+    <div id="gameView" class="hidden">
+        <div class="game-header">
+            <div class="round-info">Round <span id="roundNum">1</span>/10</div>
+            <div class="score-display">Score: <span id="scoreNum">0</span>/<span id="answered">0</span></div>
+        </div>
+
+        <div class="author-label">Which was written by <span id="authorName"></span>?</div>
+
+        <div class="texts-grid">
+            <div class="text-option" id="optionA" onclick="pick('A')">
+                <span class="result-tag" id="tagA"></span>
+                <div class="option-label">Text A</div>
+                <div class="option-text" id="textA"></div>
+                <div class="option-source" id="srcA"></div>
+            </div>
+            <div class="text-option" id="optionB" onclick="pick('B')">
+                <span class="result-tag" id="tagB"></span>
+                <div class="option-label">Text B</div>
+                <div class="option-text" id="textB"></div>
+                <div class="option-source" id="srcB"></div>
+            </div>
+        </div>
+
+        <div class="insight-panel" id="insightPanel">
+            <h4>Style Insight</h4>
+            <p id="insightText"></p>
+        </div>
+
+        <button class="game-btn hidden" id="nextBtn" onclick="nextRound()">Next</button>
+    </div>
+
+    <div id="resultsView" class="hidden results-view">
+        <h3>Complete!</h3>
+        <div class="final-score" id="finalScore"></div>
+        <div class="score-msg" id="scoreMsg"></div>
+        <div class="breakdown" id="breakdown"></div>
+        <button class="game-btn" onclick="startGame()" style="margin-top: var(--spacing-lg);">Try Again</button>
+    </div>
+</div>
+
+<script>
+const data = [
+    {
+        author: "William Shakespeare",
+        work: "Hamlet",
+        human: "To be, or not to be, that is the question: Whether 'tis nobler in the mind to suffer the slings and arrows of outrageous fortune, or to take arms against a sea of troubles, and by opposing end them.",
+        ai: "To live, or not to live, therein lies the query: Whether it be more noble in the soul to endure the wounds and strikes of cruel destiny, or to raise sword against an ocean of sorrows, and through resistance cease them.",
+        insight: "Notice 'slings and arrows' (concrete, asymmetric) vs 'wounds and strikes' (abstract, parallel). 'That is the question' has a conversational directness that 'therein lies the query' lacks. The AI version regularizes the rhythm."
+    },
+    {
+        author: "Jane Austen",
+        work: "Pride and Prejudice",
+        human: "It is a truth universally acknowledged, that a single man in possession of a good fortune, must be in want of a wife. However little known the feelings or views of such a man may be on his first entering a neighbourhood, this truth is so well fixed in the minds of the surrounding families, that he is considered as the rightful property of some one or other of their daughters.",
+        ai: "It is a fact commonly understood, that an unmarried gentleman of considerable wealth, must certainly desire a spouse. Regardless of how unknown such a gentleman's sentiments or opinions may be upon his arrival in a district, this understanding is so firmly established among the local families, that he is regarded as the natural prospect for one or another of their daughters.",
+        insight: "'Rightful property' is deliberately provocative, while the AI's 'natural prospect' is too polite. 'Universally acknowledged' has a mock-grandiosity that 'commonly understood' flattens."
+    },
+    {
+        author: "Ernest Hemingway",
+        work: "The Old Man and the Sea",
+        human: "He was an old man who fished alone in a skiff in the Gulf Stream and he had gone eighty-four days now without taking a fish. In the first forty days a boy had been with him. But after forty days without a fish the boy's parents had told him that the old man was now definitely and finally salao, which is the worst form of unlucky.",
+        ai: "The fisherman was old and he worked by himself in a small boat on the Gulf waters. It had been nearly three months since he caught anything. For the first several weeks a young boy helped him. Then the boy's family said the old man had bad luck, the kind that does not go away, and they made the boy leave.",
+        insight: "The original uses specific numbers ('eighty-four days', 'forty days') and leaves the Spanish 'salao' untranslated. The AI generalizes ('nearly three months', 'several weeks') and explains rather than shows."
+    },
+    {
+        author: "Virginia Woolf",
+        work: "Mrs Dalloway",
+        human: "What a lark! What a plunge! For so it had always seemed to her, when, with a little squeak of the hinges, which she could hear now, she had burst open the French windows and plunged at Bourton into the open air. How fresh, how calm, stiller than this of course, the air was in the early morning; like the flap of a wave; the kiss of a wave.",
+        ai: "How wonderful! How exhilarating! That is how it had always felt to her, when she would open the garden doors with their familiar creak and step out into the morning at Bourton. The air had been so fresh and still in those early hours, fresher than now certainly, moving gently like water, soft as a wave touching the shore.",
+        insight: "'What a lark! What a plunge!' has spontaneous energy. The detail 'a little squeak of the hinges, which she could hear now' collapses past and present in a single phrase. The AI version is more grammatically orderly."
+    },
+    {
+        author: "Edgar Allan Poe",
+        work: "The Fall of the House of Usher",
+        human: "During the whole of a dull, dark, and soundless day in the autumn of the year, when the clouds hung oppressively low in the heavens, I had been passing alone, on horseback, through a singularly dreary tract of country; and at length found myself, as the shades of the evening drew on, within view of the melancholy House of Usher.",
+        ai: "Throughout an entire gray and silent autumn day, as heavy clouds pressed down from above, I rode my horse alone through an unusually bleak stretch of land. As darkness began to fall that evening, I finally came within sight of the gloomy Usher mansion, a structure that filled me with an inexplicable sense of dread.",
+        insight: "'Dull, dark, and soundless' builds atmosphere through accumulation. The AI tells us about 'inexplicable dread' directly, while the original lets the description do that work. 'Melancholy House of Usher' personifies the building; 'gloomy Usher mansion' merely describes it."
+    },
+    {
+        author: "Mark Twain",
+        work: "Adventures of Huckleberry Finn",
+        human: "You don't know about me without you have read a book by the name of The Adventures of Tom Sawyer; but that ain't no matter. That book was made by Mr. Mark Twain, and he told the truth, mainly. There was things which he stretched, but mainly he told the truth.",
+        ai: "If you haven't read The Adventures of Tom Sawyer, then you probably don't know who I am, but it doesn't really matter much. That story was written by a fellow called Mark Twain, and most of what he said was true. He exaggerated some parts, sure, but for the most part he was honest.",
+        insight: "'Without you have read' and 'that ain't no matter' are grammatically incorrect but capture a boy's vernacular. The AI corrects the grammar, losing the voice. 'There was things which he stretched' has a rhythm that 'He exaggerated some parts' lacks."
+    },
+    {
+        author: "Oscar Wilde",
+        work: "The Picture of Dorian Gray",
+        human: "The only way to get rid of a temptation is to yield to it. Resist it, and your soul grows sick with longing for the things it has forbidden to itself, with desire for what its monstrous laws have made monstrous and unlawful.",
+        ai: "The best method for overcoming temptation is simply to give in to it. When you resist, your spirit becomes ill with yearning for what it has denied itself, craving those things that its own strict rules have transformed into forbidden pleasures.",
+        insight: "'The only way' is categorical; the AI hedges with 'best method'. 'Monstrous laws have made monstrous' uses striking repetition; the AI's 'strict rules...forbidden pleasures' is more generic."
+    },
+    {
+        author: "Franz Kafka",
+        work: "The Metamorphosis",
+        human: "One morning, when Gregor Samsa woke from troubled dreams, he found himself transformed in his bed into a horrible vermin. He lay on his armour-like back, and if he lifted his head a little he could see his brown belly, slightly domed and divided by arches into stiff sections.",
+        ai: "When Gregor Samsa awoke one morning from uneasy dreams, he discovered that he had been changed overnight into a monstrous insect. He was lying on his hard shell-like back, and when he raised his head slightly, he saw his curved brown abdomen, segmented into rigid plates.",
+        insight: "'Horrible vermin' is vague, almost bureaucratic; the AI's 'monstrous insect' is more dramatic but less unsettling. 'Armour-like back' and 'divided by arches' maintain clinical detachment; 'shell-like' and 'segmented into rigid plates' sound like a nature documentary."
+    },
+    {
+        author: "Emily Dickinson",
+        work: "Poetry",
+        human: "Because I could not stop for Death \u2013 He kindly stopped for me \u2013 The Carriage held but just Ourselves \u2013 And Immortality.",
+        ai: "Since I had no time to wait for Death \u2013 He graciously came to me \u2013 The Coach carried only the two of Us \u2013 Along with Eternity.",
+        insight: "'Kindly' applied to Death is startling; the AI's 'graciously' is a synonym but less unsettling. 'Held but just Ourselves' has an intimacy that 'carried only the two of Us' misses. The capitalization (Death, Carriage, Immortality) is distinctive."
+    },
+    {
+        author: "Gabriel Garcia Marquez",
+        work: "One Hundred Years of Solitude",
+        human: "Many years later, as he faced the firing squad, Colonel Aureliano Buendia was to remember that distant afternoon when his father took him to discover ice. At that time Macondo was a village of twenty adobe houses, built on the bank of a river of clear water that ran along a bed of polished stones, which were white and enormous, like prehistoric eggs.",
+        ai: "Decades afterward, standing before the soldiers who would execute him, Colonel Aureliano Buendia found himself recalling a long-ago day when his father first showed him ice. In those days, Macondo was just a small settlement of mud-brick homes beside a crystal river that flowed over smooth, pale boulders as large as ancient relics.",
+        insight: "'Many years later...was to remember' creates a loop between future and past; the AI's 'Decades afterward...found himself recalling' is more linear. 'Like prehistoric eggs' is specific and strange; 'as large as ancient relics' is generic."
+    }
+];
+
+let round = 0, score = 0, results = [], order = [], locked = false, hideScore = false;
+
+function shuffle(arr) {
+    for (let i = arr.length - 1; i > 0; i--) {
+        const j = Math.floor(Math.random() * (i + 1));
+        [arr[i], arr[j]] = [arr[j], arr[i]];
+    }
+    return arr;
+}
+
+function startGame() {
+    round = 0; score = 0; results = []; locked = false;
+    hideScore = document.getElementById('hideScore').checked;
+    shuffle(data);
+    document.getElementById('startView').classList.add('hidden');
+    document.getElementById('resultsView').classList.add('hidden');
+    document.getElementById('gameView').classList.remove('hidden');
+    document.querySelector('.score-display').style.visibility = hideScore ? 'hidden' : 'visible';
+    showRound();
+}
+
+function showRound() {
+    locked = false;
+    const d = data[round];
+    order = Math.random() < 0.5 ? ['human', 'ai'] : ['ai', 'human'];
+
+    document.getElementById('roundNum').textContent = round + 1;
+    document.getElementById('scoreNum').textContent = score;
+    document.getElementById('answered').textContent = round;
+    document.getElementById('authorName').textContent = d.author;
+
+    document.getElementById('textA').textContent = order[0] === 'human' ? d.human : d.ai;
+    document.getElementById('textB').textContent = order[1] === 'human' ? d.human : d.ai;
+    document.getElementById('srcA').textContent = order[0] === 'human' ? '— ' + d.work : '— AI Generated';
+    document.getElementById('srcB').textContent = order[1] === 'human' ? '— ' + d.work : '— AI Generated';
+
+    const oA = document.getElementById('optionA');
+    const oB = document.getElementById('optionB');
+    oA.className = 'text-option';
+    oB.className = 'text-option';
+    document.getElementById('tagA').textContent = '';
+    document.getElementById('tagA').className = 'result-tag';
+    document.getElementById('tagB').textContent = '';
+    document.getElementById('tagB').className = 'result-tag';
+
+    document.getElementById('insightPanel').classList.remove('show');
+    document.getElementById('nextBtn').classList.add('hidden');
+}
+
+function pick(choice) {
+    if (locked) return;
+    locked = true;
+
+    const d = data[round];
+    const humanPos = order[0] === 'human' ? 'A' : 'B';
+    const correct = choice === humanPos;
+
+    if (correct) score++;
+    results.push({ author: d.author, correct, data: d, order: [...order], choice });
+
+    document.getElementById('scoreNum').textContent = score;
+    document.getElementById('answered').textContent = round + 1;
+
+    const oA = document.getElementById('optionA');
+    const oB = document.getElementById('optionB');
+
+    if (!hideScore) {
+        oA.classList.add('revealed');
+        oB.classList.add('revealed');
+
+        const tagA = document.getElementById('tagA');
+        const tagB = document.getElementById('tagB');
+
+        if (order[0] === 'human') {
+            tagA.textContent = 'HUMAN'; tagA.classList.add('human');
+            tagB.textContent = 'AI'; tagB.classList.add('ai');
+            oA.classList.add('human-marker');
+        } else {
+            tagA.textContent = 'AI'; tagA.classList.add('ai');
+            tagB.textContent = 'HUMAN'; tagB.classList.add('human');
+            oB.classList.add('human-marker');
+        }
+
+        if (choice === 'A') {
+            oA.classList.add(correct ? 'correct' : 'incorrect');
+        } else {
+            oB.classList.add(correct ? 'correct' : 'incorrect');
+        }
+
+        document.getElementById('insightText').textContent = d.insight;
+        document.getElementById('insightPanel').classList.add('show');
+    } else {
+        if (choice === 'A') {
+            oA.style.borderColor = 'var(--color-accent)';
+        } else {
+            oB.style.borderColor = 'var(--color-accent)';
+        }
+    }
+
+    const btn = document.getElementById('nextBtn');
+    btn.textContent = round < 9 ? 'Next' : 'Results';
+    btn.classList.remove('hidden');
+}
+
+function nextRound() {
+    round++;
+    if (round >= 10) {
+        showResults();
+    } else {
+        showRound();
+    }
+}
+
+function showResults() {
+    document.getElementById('gameView').classList.add('hidden');
+    document.getElementById('resultsView').classList.remove('hidden');
+
+    document.getElementById('finalScore').textContent = score + '/10';
+
+    let msg;
+    if (score >= 9) msg = "Exceptional! You have a keen eye for authentic literary voice.";
+    else if (score >= 7) msg = "Well done! You can usually spot the difference.";
+    else if (score >= 5) msg = "Not bad. The line between human and AI is tricky.";
+    else msg = "AI has gotten quite good. Try again and note the insights!";
+    document.getElementById('scoreMsg').textContent = msg;
+
+    let html = '';
+    if (hideScore) {
+        html = '<p style="font-size: 0.85rem; color: var(--color-text-muted); margin-bottom: var(--spacing-sm);">Click on an author to see details</p>';
+    }
+    results.forEach((r, i) => {
+        const expandClass = hideScore ? ' expandable' : '';
+        html += '<div class="breakdown-row' + expandClass + '" onclick="toggleDetail(' + i + ')"><span>' + r.author + '</span><span class="status ' + (r.correct ? 'ok' : 'fail') + '">' + (r.correct ? '\u2713' : '\u2717') + '</span></div>';
+        if (hideScore) {
+            const textA = r.order[0] === 'human' ? r.data.human : r.data.ai;
+            const textB = r.order[1] === 'human' ? r.data.human : r.data.ai;
+            const labelA = r.order[0] === 'human' ? 'HUMAN' : 'AI';
+            const labelB = r.order[1] === 'human' ? 'HUMAN' : 'AI';
+            const classA = (r.order[0] === 'human' ? 'human-box' : '') + (r.choice === 'A' ? ' selected-box' : '');
+            const classB = (r.order[1] === 'human' ? 'human-box' : '') + (r.choice === 'B' ? ' selected-box' : '');
+            html += '<div class="round-detail" id="detail-' + i + '">';
+            html += '<div class="text-pair">';
+            html += '<div class="text-box ' + classA + '"><div class="text-label-small">' + labelA + (r.choice === 'A' ? ' (your choice)' : '') + '</div>' + textA + '</div>';
+            html += '<div class="text-box ' + classB + '"><div class="text-label-small">' + labelB + (r.choice === 'B' ? ' (your choice)' : '') + '</div>' + textB + '</div>';
+            html += '</div>';
+            html += '<div class="insight-small">' + r.data.insight + '</div>';
+            html += '</div>';
+        }
+    });
+    document.getElementById('breakdown').innerHTML = html;
+}
+
+function toggleDetail(i) {
+    if (!hideScore) return;
+    const el = document.getElementById('detail-' + i);
+    if (el) el.classList.toggle('show');
+}
+</script>
+
+<h2>What I Noticed</h2>
+<p>After putting this together, a few patterns emerged: AI tends to smooth things over, to regularize and explain, to fix Twain's deliberately "incorrect" grammar and soften Wilde's categorical provocations and spell out what Hemingway deliberately leaves unsaid.</p>
+
+<p>The styles that seem hardest to distinguish are probably the more formal and structured ones, where correctness is itself part of the aesthetic, while the easiest to spot tend to be those with strong vernacular or deliberate rule-breaking, because AI struggles to replicate the grammatical "mistakes" that are actually careful stylistic choices, or the unexpected word that shouldn't work but somehow does.</p>
+
+<p>I find this reassuring, not because AI is bad at writing (it clearly isn't), but because it suggests that distinctive voice, whatever it is that makes Hemingway sound like Hemingway rather than like a Hemingway-adjacent approximation, might be harder to fake than we sometimes assume.</p>
+
+<p>It would be interesting to run a similar test with poetry only, since poems have additional formal constraints like meter, line breaks, and compression that might make them even harder to imitate convincingly. My guess is that poetry would be more difficult to fake than prose, but that's something worth testing.</p>
+
+<h2>How the AI Texts Were Generated</h2>
+<p>For each author, I prompted Claude (Anthropic's AI model) with a request along the lines of: "Write a passage of approximately 50-80 words in the style of [Author], imitating their characteristic voice, sentence structure, and thematic concerns. Do not copy any existing text, but create something original that could plausibly be mistaken for their work." The AI was given no additional context about the specific passages I had selected, only the author's name and general stylistic characteristics.</p>
+
+<h2>References</h2>
+<p>The human passages are excerpts from:</p>
+<ol>
+    <li>William Shakespeare, <em>Hamlet</em>, c. 1600</li>
+    <li>Jane Austen, <em>Pride and Prejudice</em>, 1813</li>
+    <li>Ernest Hemingway, <em>The Old Man and the Sea</em>, 1952</li>
+    <li>Virginia Woolf, <em>Mrs Dalloway</em>, 1925</li>
+    <li>Edgar Allan Poe, <em>The Fall of the House of Usher</em>, 1839</li>
+    <li>Mark Twain, <em>Adventures of Huckleberry Finn</em>, 1884</li>
+    <li>Oscar Wilde, <em>The Picture of Dorian Gray</em>, 1890</li>
+    <li>Franz Kafka, <em>The Metamorphosis</em>, 1915</li>
+    <li>Emily Dickinson, <em>Because I could not stop for Death</em>, c. 1863</li>
+    <li>Gabriel Garcia Marquez, <em>One Hundred Years of Solitude</em>, 1967</li>
+</ol>
+
+            </div>
+            
+            <!-- Post Navigation -->
+                        <nav class="post-navigation">
+                                                    <div class="nav-prev">
+                        <span class="nav-label">Older</span>
+                        <a href="books-2025.html">
+                            ← My 2025 in books                        </a>
+                    </div>
+                            </nav>
+                    </div>
+    </div>
+</div>
+
+<footer>
+    <p>© 2026 Nicola Lo Russo</p>
+</footer>
+
+</body>
+</html>
