@@ -582,8 +582,8 @@ function showRound() {
     document.getElementById('roundNum').textContent = round + 1;
     document.getElementById('scoreNum').textContent = score;
     document.getElementById('answered').textContent = round;
-    document.getElementById('authorName').textContent = '???';
-    document.getElementById('authorName').parentElement.style.opacity = '0.5';
+    document.getElementById('authorName').textContent = '';
+    document.getElementById('authorName').parentElement.style.display = 'none';
 
     document.getElementById('textA').textContent = order[0] === 'human' ? d.human : d.ai;
     document.getElementById('textB').textContent = order[1] === 'human' ? d.human : d.ai;
@@ -623,7 +623,7 @@ function pick(choice) {
     if (!hideScore) {
         // Reveal author and sources
         document.getElementById('authorName').textContent = d.author;
-        document.getElementById('authorName').parentElement.style.opacity = '1';
+        document.getElementById('authorName').parentElement.style.display = '';
         document.getElementById('srcA').textContent = order[0] === 'human' ? '— ' + d.work : '— AI Generated';
         document.getElementById('srcB').textContent = order[1] === 'human' ? '— ' + d.work : '— AI Generated';
         oA.classList.add('revealed');
