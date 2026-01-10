@@ -132,15 +132,15 @@
 
 <h2>The Visualizations</h2>
 
-<p>The first visualization shows what I call <strong>the heartbeat</strong>: the probability of chosen tokens over time.</p>
+<p>The first visualization shows the probability of chosen tokens over time.</p>
 
-<img src="clinamen-algorithm/heartbeat.png" alt="The Heartbeat visualization showing probability over time with clinamen spikes" style="width: 100%; max-width: 800px; margin: var(--spacing-lg) auto; display: block; border-radius: 8px; box-shadow: 0 4px 12px rgba(0,0,0,0.1);">
+<img src="clinamen-algorithm/heartbeat.png" alt="Probability over time with clinamen spikes" style="width: 100%; max-width: 800px; margin: var(--spacing-lg) auto; display: block; border-radius: 8px; box-shadow: 0 4px 12px rgba(0,0,0,0.1);">
 
 <p>The green line shows the probability of each token we actually chose. During normal generation, it stays relatively high, hovering around 0.1 to 0.3, meaning the model is choosing common, expected words. But at each clinamen moment (marked with red triangles), the probability plummets, sometimes by two orders of magnitude. These are the swerves, the moments where we force the model to say something it considers improbable.</p>
 
-<p>The second visualization zooms in on a single clinamen moment, what I call <strong>the probability cliff</strong>:</p>
+<p>The second visualization zooms in on a single clinamen moment:</p>
 
-<img src="clinamen-algorithm/probability_cliff.png" alt="The Probability Cliff showing top 5 expected words vs the forced word" style="width: 100%; max-width: 700px; margin: var(--spacing-lg) auto; display: block; border-radius: 8px; box-shadow: 0 4px 12px rgba(0,0,0,0.1);">
+<img src="clinamen-algorithm/probability_cliff.png" alt="Bar chart showing top 5 expected words vs the forced word" style="width: 100%; max-width: 700px; margin: var(--spacing-lg) auto; display: block; border-radius: 8px; box-shadow: 0 4px 12px rgba(0,0,0,0.1);">
 
 <p>This bar chart shows the top five words the model wanted to say (in blue) versus the word we forced (in red). The visual cliff between them is dramatic: the model assigned perhaps 15% probability to its preferred word, but only 0.01% to our choice. We're forcing the model to leap off a statistical cliff.</p>
 
