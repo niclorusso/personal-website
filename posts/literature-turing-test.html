@@ -99,7 +99,7 @@
             <!-- Back to blog link -->
             <div class="post-meta-header">
                 <a href="../index.html" class="back-link">← Back to Blog</a>
-                <span class="reading-time">15 min read</span>
+                <span class="reading-time">16 min read</span>
             </div>
             
             <div class="post-content">
@@ -582,12 +582,13 @@ function showRound() {
     document.getElementById('roundNum').textContent = round + 1;
     document.getElementById('scoreNum').textContent = score;
     document.getElementById('answered').textContent = round;
-    document.getElementById('authorName').textContent = d.author;
+    document.getElementById('authorName').textContent = '???';
+    document.getElementById('authorName').parentElement.style.opacity = '0.5';
 
     document.getElementById('textA').textContent = order[0] === 'human' ? d.human : d.ai;
     document.getElementById('textB').textContent = order[1] === 'human' ? d.human : d.ai;
-    document.getElementById('srcA').textContent = order[0] === 'human' ? '— ' + d.work : '— AI Generated';
-    document.getElementById('srcB').textContent = order[1] === 'human' ? '— ' + d.work : '— AI Generated';
+    document.getElementById('srcA').textContent = '';
+    document.getElementById('srcB').textContent = '';
 
     const oA = document.getElementById('optionA');
     const oB = document.getElementById('optionB');
@@ -620,6 +621,11 @@ function pick(choice) {
     const oB = document.getElementById('optionB');
 
     if (!hideScore) {
+        // Reveal author and sources
+        document.getElementById('authorName').textContent = d.author;
+        document.getElementById('authorName').parentElement.style.opacity = '1';
+        document.getElementById('srcA').textContent = order[0] === 'human' ? '— ' + d.work : '— AI Generated';
+        document.getElementById('srcB').textContent = order[1] === 'human' ? '— ' + d.work : '— AI Generated';
         oA.classList.add('revealed');
         oB.classList.add('revealed');
 
