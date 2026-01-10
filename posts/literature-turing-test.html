@@ -6,7 +6,7 @@
     <meta name="description" content="Can you tell the difference between human-written literature and AI-generated text? Test your skills across 10 famous authors.">
     <meta name="author" content="Nicola Lo Russo">
     
-        <link rel="canonical" href="https://nicolalorusso.ch/posts/literature-turing-test.html">
+        <link rel="canonical" href="http://localhost">
         
     <title>Literature Turing Test - Nicola Lo Russo</title>
     
@@ -14,7 +14,7 @@
     <meta property="og:site_name" content="Nicola Lo Russo">
     <meta property="og:title" content="Literature Turing Test">
     <meta property="og:description" content="Can you tell the difference between human-written literature and AI-generated text? Test your skills across 10 famous authors.">
-    <meta property="og:url" content="https://nicolalorusso.ch/posts/literature-turing-test.html">
+    <meta property="og:url" content="http://localhost">
     <meta name="twitter:card" content="summary">
     <meta name="twitter:title" content="Literature Turing Test">
     <meta name="twitter:description" content="Can you tell the difference between human-written literature and AI-generated text? Test your skills across 10 famous authors.">
@@ -81,6 +81,12 @@
         <div class="menu-item">
             <a href="../cv.html">
                 <span >About Me</span>
+            </a>
+        </div>
+        
+        <div class="menu-item">
+            <a href="gaia/">
+                <span >Math Lab</span>
             </a>
         </div>
             </nav>
@@ -179,6 +185,15 @@
 
     .text-option.human-marker {
         border-color: #22c55e;
+    }
+
+    .text-option.selected {
+        border-color: var(--color-accent);
+        background-color: #f0f5ff;
+    }
+
+    .text-option.selected .result-tag {
+        display: inline-block;
     }
 
     .option-label {
@@ -627,9 +642,11 @@ function pick(choice) {
         document.getElementById('insightPanel').classList.add('show');
     } else {
         if (choice === 'A') {
-            oA.style.borderColor = 'var(--color-accent)';
+            oA.classList.add('selected');
+            document.getElementById('tagA').textContent = 'SELECTED';
         } else {
-            oB.style.borderColor = 'var(--color-accent)';
+            oB.classList.add('selected');
+            document.getElementById('tagB').textContent = 'SELECTED';
         }
     }
 
