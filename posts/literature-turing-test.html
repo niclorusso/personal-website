@@ -713,7 +713,11 @@ function toggleDetail(i) {
 }
 
 function copyResults() {
-    const text = `Literature Turing Test: ${score}/10\nnicolalorusso.ch/posts/literature-turing-test.html`;
+    let text = `Literature Turing Test: ${score}/10\n`;
+    results.forEach(r => {
+        text += `${r.correct ? '✓' : '✗'} ${r.author}\n`;
+    });
+    text += `nicolalorusso.ch/posts/literature-turing-test.html`;
     navigator.clipboard.writeText(text);
     const btn = document.getElementById('copyBtn');
     btn.textContent = 'Copied!';
