@@ -1,0 +1,202 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Forcing language models to make creative errors at fixed intervals, inspired by Lucretius and the Oulipo.">
+    <meta name="author" content="Nicola Lo Russo">
+    
+        <link rel="canonical" href="http://localhost">
+        
+    <title>The Clinamen Algorithm: Digital Oulipo with Transformers - Nicola Lo Russo</title>
+    
+        <meta property="og:type" content="article">
+    <meta property="og:site_name" content="Nicola Lo Russo">
+    <meta property="og:title" content="The Clinamen Algorithm: Digital Oulipo with Transformers">
+    <meta property="og:description" content="Forcing language models to make creative errors at fixed intervals, inspired by Lucretius and the Oulipo.">
+    <meta property="og:url" content="http://localhost">
+    <meta name="twitter:card" content="summary">
+    <meta name="twitter:title" content="The Clinamen Algorithm: Digital Oulipo with Transformers">
+    <meta name="twitter:description" content="Forcing language models to make creative errors at fixed intervals, inspired by Lucretius and the Oulipo.">
+    
+    <!-- External Stylesheets -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
+    
+    <!-- Internal Stylesheets -->
+    <link rel="stylesheet" href="../css/simple-grid.css">
+    <link rel="stylesheet" href="../css/style.css">
+            <link rel="stylesheet" href="../css/footer-style.css">
+            <link rel="stylesheet" href="../css/header-style.css">
+            <link rel="stylesheet" href="../css/blog-post-style.css">
+            <link rel="stylesheet" href="../css/post-navigation.css">
+        
+    <!-- JavaScript -->
+    <script src="../js/email_decrypt.js"></script>
+            <script src="../js/mathjax-config.js"></script>
+        <script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+            
+    <!-- Favicon -->
+    <link rel="icon" href="../images/nico.png" type="image/png">
+</head>
+<body>
+
+<script type="application/ld+json">{
+    "@context": "https://schema.org",
+    "@type": "BlogPosting",
+    "headline": "The Clinamen Algorithm: Digital Oulipo with Transformers",
+    "datePublished": "2026-01-10T00:00:00+00:00",
+    "author": {
+        "@type": "Person",
+        "name": "Nicola Lo Russo"
+    },
+    "publisher": {
+        "@type": "Person",
+        "name": "Nicola Lo Russo"
+    },
+    "description": "Forcing language models to make creative errors at fixed intervals, inspired by Lucretius and the Oulipo."
+}</script><header>
+    <div>
+        <div style="text-align: center;">
+            <h1><a href="../index.html" style="text-decoration: none; color: inherit;">Nicola Lo Russo</a></h1>
+                            <p class="site-tagline">Personal website</p>
+                        <p class="no-print"></p>
+            <div class="header-icons">
+                <a id="email-link" onClick="writeEmail()" style="cursor: pointer;">
+                    <i class="fas fa-envelope"></i>
+                    <i class="icon-text">nlorusso [at] ethz.ch</i>
+                </a>
+                <a href="https://www.linkedin.com/in/nicola-lo-russo-7a4849127/" target="_blank" rel="noopener noreferrer">
+                    <i class="fab fa-linkedin"></i>
+                    <i class="icon-text">Nicola Lo Russo</i>
+                </a>
+            </div>
+        </div>
+    </div>
+    <nav class="minimal-menu">
+        <div class="menu-item">
+            <a href="../index.html">
+                <span style="border-bottom: 2px solid var(--color-accent)">Home</span>
+            </a>
+        </div>
+        <div class="menu-item">
+            <a href="../cv.html">
+                <span >About Me</span>
+            </a>
+        </div>
+        
+        
+            </nav>
+</header>
+
+
+<div class="container">
+    <div class="row justify">
+        <div class="col-12">
+            <!-- Back to home link -->
+            <div class="post-meta-header">
+                <a href="../index.html" class="back-link">← Back to Home</a>
+                <span class="reading-time">4 min read</span>
+            </div>
+            
+            <div class="post-content">
+                                
+
+<h1>The Clinamen Algorithm: Digital Oulipo with Transformers</h1>
+
+<p>In Lucretius's <em>De Rerum Natura</em>, the <strong>clinamen</strong> is the unpredictable swerve of atoms that breaks the deterministic chain of causation. Without this swerve, atoms would fall forever in parallel lines, never colliding, never creating worlds or life or thought.</p>
+
+<p>Language models have a similar problem: they follow the path of highest probability, generating text that is fluent but often predictable, a stream of statistical clichés flowing toward the most likely next word. The question that interests me is simple: what happens if we force them to swerve?</p>
+
+<h2>The Experiment</h2>
+
+<p>I built a text generator that introduces periodic "creative errors" at fixed intervals. Every six tokens, instead of sampling from the most likely candidates, the model must choose from the long tail of the distribution, the statistically unlikely but syntactically valid words that it would normally never select.</p>
+
+<p>The constraint is inspired by the Oulipo, the French literary movement that explored constrained writing as a generative technique. Raymond Queneau's <em>Cent Mille Milliards de Poèmes</em>, Georges Perec's lipogrammatic novel <em>La Disparition</em> (written entirely without the letter 'e'), and other Oulipian experiments showed that arbitrary constraints don't limit creativity but can actually unlock it, forcing the writer down paths they would never have chosen freely.</p>
+
+<p>The clinamen algorithm applies this principle to neural text generation. The constraint is temporal rather than lexical: not "never use the letter e" but "every sixth word must be a surprise."</p>
+
+<h2>Try It Yourself</h2>
+
+<p>The full implementation is available as a Jupyter notebook that runs in Google Colab (no installation required):</p>
+
+<p style="text-align: center; margin: var(--spacing-lg) 0;">
+    <a href="https://colab.research.google.com/github/niclorusso/clinamen-algorithm/blob/main/clinamen_notebook.ipynb"
+       target="_blank"
+       style="display: inline-block; background: var(--color-accent); color: white; padding: 12px 24px; border-radius: 6px; text-decoration: none; font-weight: 600;">
+        Open in Google Colab
+    </a>
+</p>
+
+<p>The notebook includes the complete <code>ClinamenGenerator</code> class, visualization tools, and a technical addendum explaining the mathematics behind softmax temperature, entropy, and attention mechanisms.</p>
+
+<h2>What I Observed</h2>
+
+<p>Running the generator on various prompts, a few patterns emerged.</p>
+
+<p>First, the model doesn't break. When forced to say "phosphorescent" instead of "dark," it doesn't produce nonsense but instead weaves the unexpected word into a coherent (if strange) continuation. The attention mechanism, which decides what context to consider when generating each new token, redistributes its weights to accommodate the surprise and finds connections I wouldn't have anticipated.</p>
+
+<p>Second, certain types of text are more resilient to perturbation than others. Technical or formulaic writing ("The algorithm processes data by...") tends to recover quickly, snapping back to predictable patterns. Literary or descriptive prose stays stranger longer, as if the model has more room to explore when the constraints are looser.</p>
+
+<p>Third, and most interesting to me, the "hallucinated justifications" after a clinamen often reveal unexpected semantic associations. Force the model to say "cathedral" in a sentence about computing, and it might continue with metaphors of architecture, structure, sacred spaces of information. These aren't random, they're the model's attempt to make sense of the constraint, and that sense-making is itself a form of creativity.</p>
+
+<h2>The Visualizations</h2>
+
+<p>The notebook generates two main visualizations.</p>
+
+<p><strong>The Heartbeat</strong> shows the probability of chosen tokens over time. Normal generation produces a high, relatively steady line (the model confidently predicting expected words). Clinamen moments appear as sharp downward spikes, the probability plummeting as we force an unlikely choice.</p>
+
+<p><strong>The Probability Cliff</strong> shows what happens at a single glitch moment: a bar chart comparing the words the model wanted to say (high probability, blue bars) against the word we forced (low probability, red bar). The visual gap between them is dramatic, often several orders of magnitude.</p>
+
+<p>These visualizations make visible what's usually hidden: the model's confidence, its preferences, and the violence of our intervention.</p>
+
+<h2>Technical Notes</h2>
+
+<p>For readers interested in the implementation details, the notebook's technical addendum covers:</p>
+
+<ul>
+    <li><strong>Softmax temperature</strong> as a "thermostat of randomness" that controls how peaked or flat the probability distribution is</li>
+    <li><strong>Logits</strong> as the raw scores before normalization, like a judge's notes before converting to percentages</li>
+    <li><strong>Entropy</strong> as a measure of uncertainty, how "confused" the model is at each step</li>
+    <li><strong>Attention</strong> and why the model can rationalize surprises instead of breaking down</li>
+</ul>
+
+<p>The code uses <code>distilgpt2</code> for efficiency and runs comfortably on CPU, so you don't need a GPU to experiment with it.</p>
+
+<h2>Why This Matters</h2>
+
+<p>I'm not claiming this produces great literature, it doesn't, at least not reliably. But it does produce something interesting: a window into how statistical language models understand (or fail to understand) creativity, constraint, and surprise.</p>
+
+<p>The Oulipo believed that constraints liberate rather than restrict, that the arbitrary rule forces the writer to discover possibilities they would otherwise overlook. The clinamen algorithm tests whether this principle applies to machines, whether a language model, forced off its comfortable path, can find something it wouldn't have found otherwise.</p>
+
+<p>Sometimes it does. And that's worth exploring.</p>
+
+<h2>References</h2>
+
+<ul>
+    <li>Lucretius, <em>De Rerum Natura</em>, c. 50 BCE</li>
+    <li>Raymond Queneau, <em>Cent Mille Milliards de Poèmes</em>, 1961</li>
+    <li>Georges Perec, <em>La Disparition</em>, 1969</li>
+    <li>Vaswani et al., "Attention Is All You Need," NeurIPS 2017</li>
+    <li>Holtzman et al., "The Curious Case of Neural Text Degeneration," ICLR 2020</li>
+</ul>
+
+            </div>
+            
+            <!-- Post Navigation -->
+                        <nav class="post-navigation">
+                                                    <div class="nav-prev">
+                        <span class="nav-label">Older</span>
+                        <a href="literature-turing-test.html">
+                            ← Literature Turing Test                        </a>
+                    </div>
+                            </nav>
+                    </div>
+    </div>
+</div>
+
+<footer>
+    <p>© 2026 Nicola Lo Russo</p>
+</footer>
+
+</body>
+</html>
