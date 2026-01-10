@@ -441,7 +441,6 @@
             <div class="score-display">Score: <span id="scoreNum">0</span>/<span id="answered">0</span></div>
         </div>
 
-        <div class="author-label"><span id="authorName"></span></div>
         <div style="color: var(--color-text-secondary); margin-bottom: var(--spacing-md);">Which text was written by a human?</div>
 
         <div class="texts-grid">
@@ -582,8 +581,6 @@ function showRound() {
     document.getElementById('roundNum').textContent = round + 1;
     document.getElementById('scoreNum').textContent = score;
     document.getElementById('answered').textContent = round;
-    document.getElementById('authorName').textContent = '';
-    document.getElementById('authorName').parentElement.style.display = 'none';
 
     document.getElementById('textA').textContent = order[0] === 'human' ? d.human : d.ai;
     document.getElementById('textB').textContent = order[1] === 'human' ? d.human : d.ai;
@@ -621,11 +618,9 @@ function pick(choice) {
     const oB = document.getElementById('optionB');
 
     if (!hideScore) {
-        // Reveal author and sources
-        document.getElementById('authorName').textContent = d.author;
-        document.getElementById('authorName').parentElement.style.display = '';
-        document.getElementById('srcA').textContent = order[0] === 'human' ? '— ' + d.work : '— AI Generated';
-        document.getElementById('srcB').textContent = order[1] === 'human' ? '— ' + d.work : '— AI Generated';
+        // Reveal sources with author
+        document.getElementById('srcA').textContent = order[0] === 'human' ? '— ' + d.author + ', ' + d.work : '— AI Generated';
+        document.getElementById('srcB').textContent = order[1] === 'human' ? '— ' + d.author + ', ' + d.work : '— AI Generated';
         oA.classList.add('revealed');
         oB.classList.add('revealed');
 
