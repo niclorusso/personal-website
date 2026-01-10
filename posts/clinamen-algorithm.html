@@ -95,7 +95,7 @@
             <!-- Back to home link -->
             <div class="post-meta-header">
                 <a href="../index.html" class="back-link">← Back to Home</a>
-                <span class="reading-time">4 min read</span>
+                <span class="reading-time">5 min read</span>
             </div>
             
             <div class="post-content">
@@ -115,6 +115,41 @@
 
 <p>The clinamen algorithm applies this principle to neural text generation. The constraint is temporal rather than lexical: not "never use the letter e" but "every sixth word must be a surprise."</p>
 
+<h2>An Example</h2>
+
+<p>Here's what the algorithm produces when given a simple literary prompt:</p>
+
+<div style="background: #f8f9fa; border-left: 4px solid var(--color-accent); padding: var(--spacing-md); margin: var(--spacing-lg) 0; font-family: Georgia, serif;">
+<p style="margin: 0; color: #666; font-size: 0.9em;">PROMPT:</p>
+<p style="margin: 0.5em 0 1em 0;"><em>"The old house stood at the edge of the forest, its windows"</em></p>
+<p style="margin: 0; color: #666; font-size: 0.9em;">GENERATED:</p>
+<p style="margin: 0.5em 0 0 0;">"The old house stood at the edge of the forest, its windows were dark and the only thing <span style="color: #e74c3c; font-weight: bold;">creeping</span> out from the woods was <span style="color: #e74c3c; font-weight: bold;">cinnamon</span>. A small, young <span style="color: #e74c3c; font-weight: bold;">Philip</span> would be seen walking, cropping his face, and <span style="color: #e74c3c; font-weight: bold;">seated</span> in the front of the <span style="color: #e74c3c; font-weight: bold;">picturesque</span> room."</p>
+</div>
+
+<p>The red words are the clinamen moments, where the algorithm forced the model off its expected path. Notice how the model wanted to say "a small, young <em>man</em>" but was forced to say "Philip" instead, or how it expected to continue with "the only thing <em>that</em>" but we inserted "creeping," which then cascades into the bizarre image of cinnamon creeping out of the woods.</p>
+
+<p>What interests me is how the model adapts. It doesn't break. The phrase "the only thing creeping out from the woods was cinnamon" is grammatically correct and even evocative, despite being semantically strange. The model finds a way to make the forced word fit, and in doing so produces something no one would have written deliberately.</p>
+
+<h2>The Visualizations</h2>
+
+<p>The first visualization shows what I call <strong>the heartbeat</strong>: the probability of chosen tokens over time.</p>
+
+<img src="clinamen-algorithm/heartbeat.png" alt="The Heartbeat visualization showing probability over time with clinamen spikes" style="width: 100%; max-width: 800px; margin: var(--spacing-lg) auto; display: block; border-radius: 8px; box-shadow: 0 4px 12px rgba(0,0,0,0.1);">
+
+<p>The green line shows the probability of each token we actually chose. During normal generation, it stays relatively high, hovering around 0.1 to 0.3, meaning the model is choosing common, expected words. But at each clinamen moment (marked with red triangles), the probability plummets, sometimes by two orders of magnitude. These are the swerves, the moments where we force the model to say something it considers improbable.</p>
+
+<p>The second visualization zooms in on a single clinamen moment, what I call <strong>the probability cliff</strong>:</p>
+
+<img src="clinamen-algorithm/probability_cliff.png" alt="The Probability Cliff showing top 5 expected words vs the forced word" style="width: 100%; max-width: 700px; margin: var(--spacing-lg) auto; display: block; border-radius: 8px; box-shadow: 0 4px 12px rgba(0,0,0,0.1);">
+
+<p>This bar chart shows the top five words the model wanted to say (in blue) versus the word we forced (in red). The visual cliff between them is dramatic: the model assigned perhaps 15% probability to its preferred word, but only 0.01% to our choice. We're forcing the model to leap off a statistical cliff.</p>
+
+<p>The third visualization tracks <strong>entropy</strong>, a measure of the model's uncertainty:</p>
+
+<img src="clinamen-algorithm/entropy.png" alt="Entropy trace showing model uncertainty over time" style="width: 100%; max-width: 800px; margin: var(--spacing-lg) auto; display: block; border-radius: 8px; box-shadow: 0 4px 12px rgba(0,0,0,0.1);">
+
+<p>Entropy measures how "spread out" the model's probability distribution is. High entropy means many words seem plausible; low entropy means one word dominates. The red dashed lines mark clinamen moments. Notice how entropy sometimes spikes <em>after</em> a forced choice, as if the model becomes temporarily more uncertain while processing the surprise.</p>
+
 <h2>Try It Yourself</h2>
 
 <p>The full implementation is available as a Jupyter notebook that runs in Google Colab (no installation required):</p>
@@ -128,26 +163,6 @@
 </p>
 
 <p>The notebook includes the complete <code>ClinamenGenerator</code> class, visualization tools, and a technical addendum explaining the mathematics behind softmax temperature, entropy, and attention mechanisms.</p>
-
-<h2>What I Observed</h2>
-
-<p>Running the generator on various prompts, a few patterns emerged.</p>
-
-<p>First, the model doesn't break. When forced to say "phosphorescent" instead of "dark," it doesn't produce nonsense but instead weaves the unexpected word into a coherent (if strange) continuation. The attention mechanism, which decides what context to consider when generating each new token, redistributes its weights to accommodate the surprise and finds connections I wouldn't have anticipated.</p>
-
-<p>Second, certain types of text are more resilient to perturbation than others. Technical or formulaic writing ("The algorithm processes data by...") tends to recover quickly, snapping back to predictable patterns. Literary or descriptive prose stays stranger longer, as if the model has more room to explore when the constraints are looser.</p>
-
-<p>Third, and most interesting to me, the "hallucinated justifications" after a clinamen often reveal unexpected semantic associations. Force the model to say "cathedral" in a sentence about computing, and it might continue with metaphors of architecture, structure, sacred spaces of information. These aren't random, they're the model's attempt to make sense of the constraint, and that sense-making is itself a form of creativity.</p>
-
-<h2>The Visualizations</h2>
-
-<p>The notebook generates two main visualizations.</p>
-
-<p><strong>The Heartbeat</strong> shows the probability of chosen tokens over time. Normal generation produces a high, relatively steady line (the model confidently predicting expected words). Clinamen moments appear as sharp downward spikes, the probability plummeting as we force an unlikely choice.</p>
-
-<p><strong>The Probability Cliff</strong> shows what happens at a single glitch moment: a bar chart comparing the words the model wanted to say (high probability, blue bars) against the word we forced (low probability, red bar). The visual gap between them is dramatic, often several orders of magnitude.</p>
-
-<p>These visualizations make visible what's usually hidden: the model's confidence, its preferences, and the violence of our intervention.</p>
 
 <h2>Technical Notes</h2>
 
