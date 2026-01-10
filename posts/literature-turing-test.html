@@ -471,7 +471,10 @@
         <div class="final-score" id="finalScore"></div>
         <div class="score-msg" id="scoreMsg"></div>
         <div class="breakdown" id="breakdown"></div>
-        <button class="game-btn" onclick="startGame()" style="margin-top: var(--spacing-lg);">Try Again</button>
+        <div style="display: flex; gap: var(--spacing-sm); justify-content: center; margin-top: var(--spacing-lg);">
+            <button class="game-btn" onclick="startGame()">Try Again</button>
+            <button class="game-btn" id="copyBtn" onclick="copyResults()" style="background: transparent; border: 1px solid var(--color-accent); color: var(--color-accent);">Copy results</button>
+        </div>
     </div>
 </div>
 
@@ -707,6 +710,14 @@ function toggleDetail(i) {
     if (!hideScore) return;
     const el = document.getElementById('detail-' + i);
     if (el) el.classList.toggle('show');
+}
+
+function copyResults() {
+    const text = `Literature Turing Test: ${score}/10\nnicolalorusso.ch/posts/literature-turing-test.html`;
+    navigator.clipboard.writeText(text);
+    const btn = document.getElementById('copyBtn');
+    btn.textContent = 'Copied!';
+    setTimeout(() => { btn.textContent = 'Copy results'; }, 2000);
 }
 </script>
 
