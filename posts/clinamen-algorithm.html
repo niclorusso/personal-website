@@ -95,7 +95,7 @@
             <!-- Back to home link -->
             <div class="post-meta-header">
                 <a href="../index.html" class="back-link">← Back to Home</a>
-                <span class="reading-time">5 min read</span>
+                <span class="reading-time">6 min read</span>
             </div>
             
             <div class="post-content">
@@ -129,6 +129,28 @@
 <p>The red words are the clinamen moments, where the algorithm forced the model off its expected path. Notice how the model wanted to say "a small, young <em>man</em>" but was forced to say "Philip" instead, or how it expected to continue with "the only thing <em>that</em>" but we inserted "creeping," which then cascades into the bizarre image of cinnamon creeping out of the woods.</p>
 
 <p>What interests me is how the model adapts. It doesn't break. The phrase "the only thing creeping out from the woods was cinnamon" is grammatically correct and even evocative, despite being semantically strange. The model finds a way to make the forced word fit, and in doing so produces something no one would have written deliberately.</p>
+
+<h2>Queneau's 100th Exercise</h2>
+
+<p>Since I mentioned the Oulipo, it seemed only right to apply the algorithm to Queneau himself. His <em>Exercises in Style</em> (1947) retells the same banal story—a man with a long neck on a bus, an argument, a button—in 99 different ways. Each version is a constraint: one is written as an official letter, another as a sonnet, another in pig latin.</p>
+
+<p>Here's the original "Notation," the baseline from which all variations depart:</p>
+
+<div style="background: #f8f9fa; border-left: 4px solid var(--color-accent); padding: var(--spacing-md); margin: var(--spacing-lg) 0; font-family: Georgia, serif;">
+<p style="margin: 0; color: #666; font-size: 0.9em;">QUENEAU'S ORIGINAL:</p>
+<p style="margin: 0.5em 0 0 0;"><em>"In the S bus, in the rush hour. A chap of about 26, felt hat with a cord instead of a ribbon, neck too long, as if someone's been having a tug-of-war with it."</em></p>
+</div>
+
+<p>And here's what the clinamen algorithm produces—the 100th exercise, written by a machine forced to swerve:</p>
+
+<div style="background: #f8f9fa; border-left: 4px solid var(--color-accent); padding: var(--spacing-md); margin: var(--spacing-lg) 0; font-family: Georgia, serif;">
+<p style="margin: 0; color: #666; font-size: 0.9em;">CLINAMEN VARIATION:</p>
+<p style="margin: 0.5em 0 0 0;">"In the S bus, in the rush hour. A chap of about 26, felt hat with a cord instead of a ribbon, neck too long, as if someone's been having a tug-of-war with it. He looked around, it was <span style="color: #e74c3c; font-weight: bold;">ringing</span> again, then it was <span style="color: #e74c3c; font-weight: bold;">lonely</span>, then it was the <span style="color: #e74c3c; font-weight: bold;">lamp</span> for crying birds in the <span style="color: #e74c3c; font-weight: bold;">Sea</span> of Tears. 'I <span style="color: #e74c3c; font-weight: bold;">craved</span> this,' he said <span style="color: #e74c3c; font-weight: bold;">smallly</span>, with his hands <span style="color: #e74c3c; font-weight: bold;">rumpled</span> up in his throat <span style="color: #e74c3c; font-weight: bold;">shape</span>."</p>
+</div>
+
+<p>The model drifts from Queneau's dry observation into something stranger. "The lamp for crying birds in the Sea of Tears" could almost be a line from a surrealist poem. "He said smallly, with his hands rumpled up in his throat shape" is not English anyone would write, but it's not nonsense either—it has a kind of dream logic.</p>
+
+<p>Queneau would probably have found this amusing. His whole project was about showing that the same story contains infinite versions, and that constraints (write it as a sonnet, write it backwards, write it without the letter 'e') force new versions into existence. The clinamen is just another constraint: every sixth word must surprise.</p>
 
 <h2>The Visualizations</h2>
 
@@ -189,6 +211,7 @@
 
 <ul>
     <li>Lucretius, <em>De Rerum Natura</em>, c. 50 BCE</li>
+    <li>Raymond Queneau, <em>Exercices de style</em>, 1947</li>
     <li>Raymond Queneau, <em>Cent Mille Milliards de Poèmes</em>, 1961</li>
     <li>Georges Perec, <em>La Disparition</em>, 1969</li>
     <li>Vaswani et al., "Attention Is All You Need," NeurIPS 2017</li>
