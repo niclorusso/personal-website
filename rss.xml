@@ -8,9 +8,17 @@ Warning: Undefined array key "HTTP_HOST" in /Users/nicolalorusso/Locale/nicolalo
     <description>Personal website and blog</description>
     <language>en-us</language>
     <atom:link href="http://./rss.php" rel="self" type="application/rss+xml"/>
-    <lastBuildDate>Sat, 10 Jan 2026 15:40:31 +0000</lastBuildDate>
+    <lastBuildDate>Mon, 19 Jan 2026 07:35:53 +0000</lastBuildDate>
     <item>
-      <title>The Clinamen Algorithm: Digital Oulipo with Transformers</title>
+      <title>Intro to Monte Carlo methods for option pricing</title>
+      <link>http://./post_frame.php?post=monte-carlo</link>
+      <guid isPermaLink="true">http://./post_frame.php?post=monte-carlo</guid>
+      <pubDate>Fri, 16 Jan 2026 00:00:00 +0000</pubDate>
+      <description>A rigorous exploration of Monte Carlo methods for option pricing and variance reduction, with measure-theoretic foundations and interactive visualizations.</description>
+      <author>nlorusso@ethz.ch (Nicola Lo Russo)</author>
+    </item>
+    <item>
+      <title>Sampling from the long tail: Oulipian constraints for language models</title>
       <link>http://./post_frame.php?post=clinamen-algorithm</link>
       <guid isPermaLink="true">http://./post_frame.php?post=clinamen-algorithm</guid>
       <pubDate>Sat, 10 Jan 2026 00:00:00 +0000</pubDate>
@@ -18,7 +26,7 @@ Warning: Undefined array key "HTTP_HOST" in /Users/nicolalorusso/Locale/nicolalo
       <author>nlorusso@ethz.ch (Nicola Lo Russo)</author>
     </item>
     <item>
-      <title>Literature Turing Test</title>
+      <title>Literature Turing test</title>
       <link>http://./post_frame.php?post=literature-turing-test</link>
       <guid isPermaLink="true">http://./post_frame.php?post=literature-turing-test</guid>
       <pubDate>Fri, 09 Jan 2026 00:00:00 +0000</pubDate>
@@ -34,7 +42,7 @@ Warning: Undefined array key "HTTP_HOST" in /Users/nicolalorusso/Locale/nicolalo
       <author>nlorusso@ethz.ch (Nicola Lo Russo)</author>
     </item>
     <item>
-      <title>Intro to Voting Theory: Chapter 1</title>
+      <title>Intro to voting theory: chapter 1</title>
       <link>http://./post_frame.php?post=voting-systems</link>
       <guid isPermaLink="true">http://./post_frame.php?post=voting-systems</guid>
       <pubDate>Mon, 31 Mar 2025 00:00:00 +0000</pubDate>
@@ -42,7 +50,7 @@ Warning: Undefined array key "HTTP_HOST" in /Users/nicolalorusso/Locale/nicolalo
       <author>nlorusso@ethz.ch (Nicola Lo Russo)</author>
     </item>
     <item>
-      <title>Of Risks and Asteroids: Analyzing the Impact Probability of 2024 YR4</title>
+      <title>Of risks and asteroids: analyzing the impact probability of 2024 YR4</title>
       <link>http://./post_frame.php?post=risk-asteroid</link>
       <guid isPermaLink="true">http://./post_frame.php?post=risk-asteroid</guid>
       <pubDate>Wed, 19 Feb 2025 00:00:00 +0000</pubDate>
@@ -50,15 +58,15 @@ Warning: Undefined array key "HTTP_HOST" in /Users/nicolalorusso/Locale/nicolalo
       <author>nlorusso@ethz.ch (Nicola Lo Russo)</author>
     </item>
     <item>
-      <title>About Bayes&#039; Theorem, Disease Testing, and the Prosecutor&#039;s Fallacy</title>
+      <title>About Bayes&#039; theorem, disease testing, and the prosecutor&#039;s fallacy</title>
       <link>http://./post_frame.php?post=bayes-theorem</link>
       <guid isPermaLink="true">http://./post_frame.php?post=bayes-theorem</guid>
       <pubDate>Tue, 19 Nov 2024 00:00:00 +0000</pubDate>
-      <description>Bayes&#039; Theorem applied to rare disease diagnosis, and the dangers of the Prosecutor&#039;s Fallacy.</description>
+      <description>Bayes&#039; theorem applied to rare disease diagnosis, and the dangers of the prosecutor&#039;s fallacy.</description>
       <author>nlorusso@ethz.ch (Nicola Lo Russo)</author>
     </item>
     <item>
-      <title>The Unfair Coin</title>
+      <title>The unfair coin</title>
       <link>http://./post_frame.php?post=unfair-coin</link>
       <guid isPermaLink="true">http://./post_frame.php?post=unfair-coin</guid>
       <pubDate>Sun, 03 Nov 2024 00:00:00 +0000</pubDate>
@@ -66,7 +74,7 @@ Warning: Undefined array key "HTTP_HOST" in /Users/nicolalorusso/Locale/nicolalo
       <author>nlorusso@ethz.ch (Nicola Lo Russo)</author>
     </item>
     <item>
-      <title>A Logic Puzzle</title>
+      <title>A logic puzzle</title>
       <link>http://./post_frame.php?post=watson-riddle</link>
       <guid isPermaLink="true">http://./post_frame.php?post=watson-riddle</guid>
       <pubDate>Mon, 28 Oct 2024 00:00:00 +0000</pubDate>

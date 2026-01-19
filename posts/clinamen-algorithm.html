@@ -8,15 +8,15 @@
     
         <link rel="canonical" href="http://localhost">
         
-    <title>The Clinamen Algorithm: Digital Oulipo with Transformers - Nicola Lo Russo</title>
+    <title>Sampling from the long tail: Oulipian constraints for language models - Nicola Lo Russo</title>
     
         <meta property="og:type" content="article">
     <meta property="og:site_name" content="Nicola Lo Russo">
-    <meta property="og:title" content="The Clinamen Algorithm: Digital Oulipo with Transformers">
+    <meta property="og:title" content="Sampling from the long tail: Oulipian constraints for language models">
     <meta property="og:description" content="Forcing language models to make creative errors at fixed intervals, inspired by Lucretius and the Oulipo.">
     <meta property="og:url" content="http://localhost">
     <meta name="twitter:card" content="summary">
-    <meta name="twitter:title" content="The Clinamen Algorithm: Digital Oulipo with Transformers">
+    <meta name="twitter:title" content="Sampling from the long tail: Oulipian constraints for language models">
     <meta name="twitter:description" content="Forcing language models to make creative errors at fixed intervals, inspired by Lucretius and the Oulipo.">
     
     <!-- External Stylesheets -->
@@ -43,7 +43,7 @@
 <script type="application/ld+json">{
     "@context": "https://schema.org",
     "@type": "BlogPosting",
-    "headline": "The Clinamen Algorithm: Digital Oulipo with Transformers",
+    "headline": "Sampling from the long tail: Oulipian constraints for language models",
     "datePublished": "2026-01-10T00:00:00+00:00",
     "author": {
         "@type": "Person",
@@ -101,13 +101,13 @@
             <div class="post-content">
                                 
 
-<h1>The Clinamen Algorithm: Digital Oulipo with Transformers</h1>
+<h1>Sampling from the long tail: Oulipian constraints for language models</h1>
 
 <p>In Epicurean physics, the <strong>clinamen</strong> is the unpredictable swerve of atoms that breaks the deterministic chain of causation. Without this swerve, atoms would fall forever in parallel lines, never colliding, never creating worlds or life or thought. (The concept comes from Epicurus; the Latin term from Lucretius's <em>De Rerum Natura</em>.)</p>
 
 <p>Language models have a similar problem: they follow the path of highest probability, generating text that is fluent but often predictable, a stream of statistical clichés flowing toward the most likely next word. What happens if we force them to swerve?</p>
 
-<h2>The Experiment</h2>
+<h2>The experiment</h2>
 
 <p>I built a text generator that introduces periodic "creative errors" at fixed intervals. Every six tokens, instead of sampling from the most likely candidates, the model must choose from the long tail of the distribution, the statistically unlikely but syntactically valid words that it would normally never select.</p>
 
@@ -115,9 +115,9 @@
 
 <p>The clinamen algorithm applies this principle to neural text generation. The constraint is temporal rather than lexical: not "never use the letter e" but "every sixth word must be a surprise."</p>
 
-<h2>Queneau's 100th Exercise</h2>
+<h2>Queneau's 100th exercise</h2>
 
-<p>To test the algorithm, I applied it to Queneau himself. His <em>Exercises in Style</em> (1947) retells the same banal story—a man with a long neck on a bus, an argument, a button—in 99 different ways. Each version is a constraint: one is written as an official letter, another as a sonnet, another in pig latin.</p>
+<p>To test the algorithm, I applied it to Queneau himself. His <em>Exercises in Style</em> (1947) retells the same banal story (a man with a long neck on a bus, an argument, a button) in 99 different ways. Each version is a constraint: one is written as an official letter, another as a sonnet, another in pig latin.</p>
 
 <p>Here's the original "Notation," the baseline from which all variations depart:</p>
 
@@ -126,20 +126,20 @@
 <p style="margin: 0.5em 0 0 0;"><em>"In the S bus, in the rush hour. A chap of about 26, felt hat with a cord instead of a ribbon, neck too long, as if someone's been having a tug-of-war with it. People getting off. The chap in question gets annoyed with one of the men standing next to him. He accuses him of jostling him every time anyone goes past. A snivelling tone which is meant to be aggressive. When he sees a vacant seat he throws himself on to it. Two hours later, I meet him in the Cour de Rome, in front of the gare Saint-Lazare. He's with a friend who's saying: 'You ought to get an extra button put on your overcoat.' He shows him where (at the lapels) and why."</em></p>
 </div>
 
-<p>And here's what the clinamen algorithm produces when asked to rewrite it—the 100th exercise:</p>
+<p>And here's what the clinamen algorithm produces when asked to rewrite it, the 100th exercise:</p>
 
 <div style="background: #f8f9fa; border-left: 4px solid var(--color-accent); padding: var(--spacing-md); margin: var(--spacing-lg) 0; font-family: Georgia, serif;">
 <p style="margin: 0; color: #666; font-size: 0.9em;">CLINAMEN VARIATION:</p>
 <p style="margin: 0.5em 0 0 0;">"On the crowded bus. A man, about twenty-six, wearing a felt hat. His neck was bent. He was a man <span style="color: #e74c3c; font-weight: bold;">dumb</span> enough to say that if <span style="color: #e74c3c; font-weight: bold;">Fox</span> should come down on my <span style="color: #e74c3c; font-weight: bold;">blade</span> (and his sword) <span style="color: #e74c3c; font-weight: bold;">Spike</span> would have stabbed him in <span style="color: #e74c3c; font-weight: bold;">savagely</span>. Fox's sword <span style="color: #e74c3c; font-weight: bold;">spinned</span> over and over, <span style="color: #e74c3c; font-weight: bold;">became</span> so sharp that the man <span style="color: #e74c3c; font-weight: bold;">chuckled</span>."</p>
 </div>
 
-<p>The red words are the clinamen moments. The model starts with Queneau's scene—a man on a bus—and immediately swerves into something else entirely: a sword fight between characters named Fox and Spike. The mundane observation becomes a violent fantasy.</p>
+<p>The red words are the clinamen moments. The prompt given to the model was a paraphrase of Queneau's opening (the same scene, the same man on a bus), and from there it immediately swerves into something else entirely: a sword fight between characters named Fox and Spike. The mundane observation becomes a violent fantasy.</p>
 
 <p>What interests me is how the model adapts. It doesn't break. Each forced word cascades into something new: "dumb" becomes a character judgment, "Fox" becomes a proper name, "blade" pulls in swords, and suddenly we're in a completely different genre. The model finds a way to make the forced word fit, and in doing so produces something no one would have written deliberately.</p>
 
 <p>Queneau would probably have found this amusing. His whole project was about showing that the same story contains infinite versions, and that constraints (write it as a sonnet, write it backwards, write it without the letter 'e') force new versions into existence. The clinamen is just another constraint: every sixth word must surprise.</p>
 
-<h2>The Visualizations</h2>
+<h2>The visualizations</h2>
 
 <p>The first visualization shows the probability of chosen tokens over time.</p>
 
@@ -151,7 +151,7 @@
 
 <img src="clinamen-algorithm/probability_cliff.png" alt="Bar chart showing top 5 expected words vs the forced word" style="width: 100%; max-width: 700px; margin: var(--spacing-lg) auto; display: block; border-radius: 8px; box-shadow: 0 4px 12px rgba(0,0,0,0.1);">
 
-<p>This bar chart shows the top five words the model wanted to say (in blue) versus the word we forced (in purple). The cliff between them is dramatic—note the log scale. The model wanted to say "of" but we forced it to say "dumb," and that single swerve pulled the entire narrative into a sword fight.</p>
+<p>This bar chart shows the top five words the model wanted to say (in blue) versus the word we forced (in purple). The cliff between them is dramatic (note the log scale). The model wanted to say "of" but we forced it to say "dumb," and that single swerve pulled the entire narrative into a sword fight.</p>
 
 <p>The third visualization tracks <strong>entropy</strong>, a measure of the model's uncertainty:</p>
 
@@ -159,7 +159,7 @@
 
 <p>Entropy measures how "spread out" the model's probability distribution is. High entropy means many words seem plausible; low entropy means one word dominates. The red dashed lines mark clinamen moments. Notice how entropy sometimes spikes <em>after</em> a forced choice, as if the model becomes temporarily more uncertain while processing the surprise.</p>
 
-<h2>Try It Yourself</h2>
+<h2>Try it yourself</h2>
 
 <p>The full implementation is available as a Jupyter notebook that runs in Google Colab (no installation required):</p>
 
@@ -173,7 +173,7 @@
 
 <p>The notebook includes the complete <code>ClinamenGenerator</code> class, visualization tools, and a technical addendum explaining the mathematics behind softmax temperature, entropy, and attention mechanisms.</p>
 
-<h2>Technical Notes</h2>
+<h2>Technical notes</h2>
 
 <p>For readers interested in the implementation details, the notebook's technical addendum covers:</p>
 
@@ -186,7 +186,7 @@
 
 <p>The code uses <code>distilgpt2</code> for efficiency and runs comfortably on CPU, so you don't need a GPU to experiment with it.</p>
 
-<h2>Why This Matters</h2>
+<h2>Why this matters</h2>
 
 <p>I'm not claiming this produces great literature, it doesn't, at least not reliably. But it does produce something interesting: a window into how statistical language models understand (or fail to understand) creativity, constraint, and surprise.</p>
 
@@ -208,10 +208,16 @@
             
             <!-- Post Navigation -->
                         <nav class="post-navigation">
+                                    <div class="nav-next">
+                        <span class="nav-label">Newer</span>
+                        <a href="monte-carlo.html">
+                            Intro to Monte Carlo methods for option pricing →
+                        </a>
+                    </div>
                                                     <div class="nav-prev">
                         <span class="nav-label">Older</span>
                         <a href="literature-turing-test.html">
-                            ← Literature Turing Test                        </a>
+                            ← Literature Turing test                        </a>
                     </div>
                             </nav>
                     </div>

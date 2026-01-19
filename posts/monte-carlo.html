@@ -1,0 +1,972 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="A rigorous exploration of Monte Carlo methods for option pricing and variance reduction, with measure-theoretic foundations and interactive visualizations.">
+    <meta name="author" content="Nicola Lo Russo">
+    
+        <link rel="canonical" href="http://localhost">
+        
+    <title>Intro to Monte Carlo methods for option pricing - Nicola Lo Russo</title>
+    
+        <meta property="og:type" content="article">
+    <meta property="og:site_name" content="Nicola Lo Russo">
+    <meta property="og:title" content="Intro to Monte Carlo methods for option pricing">
+    <meta property="og:description" content="A rigorous exploration of Monte Carlo methods for option pricing and variance reduction, with measure-theoretic foundations and interactive visualizations.">
+    <meta property="og:url" content="http://localhost">
+    <meta name="twitter:card" content="summary">
+    <meta name="twitter:title" content="Intro to Monte Carlo methods for option pricing">
+    <meta name="twitter:description" content="A rigorous exploration of Monte Carlo methods for option pricing and variance reduction, with measure-theoretic foundations and interactive visualizations.">
+    
+    <!-- External Stylesheets -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
+    
+    <!-- Internal Stylesheets -->
+    <link rel="stylesheet" href="../css/simple-grid.css">
+    <link rel="stylesheet" href="../css/style.css">
+            <link rel="stylesheet" href="../css/footer-style.css">
+            <link rel="stylesheet" href="../css/header-style.css">
+            <link rel="stylesheet" href="../css/blog-post-style.css">
+            <link rel="stylesheet" href="../css/post-navigation.css">
+        
+    <!-- JavaScript -->
+    <script src="../js/email_decrypt.js"></script>
+            <script src="../js/mathjax-config.js"></script>
+        <script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+            
+    <!-- Favicon -->
+    <link rel="icon" href="../images/nico.png" type="image/png">
+</head>
+<body>
+
+<script type="application/ld+json">{
+    "@context": "https://schema.org",
+    "@type": "BlogPosting",
+    "headline": "Intro to Monte Carlo methods for option pricing",
+    "datePublished": "2026-01-16T00:00:00+00:00",
+    "author": {
+        "@type": "Person",
+        "name": "Nicola Lo Russo"
+    },
+    "publisher": {
+        "@type": "Person",
+        "name": "Nicola Lo Russo"
+    },
+    "description": "A rigorous exploration of Monte Carlo methods for option pricing and variance reduction, with measure-theoretic foundations and interactive visualizations."
+}</script><header>
+    <div>
+        <div style="text-align: center;">
+            <h1><a href="../index.html" style="text-decoration: none; color: inherit;">Nicola Lo Russo</a></h1>
+                            <p class="site-tagline">Personal website</p>
+                        <p class="no-print"></p>
+            <div class="header-icons">
+                <a id="email-link" onClick="writeEmail()" style="cursor: pointer;">
+                    <i class="fas fa-envelope"></i>
+                    <i class="icon-text">nlorusso [at] ethz.ch</i>
+                </a>
+                <a href="https://www.linkedin.com/in/nicola-lo-russo-7a4849127/" target="_blank" rel="noopener noreferrer">
+                    <i class="fab fa-linkedin"></i>
+                    <i class="icon-text">Nicola Lo Russo</i>
+                </a>
+            </div>
+        </div>
+    </div>
+    <nav class="minimal-menu">
+        <div class="menu-item">
+            <a href="../index.html">
+                <span style="border-bottom: 2px solid var(--color-accent)">Home</span>
+            </a>
+        </div>
+        <div class="menu-item">
+            <a href="../cv.html">
+                <span >About Me</span>
+            </a>
+        </div>
+        
+        
+            </nav>
+</header>
+
+
+<div class="container">
+    <div class="row justify">
+        <div class="col-12">
+            <!-- Back to home link -->
+            <div class="post-meta-header">
+                <a href="../index.html" class="back-link">← Back to Home</a>
+                <span class="reading-time">11 min read</span>
+            </div>
+            
+            <div class="post-content">
+                                
+
+<style>
+/* Monte Carlo Methods - Custom Styles */
+.monte-carlo-box {
+    background-color: #e6f7ff;
+    border-left: 5px solid #1e40af;
+    padding: 1.5rem;
+    margin: 2rem 0;
+    border-radius: 5px;
+}
+.monte-carlo-box h3 { margin-top: 0; color: #1e40af; }
+.monte-carlo-box ul, .monte-carlo-box p { margin-bottom: 0; }
+
+.playground {
+    background-color: #fafafa;
+    border: 1px solid #e5e7eb;
+    padding: 2rem;
+    margin: 2rem 0;
+    border-radius: 8px;
+}
+.playground h3 { margin-top: 0; color: #1a1a1a; font-size: 1.25rem; }
+
+.input-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+    gap: 1.5rem;
+    margin: 1.5rem 0;
+}
+.input-group { display: flex; flex-direction: column; }
+.input-group label {
+    font-size: 0.9rem;
+    font-weight: 500;
+    color: #4a4a4a;
+    margin-bottom: 0.5rem;
+}
+.input-group input[type="number"] {
+    padding: 0.5rem;
+    font-size: 1rem;
+    border: 1px solid #e5e7eb;
+    border-radius: 4px;
+    font-family: 'JetBrains Mono', monospace;
+}
+.input-group input[type="number"]:focus {
+    outline: none;
+    border-color: #1e40af;
+    box-shadow: 0 0 0 3px rgba(30, 64, 175, 0.1);
+}
+
+.playground button {
+    background-color: #1e40af;
+    color: white;
+    border: none;
+    padding: 0.75rem 2rem;
+    font-size: 1rem;
+    font-weight: 500;
+    border-radius: 6px;
+    cursor: pointer;
+    margin: 1rem 0;
+}
+.playground button:hover:not(:disabled) { background-color: #1e3a8a; }
+.playground button:disabled { background-color: #9ca3af; cursor: not-allowed; }
+
+#results, #vrResults { margin-top: 2rem; }
+
+.results-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+    gap: 1rem;
+    margin: 1rem 0 2rem 0;
+    padding: 1rem;
+    background-color: white;
+    border: 1px solid #e5e7eb;
+    border-radius: 6px;
+}
+.result-item { display: flex; flex-direction: column; }
+.result-item strong { font-size: 0.85rem; color: #6b6b6b; margin-bottom: 0.25rem; }
+.result-item span {
+    font-size: 1.1rem;
+    font-weight: 600;
+    color: #1a1a1a;
+    font-family: 'JetBrains Mono', monospace;
+}
+
+.canvas-container {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+    gap: 2rem;
+    margin: 2rem 0;
+}
+.canvas-wrapper {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    margin: 1.5rem 0;
+}
+.canvas-wrapper canvas {
+    max-width: 100%;
+    height: auto;
+    border: 1px solid #e5e7eb;
+    border-radius: 4px;
+    background-color: white;
+}
+.canvas-caption {
+    font-size: 0.85rem;
+    color: #6b6b6b;
+    font-style: italic;
+    text-align: center;
+    margin-top: 0.75rem;
+    max-width: 600px;
+}
+
+.comparison-table {
+    width: 100%;
+    border-collapse: collapse;
+    margin: 1.5rem 0;
+    background-color: white;
+    border: 1px solid #e5e7eb;
+    border-radius: 6px;
+    overflow: hidden;
+}
+.comparison-table thead { background-color: #f9fafb; }
+.comparison-table th {
+    padding: 0.75rem 1rem;
+    text-align: left;
+    font-weight: 600;
+    color: #1a1a1a;
+    border-bottom: 2px solid #e5e7eb;
+    font-size: 0.9rem;
+}
+.comparison-table td {
+    padding: 0.75rem 1rem;
+    border-bottom: 1px solid #f3f4f6;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 0.9rem;
+}
+.comparison-table tbody tr:last-child td { border-bottom: none; }
+.comparison-table tbody tr:hover { background-color: #fafafa; }
+
+@media (max-width: 768px) {
+    .input-grid, .results-grid, .canvas-container { grid-template-columns: 1fr; }
+    .playground { padding: 1rem; }
+}
+
+</style>
+
+<article class="post-content">
+
+<h1>Monte Carlo methods for option pricing</h1>
+
+<p>I first implemented Monte Carlo methods during a computational finance course at ETH. We were using randomness to solve problems that had exact, deterministic answers. Today, Monte Carlo methods are everywhere: physicists use them to model particle interactions, financial engineers use them to price complex derivatives, statisticians use them for Bayesian inference.</p>
+
+<p>The name comes from the Monte Carlo Casino in Monaco. Stanislaw Ulam and John von Neumann chose it during their work on the Manhattan Project in the 1940s, when they needed to simulate neutron diffusion in fissile materials. Random sampling provided a practical solution to otherwise intractable integrals.</p>
+
+<p>I am writing this post to keep these concepts fresh in my mind and to consolidate my understanding of them. In any case, I will start with the measure-theoretic foundations (probability spaces, the Law of Large Numbers, the Central Limit Theorem), then move to option pricing as a concrete application, and finally discuss variance reduction techniques.</p>
+
+<h2>Measure-theoretic foundations</h2>
+
+<p>Before I can justify why Monte Carlo methods work, I need to establish the probability theory that underlies them. You can use these methods without understanding this theory (many practitioners do), but having a solid grasp of the mathematics helps you understand when the methods work well, when they might fail, and how to improve them.</p>
+
+<h3>Probability spaces</h3>
+
+<p>Every probabilistic model begins with a probability space. This is a triple \((\Omega, \mathcal{F}, P)\) where \(\Omega\) is the sample space (the set of all possible outcomes), \(\mathcal{F}\) is a σ-algebra on \(\Omega\) (a collection of subsets that we can assign probabilities to), and \(P\) is a probability measure.</p>
+
+<p>The σ-algebra \(\mathcal{F}\) must satisfy three properties: it contains the empty set, it is closed under complementation, and it is closed under countable unions. These requirements are there to ensure that we can perform all the usual probability operations without running into paradoxes.</p>
+
+<p>A probability measure \(P\) must satisfy \(P(\Omega) = 1\) and must be countably additive. This means that if I have a sequence of disjoint sets \(A_1, A_2, A_3, \ldots\) in \(\mathcal{F}\), then \(P\left(\bigcup_{i=1}^{\infty} A_i\right) = \sum_{i=1}^{\infty} P(A_i)\).</p>
+
+<h3>Random variables and integration</h3>
+
+<p>A random variable is a measurable function \(X: \Omega \to \mathbb{R}\). Measurable here means that for every Borel set \(B\) in \(\mathbb{R}\), the preimage \(X^{-1}(B) = \{\omega \in \Omega : X(\omega) \in B\}\) belongs to \(\mathcal{F}\). This condition is what allows me to talk about probabilities like \(P(X \in B)\).</p>
+
+<p>The expected value of a random variable \(X\) is defined as the integral \(\mathbb{E}[X] = \int_{\Omega} X(\omega) \, dP(\omega)\). This generalizes the familiar sum-over-outcomes formula from discrete probability. When this integral exists and is finite, we say that \(X\) is integrable.</p>
+
+<p>The key insight of Monte Carlo methods is the following: I can approximate this integral by sampling. If I draw independent samples \(X_1, X_2, \ldots, X_n\) from the distribution of \(X\), then the sample mean \(\frac{1}{n}\sum_{i=1}^{n} X_i\) approximates \(\mathbb{E}[X]\), and this approximation gets better as \(n\) increases.</p>
+
+<h3>The law of large numbers</h3>
+
+<p>The mathematical guarantee that sample means converge to expected values comes from the Law of Large Numbers. The strong law gives a particularly strong form of convergence.</p>
+
+<div class="canvas-wrapper">
+<svg id="llnChart" viewBox="0 0 500 250" style="max-width: 500px; width: 100%; height: auto; background: white; border: 1px solid #e5e7eb; border-radius: 4px;"></svg>
+<p class="canvas-caption">The Law of Large Numbers: as the number of samples n increases, the sample mean converges to the true mean μ.</p>
+</div>
+
+<script>
+function generateLLNChart() {
+    const svg = document.getElementById('llnChart');
+    const width = 500, height = 250;
+    const padding = { top: 20, right: 20, bottom: 50, left: 50 };
+    const chartWidth = width - padding.left - padding.right;
+    const chartHeight = height - padding.top - padding.bottom;
+
+    // True mean
+    const mu = 0.5;
+
+    // Generate sample means with decreasing variance (logarithmic scale)
+    const samples = [];
+    for (let i = 1; i <= 1000; i++) {
+        const variance = 0.3 / Math.sqrt(i);
+        const sample = mu + (Math.random() - 0.5) * variance * 2;
+        samples.push({ n: i, mean: sample });
+    }
+
+    // Scale functions
+    function scaleX(n) {
+        // Logarithmic scale for n
+        const logN = Math.log10(n);
+        const logMin = Math.log10(1);
+        const logMax = Math.log10(1000);
+        return padding.left + ((logN - logMin) / (logMax - logMin)) * chartWidth;
+    }
+
+    function scaleY(value) {
+        const minY = 0, maxY = 1;
+        return padding.top + chartHeight - ((value - minY) / (maxY - minY)) * chartHeight;
+    }
+
+    // Background
+    const bgRect = document.createElementNS('http://www.w3.org/2000/svg', 'rect');
+    bgRect.setAttribute('width', width);
+    bgRect.setAttribute('height', height);
+    bgRect.setAttribute('fill', 'white');
+    svg.appendChild(bgRect);
+
+    // Axes
+    const xAxis = document.createElementNS('http://www.w3.org/2000/svg', 'line');
+    xAxis.setAttribute('x1', padding.left);
+    xAxis.setAttribute('y1', padding.top + chartHeight);
+    xAxis.setAttribute('x2', width - padding.right);
+    xAxis.setAttribute('y2', padding.top + chartHeight);
+    xAxis.setAttribute('stroke', '#1a1a1a');
+    xAxis.setAttribute('stroke-width', '1');
+    svg.appendChild(xAxis);
+
+    const yAxis = document.createElementNS('http://www.w3.org/2000/svg', 'line');
+    yAxis.setAttribute('x1', padding.left);
+    yAxis.setAttribute('y1', padding.top);
+    yAxis.setAttribute('x2', padding.left);
+    yAxis.setAttribute('y2', padding.top + chartHeight);
+    yAxis.setAttribute('stroke', '#1a1a1a');
+    yAxis.setAttribute('stroke-width', '1');
+    svg.appendChild(yAxis);
+
+    // True mean line
+    const muLine = document.createElementNS('http://www.w3.org/2000/svg', 'line');
+    muLine.setAttribute('x1', padding.left);
+    muLine.setAttribute('y1', scaleY(mu));
+    muLine.setAttribute('x2', width - padding.right);
+    muLine.setAttribute('y2', scaleY(mu));
+    muLine.setAttribute('stroke', '#6b6b6b');
+    muLine.setAttribute('stroke-width', '2');
+    muLine.setAttribute('stroke-dasharray', '6,4');
+    svg.appendChild(muLine);
+
+    // Sample mean path
+    let pathData = `M${scaleX(samples[0].n)},${scaleY(samples[0].mean)}`;
+    for (let i = 1; i < samples.length; i++) {
+        pathData += ` L${scaleX(samples[i].n)},${scaleY(samples[i].mean)}`;
+    }
+
+    const curve = document.createElementNS('http://www.w3.org/2000/svg', 'path');
+    curve.setAttribute('d', pathData);
+    curve.setAttribute('fill', 'none');
+    curve.setAttribute('stroke', '#1e40af');
+    curve.setAttribute('stroke-width', '2');
+    svg.appendChild(curve);
+
+    // X-axis labels (logarithmic: 1, 10, 100, 1000)
+    const xLabels = [1, 10, 100, 1000];
+    xLabels.forEach(n => {
+        const x = scaleX(n);
+        const text = document.createElementNS('http://www.w3.org/2000/svg', 'text');
+        text.setAttribute('x', x);
+        text.setAttribute('y', padding.top + chartHeight + 20);
+        text.setAttribute('font-size', '11');
+        text.setAttribute('fill', '#4a4a4a');
+        text.setAttribute('text-anchor', 'middle');
+        text.textContent = n.toString();
+        svg.appendChild(text);
+    });
+
+    // Y-axis label
+    const yLabel = document.createElementNS('http://www.w3.org/2000/svg', 'text');
+    yLabel.setAttribute('x', 25);
+    yLabel.setAttribute('y', padding.top + chartHeight / 2);
+    yLabel.setAttribute('font-size', '12');
+    yLabel.setAttribute('fill', '#4a4a4a');
+    yLabel.setAttribute('text-anchor', 'middle');
+    yLabel.setAttribute('transform', `rotate(-90, 25, ${padding.top + chartHeight / 2})`);
+    yLabel.textContent = 'X̄ₙ';
+    svg.appendChild(yLabel);
+
+    // X-axis label
+    const xAxisLabel = document.createElementNS('http://www.w3.org/2000/svg', 'text');
+    xAxisLabel.setAttribute('x', width / 2);
+    xAxisLabel.setAttribute('y', height - 10);
+    xAxisLabel.setAttribute('font-size', '12');
+    xAxisLabel.setAttribute('fill', '#4a4a4a');
+    xAxisLabel.setAttribute('text-anchor', 'middle');
+    xAxisLabel.textContent = 'n (log scale)';
+    svg.appendChild(xAxisLabel);
+
+    // μ label
+    const muLabel = document.createElementNS('http://www.w3.org/2000/svg', 'text');
+    muLabel.setAttribute('x', width - padding.right + 10);
+    muLabel.setAttribute('y', scaleY(mu) + 4);
+    muLabel.setAttribute('font-size', '12');
+    muLabel.setAttribute('fill', '#6b6b6b');
+    muLabel.textContent = 'μ';
+    svg.appendChild(muLabel);
+
+    // Legend
+    const legendX = 320, legendY = 45;
+
+    const line1 = document.createElementNS('http://www.w3.org/2000/svg', 'line');
+    line1.setAttribute('x1', legendX);
+    line1.setAttribute('y1', legendY);
+    line1.setAttribute('x2', legendX + 30);
+    line1.setAttribute('y2', legendY);
+    line1.setAttribute('stroke', '#1e40af');
+    line1.setAttribute('stroke-width', '2');
+    svg.appendChild(line1);
+
+    const text1 = document.createElementNS('http://www.w3.org/2000/svg', 'text');
+    text1.setAttribute('x', legendX + 35);
+    text1.setAttribute('y', legendY + 4);
+    text1.setAttribute('font-size', '11');
+    text1.setAttribute('fill', '#1a1a1a');
+    text1.textContent = 'X̄ₙ';
+    svg.appendChild(text1);
+
+    const line2 = document.createElementNS('http://www.w3.org/2000/svg', 'line');
+    line2.setAttribute('x1', legendX);
+    line2.setAttribute('y1', legendY + 15);
+    line2.setAttribute('x2', legendX + 30);
+    line2.setAttribute('y2', legendY + 15);
+    line2.setAttribute('stroke', '#6b6b6b');
+    line2.setAttribute('stroke-width', '2');
+    line2.setAttribute('stroke-dasharray', '6,4');
+    svg.appendChild(line2);
+
+    const text2 = document.createElementNS('http://www.w3.org/2000/svg', 'text');
+    text2.setAttribute('x', legendX + 35);
+    text2.setAttribute('y', legendY + 19);
+    text2.setAttribute('font-size', '11');
+    text2.setAttribute('fill', '#1a1a1a');
+    text2.textContent = 'μ';
+    svg.appendChild(text2);
+}
+
+// Run when DOM is ready
+if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', generateLLNChart);
+} else {
+    generateLLNChart();
+}
+</script>
+
+<div class="monte-carlo-box">
+    <p><strong>Theorem (Strong Law of Large Numbers):</strong> Let \(X_1, X_2, X_3, \ldots\) be independent and identically distributed random variables with \(\mathbb{E}[|X_1|] < \infty\). Then
+    \[
+    \frac{1}{n}\sum_{i=1}^{n} X_i \to \mathbb{E}[X_1] \quad \text{almost surely as } n \to \infty.
+    \]
+    </p>
+</div>
+
+<p>The phrase "almost surely" means that the set of outcomes \(\omega \in \Omega\) for which the convergence fails has probability zero. This is stronger than convergence in probability (which would allow for a small probability of large deviations even as \(n\) grows).</p>
+
+<p>The proof requires tools from measure theory, in particular the Borel-Cantelli lemmas and Kolmogorov's maximal inequality. I will not reproduce the full proof here, but the key idea is to show that the probability of the sample mean deviating from the true mean by more than any fixed \(\epsilon > 0\) decreases so rapidly with \(n\) that these deviation events happen only finitely many times (with probability one).</p>
+
+<h3>The central limit theorem and error bounds</h3>
+
+<p>The Law of Large Numbers tells me that Monte Carlo estimates converge, but not how fast. This is where the Central Limit Theorem comes in.</p>
+
+<div class="canvas-wrapper">
+<svg id="normalDistributionChart" viewBox="0 0 500 250" style="max-width: 500px; width: 100%; height: auto; background: white; border: 1px solid #e5e7eb; border-radius: 4px;"></svg>
+<p class="canvas-caption">The Central Limit Theorem: the sample mean is approximately normally distributed, with 95% of values falling within ±1.96σ/√n of the true mean.</p>
+</div>
+
+<script>
+// Generate normal distribution visualization
+function generateNormalDistribution() {
+    const svg = document.getElementById('normalDistributionChart');
+    const width = 500, height = 250;
+    const padding = { top: 20, right: 20, bottom: 50, left: 50 };
+    const chartWidth = width - padding.left - padding.right;
+    const chartHeight = height - padding.top - padding.bottom;
+
+    // Normal distribution function (standard normal)
+    function normalDensity(x) {
+        return (1 / Math.sqrt(2 * Math.PI)) * Math.exp(-0.5 * x * x);
+    }
+
+    // Generate smooth curve points
+    const curvePoints = [];
+    for (let i = -4; i <= 4; i += 0.05) {
+        const y = normalDensity(i);
+        curvePoints.push({ x: i, y: y });
+    }
+
+    // Scale to SVG coordinates
+    const minX = -4, maxX = 4;
+    const maxY = Math.max(...curvePoints.map(p => p.y));
+
+    function scaleX(x) {
+        return padding.left + ((x - minX) / (maxX - minX)) * chartWidth;
+    }
+
+    function scaleY(y) {
+        return padding.top + chartHeight - (y / maxY) * chartHeight;
+    }
+
+    // Create path for the curve
+    let pathData = `M${scaleX(minX)},${scaleY(0)}`;
+    for (let point of curvePoints) {
+        pathData += ` L${scaleX(point.x)},${scaleY(point.y)}`;
+    }
+    pathData += ` L${scaleX(maxX)},${scaleY(0)}`;
+
+    // Create SVG elements
+    // Background
+    const bgRect = document.createElementNS('http://www.w3.org/2000/svg', 'rect');
+    bgRect.setAttribute('width', width);
+    bgRect.setAttribute('height', height);
+    bgRect.setAttribute('fill', 'white');
+    svg.appendChild(bgRect);
+
+    // Axes
+    const xAxis = document.createElementNS('http://www.w3.org/2000/svg', 'line');
+    xAxis.setAttribute('x1', padding.left);
+    xAxis.setAttribute('y1', padding.top + chartHeight);
+    xAxis.setAttribute('x2', width - padding.right);
+    xAxis.setAttribute('y2', padding.top + chartHeight);
+    xAxis.setAttribute('stroke', '#1a1a1a');
+    xAxis.setAttribute('stroke-width', '1');
+    svg.appendChild(xAxis);
+
+    const yAxis = document.createElementNS('http://www.w3.org/2000/svg', 'line');
+    yAxis.setAttribute('x1', scaleX(0));
+    yAxis.setAttribute('y1', padding.top);
+    yAxis.setAttribute('x2', scaleX(0));
+    yAxis.setAttribute('y2', padding.top + chartHeight);
+    yAxis.setAttribute('stroke', '#e5e7eb');
+    yAxis.setAttribute('stroke-width', '1');
+    yAxis.setAttribute('stroke-dasharray', '4,4');
+    svg.appendChild(yAxis);
+
+    // Confidence interval shading (±1.96σ)
+    const ciPoints = [];
+    for (let i = -1.96; i <= 1.96; i += 0.05) {
+        const y = normalDensity(i);
+        ciPoints.push({ x: i, y: y });
+    }
+
+    let ciPath = `M${scaleX(-1.96)},${scaleY(0)}`;
+    for (let point of ciPoints) {
+        ciPath += ` L${scaleX(point.x)},${scaleY(point.y)}`;
+    }
+    ciPath += ` L${scaleX(1.96)},${scaleY(0)}`;
+
+    const ciRect = document.createElementNS('http://www.w3.org/2000/svg', 'path');
+    ciRect.setAttribute('d', ciPath);
+    ciRect.setAttribute('fill', 'rgba(30,64,175,0.15)');
+    ciRect.setAttribute('stroke', 'none');
+    svg.appendChild(ciRect);
+
+    // Main curve
+    const curve = document.createElementNS('http://www.w3.org/2000/svg', 'path');
+    curve.setAttribute('d', pathData);
+    curve.setAttribute('fill', 'rgba(30,64,175,0.2)');
+    curve.setAttribute('stroke', '#1e40af');
+    curve.setAttribute('stroke-width', '2.5');
+    svg.appendChild(curve);
+
+    // Confidence interval markers
+    const leftMarker = document.createElementNS('http://www.w3.org/2000/svg', 'line');
+    leftMarker.setAttribute('x1', scaleX(-1.96));
+    leftMarker.setAttribute('y1', scaleY(0));
+    leftMarker.setAttribute('x2', scaleX(-1.96));
+    leftMarker.setAttribute('y2', padding.top + chartHeight);
+    leftMarker.setAttribute('stroke', '#059669');
+    leftMarker.setAttribute('stroke-width', '2');
+    svg.appendChild(leftMarker);
+
+    const rightMarker = document.createElementNS('http://www.w3.org/2000/svg', 'line');
+    rightMarker.setAttribute('x1', scaleX(1.96));
+    rightMarker.setAttribute('y1', scaleY(0));
+    rightMarker.setAttribute('x2', scaleX(1.96));
+    rightMarker.setAttribute('y2', padding.top + chartHeight);
+    rightMarker.setAttribute('stroke', '#059669');
+    rightMarker.setAttribute('stroke-width', '2');
+    svg.appendChild(rightMarker);
+
+    // Mean line
+    const meanLine = document.createElementNS('http://www.w3.org/2000/svg', 'line');
+    meanLine.setAttribute('x1', scaleX(0));
+    meanLine.setAttribute('y1', scaleY(0));
+    meanLine.setAttribute('x2', scaleX(0));
+    meanLine.setAttribute('y2', padding.top + chartHeight);
+    meanLine.setAttribute('stroke', '#1e40af');
+    meanLine.setAttribute('stroke-width', '1');
+    meanLine.setAttribute('stroke-dasharray', '4,4');
+    svg.appendChild(meanLine);
+
+    // Labels
+    const leftLabel = document.createElementNS('http://www.w3.org/2000/svg', 'text');
+    leftLabel.setAttribute('x', scaleX(-1.96));
+    leftLabel.setAttribute('y', padding.top + chartHeight + 20);
+    leftLabel.setAttribute('font-size', '10');
+    leftLabel.setAttribute('fill', '#059669');
+    leftLabel.setAttribute('text-anchor', 'middle');
+    leftLabel.textContent = 'μ - 1.96σ/√n';
+    svg.appendChild(leftLabel);
+
+    const centerLabel = document.createElementNS('http://www.w3.org/2000/svg', 'text');
+    centerLabel.setAttribute('x', scaleX(0));
+    centerLabel.setAttribute('y', padding.top + chartHeight + 20);
+    centerLabel.setAttribute('font-size', '11');
+    centerLabel.setAttribute('fill', '#1e40af');
+    centerLabel.setAttribute('text-anchor', 'middle');
+    centerLabel.textContent = 'μ';
+    svg.appendChild(centerLabel);
+
+    const rightLabel = document.createElementNS('http://www.w3.org/2000/svg', 'text');
+    rightLabel.setAttribute('x', scaleX(1.96));
+    rightLabel.setAttribute('y', padding.top + chartHeight + 20);
+    rightLabel.setAttribute('font-size', '10');
+    rightLabel.setAttribute('fill', '#059669');
+    rightLabel.setAttribute('text-anchor', 'middle');
+    rightLabel.textContent = 'μ + 1.96σ/√n';
+    svg.appendChild(rightLabel);
+
+    // 95% label
+    const percentLabel = document.createElementNS('http://www.w3.org/2000/svg', 'text');
+    percentLabel.setAttribute('x', scaleX(0));
+    percentLabel.setAttribute('y', scaleY(normalDensity(0) / 2));
+    percentLabel.setAttribute('font-size', '12');
+    percentLabel.setAttribute('fill', '#1a1a1a');
+    percentLabel.setAttribute('text-anchor', 'middle');
+    percentLabel.setAttribute('font-weight', '500');
+    percentLabel.textContent = '95%';
+    svg.appendChild(percentLabel);
+
+    // Title
+    const title = document.createElementNS('http://www.w3.org/2000/svg', 'text');
+    title.setAttribute('x', width / 2);
+    title.setAttribute('y', padding.top - 5);
+    title.setAttribute('font-size', '12');
+    title.setAttribute('fill', '#4a4a4a');
+    title.setAttribute('text-anchor', 'middle');
+    title.textContent = 'Distribution of Sample Mean (CLT)';
+    svg.appendChild(title);
+}
+
+// Run when DOM is ready
+if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', generateNormalDistribution);
+} else {
+    generateNormalDistribution();
+}
+</script>
+
+<div class="monte-carlo-box">
+    <p><strong>Theorem (Central Limit Theorem):</strong> Let \(X_1, X_2, X_3, \ldots\) be i.i.d. random variables with \(\mathbb{E}[X_1] = \mu\) and \(\text{Var}(X_1) = \sigma^2 < \infty\). Then
+    \[
+    \sqrt{n}\left(\frac{1}{n}\sum_{i=1}^{n} X_i - \mu\right) \overset{d}{\longrightarrow} N(0, \sigma^2) \quad \text{as } n \to \infty.
+    \]
+    </p>
+</div>
+
+<p>This theorem tells me that the error in my Monte Carlo estimate scales as \(O(1/\sqrt{n})\). This is both good and bad. Good because I get predictable error bounds (I can construct confidence intervals). Bad because halving my error requires quadrupling my sample size.</p>
+
+<p>The Central Limit Theorem also allows me to construct confidence intervals. If I estimate \(\mu\) by \(\bar{X}_n = \frac{1}{n}\sum_{i=1}^{n} X_i\) and I estimate \(\sigma^2\) by the sample variance \(S_n^2\), then an approximate 95% confidence interval for \(\mu\) is
+\[
+\bar{X}_n \pm 1.96 \cdot \frac{S_n}{\sqrt{n}}.
+\]
+You will see this formula in the interactive playgrounds below.</p>
+
+<h3>Monte Carlo integration</h3>
+
+<p>Now I can describe the general Monte Carlo integration problem. Suppose I want to evaluate an integral
+\[
+I = \int_D f(x) \, dx,
+\]
+where \(D \subseteq \mathbb{R}^d\) is some domain and \(f: D \to \mathbb{R}\) is an integrable function. If I can sample points \(X_1, X_2, \ldots, X_n\) uniformly from \(D\), then I can write
+\[
+I = \text{Vol}(D) \cdot \mathbb{E}[f(X)] \quad \text{where } X \sim \text{Uniform}(D),
+\]
+and therefore the Monte Carlo estimator is
+\[
+\hat{I}_n = \frac{\text{Vol}(D)}{n} \sum_{i=1}^{n} f(X_i).
+\]
+By the Law of Large Numbers, \(\hat{I}_n \to I\) almost surely.</p>
+
+<p>The real power of Monte Carlo integration becomes apparent when \(d\) is large. Traditional deterministic quadrature methods (like Simpson's rule or Gaussian quadrature) typically require \(O(n^d)\) function evaluations to achieve error \(O(n^{-2/d})\) in dimension \(d\). This becomes prohibitively expensive as \(d\) grows. Monte Carlo, by contrast, has error \(O(1/\sqrt{n})\) regardless of dimension. This makes it the method of choice for high-dimensional integration problems.</p>
+
+<h2>Application: option pricing</h2>
+
+<p>Financial derivatives provide one of the most important applications of Monte Carlo methods. I will focus on pricing European call options. There exists a closed-form solution (the Black-Scholes formula), but working through the Monte Carlo approach illustrates the general technique and sets the stage for more complex derivatives that do not have analytical solutions.</p>
+
+<h3>The Black-Scholes model</h3>
+
+<p>The Black-Scholes model assumes that the price \(S_t\) of a stock follows a geometric Brownian motion described by the stochastic differential equation
+\[
+dS_t = \mu S_t \, dt + \sigma S_t \, dW_t,
+\]
+where \(\mu\) is the drift rate, \(\sigma\) is the volatility, and \(W_t\) is a standard Brownian motion. This equation captures the idea that stock prices have both a deterministic trend component (\(\mu S_t \, dt\)) and a random noise component (\(\sigma S_t \, dW_t\)) that scales with the current price.</p>
+
+<p>Using Itô's lemma (a generalization of the chain rule to stochastic processes), we can solve this SDE to obtain
+\[
+S_T = S_0 \exp\left(\left(\mu - \frac{\sigma^2}{2}\right)T + \sigma W_T\right),
+\]
+where \(S_0\) is the initial stock price, \(T\) is the time to maturity, and \(W_T \sim N(0, T)\). The term \(-\sigma^2/2\) comes from the Itô correction and ensures that \(\mathbb{E}[S_T] = S_0 e^{\mu T}\).</p>
+
+<h3>Risk-neutral pricing</h3>
+
+<p>One of the key ideas in mathematical finance is risk-neutral pricing. The fundamental theorem of asset pricing tells us that, in a complete market with no arbitrage, there exists a unique risk-neutral measure \(\mathbb{Q}\) under which discounted asset prices are martingales. This allows me to price derivatives without knowing the actual drift rate \(\mu\) of the stock.</p>
+
+<p>In the Black-Scholes setting, this means I can replace the drift \(\mu\) with the risk-free rate \(r\) when pricing derivatives. A European call option with strike price \(K\) and maturity \(T\) has payoff \(\max(S_T - K, 0)\) at expiration, and its price today is
+\[
+C_0 = e^{-rT} \mathbb{E}^{\mathbb{Q}}[\max(S_T - K, 0)],
+\]
+where the expectation is taken with respect to
+\[
+S_T = S_0 \exp\left(\left(r - \frac{\sigma^2}{2}\right)T + \sigma\sqrt{T} Z\right),
+\]
+with \(Z \sim N(0, 1)\).</p>
+
+<h3>Monte Carlo implementation</h3>
+
+<p>The Monte Carlo approach is straightforward. I generate \(n\) independent samples \(Z_1, Z_2, \ldots, Z_n\) from \(N(0,1)\), compute the corresponding terminal stock prices
+\[
+S_T^{(i)} = S_0 \exp\left(\left(r - \frac{\sigma^2}{2}\right)T + \sigma\sqrt{T} Z_i\right),
+\]
+calculate the payoffs \(V_i = \max(S_T^{(i)} - K, 0)\), and estimate the option price as
+\[
+\hat{C}_n = e^{-rT} \cdot \frac{1}{n}\sum_{i=1}^{n} V_i.
+\]
+The standard error of this estimate is \(\text{SE} = e^{-rT} \cdot S_n / \sqrt{n}\), where \(S_n\) is the sample standard deviation of the payoffs.</p>
+
+<p>For comparison, the Black-Scholes formula gives the exact price as
+\[
+C_0 = S_0 \Phi(d_1) - K e^{-rT} \Phi(d_2),
+\]
+where \(\Phi\) is the cumulative distribution function of the standard normal distribution and
+\[
+d_1 = \frac{\ln(S_0/K) + (r + \sigma^2/2)T}{\sigma\sqrt{T}}, \quad d_2 = d_1 - \sigma\sqrt{T}.
+\]
+In the interactive playground below, you can see how the Monte Carlo estimate converges to this analytical value.</p>
+
+<div class="playground">
+    <h3>European call option pricing</h3>
+    <p>Adjust the parameters below and click "Run Simulation" to see Monte Carlo option pricing in action.</p>
+
+    <div class="input-grid">
+        <div class="input-group">
+            <label for="S0">Initial Stock Price (S₀):</label>
+            <input type="number" id="S0" value="100" min="1" step="1">
+        </div>
+        <div class="input-group">
+            <label for="K">Strike Price (K):</label>
+            <input type="number" id="K" value="100" min="1" step="1">
+        </div>
+        <div class="input-group">
+            <label for="r">Risk-Free Rate (r):</label>
+            <input type="number" id="r" value="0.05" min="0" max="1" step="0.01">
+        </div>
+        <div class="input-group">
+            <label for="sigma">Volatility (σ):</label>
+            <input type="number" id="sigma" value="0.2" min="0.01" max="2" step="0.01">
+        </div>
+        <div class="input-group">
+            <label for="T">Time to Maturity (T, years):</label>
+            <input type="number" id="T" value="1" min="0.1" max="10" step="0.1">
+        </div>
+        <div class="input-group">
+            <label for="n">Number of Samples (n):</label>
+            <input type="number" id="n" value="10000" min="100" max="100000" step="1000">
+        </div>
+    </div>
+
+    <button id="runSimulation" onclick="runOptionPricingSimulation()">Run Simulation</button>
+
+    <div id="results" style="display:none;">
+        <h4>Results</h4>
+        <div class="results-grid">
+            <div class="result-item">
+                <strong>Monte Carlo Estimate:</strong> <span id="mcEstimate"></span>
+            </div>
+            <div class="result-item">
+                <strong>Standard Error:</strong> <span id="mcError"></span>
+            </div>
+            <div class="result-item">
+                <strong>95% Confidence Interval:</strong> <span id="mcCI"></span>
+            </div>
+            <div class="result-item">
+                <strong>Black-Scholes Price:</strong> <span id="bsPrice"></span>
+            </div>
+        </div>
+
+        <div class="canvas-container">
+            <div class="canvas-wrapper">
+                <canvas id="stockHistogram"></canvas>
+                <p class="canvas-caption">Distribution of terminal stock prices S<sub>T</sub></p>
+            </div>
+            <div class="canvas-wrapper">
+                <canvas id="payoffHistogram"></canvas>
+                <p class="canvas-caption">Distribution of option payoffs max(S<sub>T</sub> - K, 0)</p>
+            </div>
+        </div>
+
+        <div class="canvas-wrapper">
+            <canvas id="convergencePlot"></canvas>
+            <p class="canvas-caption">Convergence of Monte Carlo estimate (blue line) to Black-Scholes price (gray dashed line) with 95% confidence bands</p>
+        </div>
+    </div>
+</div>
+
+<h2>Variance reduction techniques</h2>
+
+<p>The Monte Carlo method I described above works, but it can be inefficient for high-accuracy requirements because of the \(O(1/\sqrt{n})\) error scaling. If I want to reduce my error by a factor of 10, I need to increase my sample size by a factor of 100. For complex derivatives or real-time trading applications, this can be prohibitive.</p>
+
+<p>Variance reduction techniques offer a way to improve efficiency without simply throwing more samples at the problem. The idea is simple (surprisingly so): reduce the variance \(\sigma^2\) in the Central Limit Theorem error bound instead of increasing \(n\).</p>
+
+<h3>Antithetic variates</h3>
+
+<p>The antithetic variates technique exploits symmetry to induce negative correlation between paired samples. If I want to estimate the mean of a symmetric distribution, I can get a more precise estimate by ensuring that my samples are balanced across the distribution rather than allowing them to cluster by chance on one side.</p>
+
+<p>In option pricing, I generate a standard normal sample \(Z \sim N(0, 1)\) and then use both \(Z\) and \(-Z\) to create a pair of terminal stock prices. Since the standard normal distribution is symmetric around zero, \(Z\) and \(-Z\) have the same marginal distribution but are perfectly negatively correlated. If I compute payoffs \(V_1 = g(Z)\) and \(V_2 = g(-Z)\), then the variance of their average is
+\[
+\text{Var}\left(\frac{V_1 + V_2}{2}\right) = \frac{1}{4}\left(\text{Var}(V_1) + \text{Var}(V_2) + 2\text{Cov}(V_1, V_2)\right).
+\]
+Since \(\text{Var}(V_1) = \text{Var}(V_2)\) by symmetry, this becomes
+\[
+\text{Var}\left(\frac{V_1 + V_2}{2}\right) = \frac{1}{2}\text{Var}(V_1)\left(1 + \rho_{V_1, V_2}\right),
+\]
+where \(\rho_{V_1, V_2}\) is the correlation coefficient between \(V_1\) and \(V_2\).</p>
+
+<p>For monotone functions (and the call option payoff is monotonically increasing in \(Z\)), we have \(\rho_{V_1, V_2} < 0\), which means the variance is reduced compared to standard Monte Carlo. The reduction factor can be 50% or more, which is equivalent to doubling the effective sample size without any additional function evaluations.</p>
+
+<h3>Control variates</h3>
+
+<p>Control variates use auxiliary information to reduce variance. Suppose I want to estimate \(\mathbb{E}[X]\) but I also have access to another random variable \(Y\) whose expectation \(\mathbb{E}[Y]\) I know exactly. If \(X\) and \(Y\) are correlated, I can construct an improved estimator
+\[
+\hat{X}_{\text{cv}} = \bar{X}_n - \beta(\bar{Y}_n - \mathbb{E}[Y]),
+\]
+where \(\bar{X}_n\) and \(\bar{Y}_n\) are sample means.</p>
+
+<p>The term \(\beta(\bar{Y}_n - \mathbb{E}[Y])\) acts as a correction. If my sample mean \(\bar{Y}_n\) happens to be higher than \(\mathbb{E}[Y]\), this suggests that my random samples were biased toward high values, and I should correct \(\bar{X}_n\) downward (assuming \(\beta > 0\) and positive correlation).</p>
+
+<p>The variance of this estimator is
+\[
+\text{Var}(\hat{X}_{\text{cv}}) = \text{Var}(\bar{X}_n) + \beta^2 \text{Var}(\bar{Y}_n) - 2\beta \text{Cov}(\bar{X}_n, \bar{Y}_n).
+\]
+Taking the derivative with respect to \(\beta\) and setting it to zero, the optimal choice is
+\[
+\beta^* = \frac{\text{Cov}(X, Y)}{\text{Var}(Y)},
+\]
+and with this choice the variance becomes
+\[
+\text{Var}(\hat{X}_{\text{cv}}) = \text{Var}(X) (1 - \rho_{X,Y}^2),
+\]
+where \(\rho_{X,Y}\) is the correlation coefficient. This means the variance reduction factor is \(\rho_{X,Y}^2\). If \(X\) and \(Y\) have correlation 0.9, I reduce the variance by 81% (which would require more than a 5-fold increase in sample size to achieve with standard Monte Carlo).</p>
+
+<p>In the playground below, I use the stock price itself as a control variate (since we know its expected value under the risk-neutral measure).</p>
+
+<div class="playground">
+    <h3>Variance reduction comparison</h3>
+    <p>Compare standard Monte Carlo, antithetic variates, and control variates. You can see how much faster the variance-reduced methods converge.</p>
+
+    <div class="input-grid">
+        <div class="input-group">
+            <label for="S0_vr">Initial Stock Price (S₀):</label>
+            <input type="number" id="S0_vr" value="100" min="1" step="1">
+        </div>
+        <div class="input-group">
+            <label for="K_vr">Strike Price (K):</label>
+            <input type="number" id="K_vr" value="100" min="1" step="1">
+        </div>
+        <div class="input-group">
+            <label for="r_vr">Risk-Free Rate (r):</label>
+            <input type="number" id="r_vr" value="0.05" min="0" max="1" step="0.01">
+        </div>
+        <div class="input-group">
+            <label for="sigma_vr">Volatility (σ):</label>
+            <input type="number" id="sigma_vr" value="0.2" min="0.01" max="2" step="0.01">
+        </div>
+        <div class="input-group">
+            <label for="T_vr">Time to Maturity (T, years):</label>
+            <input type="number" id="T_vr" value="1" min="0.1" max="10" step="0.1">
+        </div>
+        <div class="input-group">
+            <label for="n_vr">Number of Samples (n):</label>
+            <input type="number" id="n_vr" value="10000" min="100" max="100000" step="1000">
+        </div>
+    </div>
+
+    <button id="runVRSimulation" onclick="runVarianceReductionComparison()">Run Comparison</button>
+
+    <div id="vrResults" style="display:none;">
+        <h4>Method Comparison</h4>
+        <table class="comparison-table">
+            <thead>
+                <tr>
+                    <th>Method</th>
+                    <th>Estimate</th>
+                    <th>Standard Error</th>
+                    <th>Variance Reduction Factor</th>
+                </tr>
+            </thead>
+            <tbody id="comparisonTableBody">
+            </tbody>
+        </table>
+
+        <div class="canvas-wrapper">
+            <canvas id="vrConvergencePlot"></canvas>
+            <p class="canvas-caption">Comparison of convergence rates: Standard MC (blue), Antithetic Variates (green), and Control Variates (red). The gray dashed line shows the Black-Scholes price.</p>
+        </div>
+    </div>
+</div>
+
+<h2>Computational considerations</h2>
+
+<p>A few practical notes on implementing Monte Carlo methods.</p>
+
+<p>The quality of random number generation matters more than you might expect. Pseudorandom generators like the Mersenne Twister are usually sufficient, but there are cases where correlations in the sequence can bias Monte Carlo estimates (especially in high-dimensional problems). For critical applications, you might want quasi-random sequences like Sobol sequences, which are designed to fill high-dimensional spaces more evenly.</p>
+
+<p>When should you use Monte Carlo instead of other numerical methods? The general rule is that Monte Carlo becomes more competitive as dimensionality increases. For low-dimensional integrals (dimension 1 to 3), traditional quadrature methods are usually faster. For high dimensions (more than 10), Monte Carlo is often the only practical choice because deterministic methods suffer from the curse of dimensionality while Monte Carlo's convergence rate remains \(O(1/\sqrt{n})\) regardless of dimension.</p>
+
+<h2>References</h2>
+
+<p>Let me know what you think! <a href="mailto:nlorusso@ethz.ch">nlorusso@ethz.ch</a></p>
+
+<ol>
+    <li>Glasserman, P. (2003). <em>Monte Carlo Methods in Financial Engineering</em>. Springer. <a href="https://link.springer.com/book/10.1007/978-0-387-21617-1" target="_blank">[link]</a></li>
+
+    <li>Shreve, S. E. (2004). <em>Stochastic Calculus for Finance II: Continuous-Time Models</em>. Springer. <a href="https://link.springer.com/book/10.1007/978-1-4757-4296-1" target="_blank">[link]</a></li>
+
+    <li>Billingsley, P. (1995). <em>Probability and Measure</em> (3rd ed.). Wiley. <a href="https://www.wiley.com/en-us/Probability+and+Measure%2C+3rd+Edition-p-9780471007104" target="_blank">[link]</a></li>
+
+    <li>Black, F., & Scholes, M. (1973). The Pricing of Options and Corporate Liabilities. <em>Journal of Political Economy</em>, 81(3), 637-654. <a href="https://www.jstor.org/stable/1831029" target="_blank">[link]</a></li>
+
+    <li>Metropolis, N., & Ulam, S. (1949). The Monte Carlo Method. <em>Journal of the American Statistical Association</em>, 44(247), 335-341. <a href="https://www.jstor.org/stable/2280232" target="_blank">[link]</a></li>
+</ol>
+
+</article>
+
+<script src="monte-carlo/monte-carlo.js"></script>
+<script src="monte-carlo/monte-carlo-viz.js"></script>
+
+            </div>
+            
+            <!-- Post Navigation -->
+                        <nav class="post-navigation">
+                                                    <div class="nav-prev">
+                        <span class="nav-label">Older</span>
+                        <a href="clinamen-algorithm.html">
+                            ← Sampling from the long tail: Oulipian constraints for language models                        </a>
+                    </div>
+                            </nav>
+                    </div>
+    </div>
+</div>
+
+<footer>
+    <p>© 2026 Nicola Lo Russo</p>
+</footer>
+
+</body>
+</html>
