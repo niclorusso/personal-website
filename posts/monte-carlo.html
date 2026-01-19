@@ -8,15 +8,15 @@
     
         <link rel="canonical" href="http://localhost">
         
-    <title>Intro to Monte Carlo methods for option pricing - Nicola Lo Russo</title>
+    <title>How to price options with Monte Carlo methods - Nicola Lo Russo</title>
     
         <meta property="og:type" content="article">
     <meta property="og:site_name" content="Nicola Lo Russo">
-    <meta property="og:title" content="Intro to Monte Carlo methods for option pricing">
+    <meta property="og:title" content="How to price options with Monte Carlo methods">
     <meta property="og:description" content="A rigorous exploration of Monte Carlo methods for option pricing and variance reduction, with measure-theoretic foundations and interactive visualizations.">
     <meta property="og:url" content="http://localhost">
     <meta name="twitter:card" content="summary">
-    <meta name="twitter:title" content="Intro to Monte Carlo methods for option pricing">
+    <meta name="twitter:title" content="How to price options with Monte Carlo methods">
     <meta name="twitter:description" content="A rigorous exploration of Monte Carlo methods for option pricing and variance reduction, with measure-theoretic foundations and interactive visualizations.">
     
     <!-- External Stylesheets -->
@@ -43,7 +43,7 @@
 <script type="application/ld+json">{
     "@context": "https://schema.org",
     "@type": "BlogPosting",
-    "headline": "Intro to Monte Carlo methods for option pricing",
+    "headline": "How to price options with Monte Carlo methods",
     "datePublished": "2026-01-16T00:00:00+00:00",
     "author": {
         "@type": "Person",
@@ -247,7 +247,7 @@
 
 <article class="post-content">
 
-<h1>Monte Carlo methods for option pricing</h1>
+<h1>How to price options with Monte Carlo methods</h1>
 
 <p>I first implemented Monte Carlo methods during a computational finance course at ETH. We were using randomness to solve problems that had exact, deterministic answers. Today, Monte Carlo methods are everywhere: physicists use them to model particle interactions, financial engineers use them to price complex derivatives, statisticians use them for Bayesian inference.</p>
 
@@ -930,8 +930,6 @@ where \(\rho_{X,Y}\) is the correlation coefficient. This means the variance red
 <p>When should you use Monte Carlo instead of other numerical methods? The general rule is that Monte Carlo becomes more competitive as dimensionality increases. For low-dimensional integrals (dimension 1 to 3), traditional quadrature methods are usually faster. For high dimensions (more than 10), Monte Carlo is often the only practical choice because deterministic methods suffer from the curse of dimensionality while Monte Carlo's convergence rate remains \(O(1/\sqrt{n})\) regardless of dimension.</p>
 
 <h2>References</h2>
-
-<p>Let me know what you think! <a href="mailto:nlorusso@ethz.ch">nlorusso@ethz.ch</a></p>
 
 <ol>
     <li>Glasserman, P. (2003). <em>Monte Carlo Methods in Financial Engineering</em>. Springer. <a href="https://link.springer.com/book/10.1007/978-0-387-21617-1" target="_blank">[link]</a></li>
