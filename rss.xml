@@ -8,7 +8,15 @@ Warning: Undefined array key "HTTP_HOST" in /Users/nicolalorusso/Locale/nicolalo
     <description>Personal website and blog</description>
     <language>en-us</language>
     <atom:link href="http://./rss.php" rel="self" type="application/rss+xml"/>
-    <lastBuildDate>Mon, 19 Jan 2026 08:06:55 +0000</lastBuildDate>
+    <lastBuildDate>Tue, 20 Jan 2026 12:44:08 +0000</lastBuildDate>
+    <item>
+      <title>How to search for a flat (mathematically)</title>
+      <link>http://./post_frame.php?post=flat-search</link>
+      <guid isPermaLink="true">http://./post_frame.php?post=flat-search</guid>
+      <pubDate>Tue, 20 Jan 2026 00:00:00 +0000</pubDate>
+      <description>How to maximize your chances of finding the best flat in Zurich using optimal stopping theory. With an extension for two people with correlated preferences.</description>
+      <author>nlorusso@ethz.ch (Nicola Lo Russo)</author>
+    </item>
     <item>
       <title>How to price options with Monte Carlo methods</title>
       <link>http://./post_frame.php?post=monte-carlo</link>

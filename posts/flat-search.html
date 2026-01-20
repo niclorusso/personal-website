@@ -1,0 +1,472 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="How to maximize your chances of finding the best flat in Zurich using optimal stopping theory. With an extension for two people with correlated preferences.">
+    <meta name="author" content="Nicola Lo Russo">
+    
+        <link rel="canonical" href="http://localhost">
+        
+    <title>How to search for a flat (mathematically) - Nicola Lo Russo</title>
+    
+        <meta property="og:type" content="article">
+    <meta property="og:site_name" content="Nicola Lo Russo">
+    <meta property="og:title" content="How to search for a flat (mathematically)">
+    <meta property="og:description" content="How to maximize your chances of finding the best flat in Zurich using optimal stopping theory. With an extension for two people with correlated preferences.">
+    <meta property="og:url" content="http://localhost">
+    <meta name="twitter:card" content="summary">
+    <meta name="twitter:title" content="How to search for a flat (mathematically)">
+    <meta name="twitter:description" content="How to maximize your chances of finding the best flat in Zurich using optimal stopping theory. With an extension for two people with correlated preferences.">
+    
+    <!-- External Stylesheets -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
+    
+    <!-- Internal Stylesheets -->
+    <link rel="stylesheet" href="../css/simple-grid.css">
+    <link rel="stylesheet" href="../css/style.css">
+            <link rel="stylesheet" href="../css/footer-style.css">
+            <link rel="stylesheet" href="../css/header-style.css">
+            <link rel="stylesheet" href="../css/blog-post-style.css">
+            <link rel="stylesheet" href="../css/post-navigation.css">
+        
+    <!-- JavaScript -->
+    <script src="../js/email_decrypt.js"></script>
+            <script src="../js/mathjax-config.js"></script>
+        <script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+            
+    <!-- Favicon -->
+    <link rel="icon" href="../images/nico.png" type="image/png">
+</head>
+<body>
+
+<script type="application/ld+json">{
+    "@context": "https://schema.org",
+    "@type": "BlogPosting",
+    "headline": "How to search for a flat (mathematically)",
+    "datePublished": "2026-01-20T00:00:00+00:00",
+    "author": {
+        "@type": "Person",
+        "name": "Nicola Lo Russo"
+    },
+    "publisher": {
+        "@type": "Person",
+        "name": "Nicola Lo Russo"
+    },
+    "description": "How to maximize your chances of finding the best flat in Zurich using optimal stopping theory. With an extension for two people with correlated preferences."
+}</script><header>
+    <div>
+        <div style="text-align: center;">
+            <h1><a href="../index.html" style="text-decoration: none; color: inherit;">Nicola Lo Russo</a></h1>
+                            <p class="site-tagline">Personal website</p>
+                        <p class="no-print"></p>
+            <div class="header-icons">
+                <a id="email-link" onClick="writeEmail()" style="cursor: pointer;">
+                    <i class="fas fa-envelope"></i>
+                    <i class="icon-text">nlorusso [at] ethz.ch</i>
+                </a>
+                <a href="https://www.linkedin.com/in/nicola-lo-russo-7a4849127/" target="_blank" rel="noopener noreferrer">
+                    <i class="fab fa-linkedin"></i>
+                    <i class="icon-text">Nicola Lo Russo</i>
+                </a>
+            </div>
+        </div>
+    </div>
+    <nav class="minimal-menu">
+        <div class="menu-item">
+            <a href="../index.html">
+                <span style="border-bottom: 2px solid var(--color-accent)">Home</span>
+            </a>
+        </div>
+        <div class="menu-item">
+            <a href="../cv.html">
+                <span >About Me</span>
+            </a>
+        </div>
+        
+        
+            </nav>
+</header>
+
+
+<div class="container">
+    <div class="row justify">
+        <div class="col-12">
+            <!-- Back to home link -->
+            <div class="post-meta-header">
+                <a href="../index.html" class="back-link">← go back home</a>
+                <span class="reading-time">6 min read</span>
+            </div>
+            
+            <div class="post-content">
+                                
+
+<style>
+.flat-search-box {
+    background-color: #e6f7ff;
+    border-left: 5px solid #1e40af;
+    padding: 1.5rem;
+    margin: 2rem 0;
+    border-radius: 5px;
+}
+.flat-search-box h3 { margin-top: 0; color: #1e40af; }
+.flat-search-box ul, .flat-search-box p { margin-bottom: 0; }
+
+.key-insight {
+    background-color: #fef3c7;
+    border-left: 5px solid #f59e0b;
+    padding: 1.5rem;
+    margin: 2rem 0;
+    border-radius: 5px;
+}
+.key-insight h3 { margin-top: 0; color: #f59e0b; }
+
+.proof-box {
+    background-color: #f3f4f6;
+    border: 1px solid #e5e7eb;
+    padding: 1.5rem;
+    margin: 2rem 0;
+    border-radius: 5px;
+}
+.proof-box h4 { margin-top: 0; color: #1a1a1a; }
+
+.playground {
+    background-color: #fafafa;
+    border: 1px solid #e5e7eb;
+    padding: 2rem;
+    margin: 2rem 0;
+    border-radius: 8px;
+}
+.playground h3 { margin-top: 0; color: #1a1a1a; font-size: 1.25rem; }
+
+.input-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+    gap: 1.5rem;
+    margin: 1.5rem 0;
+}
+.input-group { display: flex; flex-direction: column; }
+.input-group label {
+    font-size: 0.9rem;
+    font-weight: 500;
+    color: #4a4a4a;
+    margin-bottom: 0.5rem;
+}
+.input-group input[type="number"] {
+    padding: 0.5rem;
+    font-size: 1rem;
+    border: 1px solid #e5e7eb;
+    border-radius: 4px;
+    font-family: 'JetBrains Mono', monospace;
+}
+.input-group input[type="number"]:focus {
+    outline: none;
+    border-color: #1e40af;
+    box-shadow: 0 0 0 3px rgba(30, 64, 175, 0.1);
+}
+
+.playground button {
+    background-color: #1e40af;
+    color: white;
+    border: none;
+    padding: 0.75rem 2rem;
+    font-size: 1rem;
+    font-weight: 500;
+    border-radius: 6px;
+    cursor: pointer;
+    margin: 1rem 0;
+}
+.playground button:hover:not(:disabled) { background-color: #1e3a8a; }
+.playground button:disabled { background-color: #9ca3af; cursor: not-allowed; }
+
+.results-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+    gap: 1rem;
+    margin: 1rem 0 2rem 0;
+    padding: 1rem;
+    background-color: white;
+    border: 1px solid #e5e7eb;
+    border-radius: 6px;
+}
+.result-item { display: flex; flex-direction: column; }
+.result-item strong { font-size: 0.85rem; color: #6b6b6b; margin-bottom: 0.25rem; }
+.result-item span {
+    font-size: 1.1rem;
+    font-weight: 600;
+    color: #1a1a1a;
+    font-family: 'JetBrains Mono', monospace;
+}
+
+.canvas-wrapper {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    margin: 1.5rem 0;
+}
+.canvas-wrapper canvas {
+    max-width: 100%;
+    height: auto;
+    border: 1px solid #e5e7eb;
+    border-radius: 4px;
+    background-color: white;
+}
+.canvas-caption {
+    font-size: 0.85rem;
+    color: #6b6b6b;
+    font-style: italic;
+    text-align: center;
+    margin-top: 0.75rem;
+    max-width: 800px;
+}
+
+@media (max-width: 768px) {
+    .input-grid, .results-grid { grid-template-columns: 1fr; }
+    .playground { padding: 1rem; }
+}
+</style>
+
+<article class="post-content">
+
+<h1>How to search for a flat (mathematically)</h1>
+
+<p>I'm looking for a flat in Zurich. The market here is tight: good flats get snapped up within hours and if you want a place you need to decide almost on the spot. Therefore, a rigorous approach to flat searching is very important to maximize your chances of finding the best possible flat.</p>
+
+<p>Let's assume I can visit one flat per day, giving me maybe 100 viewings over three months before my lease ends. For the sake of simplicity, let's also (wrongly) assume that everything in Zurich costs the same amount. How can I maximize my chances of getting the best flat?</p>
+
+<p>This is a classic problem in optimal stopping theory. The short answer is: reject the first 37% of flats to calibrate what "good" looks like, then take the first flat that beats everything you've seen. This gives a 37% chance of finding the absolute best flat.</p>
+
+<h2>The problem</h2>
+
+<p>I have \(n\) flats to view (say \(n = 100\)). Each has some quality ranking from 1 to \(n\), where \(n\) is the best. The flats show up in random order. After viewing flat \(i\), I can compare it to all previous flats, but I don't know how it ranks among the ones I haven't yet seen.</p>
+
+<p>As previously stated, at each viewing I have to decide immediately either to take this flat or to reject it forever. My goal is to maximize the probability of getting the best flat.</p>
+
+<div class="flat-search-box">
+    <h3>The setup</h3>
+    <ul>
+        <li>\(n\) flats arrive in uniformly random order</li>
+        <li>After viewing flat \(i\), I know its rank among flats \(1, 2, \ldots, i\)</li>
+        <li>I must accept or reject immediately</li>
+        <li>I want to maximize the probability of getting the best flat</li>
+    </ul>
+</div>
+
+<h2>The optimal strategy</h2>
+
+<p>The optimal strategy has an intuitive form: reject the first \(r\) flats (in the so-called observation phase), then select the first flat which is better than all previously seen. The question is: what \(r\) maximizes success probability?</p>
+
+<p>If the best flat is at position \(k\), I select it only if the best among the first \(k-1\) flats is in the observation window (positions \(1, \ldots, r\)). This has probability \(\frac{r}{k-1}\). Summing over all possible positions of the best flat:</p>
+
+\[
+P(r, n) = \sum_{k=r+1}^{n} \frac{1}{n} \cdot \frac{r}{k-1} = \frac{r}{n} \sum_{j=r}^{n-1} \frac{1}{j}
+\]
+
+<p>For large \(n\), let \(x = r/n\). The success probability becomes approximately \(-x \ln(x)\), which is maximized when \(x = 1/e \approx 0.368\).</p>
+
+<div class="key-insight">
+    <h3>The 37% rule</h3>
+    <p>Reject the first \(\frac{n}{e} \approx 0.37n\) flats, then select the first flat better than all previously seen.</p>
+    <p>For \(n = 100\) flats: reject the first 37, then commit to the first one that beats them all.</p>
+    <p>Success probability: \(\approx 1/e \approx 37\%\).</p>
+</div>
+
+<h2>Applying the strategy</h2>
+
+<p>For my situation with 100 viewings:</p>
+
+<ol>
+    <li><strong>Observation phase (flats 1-37):</strong> View 37 flats but reject all of them. Use this to understand the state of the market.</li>
+    <li><strong>Selection phase (flats 38-100):</strong> Take the first flat that beats everything from the observation phase.</li>
+</ol>
+
+<p>A 37% success rate might seem quite low, but the alternatives are way worse:</p>
+
+<ul>
+    <li>Choosing randomly: \(1/100 = 1\%\) of chance of success</li>
+    <li>Always taking the current best: you'll almost certainly settle for one of the first few flats, which is unlikely to be the best</li>
+</ul>
+
+<h2>Simulation</h2>
+
+<p>Let's verify this with a Monte Carlo simulation.</p>
+
+<div class="playground">
+    <h3>Monte Carlo simulation</h3>
+    <p>Test different rejection thresholds by running thousands of trials.</p>
+
+    <div class="input-grid">
+        <div class="input-group">
+            <label for="sim_n">Number of flats (n):</label>
+            <input type="number" id="sim_n" value="100" min="10" max="500" step="10">
+        </div>
+        <div class="input-group">
+            <label for="sim_trials">Trials per threshold:</label>
+            <input type="number" id="sim_trials" value="5000" min="100" max="20000" step="1000">
+        </div>
+    </div>
+
+    <button id="runSimButton" onclick="runSimulation()">Run simulation</button>
+
+    <div id="simResults" style="display:none;">
+        <h4>Results</h4>
+        <div class="results-grid">
+            <div class="result-item">
+                <strong>Optimal threshold (simulated):</strong> <span id="optimalThreshold"></span> flats (<span id="optimalPercent"></span>)
+            </div>
+            <div class="result-item">
+                <strong>Success Rate:</strong> <span id="optimalSuccess"></span>
+            </div>
+            <div class="result-item">
+                <strong>Theoretical threshold:</strong> <span id="theoreticalR"></span> flats
+            </div>
+            <div class="result-item">
+                <strong>Theoretical success rate:</strong> <span id="theoreticalSuccess"></span>
+            </div>
+        </div>
+
+        <div class="canvas-wrapper">
+            <canvas id="successRatePlot"></canvas>
+            <p class="canvas-caption">Success rate vs rejection threshold. The peak occurs near 37%.</p>
+        </div>
+    </div>
+</div>
+
+<h2>Why it works</h2>
+
+<p>The strategy balances two concerns:</p>
+
+<ul>
+    <li><strong>Information:</strong> If \(r\) is too small, I don't know what "good" looks like and might accept a mediocre flat.</li>
+    <li><strong>Options:</strong> If \(r\) is too large, I might reject the best flat during observation.</li>
+</ul>
+
+<p>The value \(r = n/e\) is the optimal balance. The observation phase is long enough to calibrate expectations, while the selection phase is long enough to likely encounter something good.</p>
+
+<h2>Extension: two people with correlated preferences</h2>
+
+<p>What if I'm searching with a flatmate who has different tastes? Let's assume that we each rank the flats differently. How does the correlation between our preferences affect the strategy?</p>
+
+<h3>Setup</h3>
+
+<p>Person A and person B each rank the flats from 1 to \(n\). The key parameter is the correlation \(\rho\) between rankings:</p>
+
+<ul>
+    <li>\(\rho = 1\): identical preferences</li>
+    <li>\(\rho = 0\): independent preferences</li>
+    <li>\(\rho = -1\): opposite preferences</li>
+</ul>
+
+<p>I use the max-min criterion: maximize \(\min(\text{rank}_A, \text{rank}_B)\), ensuring that neither person gets stuck with a flat they hate. Other approaches are possible (e.g., maximizing the sum of utilities).</p>
+
+<p>With correlation \(\rho\), the probability that both people rank the same flat as their top choice depends heavily on \(\rho\):</p>
+
+<ul>
+    <li>\(\rho = 1\): probability \(= 1/n\) (same as single-person)</li>
+    <li>\(\rho = 0\): probability \(\approx 1/n^2\) (both must independently pick it)</li>
+</ul>
+
+<p>As correlation decreases, mutually acceptable flats become rarer. The optimal strategy shifts: we should be less picky (lower threshold) because waiting for perfection is unlikely to work.</p>
+
+<div class="key-insight">
+    <h3>Two-person rule</h3>
+    <p>As correlation \(\rho\) decreases from 1 to 0:</p>
+    <ul>
+        <li>Optimal threshold decreases from ~37% to ~20-25%</li>
+        <li>Success probability drops from ~37% to ~5-10%</li>
+        <li>Compromise becomes essential</li>
+    </ul>
+</div>
+
+<h3>Two-person simulation</h3>
+
+<div class="playground">
+    <h3>Two-person simulation</h3>
+    <p>Generate correlated rankings and find the optimal threshold.</p>
+
+    <div class="input-grid">
+        <div class="input-group">
+            <label for="sim2_n">Number of flats (n):</label>
+            <input type="number" id="sim2_n" value="100" min="10" max="200" step="10">
+        </div>
+        <div class="input-group">
+            <label for="sim2_trials">Trials per threshold:</label>
+            <input type="number" id="sim2_trials" value="2000" min="100" max="10000" step="500">
+        </div>
+        <div class="input-group">
+            <label for="sim2_rho">Correlation (\(\rho\)):</label>
+            <input type="number" id="sim2_rho" value="0.5" min="-1" max="1" step="0.1">
+        </div>
+    </div>
+
+    <button id="runSim2Button" onclick="runTwoPersonSimulation()">Run Simulation</button>
+
+    <div id="sim2Results" style="display:none;">
+        <h4>Results</h4>
+        <div class="results-grid">
+            <div class="result-item">
+                <strong>Correlation:</strong> <span id="correlation2"></span>
+            </div>
+            <div class="result-item">
+                <strong>Optimal threshold:</strong> <span id="optimal2Threshold"></span> flats (<span id="optimal2Percent"></span>)
+            </div>
+            <div class="result-item">
+                <strong>Success rate:</strong> <span id="optimal2Success"></span>
+            </div>
+        </div>
+
+        <div class="canvas-wrapper">
+            <canvas id="successRate2Plot"></canvas>
+            <p class="canvas-caption">Success rate for two-person search. Try varying \(\rho\) from 1.0 to 0.0 to -1.0.</p>
+        </div>
+    </div>
+</div>
+
+<h2>Practical considerations</h2>
+
+<p>The assumptions made in this model are quite strong. In real life, several factors complicate the picture:</p>
+
+<ul>
+    <li>Preferences aren't totally ordered (one flat has better light, another a better commute, etc.).</li>
+    <li>Number of flats \(n\) isn't known in advance.</li>
+    <li>The flats don't cost the same amount.</li>
+</ul>
+
+<p>Despite these issues, the 37% rule is a useful heuristic: spend the first third of your search learning the market, then commit when you see something that beats everything so far.</p>
+
+<h2>Connection to the Secretary Problem</h2>
+
+<p>This scenario is mathematically identical to the classic "Secretary Problem" in optimal stopping theory, originally formulated for hiring decisions. The mathematics is exactly the same.</p>
+
+<h2>References</h2>
+
+<ol>
+    <li>Ferguson, T. S. (1989). Who Solved the Secretary Problem? <em>Statistical Science</em>, 4(3), 282-289.</li>
+    <li>Gilbert, J. P., & Mosteller, F. (1966). Recognizing the Maximum of a Sequence. <em>JASA</em>, 61(313), 35-73.</li>
+    <li>Freeman, P. R. (1983). The Secretary Problem and its Extensions: A Review. <em>International Statistical Review</em>, 51(2), 189-206.</li>
+</ol>
+
+</article>
+
+<script src="/posts/flat-search/flat-search-simulation.js"></script>
+
+            </div>
+            
+            <!-- Post Navigation -->
+                        <nav class="post-navigation">
+                                                    <div class="nav-prev">
+                        <span class="nav-label">Older</span>
+                        <a href="monte-carlo.html">
+                            ← How to price options with Monte Carlo methods                        </a>
+                    </div>
+                            </nav>
+                    </div>
+    </div>
+</div>
+
+<footer>
+    <p>© 2026 Nicola Lo Russo</p>
+</footer>
+
+</body>
+</html>
