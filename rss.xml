@@ -8,7 +8,15 @@ Warning: Undefined array key "HTTP_HOST" in /Users/nicolalorusso/Locale/nicolalo
     <description>Personal website and blog</description>
     <language>en-us</language>
     <atom:link href="http://./rss.php" rel="self" type="application/rss+xml"/>
-    <lastBuildDate>Thu, 29 Jan 2026 23:57:47 +0000</lastBuildDate>
+    <lastBuildDate>Fri, 30 Jan 2026 00:04:51 +0000</lastBuildDate>
+    <item>
+      <title>Introducing EU Lens</title>
+      <link>http://./post_frame.php?post=eulens</link>
+      <guid isPermaLink="true">http://./post_frame.php?post=eulens</guid>
+      <pubDate>Fri, 30 Jan 2026 00:00:00 +0000</pubDate>
+      <description>A platform to explore European Parliament voting data, MEP profiles, and AI-powered bill summaries.</description>
+      <author>nlorusso@ethz.ch (Nicola Lo Russo)</author>
+    </item>
     <item>
       <title>How to search for a flat (mathematically)</title>
       <link>http://./post_frame.php?post=flat-search</link>

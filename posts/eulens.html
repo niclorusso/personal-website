@@ -1,0 +1,150 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="A platform to explore European Parliament voting data, MEP profiles, and AI-powered bill summaries.">
+    <meta name="author" content="Nicola Lo Russo">
+    
+        <link rel="canonical" href="http://localhost">
+        
+    <title>Introducing EU Lens - Nicola Lo Russo</title>
+    
+        <meta property="og:type" content="article">
+    <meta property="og:site_name" content="Nicola Lo Russo">
+    <meta property="og:title" content="Introducing EU Lens">
+    <meta property="og:description" content="A platform to explore European Parliament voting data, MEP profiles, and AI-powered bill summaries.">
+    <meta property="og:url" content="http://localhost">
+    <meta name="twitter:card" content="summary">
+    <meta name="twitter:title" content="Introducing EU Lens">
+    <meta name="twitter:description" content="A platform to explore European Parliament voting data, MEP profiles, and AI-powered bill summaries.">
+    
+    <!-- External Stylesheets -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
+    
+    <!-- Internal Stylesheets -->
+    <link rel="stylesheet" href="../css/simple-grid.css">
+    <link rel="stylesheet" href="../css/style.css">
+            <link rel="stylesheet" href="../css/footer-style.css">
+            <link rel="stylesheet" href="../css/header-style.css">
+            <link rel="stylesheet" href="../css/blog-post-style.css">
+            <link rel="stylesheet" href="../css/post-navigation.css">
+        
+    <!-- JavaScript -->
+    <script src="../js/email_decrypt.js"></script>
+            <script src="../js/mathjax-config.js"></script>
+        <script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+            
+    <!-- Favicon -->
+    <link rel="icon" href="../images/nico.png" type="image/png">
+</head>
+<body>
+
+<script type="application/ld+json">{
+    "@context": "https://schema.org",
+    "@type": "BlogPosting",
+    "headline": "Introducing EU Lens",
+    "datePublished": "2026-01-30T00:00:00+00:00",
+    "author": {
+        "@type": "Person",
+        "name": "Nicola Lo Russo"
+    },
+    "publisher": {
+        "@type": "Person",
+        "name": "Nicola Lo Russo"
+    },
+    "description": "A platform to explore European Parliament voting data, MEP profiles, and AI-powered bill summaries."
+}</script><header>
+    <div>
+        <div style="text-align: center;">
+            <h1><a href="../index.html" style="text-decoration: none; color: inherit;">Nicola Lo Russo</a></h1>
+                            <p class="site-tagline">Personal website</p>
+                        <p class="no-print"></p>
+            <div class="header-icons">
+                <a id="email-link" onClick="writeEmail()" style="cursor: pointer;">
+                    <i class="fas fa-envelope"></i>
+                    <i class="icon-text">nlorusso [at] ethz.ch</i>
+                </a>
+                <a href="https://www.linkedin.com/in/nicola-lo-russo-7a4849127/" target="_blank" rel="noopener noreferrer">
+                    <i class="fab fa-linkedin"></i>
+                    <i class="icon-text">Nicola Lo Russo</i>
+                </a>
+            </div>
+        </div>
+    </div>
+    <nav class="minimal-menu">
+        <div class="menu-item">
+            <a href="../index.html">
+                <span style="border-bottom: 2px solid var(--color-accent)">Home</span>
+            </a>
+        </div>
+        <div class="menu-item">
+            <a href="../cv.html">
+                <span >About Me</span>
+            </a>
+        </div>
+        
+        
+        <div class="menu-item">
+            <a href="https://eulens.eu" target="_blank" rel="noopener noreferrer">
+                <span>EU Lens</span>
+            </a>
+        </div>
+            </nav>
+</header>
+
+
+<div class="container">
+    <div class="row justify">
+        <div class="col-12">
+            <!-- Back to home link -->
+            <div class="post-meta-header">
+                <a href="../index.html" class="back-link">← go back home</a>
+                <span class="reading-time">2 min read</span>
+            </div>
+            
+            <div class="post-content">
+                                
+
+<p>I'm excited to share <a href="https://eulens.eu" target="_blank">EU Lens</a>, a platform I've been building to make European Parliament voting data more accessible and transparent.</p>
+
+<p>The idea is simple: citizens should be able to easily see how their MEPs vote, discover patterns across political groups and countries, and understand what EU legislation actually means in plain language.</p>
+
+<h2>What you can do</h2>
+
+<p>The platform lets you browse EU Parliament bills with AI-generated summaries, explore an interactive hemicycle visualization of all 720 MEPs, and dive into individual MEP profiles showing their voting history and which colleagues they most agree with across party lines.</p>
+
+<p>There's also a Voting Advice Application where you can answer questions based on real Parliament votes and see which MEPs align with your views, plus a PCA visualization that maps the entire Parliament's voting patterns into an explorable 2D/3D space.</p>
+
+<h2>Tech stack</h2>
+
+<p>The frontend is React with Vite, the backend runs on Node.js/Express with PostgreSQL, and voting data comes from the <a href="https://howtheyvote.eu" target="_blank">HowTheyVote.eu</a> API. I used Claude (Opus 4.5) extensively during development to speed up the coding process, and Gemini 2.5 Pro powers the live AI features: bill summaries, the chat-with-MEP personas, and VAA question generation.</p>
+
+<p>The whole thing updates weekly with new votes and automatically generates fresh summaries for any new legislation.</p>
+
+<h2>Why I built it</h2>
+
+<p>EU politics often feels distant and opaque. National media rarely covers what happens in Strasbourg, and when they do, the complexity of procedures makes it hard to follow. I wanted to build something that makes this democratic process more tangible, whether you're a policy wonk or just curious about how your representatives actually vote.</p>
+
+<p>Check it out at <a href="https://eulens.eu" target="_blank">eulens.eu</a> and let me know what you think.</p>
+
+            </div>
+            
+            <!-- Post Navigation -->
+                        <nav class="post-navigation">
+                                                    <div class="nav-prev">
+                        <span class="nav-label">Older</span>
+                        <a href="flat-search.html">
+                            ← How to search for a flat (mathematically)                        </a>
+                    </div>
+                            </nav>
+                    </div>
+    </div>
+</div>
+
+<footer>
+    <p>© 2026 Nicola Lo Russo</p>
+</footer>
+
+</body>
+</html>
