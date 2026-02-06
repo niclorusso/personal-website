@@ -4,95 +4,102 @@ Warning: Undefined array key "HTTP_HOST" in /Users/nicolalorusso/Locale/nicolalo
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
     <title>Nicola Lo Russo</title>
-    <link>http://.</link>
+    <link>http:///Users/nicolalorusso/Locale/nicolalorusso.ch/homepage</link>
     <description>Personal website and blog</description>
     <language>en-us</language>
-    <atom:link href="http://./rss.php" rel="self" type="application/rss+xml"/>
-    <lastBuildDate>Fri, 30 Jan 2026 00:04:51 +0000</lastBuildDate>
+    <atom:link href="http:///Users/nicolalorusso/Locale/nicolalorusso.ch/homepage/rss.php" rel="self" type="application/rss+xml"/>
+    <lastBuildDate>Fri, 06 Feb 2026 17:17:38 +0000</lastBuildDate>
+    <item>
+      <title>SwissData is now online</title>
+      <link>http:///Users/nicolalorusso/Locale/nicolalorusso.ch/homepage/post_frame.php?post=swissdata</link>
+      <guid isPermaLink="true">http:///Users/nicolalorusso/Locale/nicolalorusso.ch/homepage/post_frame.php?post=swissdata</guid>
+      <pubDate>Fri, 06 Feb 2026 00:00:00 +0000</pubDate>
+      <author>nlorusso@ethz.ch (Nicola Lo Russo)</author>
+    </item>
     <item>
       <title>Introducing EU Lens</title>
-      <link>http://./post_frame.php?post=eulens</link>
-      <guid isPermaLink="true">http://./post_frame.php?post=eulens</guid>
+      <link>http:///Users/nicolalorusso/Locale/nicolalorusso.ch/homepage/post_frame.php?post=eulens</link>
+      <guid isPermaLink="true">http:///Users/nicolalorusso/Locale/nicolalorusso.ch/homepage/post_frame.php?post=eulens</guid>
       <pubDate>Fri, 30 Jan 2026 00:00:00 +0000</pubDate>
       <description>A platform to explore European Parliament voting data, MEP profiles, and AI-powered bill summaries.</description>
       <author>nlorusso@ethz.ch (Nicola Lo Russo)</author>
     </item>
     <item>
       <title>How to search for a flat (mathematically)</title>
-      <link>http://./post_frame.php?post=flat-search</link>
-      <guid isPermaLink="true">http://./post_frame.php?post=flat-search</guid>
+      <link>http:///Users/nicolalorusso/Locale/nicolalorusso.ch/homepage/post_frame.php?post=flat-search</link>
+      <guid isPermaLink="true">http:///Users/nicolalorusso/Locale/nicolalorusso.ch/homepage/post_frame.php?post=flat-search</guid>
       <pubDate>Tue, 20 Jan 2026 00:00:00 +0000</pubDate>
       <description>How to maximize your chances of finding the best flat in Zurich using optimal stopping theory. With an extension for two people with correlated preferences.</description>
       <author>nlorusso@ethz.ch (Nicola Lo Russo)</author>
     </item>
     <item>
       <title>How to price options with Monte Carlo methods</title>
-      <link>http://./post_frame.php?post=monte-carlo</link>
-      <guid isPermaLink="true">http://./post_frame.php?post=monte-carlo</guid>
+      <link>http:///Users/nicolalorusso/Locale/nicolalorusso.ch/homepage/post_frame.php?post=monte-carlo</link>
+      <guid isPermaLink="true">http:///Users/nicolalorusso/Locale/nicolalorusso.ch/homepage/post_frame.php?post=monte-carlo</guid>
       <pubDate>Fri, 16 Jan 2026 00:00:00 +0000</pubDate>
       <description>A rigorous exploration of Monte Carlo methods for option pricing and variance reduction, with measure-theoretic foundations and interactive visualizations.</description>
       <author>nlorusso@ethz.ch (Nicola Lo Russo)</author>
     </item>
     <item>
       <title>Sampling from the long tail: Oulipian constraints for language models</title>
-      <link>http://./post_frame.php?post=clinamen-algorithm</link>
-      <guid isPermaLink="true">http://./post_frame.php?post=clinamen-algorithm</guid>
+      <link>http:///Users/nicolalorusso/Locale/nicolalorusso.ch/homepage/post_frame.php?post=clinamen-algorithm</link>
+      <guid isPermaLink="true">http:///Users/nicolalorusso/Locale/nicolalorusso.ch/homepage/post_frame.php?post=clinamen-algorithm</guid>
       <pubDate>Sat, 10 Jan 2026 00:00:00 +0000</pubDate>
       <description>Forcing language models to make creative errors at fixed intervals, inspired by Lucretius and the Oulipo.</description>
       <author>nlorusso@ethz.ch (Nicola Lo Russo)</author>
     </item>
     <item>
       <title>Literature Turing test</title>
-      <link>http://./post_frame.php?post=literature-turing-test</link>
-      <guid isPermaLink="true">http://./post_frame.php?post=literature-turing-test</guid>
+      <link>http:///Users/nicolalorusso/Locale/nicolalorusso.ch/homepage/post_frame.php?post=literature-turing-test</link>
+      <guid isPermaLink="true">http:///Users/nicolalorusso/Locale/nicolalorusso.ch/homepage/post_frame.php?post=literature-turing-test</guid>
       <pubDate>Fri, 09 Jan 2026 00:00:00 +0000</pubDate>
       <description>Can you tell the difference between human-written literature and AI-generated text? Test your skills across 10 famous authors.</description>
       <author>nlorusso@ethz.ch (Nicola Lo Russo)</author>
     </item>
     <item>
       <title>My 2025 in books</title>
-      <link>http://./post_frame.php?post=books-2025</link>
-      <guid isPermaLink="true">http://./post_frame.php?post=books-2025</guid>
+      <link>http:///Users/nicolalorusso/Locale/nicolalorusso.ch/homepage/post_frame.php?post=books-2025</link>
+      <guid isPermaLink="true">http:///Users/nicolalorusso/Locale/nicolalorusso.ch/homepage/post_frame.php?post=books-2025</guid>
       <pubDate>Fri, 26 Dec 2025 00:00:00 +0000</pubDate>
       <description>In 2025 I read 36 books. Here is a short overview and a few highlights of my year in books. Below, the full list.</description>
       <author>nlorusso@ethz.ch (Nicola Lo Russo)</author>
     </item>
     <item>
       <title>Intro to voting theory: chapter 1</title>
-      <link>http://./post_frame.php?post=voting-systems</link>
-      <guid isPermaLink="true">http://./post_frame.php?post=voting-systems</guid>
+      <link>http:///Users/nicolalorusso/Locale/nicolalorusso.ch/homepage/post_frame.php?post=voting-systems</link>
+      <guid isPermaLink="true">http:///Users/nicolalorusso/Locale/nicolalorusso.ch/homepage/post_frame.php?post=voting-systems</guid>
       <pubDate>Mon, 31 Mar 2025 00:00:00 +0000</pubDate>
       <description>Same voters&#039; preferences, different winners? How voting systems can totally change the result.</description>
       <author>nlorusso@ethz.ch (Nicola Lo Russo)</author>
     </item>
     <item>
       <title>Of risks and asteroids: analyzing the impact probability of 2024 YR4</title>
-      <link>http://./post_frame.php?post=risk-asteroid</link>
-      <guid isPermaLink="true">http://./post_frame.php?post=risk-asteroid</guid>
+      <link>http:///Users/nicolalorusso/Locale/nicolalorusso.ch/homepage/post_frame.php?post=risk-asteroid</link>
+      <guid isPermaLink="true">http:///Users/nicolalorusso/Locale/nicolalorusso.ch/homepage/post_frame.php?post=risk-asteroid</guid>
       <pubDate>Wed, 19 Feb 2025 00:00:00 +0000</pubDate>
       <description>Analyzing the impact probability of asteroid YR4 in 2032 and what it really means.</description>
       <author>nlorusso@ethz.ch (Nicola Lo Russo)</author>
     </item>
     <item>
       <title>About Bayes&#039; theorem, disease testing, and the prosecutor&#039;s fallacy</title>
-      <link>http://./post_frame.php?post=bayes-theorem</link>
-      <guid isPermaLink="true">http://./post_frame.php?post=bayes-theorem</guid>
+      <link>http:///Users/nicolalorusso/Locale/nicolalorusso.ch/homepage/post_frame.php?post=bayes-theorem</link>
+      <guid isPermaLink="true">http:///Users/nicolalorusso/Locale/nicolalorusso.ch/homepage/post_frame.php?post=bayes-theorem</guid>
       <pubDate>Tue, 19 Nov 2024 00:00:00 +0000</pubDate>
       <description>Bayes&#039; theorem applied to rare disease diagnosis, and the dangers of the prosecutor&#039;s fallacy.</description>
       <author>nlorusso@ethz.ch (Nicola Lo Russo)</author>
     </item>
     <item>
       <title>The unfair coin</title>
-      <link>http://./post_frame.php?post=unfair-coin</link>
-      <guid isPermaLink="true">http://./post_frame.php?post=unfair-coin</guid>
+      <link>http:///Users/nicolalorusso/Locale/nicolalorusso.ch/homepage/post_frame.php?post=unfair-coin</link>
+      <guid isPermaLink="true">http:///Users/nicolalorusso/Locale/nicolalorusso.ch/homepage/post_frame.php?post=unfair-coin</guid>
       <pubDate>Sun, 03 Nov 2024 00:00:00 +0000</pubDate>
       <description>You are given 1000 coins: 999 are fair and 1 is rigged...</description>
       <author>nlorusso@ethz.ch (Nicola Lo Russo)</author>
     </item>
     <item>
       <title>A logic puzzle</title>
-      <link>http://./post_frame.php?post=watson-riddle</link>
-      <guid isPermaLink="true">http://./post_frame.php?post=watson-riddle</guid>
+      <link>http:///Users/nicolalorusso/Locale/nicolalorusso.ch/homepage/post_frame.php?post=watson-riddle</link>
+      <guid isPermaLink="true">http:///Users/nicolalorusso/Locale/nicolalorusso.ch/homepage/post_frame.php?post=watson-riddle</guid>
       <pubDate>Mon, 28 Oct 2024 00:00:00 +0000</pubDate>
       <description>A solution to a logic puzzle published by Oxford University Press in October 2024.</description>
       <author>nlorusso@ethz.ch (Nicola Lo Russo)</author>
