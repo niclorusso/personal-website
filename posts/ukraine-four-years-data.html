@@ -1,0 +1,301 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="A source-first framework to quantify four years of war with clear confidence tiers, caveats, and chart release criteria.">
+    <meta name="author" content="Nicola Lo Russo">
+    
+        <link rel="canonical" href="http://localhost">
+        
+    <title>Ukraine, four years in data: methodology first - Nicola Lo Russo</title>
+    
+        <meta property="og:type" content="article">
+    <meta property="og:site_name" content="Nicola Lo Russo">
+    <meta property="og:title" content="Ukraine, four years in data: methodology first">
+    <meta property="og:description" content="A source-first framework to quantify four years of war with clear confidence tiers, caveats, and chart release criteria.">
+    <meta property="og:url" content="http://localhost">
+    <meta name="twitter:card" content="summary">
+    <meta name="twitter:title" content="Ukraine, four years in data: methodology first">
+    <meta name="twitter:description" content="A source-first framework to quantify four years of war with clear confidence tiers, caveats, and chart release criteria.">
+    
+    <!-- External Stylesheets -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
+    
+    <!-- Internal Stylesheets -->
+    <link rel="stylesheet" href="../css/simple-grid.css">
+    <link rel="stylesheet" href="../css/style.css">
+            <link rel="stylesheet" href="../css/footer-style.css">
+            <link rel="stylesheet" href="../css/header-style.css">
+            <link rel="stylesheet" href="../css/blog-post-style.css">
+            <link rel="stylesheet" href="../css/post-navigation.css">
+        
+    <!-- JavaScript -->
+    <script src="../js/email_decrypt.js"></script>
+            <script src="../js/mathjax-config.js"></script>
+        <script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+            
+    <!-- Favicon -->
+    <link rel="icon" href="../images/nico.png" type="image/png">
+</head>
+<body>
+
+<script type="application/ld+json">{
+    "@context": "https://schema.org",
+    "@type": "BlogPosting",
+    "headline": "Ukraine, four years in data: methodology first",
+    "datePublished": "2026-02-25T00:00:00+00:00",
+    "author": {
+        "@type": "Person",
+        "name": "Nicola Lo Russo"
+    },
+    "publisher": {
+        "@type": "Person",
+        "name": "Nicola Lo Russo"
+    },
+    "description": "A source-first framework to quantify four years of war with clear confidence tiers, caveats, and chart release criteria."
+}</script><header>
+    <div>
+        <div style="text-align: center;">
+            <h1><a href="../index.html" style="text-decoration: none; color: inherit;">Nicola Lo Russo</a></h1>
+                            <p class="site-tagline">Personal website</p>
+                        <p class="no-print"></p>
+            <div class="header-icons">
+                <a id="email-link" onClick="writeEmail()" style="cursor: pointer;">
+                    <i class="fas fa-envelope"></i>
+                    <i class="icon-text">nlorusso [at] ethz.ch</i>
+                </a>
+                <a href="https://www.linkedin.com/in/nicola-lo-russo-7a4849127/" target="_blank" rel="noopener noreferrer">
+                    <i class="fab fa-linkedin"></i>
+                    <i class="icon-text">Nicola Lo Russo</i>
+                </a>
+            </div>
+        </div>
+    </div>
+    <nav class="minimal-menu">
+        <div class="menu-item">
+            <a href="../index.html">
+                <span style="border-bottom: 2px solid var(--color-accent)">Home</span>
+            </a>
+        </div>
+        <div class="menu-item">
+            <a href="../cv.html">
+                <span >About Me</span>
+            </a>
+        </div>
+        
+        
+        <div class="menu-item project-start">
+            <a href="https://eulens.eu" target="_blank" rel="noopener noreferrer">
+                <span>EU Lens</span>
+            </a>
+        </div>
+        <div class="menu-item">
+            <a href="https://swissdata-platform.ch" target="_blank" rel="noopener noreferrer">
+                <span>SwissData</span>
+            </a>
+        </div>
+            </nav>
+</header>
+
+
+<div class="container">
+    <div class="row justify">
+        <div class="col-12">
+            <!-- Back to home link -->
+            <div class="post-meta-header">
+                <a href="../index.html" class="back-link">← go back home</a>
+                <span class="reading-time">2 min read</span>
+            </div>
+            
+            <div class="post-content">
+                                <?php
+/**
+ * Ukraine, four years in data: methodology-first post with charts
+ */
+?>
+
+<link rel="stylesheet" href="posts/ukraine-four-years-data/ukraine-four-years-data.css">
+
+<article class="ukr-data-post">
+  <h1>Ukraine, four years in data</h1>
+  <p class="lede">
+    This page starts with high-confidence datasets and explicit caveats. Every chart shows either
+    a verified minimum or a documented incident count from independent monitoring bodies.
+  </p>
+
+  <section class="numbers-section">
+    <h2>War in numbers (pilot snapshot)</h2>
+    <p class="numbers-intro">
+      This top block summarizes what can be quantified with the current data snapshot without pretending to
+      provide exact war-wide totals. These are conservative and method-bound indicators.
+    </p>
+    <p id="coverage-warning" class="coverage-warning">
+      Data coverage warning pending...
+    </p>
+    <div class="numbers-grid">
+      <div class="number-card">
+        <div class="number-label">OHCHR civilian casualties (loaded months)</div>
+        <div id="summary-ohchr-total" class="number-value">-</div>
+        <div id="summary-ohchr-window" class="number-subtext">-</div>
+      </div>
+      <div class="number-card">
+        <div class="number-label">OHCHR civilian killed (loaded months)</div>
+        <div id="summary-ohchr-killed" class="number-value">-</div>
+        <div class="number-subtext">Verified minimum</div>
+      </div>
+      <div class="number-card">
+        <div class="number-label">Peak OHCHR month in loaded window</div>
+        <div id="summary-ohchr-peak" class="number-value">-</div>
+        <div id="summary-ohchr-peak-month" class="number-subtext">-</div>
+      </div>
+      <div class="number-card">
+        <div class="number-label">WHO SSA incidents (all loaded months)</div>
+        <div id="summary-who-incidents" class="number-value">-</div>
+        <div id="summary-who-window" class="number-subtext">-</div>
+      </div>
+      <div class="number-card">
+        <div class="number-label">WHO SSA confirmed share</div>
+        <div id="summary-who-confirmed-share" class="number-value">-</div>
+        <div class="number-subtext">By incident classification</div>
+      </div>
+      <div class="number-card">
+        <div class="number-label">Latest month in WHO series</div>
+        <div id="summary-who-latest" class="number-value">-</div>
+        <div id="summary-who-latest-month" class="number-subtext">-</div>
+      </div>
+    </div>
+    <p class="summary-caveat">
+      <strong>Method caveat:</strong> these indicators are not a complete measure of total war losses; they are
+      reproducible slices from independent monitoring datasets.
+    </p>
+  </section>
+
+  <div class="meta-grid">
+    <div class="meta-card">
+      <div class="meta-label">Data snapshot</div>
+      <div id="snapshot-date" class="meta-value">Loading...</div>
+    </div>
+    <div class="meta-card">
+      <div class="meta-label">OHCHR months loaded</div>
+      <div id="ohchr-months" class="meta-value">-</div>
+    </div>
+    <div class="meta-card">
+      <div class="meta-label">WHO SSA months loaded</div>
+      <div id="who-months" class="meta-value">-</div>
+    </div>
+  </div>
+
+  <section class="yearly-section">
+    <h2>War in numbers by year (coverage-aware)</h2>
+    <p>
+      This section aggregates the same datasets at yearly level. It is intentionally coverage-aware: if a year is partial
+      in the loaded snapshot, the table marks that directly instead of pretending to show full-year totals.
+    </p>
+
+    <div class="chart-card">
+      <canvas id="chart-yearly-who-incidents" width="920" height="320"></canvas>
+      <div class="chart-note">
+        <strong>Caveat:</strong> WHO SSA values are incident counts affecting health care, not total attacks in the war.
+      </div>
+    </div>
+
+    <div class="yearly-table-wrap">
+      <table class="yearly-table">
+        <thead>
+          <tr>
+            <th>Year</th>
+            <th>OHCHR civilian casualties (loaded months)</th>
+            <th>OHCHR coverage</th>
+            <th>WHO SSA incidents</th>
+            <th>WHO coverage</th>
+            <th>WHO confirmed share</th>
+          </tr>
+        </thead>
+        <tbody id="year-summary-body">
+          <tr>
+            <td colspan="6">Loading yearly aggregates...</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </section>
+
+  <h2>1) Civilian casualties (OHCHR verified minimum)</h2>
+  <p>
+    OHCHR/HRMMU figures are verified civilian casualties, so they should be interpreted as minimums.
+    The chart below plots killed and injured civilians for the months currently included in this release.
+  </p>
+  <div class="chart-card">
+    <canvas id="chart-ohchr-civilians" width="920" height="360"></canvas>
+    <div class="chart-note">
+      <strong>Caveat:</strong> verified minimums; true harm may be higher due to access and verification constraints.
+    </div>
+  </div>
+
+  <h2>2) Attacks on healthcare (WHO SSA incident counts)</h2>
+  <p>
+    WHO SSA records incidents affecting health care, with clear definitions and certainty tiers.
+    This line chart shows monthly incident counts from the published Ukraine dataset.
+  </p>
+  <div class="chart-card">
+    <canvas id="chart-who-incidents" width="920" height="360"></canvas>
+    <div class="chart-note">
+      <strong>Caveat:</strong> incident database, not a full census of all attacks.
+    </div>
+  </div>
+
+  <h2>3) Incident certainty profile (WHO SSA)</h2>
+  <p>
+    WHO SSA assigns each incident a certainty level. This chart shows how monthly counts split across
+    confirmed, probable, and possible reports.
+  </p>
+  <div class="chart-card">
+    <canvas id="chart-who-certainty" width="920" height="360"></canvas>
+    <div class="chart-note">
+      <strong>Caveat:</strong> certainty categories are methodological metadata, not severity scores.
+    </div>
+  </div>
+
+  <h2>Next data block</h2>
+  <p>
+    The next release will add a civilian-targeting series from ACLED once reproducible extraction is integrated
+    locally with the same audit trail as the current datasets.
+  </p>
+
+  <h2>Sources</h2>
+  <ul>
+    <li><a href="https://ukraine.ohchr.org/en/Protection-of-Civilians-in-Armed-Conflict-May-2025" target="_blank" rel="noopener noreferrer">OHCHR - Protection of Civilians (May 2025)</a></li>
+    <li><a href="https://ukraine.ohchr.org/en/Protection-of-Civilians-in-Armed-Conflict-June-2025" target="_blank" rel="noopener noreferrer">OHCHR - Protection of Civilians (June 2025)</a></li>
+    <li><a href="https://ukraine.ohchr.org/en/Protection-of-Civilians-in-Armed-Conflict-July-2025" target="_blank" rel="noopener noreferrer">OHCHR - Protection of Civilians (July 2025)</a></li>
+    <li><a href="https://data.humdata.org/dataset/ukraine-who-ssa" target="_blank" rel="noopener noreferrer">WHO SSA dataset (Ukraine) on HDX</a></li>
+  </ul>
+</article>
+
+<script src="ukraine-four-years-data/ukraine-four-years-data.js"></script>
+            </div>
+            
+            <!-- Post Navigation -->
+                        <nav class="post-navigation">
+                                    <div class="nav-next">
+                        <span class="nav-label">Newer</span>
+                        <a href="how-llms-work.html">
+                            How LLMs work, explained to my dad →
+                        </a>
+                    </div>
+                                                    <div class="nav-prev">
+                        <span class="nav-label">Older</span>
+                        <a href="entropy-randomness.html">
+                            ← Entropy vs Randomness                        </a>
+                    </div>
+                            </nav>
+                    </div>
+    </div>
+</div>
+
+<footer>
+    <p>© 2026 Nicola Lo Russo</p>
+</footer>
+
+</body>
+</html>

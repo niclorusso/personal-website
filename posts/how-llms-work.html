@@ -1,0 +1,322 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="A step-by-step interactive explanation of large language models, from text to tokens to probabilities, for someone with zero background.">
+    <meta name="author" content="Nicola Lo Russo">
+    
+        <link rel="canonical" href="http://localhost">
+        
+    <title>How LLMs work, explained to my dad - Nicola Lo Russo</title>
+    
+        <meta property="og:type" content="article">
+    <meta property="og:site_name" content="Nicola Lo Russo">
+    <meta property="og:title" content="How LLMs work, explained to my dad">
+    <meta property="og:description" content="A step-by-step interactive explanation of large language models, from text to tokens to probabilities, for someone with zero background.">
+    <meta property="og:url" content="http://localhost">
+    <meta name="twitter:card" content="summary">
+    <meta name="twitter:title" content="How LLMs work, explained to my dad">
+    <meta name="twitter:description" content="A step-by-step interactive explanation of large language models, from text to tokens to probabilities, for someone with zero background.">
+    
+    <!-- External Stylesheets -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
+    
+    <!-- Internal Stylesheets -->
+    <link rel="stylesheet" href="../css/simple-grid.css">
+    <link rel="stylesheet" href="../css/style.css">
+            <link rel="stylesheet" href="../css/footer-style.css">
+            <link rel="stylesheet" href="../css/header-style.css">
+            <link rel="stylesheet" href="../css/blog-post-style.css">
+            <link rel="stylesheet" href="../css/post-navigation.css">
+        
+    <!-- JavaScript -->
+    <script src="../js/email_decrypt.js"></script>
+            <script src="../js/mathjax-config.js"></script>
+        <script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+            
+    <!-- Favicon -->
+    <link rel="icon" href="../images/nico.png" type="image/png">
+</head>
+<body>
+
+<script type="application/ld+json">{
+    "@context": "https://schema.org",
+    "@type": "BlogPosting",
+    "headline": "How LLMs work, explained to my dad",
+    "datePublished": "2026-03-06T00:00:00+00:00",
+    "author": {
+        "@type": "Person",
+        "name": "Nicola Lo Russo"
+    },
+    "publisher": {
+        "@type": "Person",
+        "name": "Nicola Lo Russo"
+    },
+    "description": "A step-by-step interactive explanation of large language models, from text to tokens to probabilities, for someone with zero background."
+}</script><header>
+    <div>
+        <div style="text-align: center;">
+            <h1><a href="../index.html" style="text-decoration: none; color: inherit;">Nicola Lo Russo</a></h1>
+                            <p class="site-tagline">Personal website</p>
+                        <p class="no-print"></p>
+            <div class="header-icons">
+                <a id="email-link" onClick="writeEmail()" style="cursor: pointer;">
+                    <i class="fas fa-envelope"></i>
+                    <i class="icon-text">nlorusso [at] ethz.ch</i>
+                </a>
+                <a href="https://www.linkedin.com/in/nicola-lo-russo-7a4849127/" target="_blank" rel="noopener noreferrer">
+                    <i class="fab fa-linkedin"></i>
+                    <i class="icon-text">Nicola Lo Russo</i>
+                </a>
+            </div>
+        </div>
+    </div>
+    <nav class="minimal-menu">
+        <div class="menu-item">
+            <a href="../index.html">
+                <span style="border-bottom: 2px solid var(--color-accent)">Home</span>
+            </a>
+        </div>
+        <div class="menu-item">
+            <a href="../cv.html">
+                <span >About Me</span>
+            </a>
+        </div>
+        
+        
+        <div class="menu-item project-start">
+            <a href="https://eulens.eu" target="_blank" rel="noopener noreferrer">
+                <span>EU Lens</span>
+            </a>
+        </div>
+        <div class="menu-item">
+            <a href="https://swissdata-platform.ch" target="_blank" rel="noopener noreferrer">
+                <span>SwissData</span>
+            </a>
+        </div>
+            </nav>
+</header>
+
+
+<div class="container">
+    <div class="row justify">
+        <div class="col-12">
+            <!-- Back to home link -->
+            <div class="post-meta-header">
+                <a href="../index.html" class="back-link">← go back home</a>
+                <span class="reading-time">10 min read</span>
+            </div>
+            
+            <div class="post-content">
+                                <?php
+/**
+ * How LLMs Work, Explained to My Dad
+ * Step-by-step interactive explanation of large language models
+ */
+?>
+
+<link rel="stylesheet" href="posts/how-llms-work/llm.css">
+
+<article class="llm-post">
+  <h1>How LLMs work, explained to my dad</h1>
+
+  <p>
+    My dad asked me how ChatGPT actually works. I tried to answer but I made a mess of it, so I decided to write it down properly. This post starts from zero and builds up one concept at a time. Along the way there are small interactive simulations so you can play with each idea.
+  </p>
+
+  <p class="note">
+    The interactive demos on this page are simplified simulations, not actual model inference. They illustrate the principles that real models use, just at a scale small enough to fit on a screen.
+  </p>
+
+  <h2>Step 1: Text is not text (to a computer)</h2>
+
+  <p>
+    When humans look at a sentence, they see words and meaning. A computer sees none of that, because it only works with numbers. So before a language model can do anything useful with your message, it first has to convert the text into a numerical form it can actually process.
+  </p>
+  <p>
+    The way it does this is by breaking text into small pieces called <strong>tokens</strong>. A token can be a whole common word like "cat," a chunk of a longer word like "un" or "ing," or sometimes just a single character. The reason is that there are far too many distinct words in any language to give each one its own slot, so the model keeps a fixed set of reusable pieces (about 100,000 of them) that can be combined to spell anything.
+  </p>
+
+  <div class="demo-box" id="demo-tokenizer">
+    <h3>Try it: see how text becomes tokens</h3>
+    <p>Type anything below and watch how it gets broken into pieces. Each colored block is one token. Hover over a token to see its numeric ID.</p>
+    <textarea id="tokenInput" rows="2" placeholder="Try typing a sentence here...">My dad asked me how ChatGPT works.</textarea>
+    <div id="tokenOutput" class="token-display"></div>
+    <div id="tokenStats" class="demo-stats"></div>
+  </div>
+
+  <p>
+    If you play with the demo above you will notice that common short words like "the" or "how" stay in one piece, while longer or rarer words get split up. In most real tokenizers, a leading space is actually merged into the word that follows it, so " the" (with the space) counts as a single token, different from "the" at the start of a text. Punctuation marks typically get their own token. A real model like GPT-4 has a vocabulary of roughly 100,000 token types; the demo uses a smaller set, but the splitting logic works the same way.
+  </p>
+
+  <h2>Step 2: Giving tokens meaning (embeddings)</h2>
+
+  <p>
+    At this point we have tokens, but they are just numbered labels. The number 4821 tells the computer nothing about whether "cat" is an animal or how it relates to "dog" or "kitten." So the model goes a step further and assigns each token a long list of numbers (hundreds or thousands of them) that together act as a kind of address in a high-dimensional space. This is called an <strong>embedding</strong>.
+  </p>
+  <p>
+    The easiest way to picture it is a giant map. Instead of just two orthogonal axes, imagine hundreds of axes. On this map, words that mean similar things end up close together: "king" near "queen," "Paris" near "France," "running" near "jogging." Nobody programs these positions by hand. The model discovers them during training, simply by noticing which words tend to appear in similar contexts across the billions of sentences it reads.
+  </p>
+
+  <div class="demo-box" id="demo-embeddings">
+    <h3>Try it: explore the word map</h3>
+    <p>Pick a word and see which words end up nearby. This is a simplified 2D projection of a space that, in a real model, has hundreds or thousands of dimensions.</p>
+    <div class="embed-controls">
+      <input type="text" id="embedInput" placeholder="Type a word..." value="king">
+      <button id="embedBtn">Show neighbors</button>
+    </div>
+    <canvas id="embedCanvas" width="700" height="400"></canvas>
+    <div id="embedInfo" class="demo-stats"></div>
+  </div>
+
+  <p>
+    What I find remarkable is that no one ever told the model "cat and dog are related." It figured that out on its own, because those two words keep showing up around the same kinds of other words. If you see "the ___ chased the ball" and "the ___ sat on the couch," both "cat" and "dog" fit, and the model learns to place them near each other.
+  </p>
+  <p>
+    There is one more detail worth mentioning here. Because a transformer (a type of neural network architecture used in modern language models) processes all the tokens at the same time rather than reading them left to right, it has no built-in sense of word order. Without some extra information, "dog bites man" and "man bites dog" would look identical to it. To solve this, the model adds a <strong>positional encoding</strong> to each embedding: a set of numbers that tells the model whether a token is first, tenth, or three-hundredth in the sequence. This way the model knows not just what each word is, but where it sits.
+  </p>
+
+  <h2>Step 3: Context matters (attention)</h2>
+
+  <p>
+    Here is where it gets interesting. The word "bank" can mean the side of a river or a financial institution, and the only way to tell which meaning someone intends is to look at the surrounding words. This is the core problem that <strong>attention</strong> solves, and it is the mechanism that made modern language models possible.
+  </p>
+  <p>
+    The idea is that for every word in a sentence, the model looks at the words it has seen so far and decides which ones are most relevant to understanding that particular word right now. When it processes "I sat on the river bank," the word "bank" pays strong attention to "river" and shifts its internal representation toward the waterside meaning. In "I went to the bank to deposit money," the same word latches onto "deposit" and "money" instead, and ends up with an entirely different internal representation despite being spelled identically.
+  </p>
+
+  <div class="demo-box" id="demo-attention">
+    <h3>Try it: see where the model looks</h3>
+    <p>Click on any word to see which other words it attends to most. This uses simulated attention weights that illustrate the real pattern.</p>
+    <div class="attn-controls">
+      <select id="attnSentence">
+        <option value="0">I sat on the river bank and watched the water flow</option>
+        <option value="1">I went to the bank to deposit my money</option>
+        <option value="2">The cat sat on the mat because it was warm</option>
+        <option value="3">She gave him the book that she had been reading</option>
+      </select>
+    </div>
+    <div id="attnDisplay" class="attn-visual"></div>
+    <div id="attnInfo" class="demo-stats"></div>
+  </div>
+
+  <p>
+    When people talk about "transformers," this is what they mean. The whole architecture is built around this attention mechanism. Unlike older approaches that processed words one by one in sequence, a transformer processes all the input tokens in parallel. There is one important constraint: in models like GPT, each token can only attend to the tokens that came before it, not the ones that come after, because the model is designed to predict what comes next and it would be cheating to look ahead. A large model repeats this attention process many times in parallel (using what are called "attention heads") and stacks these layers deep, sometimes 80 or 100 of them, with each pass refining the model's understanding of what every word means in this specific context.
+  </p>
+
+  <h2>Step 4: Predicting the next word</h2>
+
+  <p>
+    This is the part that tends to surprise people. The core of training (called <strong>pre-training</strong>) boils down to a single, almost absurdly simple task: <strong>given some text, predict the next word.</strong>
+  </p>
+  <p>
+    The model reads trillions of words from books, websites, code, and other sources, and at each position it tries to guess what comes next. When it guesses wrong it nudges its internal numbers to do a bit better next time, and after enough examples it gets remarkably good at this game. To turn this raw predictor into a helpful assistant like ChatGPT, there is a second phase where human reviewers rank its answers and the model is fine-tuned to prefer the responses people actually find useful (a process called RLHF, reinforcement learning from human feedback). But the foundation is still next-word prediction. When you chat with ChatGPT, the model processes your message through all those layers of embeddings and attention, produces a probability for every possible next token in its vocabulary, picks one, appends it, and repeats. Word by word, the response appears on your screen.
+  </p>
+
+  <div class="demo-box" id="demo-prediction">
+    <h3>Try it: see the probabilities</h3>
+    <p>Type the start of a sentence and see simulated probabilities for the next word. Real models compute these over their full vocabulary; this demo uses a small curated set to show the principle.</p>
+    <textarea id="predInput" rows="2" placeholder="Start a sentence...">The capital of France is</textarea>
+    <button id="predBtn">Show predictions</button>
+    <div id="predOutput" class="pred-display"></div>
+  </div>
+
+  <p>
+    Notice that the model never commits to a single answer. It assigns probabilities to many possible continuations. After "The capital of France is," it might put 88% on "Paris," 4% on "a," 2% on "located," and scatter tiny fractions across thousands of other words. Which word it actually picks depends on a setting called <strong>temperature</strong>.
+  </p>
+
+  <h2>Step 5: Temperature (creativity vs. safety)</h2>
+
+  <p>
+    Temperature is a knob that controls how the model picks from its probability distribution. At low temperature (close to 0) it almost always goes with the most likely word, which produces safe and predictable output but also repetitive and dull. At high temperature (close to 2) it gives real chances to less likely words, making the output more surprising and creative but sometimes incoherent. Think of it like asking someone to continue a story: a cautious person always says the obvious next line, while a wild improviser takes bizarre detours. Somewhere in the middle you get the best mix.
+  </p>
+
+  <div class="demo-box" id="demo-temperature">
+    <h3>Try it: turn the temperature knob</h3>
+    <p>Drag the slider and click Generate. Each word is sampled from a different distribution that depends on the previous choice, just like a real model. The chart shows the first step.</p>
+    <div class="temp-controls">
+      <label>
+        Temperature: <strong id="tempValue">0.7</strong>
+        <input type="range" id="tempSlider" min="0" max="200" value="70">
+      </label>
+      <label>
+        Prompt:
+        <input type="text" id="tempPrompt" value="Once upon a time there was a" class="temp-input">
+      </label>
+      <button id="tempGenBtn">Generate</button>
+    </div>
+    <div id="tempOutput" class="temp-display"></div>
+    <div id="tempChart" class="temp-chart-area">
+      <canvas id="tempCanvas" width="700" height="220"></canvas>
+    </div>
+  </div>
+
+  <p>
+    This is why asking the same question twice can give you two different answers. The model is not confused; it is sampling from a distribution, and temperature determines how much variety that sampling allows.
+  </p>
+
+  <h2>Step 6: Scale</h2>
+
+  <p>
+    Everything I have described so far is the basic recipe. What turned it from a modest research result into the thing everyone is talking about is not some secret trick. It is scale.
+  </p>
+  <ul>
+    <li><strong>Parameters:</strong> GPT-3 had 175 billion adjustable numbers. GPT-4's size was never officially disclosed, but models in this class are believed to have hundreds of billions or more. Together these numbers encode patterns about language, facts, reasoning styles, and tone.</li>
+    <li><strong>Training data:</strong> trillions of words from books, websites, code, and more. The more diverse the data, the better the model generalizes to new situations.</li>
+    <li><strong>Compute:</strong> training a model this large requires thousands of specialized chips running for weeks or months, and it is extremely expensive.</li>
+  </ul>
+  <p>
+    What researchers found is that if you make the model bigger, feed it more data, and let it train longer, its performance improves in a surprisingly smooth and predictable way. They call this a <strong>scaling law</strong>, and it is the main reason the field accelerated so dramatically over the last few years.
+  </p>
+
+  <h2>Step 7: What it cannot do</h2>
+
+  <p>
+    I think it is worth being honest about limits, because the hype around these tools can make them seem almost magical, and that is not a helpful way to think about them.
+  </p>
+  <ul>
+    <li>The model does not know what is true. It knows what is <em>probable text</em>. Sometimes probable text happens to be factually wrong, and the model will state it with the same confidence either way.</li>
+    <li>The base model has no persistent memory between conversations. Some products (like ChatGPT) add a memory layer on top, but that is an engineering feature, not something the model itself learned to do.</li>
+    <li>Even within a single conversation, the model can only handle a limited number of tokens at once (this is called the <strong>context window</strong>). Early models were limited to a few thousand tokens; newer ones can handle over a hundred thousand, but there is always a ceiling. If a conversation gets long enough, the oldest parts simply fall out of what the model can see.</li>
+    <li>It does not reason the way you and I do. It can reproduce patterns of reasoning that it saw during training, which is genuinely impressive but not the same thing as understanding.</li>
+    <li>When it makes something up and presents it confidently, people call that a "hallucination." This happens because the model is optimized for plausible-sounding continuations, not for factual accuracy.</li>
+  </ul>
+  <p>
+    None of that makes the tool useless. It just means you will get more out of it if you understand what it is actually doing under the hood.
+  </p>
+
+  <h2>The whole picture</h2>
+
+  <p class="summary-line">
+    A language model breaks text into tokens, maps them to a high-dimensional space, uses attention to figure out what each word means in context, and then predicts the next token, one step at a time, over and over, until the response is complete.
+  </p>
+  <p>
+    Everything else you see (the chatbot interface, the helpful assistant persona, the ability to follow instructions) is built on top of that foundation. At its core, this is a next-word predictor that has been trained on an enormous amount of text.
+  </p>
+  <p>
+    I hope this makes the whole thing a bit less mysterious. Next time it gives you a strange answer, you will at least know why.
+  </p>
+</article>
+
+<script src="how-llms-work/llm.js"></script>
+            </div>
+            
+            <!-- Post Navigation -->
+                        <nav class="post-navigation">
+                                                    <div class="nav-prev">
+                        <span class="nav-label">Older</span>
+                        <a href="ukraine-four-years-data.html">
+                            ← Ukraine, four years in data: methodology first                        </a>
+                    </div>
+                            </nav>
+                    </div>
+    </div>
+</div>
+
+<footer>
+    <p>© 2026 Nicola Lo Russo</p>
+</footer>
+
+</body>
+</html>
