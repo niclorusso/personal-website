@@ -61,7 +61,7 @@ body {
 /* Main Content */
 .main-content {
     flex: 1;
-    overflow-y: auto;
+    overflow: visible;
     padding: var(--spacing-lg) var(--spacing-md);
     max-width: 800px;
     animation: fadeIn 0.4s ease-out;
@@ -124,6 +124,89 @@ body {
     font-weight: 400;
     line-height: 1.7;
     margin-bottom: var(--spacing-xs);
+}
+
+.degree-title {
+    margin-top: 0;
+    margin-bottom: 0;
+    display: block;
+}
+
+.degree-title-inline {
+    display: inline;
+}
+
+.degree-major {
+    margin-top: 0.2rem;
+}
+
+.degree-tooltip {
+    position: relative;
+    display: inline-block;
+    vertical-align: baseline;
+    margin-left: 0.35rem;
+    outline: none;
+}
+
+.degree-tooltip-trigger {
+    width: 1.05rem;
+    height: 1.05rem;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    border-radius: 999px;
+    border: 1px solid var(--color-border);
+    color: var(--color-accent);
+    font-size: 0.72rem;
+    font-weight: 600;
+    line-height: 1;
+    user-select: none;
+    background-color: var(--color-bg);
+    transition: background-color var(--transition-fast), border-color var(--transition-fast);
+}
+
+.degree-tooltip:hover .degree-tooltip-trigger,
+.degree-tooltip:focus-within .degree-tooltip-trigger {
+    background-color: var(--color-bg-alt);
+    border-color: var(--color-accent);
+}
+
+.degree-tooltip-content {
+    opacity: 0;
+    visibility: hidden;
+    pointer-events: none;
+    position: absolute;
+    z-index: 10;
+    right: 0;
+    top: calc(100% + 0.55rem);
+    transform: none;
+    width: min(30rem, 82vw);
+    padding: 0.7rem 0.8rem;
+    background: var(--color-bg);
+    border: 1px solid var(--color-border);
+    border-radius: 10px;
+    box-shadow: 0 14px 32px rgba(0, 0, 0, 0.16);
+    font-size: 0.88rem;
+    line-height: 1.5;
+    transition: opacity var(--transition-fast);
+}
+
+.degree-tooltip:hover .degree-tooltip-content,
+.degree-tooltip:focus-within .degree-tooltip-content {
+    opacity: 1;
+    visibility: visible;
+    pointer-events: auto;
+}
+
+@media (max-width: 768px) {
+    .degree-tooltip-content {
+        right: 0;
+        left: auto;
+        top: calc(100% + 0.55rem);
+        transform: none;
+        width: min(26rem, 82vw);
+    }
 }
 
 .dl-link {

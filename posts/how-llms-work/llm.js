@@ -66,7 +66,7 @@
     'whose this that these those here there where when how why all any ' +
     'both each few more most other some such nor so and but or yet ' +
     'because although since while if unless until before after though ' +
-    'mom dad father mother brother sister son daughter baby family ' +
+    'mom father mother brother sister son daughter baby family ' +
     'friend friend wife husband child children kid kids man woman ' +
     'boy girl people person human life death love hate happy sad ' +
     'angry afraid hurt sick tired hungry cold hot nice mean kind ' +
@@ -676,7 +676,7 @@
     'i think that': [
       ['the', 0.14], ['it', 0.12], ['we', 0.08], ['this', 0.07], ['I', 0.06], ['there', 0.05], ['you', 0.04], ['he', 0.04]
     ],
-    'my dad asked me': [
+    'how chatgpt works': [
       ['to', 0.22], ['about', 0.14], ['how', 0.10], ['if', 0.09], ['what', 0.08], ['why', 0.06], ['whether', 0.04], ['for', 0.03]
     ],
     'the meaning of life is': [

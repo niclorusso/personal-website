@@ -74,34 +74,49 @@
 </header>
 
 
-    <div class="container" style="display: flex">
+    <div class="container cv-layout">
         <nav class="sidebar col-3 hidden-sm no-print">
             <ul>
                 <li><a href="#education">Education</a></li>
                 <li><a href="#experience">Professional Experience</a></li>
                 <li><a href="#volunteering">Volunteering</a></li>
-                <li><a href="#publications">Publications & Theses</a></li>
+                <li><a href="#publications">Publications & Research Output</a></li>
             <li><a href="#languages">Languages</a></li>
                 <li><a href="#contact">Contact</a></li>
             </ul>
         </nav>
         <div class="main-content col-9">
+            <p class="profile-intro">
+                Computational scientist and data scientist with hands-on experience in AI, machine learning, and computational modeling, with a Master of Science in Science, Technology and Policy from ETH Zurich.
+            </p>
             <section id="education">
     <h2>Education</h2>
     <div class="education-item">
-        <h3>Eidgenössische Technische Hochschule Zürich (ETHZ)</h3>
-        <p class="date">Sep. 2023 - Ongoing</p>
-        <p>Master of Science - Science, Technology & Policy. Majoring in Data & Computer Science.</p>
+        <h3 class="degree-heading">Master of Science - Science, Technology & Policy
+            <span class="degree-tooltip" tabindex="0">
+                <span class="degree-tooltip-trigger" aria-label="About this degree">?</span>
+                <span class="degree-tooltip-content" role="tooltip">
+                    The ETH Zurich MSc in Science, Technology and Policy (ISTP) is an interdisciplinary degree that combines
+                    advanced training in data science, machine learning, artificial intelligence, and computer science with
+                    policy analysis, economics, and governance for complex real-world systems.
+                    <a href="https://istp.ethz.ch/" target="_blank" rel="noopener noreferrer">Learn more at istp.ethz.ch</a>.
+                </span>
+            </span>
+        </h3>
+        <p class="institution-name">ETH Zurich</p>
+        <p class="date">Sep. 2023 - Mar. 2026</p>
+        <p class="degree-major">Specialization: Data & Computer Science, AI.</p>
     </div>
     <div class="education-item">
-        <h3>Eidgenössische Technische Hochschule Zürich (ETHZ)</h3>
+        <h3 class="degree-heading">Bachelor of Science - Computational Science and Engineering</h3>
+        <p class="institution-name">ETH Zurich</p>
         <p class="date">Sep. 2020 - Aug. 2023</p>
-        <p>Bachelor of Science - Computational Science and Engineering. Specialization in Computational Finance. </p>
+        <p>Specialization: Computational Finance.</p>
     </div>
     <div class="education-item">
-        <h3>Liceo Cantonale di Bellinzona</h3>
+        <h3 class="degree-heading">High School - Physics and Applied Mathematics</h3>
+        <p class="institution-name">Liceo Cantonale di Bellinzona</p>
         <p class="date">Sep. 2016 - Jun. 2020</p>
-        <p>High School - Majored in physics and applied mathematics</p>
     </div>
 </section>
             <section id="experience">
@@ -110,21 +125,19 @@
     <div class="work-item">
         <h3>Project Manager - Institute of Cosmology, ETH</h3>
         <p class="date">Aug. 2024 - Ongoing</p>
-        <p>Management and coordination of a Swiss National Science Foundation (SNSF)-funded space research project. The project (HIRAX) is an international collaboration with 24 partner institutions and is an official guest instrument on the South Africa site of the world's largest radio-telescope (SKA). Management of the project schedule, financial administration and budgeting of FLARE grants, coordination of meetings with international partners. Part-time.</p>
+        <p>Management of an SNSF-funded space research project (HIRAX), 24 partner institutions. Project coordination, budgeting, grant administration, international stakeholder management. Part-time.</p>
     </div>
 
     <div class="work-item">
         <h3>Teaching Assistant for the course Soccer Analytics, ETH</h3>
         <p class="date">Jan. 2023 - Jun. 2024</p>
-        <p>The course focuses on the use of data in tactical decision-making in association football. The course includes practical work and gives the students a broader context of measurement and data science in sports and society. Under the supervision of Prof. Dr. Ulrik Brandes.</p>
+        <p>Data-driven course on football decision-making. Supervision: Prof. Dr. Ulrik Brandes.</p>
     </div>
 
     <div class="work-item">
-        <h3>Data Analyst Intern at DSwiss AG (Cyber Security)</h3>
-        <p class="date"> Aug. 2020 - Oct. 2020</p>
-        <p>
-            Development of the business monitoring the customer application.
-            Creation of visualizations and metrics for business and security stakeholders using Elastic Stack software.</p>
+        <h3>Data Scientist Intern (DSwiss AG)</h3>
+        <p class="date">Aug. 2020 - Oct. 2020</p>
+        <p>Built monitoring dashboards and metrics for business and security teams using Elastic Stack. Analytics, KPI design, visualization.</p>
         
     </div>
 
@@ -158,11 +171,11 @@
     <div class="work-item">
         <h3>Media, Industry and Business Relations Manager of SAGE (ARIS Space)</h3>
         <p class="date">Sept. 2023 - Sept. 2024</p>
-        <p>Media, Business, and Public Relations Manager of the Swiss Artificial Gravity Experiment, which aims to launch a satellite into orbit in 2025, to investigate the aging of human cells in microgravity. My work involves establishing partnerships with media and industry leaders and securing funding.</p>
+        <p>Managed media and external relations for the Swiss Artificial Gravity Experiment.</p>
     </div>
 </section>
             <section id="publications">
-    <h2>Publications & Theses</h2>
+    <h2>Publications & Research Output</h2>
     <div class="publication-item">
         <h3>Arrowhead Factorization of Real Symmetric Matrices and its Applications in Optimized Eigendecomposition</h3>
         <p class="date">ACM Digital Library, Jun. 2024</p>
@@ -219,13 +232,13 @@
 .languages-list {
     display: flex;
     flex-direction: column;
-    gap: var(--spacing-sm);
+    gap: 0.65rem;
 }
 
 .language-item {
     display: flex;
     flex-direction: column;
-    gap: 0.25rem;
+    gap: 0.2rem;
 }
 
 .language-name {
@@ -264,6 +277,77 @@
 </section>
         </div>
     </div>
+
+<style>
+.cv-layout {
+    display: flex;
+    align-items: flex-start;
+    gap: 2rem;
+}
+
+.sidebar ul {
+    margin: 0;
+    padding: 0;
+}
+
+.sidebar li {
+    margin-bottom: 0.65rem;
+}
+
+.main-content section {
+    margin-bottom: 1.6rem;
+}
+
+.main-content h2 {
+    margin: 0 0 0.9rem;
+    line-height: 1.2;
+}
+
+.education-item,
+.work-item,
+.publication-item {
+    margin-bottom: 1.25rem;
+}
+
+.education-item h3,
+.work-item h3,
+.publication-item h3 {
+    margin: 0 0 0.2rem;
+    line-height: 1.3;
+}
+
+.education-item p,
+.work-item p,
+.publication-item p {
+    margin: 0.18rem 0;
+    line-height: 1.5;
+    max-width: 72ch;
+}
+
+.date {
+    font-size: 0.78rem;
+    color: var(--color-text-secondary);
+    letter-spacing: 0.01em;
+    margin: 0.04rem 0 0.16rem;
+}
+
+.profile-intro {
+    margin: 0 0 1.3rem;
+    color: var(--color-text-primary);
+    line-height: 1.5;
+    max-width: 72ch;
+}
+
+.degree-heading {
+    margin: 0 0 0.1rem;
+}
+
+.institution-name {
+    margin: 0.06rem 0 0;
+    font-size: 0.92rem;
+    color: var(--color-text-secondary);
+}
+</style>
 
 <footer>
     <p>© 2026 Nicola Lo Russo</p>

@@ -8,29 +8,13 @@ Warning: Undefined array key "HTTP_HOST" in /Users/nicolalorusso/Locale/nicolalo
     <description>Personal website and blog</description>
     <language>en-us</language>
     <atom:link href="http://./rss.php" rel="self" type="application/rss+xml"/>
-    <lastBuildDate>Fri, 20 Mar 2026 09:49:08 +0000</lastBuildDate>
+    <lastBuildDate>Fri, 20 Mar 2026 11:34:08 +0000</lastBuildDate>
     <item>
-      <title>AI model attacks in practice</title>
-      <link>http://./post_frame.php?post=ai-model-attacks</link>
-      <guid isPermaLink="true">http://./post_frame.php?post=ai-model-attacks</guid>
-      <pubDate>Tue, 10 Mar 2026 00:00:00 +0000</pubDate>
-      <description>Hands-on experiments on membership inference and prompt injection with reproducible code, metrics, and analysis.</description>
-      <author>nlorusso@ethz.ch (Nicola Lo Russo)</author>
-    </item>
-    <item>
-      <title>How LLMs work, explained to my dad</title>
+      <title>Transformers 101 (basics of chatGPT)</title>
       <link>http://./post_frame.php?post=how-llms-work</link>
       <guid isPermaLink="true">http://./post_frame.php?post=how-llms-work</guid>
       <pubDate>Fri, 06 Mar 2026 00:00:00 +0000</pubDate>
       <description>A step-by-step interactive explanation of large language models, from text to tokens to probabilities, for someone with zero background.</description>
-      <author>nlorusso@ethz.ch (Nicola Lo Russo)</author>
-    </item>
-    <item>
-      <title>Ukraine, four years in data: methodology first</title>
-      <link>http://./post_frame.php?post=ukraine-four-years-data</link>
-      <guid isPermaLink="true">http://./post_frame.php?post=ukraine-four-years-data</guid>
-      <pubDate>Wed, 25 Feb 2026 00:00:00 +0000</pubDate>
-      <description>A source-first framework to quantify four years of war with clear confidence tiers, caveats, and chart release criteria.</description>
       <author>nlorusso@ethz.ch (Nicola Lo Russo)</author>
     </item>
     <item>

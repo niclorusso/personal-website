@@ -8,15 +8,15 @@
     
         <link rel="canonical" href="http://localhost">
         
-    <title>How LLMs work, explained to my dad - Nicola Lo Russo</title>
+    <title>Transformers 101 (basics of chatGPT) - Nicola Lo Russo</title>
     
         <meta property="og:type" content="article">
     <meta property="og:site_name" content="Nicola Lo Russo">
-    <meta property="og:title" content="How LLMs work, explained to my dad">
+    <meta property="og:title" content="Transformers 101 (basics of chatGPT)">
     <meta property="og:description" content="A step-by-step interactive explanation of large language models, from text to tokens to probabilities, for someone with zero background.">
     <meta property="og:url" content="http://localhost">
     <meta name="twitter:card" content="summary">
-    <meta name="twitter:title" content="How LLMs work, explained to my dad">
+    <meta name="twitter:title" content="Transformers 101 (basics of chatGPT)">
     <meta name="twitter:description" content="A step-by-step interactive explanation of large language models, from text to tokens to probabilities, for someone with zero background.">
     
     <!-- External Stylesheets -->
@@ -43,7 +43,7 @@
 <script type="application/ld+json">{
     "@context": "https://schema.org",
     "@type": "BlogPosting",
-    "headline": "How LLMs work, explained to my dad",
+    "headline": "Transformers 101 (basics of chatGPT)",
     "datePublished": "2026-03-06T00:00:00+00:00",
     "author": {
         "@type": "Person",
@@ -112,10 +112,10 @@
                                 <link rel="stylesheet" href="posts/how-llms-work/llm.css">
 
 <article class="llm-post">
-  <h1>How LLMs work, explained to my dad</h1>
+  <h1>Transformers 101 (basics of chatGPT)</h1>
 
   <p>
-    My dad asked me how ChatGPT actually works. I tried to answer but I made a mess of it, so I decided to write it down properly. This post starts from zero and builds up one concept at a time. Along the way there are small interactive simulations so you can play with each idea.
+    This is a simple attempt to explain how ChatGPT works. It starts from zero and builds up one concept at a time. Along the way there are small interactive simulations to make each idea easier to follow.
   </p>
 
   <p class="note">
@@ -134,7 +134,7 @@
   <div class="demo-box" id="demo-tokenizer">
     <h3>Try it: see how text becomes tokens</h3>
     <p>Type anything below and watch how it gets broken into pieces. Each colored block is one token. Hover over a token to see its numeric ID.</p>
-    <textarea id="tokenInput" rows="2" placeholder="Try typing a sentence here...">My dad asked me how ChatGPT works.</textarea>
+    <textarea id="tokenInput" rows="2" placeholder="Try typing a sentence here...">How ChatGPT works.</textarea>
     <div id="tokenOutput" class="token-display"></div>
     <div id="tokenStats" class="demo-stats"></div>
   </div>
@@ -297,16 +297,10 @@
             
             <!-- Post Navigation -->
                         <nav class="post-navigation">
-                                    <div class="nav-next">
-                        <span class="nav-label">Newer</span>
-                        <a href="ai-model-attacks.html">
-                            AI model attacks in practice →
-                        </a>
-                    </div>
                                                     <div class="nav-prev">
                         <span class="nav-label">Older</span>
-                        <a href="ukraine-four-years-data.html">
-                            ← Ukraine, four years in data: methodology first                        </a>
+                        <a href="entropy-randomness.html">
+                            ← Entropy vs Randomness                        </a>
                     </div>
                             </nav>
                     </div>
