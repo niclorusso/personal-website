@@ -8,7 +8,15 @@ Warning: Undefined array key "HTTP_HOST" in /Users/nicolalorusso/Locale/nicolalo
     <description>Personal website and blog</description>
     <language>en-us</language>
     <atom:link href="http://./rss.php" rel="self" type="application/rss+xml"/>
-    <lastBuildDate>Fri, 20 Mar 2026 16:41:02 +0000</lastBuildDate>
+    <lastBuildDate>Fri, 03 Apr 2026 10:55:52 +0000</lastBuildDate>
+    <item>
+      <title>LLM inference optimization</title>
+      <link>http://./post_frame.php?post=llm-inference-optimizations-by-example</link>
+      <guid isPermaLink="true">http://./post_frame.php?post=llm-inference-optimizations-by-example</guid>
+      <pubDate>Sun, 22 Mar 2026 00:00:00 +0000</pubDate>
+      <description>Example driven explanations of prefix KV cache reuse, speculative decoding, continuous batching, and key serving side optimizations.</description>
+      <author>nlorusso@ethz.ch (Nicola Lo Russo)</author>
+    </item>
     <item>
       <title>Transformers 101 (basics of chatGPT)</title>
       <link>http://./post_frame.php?post=how-llms-work</link>

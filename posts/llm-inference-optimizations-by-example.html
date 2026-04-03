@@ -1,0 +1,492 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Example driven explanations of prefix KV cache reuse, speculative decoding, continuous batching, and key serving side optimizations.">
+    <meta name="author" content="Nicola Lo Russo">
+    
+        <link rel="canonical" href="http://localhost">
+        
+    <title>LLM inference optimization - Nicola Lo Russo</title>
+    
+        <meta property="og:type" content="article">
+    <meta property="og:site_name" content="Nicola Lo Russo">
+    <meta property="og:title" content="LLM inference optimization">
+    <meta property="og:description" content="Example driven explanations of prefix KV cache reuse, speculative decoding, continuous batching, and key serving side optimizations.">
+    <meta property="og:url" content="http://localhost">
+    <meta name="twitter:card" content="summary">
+    <meta name="twitter:title" content="LLM inference optimization">
+    <meta name="twitter:description" content="Example driven explanations of prefix KV cache reuse, speculative decoding, continuous batching, and key serving side optimizations.">
+    
+    <!-- External Stylesheets -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
+    
+    <!-- Internal Stylesheets -->
+    <link rel="stylesheet" href="../css/simple-grid.css">
+    <link rel="stylesheet" href="../css/style.css">
+    <link rel="stylesheet" href="../css/chat-widget.css">
+            <link rel="stylesheet" href="../css/footer-style.css">
+            <link rel="stylesheet" href="../css/header-style.css">
+            <link rel="stylesheet" href="../css/blog-post-style.css">
+            <link rel="stylesheet" href="../css/post-navigation.css">
+        
+    <!-- JavaScript -->
+    <script src="../js/email_decrypt.js"></script>
+            <script src="../js/mathjax-config.js"></script>
+        <script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+            
+    <!-- Favicon -->
+    <link rel="icon" href="../images/nico.png" type="image/png">
+</head>
+<body>
+
+<script type="application/ld+json">{
+    "@context": "https://schema.org",
+    "@type": "BlogPosting",
+    "headline": "LLM inference optimization",
+    "datePublished": "2026-03-22T00:00:00+00:00",
+    "author": {
+        "@type": "Person",
+        "name": "Nicola Lo Russo"
+    },
+    "publisher": {
+        "@type": "Person",
+        "name": "Nicola Lo Russo"
+    },
+    "description": "Example driven explanations of prefix KV cache reuse, speculative decoding, continuous batching, and key serving side optimizations."
+}</script><header>
+    <div>
+        <div style="text-align: center;">
+            <h1><a href="../index.html" style="text-decoration: none; color: inherit;">Nicola Lo Russo</a></h1>
+                            <p class="site-tagline">Personal website</p>
+                        <p class="no-print"></p>
+            <div class="header-icons">
+                <a id="email-link" onClick="writeEmail()" style="cursor: pointer;">
+                    <i class="fas fa-envelope"></i>
+                    <i class="icon-text">nlorusso [at] ethz.ch</i>
+                </a>
+                <a href="https://www.linkedin.com/in/nicola-lo-russo-7a4849127/" target="_blank" rel="noopener noreferrer">
+                    <i class="fab fa-linkedin"></i>
+                    <i class="icon-text">Nicola Lo Russo</i>
+                </a>
+            </div>
+        </div>
+    </div>
+    <nav class="minimal-menu">
+        <div class="menu-item">
+            <a href="../index.html">
+                <span style="border-bottom: 2px solid var(--color-accent)">Home</span>
+            </a>
+        </div>
+        <div class="menu-item">
+            <a href="../cv.html">
+                <span >About Me</span>
+            </a>
+        </div>
+        
+        
+        <div class="menu-item project-start">
+            <a href="https://eulens.eu" target="_blank" rel="noopener noreferrer">
+                <span>EU Lens</span>
+            </a>
+        </div>
+        <div class="menu-item">
+            <a href="https://swissdata-platform.ch" target="_blank" rel="noopener noreferrer">
+                <span>SwissData</span>
+            </a>
+        </div>
+            </nav>
+</header>
+
+
+<div class="container">
+    <div class="row justify">
+        <div class="col-12">
+            <!-- Back to home link -->
+            <div class="post-meta-header">
+                <a href="../index.html" class="back-link">← go back home</a>
+                <span class="reading-time">11 min read</span>
+            </div>
+            
+            <div class="post-content">
+                                <link rel="stylesheet" href="posts/llm-inference-optimizations-by-example/inference-opt.css">
+
+<h1>LLM inference optimization</h1>
+
+<p>Most of the cost and latency people experience when using large language models has nothing to do with the model's intelligence. It comes from how inference is organized: how memory is managed, how requests are scheduled, how much redundant work the system does or avoids. These are the mechanics that determine whether a system feels responsive or sluggish, and they tend to get far less attention than model architecture even though they often matter more in practice.</p>
+
+<p>This post walks through the main optimizations with concrete examples. Each one follows the same basic pattern: a request arrives, the model processes the full input (prefill) to build internal state, then generates tokens one at a time (decode) by reusing that state. The optimizations below target either the prefill cost, the per-token decode cost, or how the server juggles overlapping requests.</p>
+
+
+  <h2>Example 1: Prefix KV cache reuse, when the prompt barely changes</h2>
+
+  <p>Imagine a chat workflow where the system message and the retrieved evidence stay the same across requests but the user question changes each time. In a transformer, attention produces key and value tensors for each token position at each layer, and with prefix caching the server can hold onto those tensors from one request and reuse them for any subsequent request that shares the same prefix. The new request only needs to compute KV for the tokens that actually differ, which in a RAG setup is often just the final question.</p>
+
+  <div class="viz" id="viz-kv">
+    <p class="viz-title">Prefix KV cache reuse</p>
+    <div class="viz-controls">
+      <button class="viz-btn active" onclick="kvToggle(false)">Without cache</button>
+      <button class="viz-btn" onclick="kvToggle(true)">With cache</button>
+    </div>
+    <div class="kv-prompt-preview" style="font-size:0.72rem;color:#6b6b6b;margin-bottom:0.75rem;line-height:1.6">
+      <strong style="color:#374151">Shared prefix (~2 000 tokens):</strong> "You are a helpful assistant. Use only the evidence provided."
+      + 3 retrieved passages about global emissions data.<br>
+      <strong style="color:#374151">Request A question:</strong> "What was the global temperature increase in 2024?"<br>
+      <strong style="color:#374151">Request B question:</strong> "Which country had the highest CO₂ emissions?"
+    </div>
+    <div class="kv-requests">
+      <div class="kv-row">
+        <span class="kv-row-label">Request A</span>
+        <div class="kv-bar">
+          <div class="kv-seg kv-prefix">system + 3 passages</div>
+          <div class="kv-seg kv-unique">temperature query</div>
+        </div>
+        <span class="kv-time" id="kv-time-a">120 ms</span>
+      </div>
+      <div class="kv-row">
+        <span class="kv-row-label">Request B</span>
+        <div class="kv-bar" id="kv-bar-b">
+          <div class="kv-seg kv-prefix" id="kv-b-prefix">system + 3 passages</div>
+          <div class="kv-seg kv-unique" id="kv-b-unique">emissions query</div>
+        </div>
+        <span class="kv-time" id="kv-time-b">120 ms</span>
+      </div>
+    </div>
+    <p class="viz-note" id="kv-note">Both requests compute the full KV cache from scratch, including the identical prefix.</p>
+  </div>
+
+  <p>The user-facing effect is a shorter wait before the first token appears, because the server skipped the part of the computation that was identical to what it already did for the previous request.</p>
+
+  <p>The catch is that this only helps when your workload actually repeats prefixes. In many RAG systems the retrieved evidence varies substantially between queries, which reduces prefix overlap and limits the benefit. Whether prefix caching helps a lot or barely at all depends almost entirely on what the traffic looks like.</p>
+
+
+  <h2>Example 2: Speculative decoding, when a draft autocomplete is usually right</h2>
+
+  <p>Think of generation as autocomplete. A smaller, faster model proposes the next few tokens, and then the full model checks all of those proposals in a single forward pass rather than one at a time. That single-pass verification is the whole trick: checking k proposed tokens costs roughly the same as generating one token normally (the target model can process the proposed sequence in parallel, so verification is essentially free).</p>
+
+  <p>When the draft happens to match what the target would have produced anyway, the output advances through several tokens at once without paying the usual per-token cost for each of them. When the draft is wrong, the target corrects at the first mismatch, discards everything proposed after that point, and generation resumes from the corrected position.</p>
+
+  <div class="viz" id="viz-spec">
+    <p class="viz-title">Speculative decoding: draft, verify, accept or correct</p>
+    <div class="viz-controls">
+      <button class="viz-btn" id="spec-btn-step" onclick="specStep()">Next step</button>
+      <button class="viz-btn" id="spec-btn-reset" onclick="specReset()">Reset</button>
+    </div>
+    <div class="spec-tokens" id="spec-tokens"></div>
+    <p class="spec-step-info" id="spec-info">Press "Next step" to see the draft/verify cycle.</p>
+    <div class="spec-legend">
+      <span class="spec-legend-item"><span class="spec-legend-dot" style="background:#dbeafe;border:1px solid #93c5fd"></span> Draft proposal</span>
+      <span class="spec-legend-item"><span class="spec-legend-dot" style="background:#dcfce7;border:1px solid #86efac"></span> Accepted</span>
+      <span class="spec-legend-item"><span class="spec-legend-dot" style="background:#fee2e2;border:1px solid #fca5a5"></span> Rejected</span>
+      <span class="spec-legend-item"><span class="spec-legend-dot" style="background:#fef9c3;border:1px solid #fde047"></span> Corrected</span>
+    </div>
+  </div>
+
+  <p>Whether this actually helps depends entirely on how often the draft is right. When acceptance is high you save real compute; when acceptance is low, the overhead of proposing and then throwing away bad guesses can make the system slower than if you had just run the target model by itself.</p>
+
+  <p>Acceptance rates depend on the domain, the sampling temperature, and how well the draft model's distribution aligns with the target's. In some regimes the match is excellent and the speedup is substantial. In others it quietly underperforms, and the only way to find out which regime you are in is to measure it on your actual workload.</p>
+
+
+  <h2>Example 3: Continuous batching, when multiple requests overlap naturally</h2>
+
+  <p>Consider two requests arriving at roughly the same time, one with a long prompt and one with a short one. In a static batching setup, both get grouped into a fixed batch that runs to completion, which means the short request finishes early and then sits idle, wasting its slot, until the long request is done.</p>
+
+  <p>Continuous batching avoids this by keeping requests alive independently and re-forming the batch at each scheduling step. When a short request finishes, its slot is immediately available for a new incoming request. The server is always running a dynamic mix of whatever work is ready, which keeps the GPU occupied instead of leaving capacity on the table.</p>
+
+  <div class="viz">
+    <p class="viz-title">Static batching vs continuous batching</p>
+    <div class="batch-compare">
+      <div>
+        <p class="batch-col-title">Static batching</p>
+        <div class="batch-timeline">
+          <div class="batch-lane">
+            <span class="batch-lane-label">A <span style="font-size:0.58rem;color:#9ca3af">(long)</span></span>
+            <div class="batch-lane-bar">
+              <div class="batch-seg prefill" style="left:0%;width:18%">prefill</div>
+              <div class="batch-seg decode" style="left:18%;width:52%">decode</div>
+            </div>
+          </div>
+          <div class="batch-lane">
+            <span class="batch-lane-label">B <span style="font-size:0.58rem;color:#9ca3af">(short)</span></span>
+            <div class="batch-lane-bar">
+              <div class="batch-seg prefill" style="left:0%;width:8%">prefill</div>
+              <div class="batch-seg decode" style="left:8%;width:20%">decode</div>
+              <div class="batch-seg wait" style="left:28%;width:42%;background:#fff3cd;border:1px dashed #d97706"></div>
+            </div>
+          </div>
+        </div>
+        <p class="viz-label" style="padding-left:28px;margin-top:0.3rem">B finishes early but its slot stays empty until the batch completes. No new request can fill it.</p>
+        <div class="batch-time-axis"><span>0</span><span>batch ends &rarr;</span></div>
+        <div class="batch-gpu">
+          <div class="batch-gpu-bar"><div class="batch-gpu-fill" style="width:55%"></div></div>
+          <span class="batch-gpu-label">~55% GPU utilization (wasted slot after B finishes)</span>
+        </div>
+      </div>
+      <div>
+        <p class="batch-col-title">Continuous batching</p>
+        <div class="batch-timeline">
+          <div class="batch-lane">
+            <span class="batch-lane-label">A <span style="font-size:0.58rem;color:#9ca3af">(long)</span></span>
+            <div class="batch-lane-bar">
+              <div class="batch-seg prefill" style="left:0%;width:18%">prefill</div>
+              <div class="batch-seg decode" style="left:18%;width:52%">decode</div>
+            </div>
+          </div>
+          <div class="batch-lane">
+            <span class="batch-lane-label">B <span style="font-size:0.58rem;color:#9ca3af">(short)</span></span>
+            <div class="batch-lane-bar">
+              <div class="batch-seg prefill" style="left:0%;width:8%">prefill</div>
+              <div class="batch-seg decode" style="left:8%;width:20%">decode</div>
+            </div>
+          </div>
+          <div class="batch-lane">
+            <span class="batch-lane-label">C <span style="font-size:0.58rem;color:#9ca3af">(new)</span></span>
+            <div class="batch-lane-bar">
+              <div class="batch-seg wait" style="left:0%;width:28%"></div>
+              <div class="batch-seg prefill" style="left:28%;width:10%">prefill</div>
+              <div class="batch-seg decode" style="left:38%;width:25%">decode</div>
+            </div>
+          </div>
+        </div>
+        <p class="viz-label" style="padding-left:28px;margin-top:0.3rem">When B finishes, its slot is immediately filled by C. The GPU never idles while A is still decoding.</p>
+        <div class="batch-time-axis"><span>0</span><span>time &rarr;</span></div>
+        <div class="batch-gpu">
+          <div class="batch-gpu-bar"><div class="batch-gpu-fill" style="width:90%"></div></div>
+          <span class="batch-gpu-label">~90% GPU utilization (freed slot reused by C)</span>
+        </div>
+      </div>
+    </div>
+    <p class="viz-note">In static batching, B's slot sits empty after it finishes. In continuous batching, that slot is immediately given to C. The key difference: the scheduler can swap requests in and out at every step, not just at batch boundaries.</p>
+  </div>
+
+  <p>The result is better GPU utilization and usually better responsiveness under load, though tail latency can still be unpredictable. Under some workloads the average wait time drops nicely while p95 barely moves or even gets slightly worse, so it is worth measuring under realistic concurrency rather than just testing with a single isolated request and calling it done.</p>
+
+
+  <h2>Example 4: Reducing effective prompt work, when fewer chunks are actually enough</h2>
+
+  <p>This one has nothing to do with the model or the serving infrastructure. It is entirely about what you put in the prompt.</p>
+
+  <p>Long-context RAG is the clearest illustration. A naive pipeline retrieves as many chunks as it can, concatenates them all into the prompt, and essentially hopes the model will locate the relevant part during attention. The prompt grows, prefill takes proportionally longer, and the time to first token climbs with it.</p>
+
+  <div class="viz" id="viz-prompt">
+    <p class="viz-title">Prompt size vs. latency tradeoff</p>
+    <div class="prompt-demo">
+      <div class="prompt-slider-row">
+        <span class="prompt-slider-label">Chunks:</span>
+        <input type="range" class="prompt-slider" id="prompt-chunks" min="1" max="8" value="4" oninput="promptUpdate()">
+        <span class="prompt-slider-val" id="prompt-chunks-val">4</span>
+      </div>
+      <div class="prompt-meter">
+        <div class="prompt-meter-label"><span>Prompt size</span><span id="prompt-tokens-val">~2400 tokens</span></div>
+        <div class="prompt-meter-track"><div class="prompt-meter-fill blue" id="prompt-size-fill" style="width:50%"></div></div>
+      </div>
+      <div class="prompt-meter">
+        <div class="prompt-meter-label"><span>TTFT (prefill time)</span><span id="prompt-ttft-val">~180 ms</span></div>
+        <div class="prompt-meter-track"><div class="prompt-meter-fill amber" id="prompt-ttft-fill" style="width:45%"></div></div>
+      </div>
+      <div class="prompt-meter">
+        <div class="prompt-meter-label"><span>Relevance coverage</span><span id="prompt-rel-val">92%</span></div>
+        <div class="prompt-meter-track"><div class="prompt-meter-fill green" id="prompt-rel-fill" style="width:92%"></div></div>
+      </div>
+    </div>
+    <p class="viz-note" id="prompt-note">At 4 chunks: good coverage with moderate latency. Adding more chunks increases TTFT with diminishing relevance gains.</p>
+  </div>
+
+  <p>A better pipeline retrieves fewer, more targeted chunks. If those chunks contain the evidence needed to answer the question, the model produces the same quality answer from a smaller input, and the first token arrives sooner because the prefill step had less to chew through.</p>
+
+  <p>What makes this worth thinking about carefully is that it interacts with almost every other optimization on this page. Shorter prompts reduce prefill work directly, but they also reduce KV cache memory pressure (freeing capacity for more concurrent requests), reduce the context that attention kernels must process, and reduce the prefix length that prefix caching would need to match across requests. It is one of those changes where the second-order effects stack up.</p>
+
+  <p>The tension, of course, is that retrieving fewer chunks risks missing the evidence the model actually needs, which degrades answer quality. The point is less about minimizing context than about matching context to what the question actually needs, which requires the retrieval stage to be genuinely good at selecting what matters. In practice that tradeoff between recall and latency is where most RAG systems end up spending the majority of their engineering effort, because getting retrieval right is harder than it initially looks.</p>
+
+
+  <h2>Example 5: Paged KV cache, when memory needs to stay reusable</h2>
+
+  <p>When many requests are active at once, each one maintains its own KV cache during decode, and those caches end up at different lengths because requests generate different numbers of tokens before they are done.</p>
+
+  <p>If KV memory is allocated as one big contiguous block per request, things start to fragment as requests finish at different times and leave holes in the memory layout. New requests that need contiguous space may have to wait for compaction or eviction, which introduces scheduling overhead that has nothing to do with the actual model computation.</p>
+
+  <div class="viz">
+    <p class="viz-title">Memory layout: contiguous vs paged allocation</p>
+    <div class="paged-compare">
+      <div>
+        <p class="paged-col-title">Contiguous allocation</p>
+        <div class="paged-mem">
+          <div class="paged-block a">A</div>
+          <div class="paged-block a">A</div>
+          <div class="paged-block a">A</div>
+          <div class="paged-block frag">&times;</div>
+          <div class="paged-block b">B</div>
+          <div class="paged-block b">B</div>
+          <div class="paged-block frag">&times;</div>
+          <div class="paged-block frag">&times;</div>
+          <div class="paged-block c">C</div>
+          <div class="paged-block c">C</div>
+          <div class="paged-block c">C</div>
+          <div class="paged-block c">C</div>
+          <div class="paged-block frag">&times;</div>
+          <div class="paged-block free"></div>
+          <div class="paged-block free"></div>
+          <div class="paged-block free"></div>
+        </div>
+        <p class="viz-label">Freed blocks leave gaps. New requests may not fit contiguously.</p>
+      </div>
+      <div>
+        <p class="paged-col-title">Paged allocation</p>
+        <div class="paged-mem">
+          <div class="paged-block a">A</div>
+          <div class="paged-block b">B</div>
+          <div class="paged-block a">A</div>
+          <div class="paged-block c">C</div>
+          <div class="paged-block b">B</div>
+          <div class="paged-block a">A</div>
+          <div class="paged-block c">C</div>
+          <div class="paged-block c">C</div>
+          <div class="paged-block c">C</div>
+          <div class="paged-block pool">&#x21bb;</div>
+          <div class="paged-block pool">&#x21bb;</div>
+          <div class="paged-block pool">&#x21bb;</div>
+          <div class="paged-block pool">&#x21bb;</div>
+          <div class="paged-block pool">&#x21bb;</div>
+          <div class="paged-block pool">&#x21bb;</div>
+          <div class="paged-block pool">&#x21bb;</div>
+        </div>
+        <p class="viz-label">Blocks are reusable. No fragmentation. Free blocks return to the pool.</p>
+      </div>
+    </div>
+  </div>
+
+  <p>Paged KV cache sidesteps this by managing memory in fixed-size blocks that can be scattered across the address space. When a request needs more cache it grabs a free block; when it finishes, those blocks go back to the pool. No contiguous allocation, no fragmentation.</p>
+
+  <p>The practical effect is fewer scheduling disruptions under high concurrency. It does not change the attention computation at all, only how the system manages the memory around it. Like most infrastructure-level work, the benefit is most visible when the system is under real pressure and almost invisible in single-request benchmarks where fragmentation never had a chance to develop in the first place.</p>
+
+
+  <h2>Example 6: Efficient attention kernels, when the math is the same but the hardware work changes</h2>
+
+  <p>Even when the mathematical operation is identical, the actual wall-clock cost of computing attention varies a lot depending on how the computation is mapped to the hardware.</p>
+
+  <p>Standard attention materializes large intermediate matrices (the attention scores, the softmax output) and writes them to global memory before reading them back for the next step. On modern accelerators the arithmetic is fast but the memory round-trips are expensive, so the computation ends up bottlenecked by data movement rather than by the math itself.</p>
+
+  <div class="viz">
+    <p class="viz-title">Standard attention vs FlashAttention data flow</p>
+    <div class="attn-compare">
+      <div>
+        <p class="attn-col-title">Standard attention</p>
+        <div class="attn-flow">
+          <div class="attn-layer">
+            <div class="attn-box qkv">Q</div>
+            <div class="attn-box qkv">K</div>
+            <div class="attn-box qkv">V</div>
+          </div>
+          <div class="attn-arrow">&darr; compute Q&middot;K&#7488;</div>
+          <div class="attn-layer">
+            <div class="attn-box smat">S = QK&#7488; &nbsp;(n&times;n)<br><span class="attn-mem-tag hbm">stored in HBM</span></div>
+          </div>
+          <div class="attn-arrow">&darr; softmax &darr; &times; V</div>
+          <div class="attn-layer">
+            <div class="attn-box smat">P = softmax(S)<br><span class="attn-mem-tag hbm">stored in HBM</span></div>
+          </div>
+          <div class="attn-arrow">&darr;</div>
+          <div class="attn-layer">
+            <div class="attn-box out">Output O</div>
+          </div>
+        </div>
+        <p class="viz-label">Large intermediate matrices S and P are written to and read from slow global memory (HBM). Memory bandwidth becomes the bottleneck.</p>
+      </div>
+      <div>
+        <p class="attn-col-title">FlashAttention (fused)</p>
+        <div class="attn-flow">
+          <div class="attn-layer">
+            <div class="attn-box qkv">Q tiles</div>
+            <div class="attn-box qkv">K tiles</div>
+            <div class="attn-box qkv">V tiles</div>
+          </div>
+          <div class="attn-arrow">&darr; load tiles into fast memory</div>
+          <div class="attn-layer">
+            <div class="attn-box sram">QK&#7488; + softmax + &times;V<br><span class="attn-mem-tag sram-tag">fused in SRAM</span></div>
+          </div>
+          <div class="attn-arrow">&darr; accumulate</div>
+          <div class="attn-layer">
+            <div class="attn-box out">Output O</div>
+          </div>
+        </div>
+        <p class="viz-label">No large intermediate matrix is materialized. The full computation stays in fast on-chip SRAM, tile by tile. Far fewer HBM round-trips.</p>
+      </div>
+    </div>
+  </div>
+
+  <p>Efficient attention kernels, FlashAttention being the most widely known, restructure the computation so that the intermediate results never leave fast on-chip SRAM. Instead of writing the full attention matrix to global memory and reading it back, the kernel processes the input in tiles, computing softmax and the value-weighted output within each tile and accumulating the result incrementally. The fused operation does the same math with far fewer memory round-trips.</p>
+
+  <p>The thing that makes this interesting as an optimization is that the output is bit-for-bit equivalent to standard attention. Nothing is being approximated or dropped. The speedup comes entirely from fitting the computation into the hardware's memory hierarchy more efficiently, and on long sequences (where the quadratic memory cost of naive attention really starts to bite) the difference in both speed and peak memory usage can be large.</p>
+
+  <p>One subtlety: kernel performance depends on the specific hardware. An attention kernel that shows big gains on one accelerator may look unremarkable on another because the memory hierarchy and compute-to-bandwidth ratios differ. Published numbers from a different GPU are directional, not definitive.</p>
+
+
+  <h2>Example 7: Quantization, when the weights are smaller but behavior stays acceptable</h2>
+
+  <p>Quantization changes the numerical precision of model weights and sometimes activations. The simplest version replaces 16-bit floating-point weights with 8-bit or 4-bit representations.</p>
+
+  <div class="viz" id="viz-quant">
+    <p class="viz-title">Memory and quality at different precisions</p>
+    <div class="viz-controls">
+      <button class="viz-btn active" onclick="quantSet('fp16')">FP16</button>
+      <button class="viz-btn" onclick="quantSet('int8')">INT8</button>
+      <button class="viz-btn" onclick="quantSet('int4')">INT4</button>
+    </div>
+    <div class="quant-demo">
+      <div class="quant-row">
+        <span class="quant-row-label">Memory</span>
+        <div class="quant-bar-track">
+          <div class="quant-bar-fill" id="quant-mem-fill" style="width:100%;background:#1e40af">14 GB</div>
+        </div>
+      </div>
+      <div class="quant-row">
+        <span class="quant-row-label">Throughput</span>
+        <div class="quant-bar-track">
+          <div class="quant-bar-fill" id="quant-tput-fill" style="width:40%;background:#3b82f6">1&times;</div>
+        </div>
+      </div>
+      <div class="quant-quality">
+        <span class="quant-row-label">Quality</span>
+        <div class="quant-quality-dots" id="quant-dots"></div>
+        <span class="quant-quality-label" id="quant-quality-label">Baseline</span>
+      </div>
+    </div>
+    <p class="viz-note" id="quant-note">FP16: full precision baseline. No quality tradeoff, but highest memory cost.</p>
+  </div>
+
+  <p>The immediate effect is a smaller memory footprint: a model that needs 14 GB in 16-bit precision might fit in 7 GB at 8-bit or under 4 GB at 4-bit. That matters because the model fits on cheaper hardware, and because memory bandwidth goes down when there is simply less data to move per matrix operation (bandwidth, not compute, is usually the bottleneck during decode).</p>
+
+  <p>The real question is whether the output quality holds up, and for most tasks it does, at least at 8-bit. The degradation from well-calibrated quantization is often smaller than people expect. At 4-bit the picture gets more complicated: some tasks tolerate it without issue, while others show measurable regressions, especially tasks that require precise numerical reasoning or that are already near the boundary of what the model can do.</p>
+
+  <p>Quantization is almost always worth trying as a first step when deploying under resource constraints, but "it works fine" needs to be verified on your specific task rather than assumed from aggregate benchmark scores. A model that quantizes beautifully for summarization can fall apart for structured extraction, and the only reliable way to know which side you are on is to actually test it.</p>
+
+
+  <h2>Takeaway</h2>
+
+  <p>These optimizations fall roughly into three groups: prefill-focused (prompt reduction, prefix caching), decode-focused (speculative decoding, efficient kernels, quantization), and server-focused (continuous batching, paged memory management). They target different parts of the pipeline and none of them work unconditionally. Prefix caching needs repeated prefixes. Speculative decoding needs a draft model that actually agrees with the target often enough. Quantization needs to not break whatever task you care about.</p>
+
+  <p>The common thread is that inference performance depends as much on the workload, the serving infrastructure, and the engineering decisions around the model as on the model itself. Two deployments of the same model can have wildly different latency profiles depending on how these pieces are configured, and the only way to know what helps in your specific case is to measure it there.</p>
+
+<script src="llm-inference-optimizations-by-example/inference-opt.js"></script>
+            </div>
+            
+            <!-- Post Navigation -->
+                        <nav class="post-navigation">
+                                                    <div class="nav-prev">
+                        <span class="nav-label">Older</span>
+                        <a href="how-llms-work.html">
+                            ← Transformers 101 (basics of chatGPT)                        </a>
+                    </div>
+                            </nav>
+                    </div>
+    </div>
+</div>
+
+<footer>
+    <p>© 2026 Nicola Lo Russo</p>
+</footer>
+<script src="../js/chat-widget.js" defer></script>
+
+</body>
+</html>
