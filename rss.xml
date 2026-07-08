@@ -1,129 +1,127 @@
-
-Warning: Undefined array key "HTTP_HOST" in /Users/nicolalorusso/Locale/nicolalorusso.ch/homepage/rss.php on line 17
 <?xml version="1.0" encoding="UTF-8"?>
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
     <title>Nicola Lo Russo</title>
-    <link>http://.</link>
+    <link>https://nicolalorusso.ch</link>
     <description>Personal website and blog</description>
     <language>en-us</language>
-    <atom:link href="http://./rss.php" rel="self" type="application/rss+xml"/>
-    <lastBuildDate>Fri, 03 Apr 2026 11:02:53 +0000</lastBuildDate>
+    <atom:link href="https://nicolalorusso.ch/rss.php" rel="self" type="application/rss+xml"/>
+    <lastBuildDate>Wed, 08 Jul 2026 14:21:13 +0000</lastBuildDate>
     <item>
       <title>LLM inference optimization</title>
-      <link>http://./post_frame.php?post=llm-inference-optimizations-by-example</link>
-      <guid isPermaLink="true">http://./post_frame.php?post=llm-inference-optimizations-by-example</guid>
+      <link>https://nicolalorusso.ch/posts/llm-inference-optimizations-by-example.html</link>
+      <guid isPermaLink="true">https://nicolalorusso.ch/posts/llm-inference-optimizations-by-example.html</guid>
       <pubDate>Sun, 22 Mar 2026 00:00:00 +0000</pubDate>
       <description>Example driven explanations of prefix KV cache reuse, speculative decoding, continuous batching, and key serving side optimizations.</description>
       <author>nlorusso@ethz.ch (Nicola Lo Russo)</author>
     </item>
     <item>
       <title>Transformers 101 (basics of chatGPT)</title>
-      <link>http://./post_frame.php?post=how-llms-work</link>
-      <guid isPermaLink="true">http://./post_frame.php?post=how-llms-work</guid>
+      <link>https://nicolalorusso.ch/posts/how-llms-work.html</link>
+      <guid isPermaLink="true">https://nicolalorusso.ch/posts/how-llms-work.html</guid>
       <pubDate>Fri, 06 Mar 2026 00:00:00 +0000</pubDate>
       <description>A step-by-step interactive explanation of large language models, from text to tokens to probabilities, for someone with zero background.</description>
       <author>nlorusso@ethz.ch (Nicola Lo Russo)</author>
     </item>
     <item>
       <title>Entropy vs Randomness</title>
-      <link>http://./post_frame.php?post=entropy-randomness</link>
-      <guid isPermaLink="true">http://./post_frame.php?post=entropy-randomness</guid>
+      <link>https://nicolalorusso.ch/posts/entropy-randomness.html</link>
+      <guid isPermaLink="true">https://nicolalorusso.ch/posts/entropy-randomness.html</guid>
       <pubDate>Wed, 11 Feb 2026 00:00:00 +0000</pubDate>
       <description>Understanding Shannon entropy and why it&#039;s not the same as randomness. With interactive demos exploring information content, compression, and cryptographic security.</description>
       <author>nlorusso@ethz.ch (Nicola Lo Russo)</author>
     </item>
     <item>
       <title>SwissData is now online</title>
-      <link>http://./post_frame.php?post=swissdata</link>
-      <guid isPermaLink="true">http://./post_frame.php?post=swissdata</guid>
+      <link>https://nicolalorusso.ch/posts/swissdata.html</link>
+      <guid isPermaLink="true">https://nicolalorusso.ch/posts/swissdata.html</guid>
       <pubDate>Fri, 06 Feb 2026 00:00:00 +0000</pubDate>
       <author>nlorusso@ethz.ch (Nicola Lo Russo)</author>
     </item>
     <item>
       <title>Introducing EU Lens</title>
-      <link>http://./post_frame.php?post=eulens</link>
-      <guid isPermaLink="true">http://./post_frame.php?post=eulens</guid>
+      <link>https://nicolalorusso.ch/posts/eulens.html</link>
+      <guid isPermaLink="true">https://nicolalorusso.ch/posts/eulens.html</guid>
       <pubDate>Fri, 30 Jan 2026 00:00:00 +0000</pubDate>
       <description>A platform to explore European Parliament voting data, MEP profiles, and AI-powered bill summaries.</description>
       <author>nlorusso@ethz.ch (Nicola Lo Russo)</author>
     </item>
     <item>
       <title>How to search for a flat (mathematically)</title>
-      <link>http://./post_frame.php?post=flat-search</link>
-      <guid isPermaLink="true">http://./post_frame.php?post=flat-search</guid>
+      <link>https://nicolalorusso.ch/posts/flat-search.html</link>
+      <guid isPermaLink="true">https://nicolalorusso.ch/posts/flat-search.html</guid>
       <pubDate>Tue, 20 Jan 2026 00:00:00 +0000</pubDate>
       <description>How to maximize your chances of finding the best flat in Zurich using optimal stopping theory. With an extension for two people with correlated preferences.</description>
       <author>nlorusso@ethz.ch (Nicola Lo Russo)</author>
     </item>
     <item>
       <title>How to price options with Monte Carlo methods</title>
-      <link>http://./post_frame.php?post=monte-carlo</link>
-      <guid isPermaLink="true">http://./post_frame.php?post=monte-carlo</guid>
+      <link>https://nicolalorusso.ch/posts/monte-carlo.html</link>
+      <guid isPermaLink="true">https://nicolalorusso.ch/posts/monte-carlo.html</guid>
       <pubDate>Fri, 16 Jan 2026 00:00:00 +0000</pubDate>
       <description>A rigorous exploration of Monte Carlo methods for option pricing and variance reduction, with measure-theoretic foundations and interactive visualizations.</description>
       <author>nlorusso@ethz.ch (Nicola Lo Russo)</author>
     </item>
     <item>
       <title>Sampling from the long tail: Oulipian constraints for language models</title>
-      <link>http://./post_frame.php?post=clinamen-algorithm</link>
-      <guid isPermaLink="true">http://./post_frame.php?post=clinamen-algorithm</guid>
+      <link>https://nicolalorusso.ch/posts/clinamen-algorithm.html</link>
+      <guid isPermaLink="true">https://nicolalorusso.ch/posts/clinamen-algorithm.html</guid>
       <pubDate>Sat, 10 Jan 2026 00:00:00 +0000</pubDate>
       <description>Forcing language models to make creative errors at fixed intervals, inspired by Lucretius and the Oulipo.</description>
       <author>nlorusso@ethz.ch (Nicola Lo Russo)</author>
     </item>
     <item>
       <title>Literature Turing test</title>
-      <link>http://./post_frame.php?post=literature-turing-test</link>
-      <guid isPermaLink="true">http://./post_frame.php?post=literature-turing-test</guid>
+      <link>https://nicolalorusso.ch/posts/literature-turing-test.html</link>
+      <guid isPermaLink="true">https://nicolalorusso.ch/posts/literature-turing-test.html</guid>
       <pubDate>Fri, 09 Jan 2026 00:00:00 +0000</pubDate>
       <description>Can you tell the difference between human-written literature and AI-generated text? Test your skills across 10 famous authors.</description>
       <author>nlorusso@ethz.ch (Nicola Lo Russo)</author>
     </item>
     <item>
       <title>My 2025 in books</title>
-      <link>http://./post_frame.php?post=books-2025</link>
-      <guid isPermaLink="true">http://./post_frame.php?post=books-2025</guid>
+      <link>https://nicolalorusso.ch/posts/books-2025.html</link>
+      <guid isPermaLink="true">https://nicolalorusso.ch/posts/books-2025.html</guid>
       <pubDate>Fri, 26 Dec 2025 00:00:00 +0000</pubDate>
       <description>In 2025 I read 36 books. Here is a short overview and a few highlights of my year in books. Below, the full list.</description>
       <author>nlorusso@ethz.ch (Nicola Lo Russo)</author>
     </item>
     <item>
       <title>Intro to voting theory: chapter 1</title>
-      <link>http://./post_frame.php?post=voting-systems</link>
-      <guid isPermaLink="true">http://./post_frame.php?post=voting-systems</guid>
+      <link>https://nicolalorusso.ch/posts/voting-systems.html</link>
+      <guid isPermaLink="true">https://nicolalorusso.ch/posts/voting-systems.html</guid>
       <pubDate>Mon, 31 Mar 2025 00:00:00 +0000</pubDate>
       <description>Same voters&#039; preferences, different winners? How voting systems can totally change the result.</description>
       <author>nlorusso@ethz.ch (Nicola Lo Russo)</author>
     </item>
     <item>
       <title>Of risks and asteroids: analyzing the impact probability of 2024 YR4</title>
-      <link>http://./post_frame.php?post=risk-asteroid</link>
-      <guid isPermaLink="true">http://./post_frame.php?post=risk-asteroid</guid>
+      <link>https://nicolalorusso.ch/posts/risk-asteroid.html</link>
+      <guid isPermaLink="true">https://nicolalorusso.ch/posts/risk-asteroid.html</guid>
       <pubDate>Wed, 19 Feb 2025 00:00:00 +0000</pubDate>
       <description>Analyzing the impact probability of asteroid YR4 in 2032 and what it really means.</description>
       <author>nlorusso@ethz.ch (Nicola Lo Russo)</author>
     </item>
     <item>
       <title>About Bayes&#039; theorem, disease testing, and the prosecutor&#039;s fallacy</title>
-      <link>http://./post_frame.php?post=bayes-theorem</link>
-      <guid isPermaLink="true">http://./post_frame.php?post=bayes-theorem</guid>
+      <link>https://nicolalorusso.ch/posts/bayes-theorem.html</link>
+      <guid isPermaLink="true">https://nicolalorusso.ch/posts/bayes-theorem.html</guid>
       <pubDate>Tue, 19 Nov 2024 00:00:00 +0000</pubDate>
       <description>Bayes&#039; theorem applied to rare disease diagnosis, and the dangers of the prosecutor&#039;s fallacy.</description>
       <author>nlorusso@ethz.ch (Nicola Lo Russo)</author>
     </item>
     <item>
       <title>The unfair coin</title>
-      <link>http://./post_frame.php?post=unfair-coin</link>
-      <guid isPermaLink="true">http://./post_frame.php?post=unfair-coin</guid>
+      <link>https://nicolalorusso.ch/posts/unfair-coin.html</link>
+      <guid isPermaLink="true">https://nicolalorusso.ch/posts/unfair-coin.html</guid>
       <pubDate>Sun, 03 Nov 2024 00:00:00 +0000</pubDate>
       <description>You are given 1000 coins: 999 are fair and 1 is rigged...</description>
       <author>nlorusso@ethz.ch (Nicola Lo Russo)</author>
     </item>
     <item>
       <title>A logic puzzle</title>
-      <link>http://./post_frame.php?post=watson-riddle</link>
-      <guid isPermaLink="true">http://./post_frame.php?post=watson-riddle</guid>
+      <link>https://nicolalorusso.ch/posts/watson-riddle.html</link>
+      <guid isPermaLink="true">https://nicolalorusso.ch/posts/watson-riddle.html</guid>
       <pubDate>Mon, 28 Oct 2024 00:00:00 +0000</pubDate>
       <description>A solution to a logic puzzle published by Oxford University Press in October 2024.</description>
       <author>nlorusso@ethz.ch (Nicola Lo Russo)</author>
