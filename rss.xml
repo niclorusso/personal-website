@@ -6,7 +6,7 @@
     <description>Personal website and blog</description>
     <language>en-us</language>
     <atom:link href="https://nicolalorusso.ch/rss.php" rel="self" type="application/rss+xml"/>
-    <lastBuildDate>Wed, 08 Jul 2026 14:21:13 +0000</lastBuildDate>
+    <lastBuildDate>Fri, 30 Oct 2026 13:56:34 +0000</lastBuildDate>
     <item>
       <title>LLM inference optimization</title>
       <link>https://nicolalorusso.ch/posts/llm-inference-optimizations-by-example.html</link>
