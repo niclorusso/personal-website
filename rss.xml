@@ -6,27 +6,43 @@
     <description>Personal website and blog</description>
     <language>en-us</language>
     <atom:link href="https://nicolalorusso.ch/rss.php" rel="self" type="application/rss+xml"/>
-    <lastBuildDate>Fri, 30 Oct 2026 16:41:56 +0000</lastBuildDate>
+    <lastBuildDate>Thu, 12 Nov 2026 15:59:53 +0000</lastBuildDate>
     <item>
-      <title>My appearance on TeleTicino</title>
+      <title>What the Swiss parliament asks about AI</title>
+      <link>https://nicolalorusso.ch/posts/ai-parliament.html</link>
+      <guid isPermaLink="true">https://nicolalorusso.ch/posts/ai-parliament.html</guid>
+      <pubDate>Thu, 12 Nov 2026 00:00:00 +0000</pubDate>
+      <description>272 motions, postulates, interpellations and questions about artificial intelligence, from 2000 to today: what they ask, who files them and what the Federal Council answers.</description>
+      <author>nic.lorusso@icloud.com (Nicola Lo Russo)</author>
+    </item>
+    <item>
+      <title>A live map of my hometown</title>
+      <link>https://nicolalorusso.ch/posts/bellinzona-real-time.html</link>
+      <guid isPermaLink="true">https://nicolalorusso.ch/posts/bellinzona-real-time.html</guid>
+      <pubDate>Wed, 11 Nov 2026 00:00:00 +0000</pubDate>
+      <description>An illustrated map of Bellinzona built from open data, where trains, buses, weather and river follow the real town.</description>
+      <author>nic.lorusso@icloud.com (Nicola Lo Russo)</author>
+    </item>
+    <item>
+      <title>I was on TV</title>
       <link>https://nicolalorusso.ch/posts/ecoplus-teleticino-2026.html</link>
       <guid isPermaLink="true">https://nicolalorusso.ch/posts/ecoplus-teleticino-2026.html</guid>
       <pubDate>Thu, 08 Oct 2026 00:00:00 +0000</pubDate>
-      <author>nlorusso@ethz.ch (Nicola Lo Russo)</author>
+      <author>nic.lorusso@icloud.com (Nicola Lo Russo)</author>
     </item>
     <item>
       <title>My opening at TEDxBellinzona 2026</title>
       <link>https://nicolalorusso.ch/posts/tedxbellinzona-2026.html</link>
       <guid isPermaLink="true">https://nicolalorusso.ch/posts/tedxbellinzona-2026.html</guid>
       <pubDate>Thu, 01 Oct 2026 00:00:00 +0000</pubDate>
-      <author>nlorusso@ethz.ch (Nicola Lo Russo)</author>
+      <author>nic.lorusso@icloud.com (Nicola Lo Russo)</author>
     </item>
     <item>
       <title>My talk at Hacking Democracy, ETH Zurich</title>
       <link>https://nicolalorusso.ch/posts/hacking-democracy-talk.html</link>
       <guid isPermaLink="true">https://nicolalorusso.ch/posts/hacking-democracy-talk.html</guid>
       <pubDate>Tue, 08 Sep 2026 00:00:00 +0000</pubDate>
-      <author>nlorusso@ethz.ch (Nicola Lo Russo)</author>
+      <author>nic.lorusso@icloud.com (Nicola Lo Russo)</author>
     </item>
     <item>
       <title>LLM inference optimization</title>
@@ -34,7 +50,7 @@
       <guid isPermaLink="true">https://nicolalorusso.ch/posts/llm-inference-optimizations-by-example.html</guid>
       <pubDate>Sun, 22 Mar 2026 00:00:00 +0000</pubDate>
       <description>Example driven explanations of prefix KV cache reuse, speculative decoding, continuous batching, and key serving side optimizations.</description>
-      <author>nlorusso@ethz.ch (Nicola Lo Russo)</author>
+      <author>nic.lorusso@icloud.com (Nicola Lo Russo)</author>
     </item>
     <item>
       <title>Transformers 101 (basics of chatGPT)</title>
@@ -42,7 +58,7 @@
       <guid isPermaLink="true">https://nicolalorusso.ch/posts/how-llms-work.html</guid>
       <pubDate>Fri, 06 Mar 2026 00:00:00 +0000</pubDate>
       <description>A step-by-step interactive explanation of large language models, from text to tokens to probabilities, for someone with zero background.</description>
-      <author>nlorusso@ethz.ch (Nicola Lo Russo)</author>
+      <author>nic.lorusso@icloud.com (Nicola Lo Russo)</author>
     </item>
     <item>
       <title>Entropy vs Randomness</title>
@@ -50,14 +66,14 @@
       <guid isPermaLink="true">https://nicolalorusso.ch/posts/entropy-randomness.html</guid>
       <pubDate>Wed, 11 Feb 2026 00:00:00 +0000</pubDate>
       <description>Understanding Shannon entropy and why it&#039;s not the same as randomness. With interactive demos exploring information content, compression, and cryptographic security.</description>
-      <author>nlorusso@ethz.ch (Nicola Lo Russo)</author>
+      <author>nic.lorusso@icloud.com (Nicola Lo Russo)</author>
     </item>
     <item>
       <title>SwissData is now online</title>
       <link>https://nicolalorusso.ch/posts/swissdata.html</link>
       <guid isPermaLink="true">https://nicolalorusso.ch/posts/swissdata.html</guid>
       <pubDate>Fri, 06 Feb 2026 00:00:00 +0000</pubDate>
-      <author>nlorusso@ethz.ch (Nicola Lo Russo)</author>
+      <author>nic.lorusso@icloud.com (Nicola Lo Russo)</author>
     </item>
     <item>
       <title>Introducing EU Lens</title>
@@ -65,7 +81,7 @@
       <guid isPermaLink="true">https://nicolalorusso.ch/posts/eulens.html</guid>
       <pubDate>Fri, 30 Jan 2026 00:00:00 +0000</pubDate>
       <description>A platform to explore European Parliament voting data, MEP profiles, and AI-powered bill summaries.</description>
-      <author>nlorusso@ethz.ch (Nicola Lo Russo)</author>
+      <author>nic.lorusso@icloud.com (Nicola Lo Russo)</author>
     </item>
     <item>
       <title>How to search for a flat (mathematically)</title>
@@ -73,7 +89,7 @@
       <guid isPermaLink="true">https://nicolalorusso.ch/posts/flat-search.html</guid>
       <pubDate>Tue, 20 Jan 2026 00:00:00 +0000</pubDate>
       <description>How to maximize your chances of finding the best flat in Zurich using optimal stopping theory. With an extension for two people with correlated preferences.</description>
-      <author>nlorusso@ethz.ch (Nicola Lo Russo)</author>
+      <author>nic.lorusso@icloud.com (Nicola Lo Russo)</author>
     </item>
     <item>
       <title>How to price options with Monte Carlo methods</title>
@@ -81,7 +97,7 @@
       <guid isPermaLink="true">https://nicolalorusso.ch/posts/monte-carlo.html</guid>
       <pubDate>Fri, 16 Jan 2026 00:00:00 +0000</pubDate>
       <description>A rigorous exploration of Monte Carlo methods for option pricing and variance reduction, with measure-theoretic foundations and interactive visualizations.</description>
-      <author>nlorusso@ethz.ch (Nicola Lo Russo)</author>
+      <author>nic.lorusso@icloud.com (Nicola Lo Russo)</author>
     </item>
     <item>
       <title>Sampling from the long tail: Oulipian constraints for language models</title>
@@ -89,7 +105,7 @@
       <guid isPermaLink="true">https://nicolalorusso.ch/posts/clinamen-algorithm.html</guid>
       <pubDate>Sat, 10 Jan 2026 00:00:00 +0000</pubDate>
       <description>Forcing language models to make creative errors at fixed intervals, inspired by Lucretius and the Oulipo.</description>
-      <author>nlorusso@ethz.ch (Nicola Lo Russo)</author>
+      <author>nic.lorusso@icloud.com (Nicola Lo Russo)</author>
     </item>
     <item>
       <title>Literature Turing test</title>
@@ -97,7 +113,7 @@
       <guid isPermaLink="true">https://nicolalorusso.ch/posts/literature-turing-test.html</guid>
       <pubDate>Fri, 09 Jan 2026 00:00:00 +0000</pubDate>
       <description>Can you tell the difference between human-written literature and AI-generated text? Test your skills across 10 famous authors.</description>
-      <author>nlorusso@ethz.ch (Nicola Lo Russo)</author>
+      <author>nic.lorusso@icloud.com (Nicola Lo Russo)</author>
     </item>
     <item>
       <title>My 2025 in books</title>
@@ -105,7 +121,7 @@
       <guid isPermaLink="true">https://nicolalorusso.ch/posts/books-2025.html</guid>
       <pubDate>Fri, 26 Dec 2025 00:00:00 +0000</pubDate>
       <description>In 2025 I read 36 books. Here is a short overview and a few highlights of my year in books. Below, the full list.</description>
-      <author>nlorusso@ethz.ch (Nicola Lo Russo)</author>
+      <author>nic.lorusso@icloud.com (Nicola Lo Russo)</author>
     </item>
     <item>
       <title>Intro to voting theory: chapter 1</title>
@@ -113,7 +129,7 @@
       <guid isPermaLink="true">https://nicolalorusso.ch/posts/voting-systems.html</guid>
       <pubDate>Mon, 31 Mar 2025 00:00:00 +0000</pubDate>
       <description>Same voters&#039; preferences, different winners? How voting systems can totally change the result.</description>
-      <author>nlorusso@ethz.ch (Nicola Lo Russo)</author>
+      <author>nic.lorusso@icloud.com (Nicola Lo Russo)</author>
     </item>
     <item>
       <title>Of risks and asteroids: analyzing the impact probability of 2024 YR4</title>
@@ -121,7 +137,7 @@
       <guid isPermaLink="true">https://nicolalorusso.ch/posts/risk-asteroid.html</guid>
       <pubDate>Wed, 19 Feb 2025 00:00:00 +0000</pubDate>
       <description>Analyzing the impact probability of asteroid YR4 in 2032 and what it really means.</description>
-      <author>nlorusso@ethz.ch (Nicola Lo Russo)</author>
+      <author>nic.lorusso@icloud.com (Nicola Lo Russo)</author>
     </item>
     <item>
       <title>About Bayes&#039; theorem, disease testing, and the prosecutor&#039;s fallacy</title>
@@ -129,7 +145,7 @@
       <guid isPermaLink="true">https://nicolalorusso.ch/posts/bayes-theorem.html</guid>
       <pubDate>Tue, 19 Nov 2024 00:00:00 +0000</pubDate>
       <description>Bayes&#039; theorem applied to rare disease diagnosis, and the dangers of the prosecutor&#039;s fallacy.</description>
-      <author>nlorusso@ethz.ch (Nicola Lo Russo)</author>
+      <author>nic.lorusso@icloud.com (Nicola Lo Russo)</author>
     </item>
     <item>
       <title>The unfair coin</title>
@@ -137,7 +153,7 @@
       <guid isPermaLink="true">https://nicolalorusso.ch/posts/unfair-coin.html</guid>
       <pubDate>Sun, 03 Nov 2024 00:00:00 +0000</pubDate>
       <description>You are given 1000 coins: 999 are fair and 1 is rigged...</description>
-      <author>nlorusso@ethz.ch (Nicola Lo Russo)</author>
+      <author>nic.lorusso@icloud.com (Nicola Lo Russo)</author>
     </item>
     <item>
       <title>A logic puzzle</title>
@@ -145,7 +161,7 @@
       <guid isPermaLink="true">https://nicolalorusso.ch/posts/watson-riddle.html</guid>
       <pubDate>Mon, 28 Oct 2024 00:00:00 +0000</pubDate>
       <description>A solution to a logic puzzle published by Oxford University Press in October 2024.</description>
-      <author>nlorusso@ethz.ch (Nicola Lo Russo)</author>
+      <author>nic.lorusso@icloud.com (Nicola Lo Russo)</author>
     </item>
   </channel>
 </rss>

@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Five things that changed in Ticino since the 1970s, and 65 indicators to compare any year with today.">
+    <meta name="author" content="Nicola Lo Russo">
+    <title>Ticino over fifty years - Nicola Lo Russo</title>
+    <meta property="og:type" content="website">
+    <meta property="og:site_name" content="Nicola Lo Russo">
+    <meta property="og:title" content="Ticino over fifty years">
+    <link rel="stylesheet" href="../../css/simple-grid.css">
+    <link rel="stylesheet" href="../../css/style.css">
+    <link rel="stylesheet" href="../projects.css">
+    <link rel="stylesheet" href="style.css">
+    <link rel="icon" href="../../images/nico.png" type="image/png">
+</head>
+<body>
+<header>
+    <div style="text-align: center;">
+        <h1><a href="../../index.html" style="text-decoration: none; color: inherit;">Nicola Lo Russo</a></h1>
+        <p class="site-tagline">Projects</p>
+    </div>
+</header>
+
+<main class="container project">
+    <p class="back"><a href="../index.html">&larr; All projects</a></p>
+    <p class="kicker">Ticino · Historical data</p>
+    <h1 class="project-title">Ticino over fifty years</h1>
+    <p class="lede">Five things that changed since the 1970s, and <span id="count">…</span> indicators to compare any year with today.</p>
+    <p class="updated">Updated <span id="updated">…</span> · Sources: Federal Statistical Office, State Secretariat for Economic Affairs, Federal Office of Public Health, MeteoSwiss</p>
+
+    <div id="features"></div>
+
+    <section class="all">
+        <p class="kicker">All indicators</p>
+        <h2 class="all-title">Compare any year with today</h2>
+        <div class="filters yearbar">
+            <label for="year">Compare today with</label>
+            <output id="yearOut" for="year">1976</output>
+            <input type="range" id="year" min="1971" max="2020" step="1" value="1976" aria-label="Year to compare with today">
+            <span class="legend-inline"><i class="k ti"></i>Ticino <i class="k ch"></i>Switzerland</span>
+        </div>
+        <nav class="secnav" id="nav" aria-label="Sections"></nav>
+        <div id="sections"></div>
+    </section>
+
+    <section class="method">
+        <h2>How to read it</h2>
+        <p>The five charts at the top show the whole series available. Below them, each card shows the value in the year you pick and the latest value available. If an indicator has no figure for that year, the closest year is used and shown next to the number, highlighted when it is more than two years away. The dot on the chart marks the year compared. The note on each figure opens under the chart.</p>
+        <p>For the climate, single years vary a lot, so the numbers compared are averages over the ten years ending in that year. The thin line is the yearly value, the thick line the ten-year average.</p>
+        <p>Where a grey line appears, it is the same indicator for Switzerland as a whole.</p>
+        <h2>Sources</h2>
+        <p>Population, naturalisations, age, marriages, wages, jobs, unemployment by the international definition, cross-border workers, rents, vacant homes, cars, farming, wood harvest, cinemas, road accidents, hotels, census, elections and votes: <a href="https://www.bfs.admin.ch/" target="_blank" rel="noopener noreferrer">Federal Statistical Office</a> (STAT-TAB and stats.swiss). The table is listed for each indicator in the data file.</p>
+        <p>Health insurance premiums: <a href="https://www.bag.admin.ch/" target="_blank" rel="noopener noreferrer">Federal Office of Public Health</a>, statistics of compulsory health insurance, table T 3.01, until 2022; Federal Statistical Office for 2023 and 2024. Registered unemployment: <a href="https://www.amstat.ch/" target="_blank" rel="noopener noreferrer">State Secretariat for Economic Affairs</a>, monthly rates by canton as published by the Federal Statistical Office. Climate: <a href="https://www.meteoswiss.admin.ch/services-and-publications/service/open-data.html" target="_blank" rel="noopener noreferrer">MeteoSwiss</a>, homogenised series of the Lugano station.</p>
+        <p>Several series start after 1976 or stop early. Premiums start in 1996, when insurance became compulsory. Rents are available from 2000, wages and cross-border workers from 2002, cars and hotel stays from 2005, road accidents from 1992, vacant homes from 1997, the age of residents from 1981. Premiums and rents are compared with wages from 2010. The census figures on language, religion and households exist only for 1970, 1980, 1990 and 2000, so for those cards "today" is 2000.</p>
+        <p>Population figures come from registers since 2010 and from estimates before. Votes are compared by decade; the 2020s run to the end of 2025.</p>
+        <p><a href="indicators.csv" download>&darr; Download the data (CSV)</a> · One value per row, with unit and source.</p>
+    </section>
+</main>
+
+<div id="tip" role="status" hidden></div>
+<script src="app.js"></script>
+<script src="features.js"></script>
+</body>
+</html>

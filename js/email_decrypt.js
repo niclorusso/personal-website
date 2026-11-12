@@ -26,7 +26,7 @@ function vigenereDecrypt(text, key) {
 
 function writeEmail() {
     // Encrypted email and passkey
-    const encryptedEmail = "lzircflu@imah.pn";
+    const encryptedEmail = "lww.lwenywh@bkyugb.gam";
     const passkey = "youaintgettingmyemail";
 
     // Decrypt the email

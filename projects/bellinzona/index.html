@@ -1,0 +1,425 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="theme-color" content="#0e0f12">
+<title>Bellinzona in real time</title>
+<style>
+  html, body { margin: 0; height: 100%; background: #0e0f12; overflow: hidden; overscroll-behavior: none;
+    font-family: ui-sans-serif, system-ui, sans-serif; -webkit-tap-highlight-color: transparent; }
+  #map { position: fixed; inset: 0; touch-action: none; cursor: grab; user-select: none; -webkit-user-select: none; }
+  #map.drag { cursor: grabbing; }
+  canvas { position: absolute; inset: 0; width: 100%; height: 100%; display: block; }
+  #labels { position: absolute; inset: 0; pointer-events: none; overflow: hidden; }
+  .lb { position: absolute; transform: translate(-50%, -100%); white-space: nowrap; color: #fff; font-weight: 600;
+    font-size: 13px; letter-spacing: .02em; text-shadow: 0 1px 3px #000c, 0 0 8px #0009; }
+  .lb.castle { font-size: 12px; background: #1b1d22cc; padding: 2px 8px; border-radius: 10px; font-weight: 500; }
+  .lb.town, .lb.city { font-size: 20px; text-transform: uppercase; letter-spacing: .12em; }
+  .lb.village, .lb.suburb { font-size: 14px; text-transform: uppercase; letter-spacing: .1em; opacity: .92; }
+  #title { position: fixed; top: calc(14px + env(safe-area-inset-top, 0px)); left: 16px; color: #fff; pointer-events: none;
+    text-shadow: 0 1px 4px #000a; }
+  #title h1 { margin: 0; font-size: 20px; font-weight: 700; letter-spacing: .01em; }
+  #title p { margin: 2px 0 0; font-size: 12px; opacity: .8; }
+  #zoom { position: fixed; right: 16px; top: calc(14px + env(safe-area-inset-top, 0px)); display: flex; flex-direction: column; gap: 1px;
+    border-radius: 8px; overflow: hidden; box-shadow: 0 2px 10px #0006; }
+  #zoom button { width: 38px; height: 38px; border: 0; background: #ffffffe6; color: #222; font-size: 20px; cursor: pointer; }
+  #zoom button:hover { background: #fff; }
+  #board { position: fixed; right: 16px; top: calc(108px + env(safe-area-inset-top, 0px)); width: 268px; background: #10233fe8; color: #fff; border-radius: 8px;
+    padding: 9px 11px 8px; font-size: 12px; line-height: 1.5; box-shadow: 0 2px 12px #0007; font-variant-numeric: tabular-nums; }
+  #board b { font-size: 12px; letter-spacing: .02em; } #board span { float: right; opacity: .8; }
+  #board div { display: grid; grid-template-columns: 40px 34px 1fr auto; gap: 6px; border-top: 1px solid #ffffff22; padding: 2px 0; margin-top: 2px; }
+  #board i, #board em, #board u, #board s { font-style: normal; text-decoration: none; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+  #board em { font-weight: 700; color: #ffd54a; } #board s { opacity: .75; } #board small { display: block; margin-top: 5px; opacity: .6; font-size: 10px; }
+  @media (max-width: 640px) { #board { display: none; } }
+  #wx { position: fixed; left: 18px; bottom: calc(82px + env(safe-area-inset-bottom, 0px)); color: #fff; font-size: 11.5px; opacity: .85; text-shadow: 0 1px 4px #000a; pointer-events: none; max-width: 70vw; }
+  #snd { position: fixed; right: 62px; top: calc(14px + env(safe-area-inset-top, 0px)); width: 38px; height: 38px; border: 0; border-radius: 8px; background: #ffffffe6; font-size: 17px; cursor: pointer; box-shadow: 0 2px 10px #0006; }
+  .tool { position: fixed; top: calc(14px + env(safe-area-inset-top, 0px)); width: 38px; height: 38px; border: 0; border-radius: 8px; background: #ffffffe6; font-size: 17px; cursor: pointer; box-shadow: 0 2px 10px #0006; }
+  #tmb { right: 108px; } #shot { right: 154px; }
+  #tm { position: fixed; right: 16px; top: calc(60px + env(safe-area-inset-top, 0px)); z-index: 25; width: 250px; background: #10233ff2; color: #fff; border-radius: 10px; padding: 10px 12px; font-size: 13px; box-shadow: 0 3px 14px #0007; display: grid; gap: 7px; }
+  #tm[hidden] { display: none; } #tm select { font: inherit; padding: 4px 6px; border-radius: 6px; border: 0; } #tm.past input, #tm.past span, #tm.past #tmn { display: none; }
+  #eranote { position: fixed; left: 50%; transform: translateX(-50%); top: calc(14px + env(safe-area-inset-top, 0px)); z-index: 20; max-width: min(560px, 70vw); background: #2a1d10ee; color: #f6e9d2; border-radius: 10px; padding: 8px 14px; font-size: 12.5px; line-height: 1.4; box-shadow: 0 3px 14px #0007; }
+  body.era #sky, body.era #walk-go, body.era #walk-hint { display: none !important; }
+  #eranote b { font-size: 15px; } #eranote[hidden] { display: none; } #tm input[type=range] { width: 100%; } #tm input[type=date] { font: inherit; padding: 3px 6px; border-radius: 6px; border: 0; }
+  #tm span { font-variant-numeric: tabular-nums; font-size: 15px; font-weight: 650; } #tm button { font: inherit; border: 0; border-radius: 6px; padding: 5px; cursor: pointer; }
+  #tip { position: fixed; z-index: 30; max-width: 250px; pointer-events: none; background: #10233ff2; color: #fff; border-radius: 8px; padding: 7px 10px; font-size: 13px; line-height: 1.3; box-shadow: 0 3px 14px #0007; }
+  #tip b { display: inline-block; padding: 0 6px; border-radius: 4px; background: #d0242b; } #tip b.bus { background: #f2c21a; color: #1b1b1b; }
+  #tip small { display: block; margin-top: 3px; opacity: .8; font-size: 11.5px; }
+  #credits { position: fixed; right: 0; bottom: 0; max-width: calc(100vw - 32px); background: #ffffffd9; color: #333; font-size: 11px;
+    line-height: 1.4; padding: 3px 8px calc(3px + env(safe-area-inset-bottom, 0px)); border-top-left-radius: 6px; }
+  @media (max-width: 640px) { #credits { left: 0; max-width: none; border-radius: 0; padding: 5px 16px calc(5px + env(safe-area-inset-bottom, 0px)); } }
+  #info { right: 200px; }
+  #about { position: fixed; left: 16px; top: calc(110px + env(safe-area-inset-top, 0px)); z-index: 26; max-width: min(330px, calc(100vw - 58px)); background: #10233ff2; color: #fff; border-radius: 10px; padding: 10px 13px; font-size: 13px; line-height: 1.45; box-shadow: 0 3px 14px #0007; }
+  #about[hidden] { display: none; } #about p { margin: 0 0 6px; } #about p:last-child { margin: 0; opacity: .8; font-size: 12px; }
+  @media (max-width: 640px) { #title h1 { font-size: 15px; line-height: 1.15; max-width: 110px; } #stats { display: none; } }
+</style>
+</head>
+<body>
+<div id="map"><canvas id="c"></canvas><div id="labels"></div></div>
+<div id="title"><h1>Bellinzona in real time</h1><p id="stats"></p></div>
+<div id="about" hidden><p>Bellinzona in miniatura: edifici, strade e alberi veri da dati aperti (swisstopo, OpenStreetMap), dipinti con l'IA.</p><p><b>Reali:</b> ora, luce, meteo e fiume. <b>Da orario ufficiale:</b> treni e bus. <b>Simulati:</b> auto e persone.</p><p>Trascina e zooma; 🕓 cambia giorno e ora<span id="aboutpast"> o torna nel passato</span>.</p></div>
+<div id="zoom"><button id="zin" aria-label="Ingrandisci">+</button><button id="zout" aria-label="Riduci">−</button></div>
+<div id="board" hidden></div>
+<div id="tip" hidden></div>
+<div id="wx"></div>
+<div id="eranote" hidden></div>
+<button id="tmb" class="tool" title="Macchina del tempo: scegli giorno e ora">🕓</button>
+<button id="info" class="tool" title="Che cos'è questa mappa" aria-expanded="false">ℹ️</button>
+<button id="shot" class="tool" title="Fotografia del momento">📷</button>
+<div id="tm" hidden><b>Macchina del tempo</b><select id="tme"><option value="">Oggi</option></select><input type="date" id="tmd"><input type="range" id="tmh" min="0" max="1439" step="5"><span id="tml"></span><button id="tmn">Adesso</button></div>
+<button id="snd" aria-pressed="false" title="Suoni: campane, stazione, mercato, pioggia, fiume">🔇</button>
+<footer id="credits"></footer>
+<script>
+{ const b = document.getElementById('info'), a = document.getElementById('about');
+  const set = on => { a.hidden = !on; b.setAttribute('aria-expanded', on); };
+  b.addEventListener('click', e => { e.stopPropagation(); set(a.hidden); });
+  for (const ev of ['pointerdown', 'wheel']) document.getElementById('map').addEventListener(ev, () => set(false), { passive: true });
+  addEventListener('keydown', e => { if (e.key === 'Escape') set(false); }); }
+</script>
+<script type="module">
+import { Life, setSun } from './life.js';
+import { initExplore } from './explore.js';
+import { Sky } from './sky.js';
+import { Extras, zurichMs } from './extras.js';
+import { Season, seasonFor } from './season.js';
+(async () => {
+  // ?vista=<heading> shows the city from another side (web/views/<heading>/, rendered by 03_render.py with VIEW_HEADING)
+  const vista = (/[?&]vista=(\d+)/.exec(location.search) || [])[1] || '';
+  const vbase = vista ? `views/${vista}/` : '';
+  const world = await (await fetch(vbase + 'world.json')).json();
+  const T = world.tile_size, Z = world.native_zoom;
+  const have = {};
+  for (const z in world.tiles) have[z] = new Set(world.tiles[z]);
+  const map = document.getElementById('map'), cv = document.getElementById('c'), ctx = cv.getContext('2d');
+  const labelBox = document.getElementById('labels');
+  document.getElementById('credits').textContent = world.credits;
+  document.getElementById('stats').textContent = world.stats || '';
+  const [cx0, cy0, cx1, cy1] = world.content;
+  // ?quando=2027-02-07T14:30 looks at another moment; ?stagione= ?meteo= ?mercato ?rabadan ?partita ?scuola=entrata|uscita ?sostare force one thing
+  const params = new URLSearchParams(location.search);
+  let shiftMs = params.get('quando') && Number.isFinite(zurichMs(params.get('quando'))) ? zurichMs(params.get('quando')) - Date.now() : 0;
+  const monthNow = +new Intl.DateTimeFormat('en-GB', { timeZone: 'Europe/Zurich', month: 'numeric' }).format(new Date(Date.now() + shiftMs));
+  let seasonName = ['inverno', 'primavera', 'estate', 'autunno'].includes(params.get('stagione')) ? params.get('stagione') : seasonFor(monthNow);
+  world.base = vbase;
+  if (world.sunAz != null) setSun(world.sunAz);
+  const season = new Season(world, seasonName);
+  let extras = null;
+
+  // view: world pixel at screen centre + zoom (fractional; Z = native 1:1)
+  let W = 0, H = 0, dpr = 1;
+  const view = { x: 0, y: 0, z: 3 };
+  const scale = () => Math.pow(2, view.z - Z);
+  const minZoom = () => Math.log2(Math.min(W / (cx1 - cx0), H / (cy1 - cy0))) + Z - 0.3;
+  const maxZoom = Z + 1;
+  let era = null;                                        // a snapshot of the past (web/past/<year>), or null for today
+  // old maps were drawn at 1:50 000 (Siegfried) and 1:100 000 (Dufour): closer than this they are only blots
+  const zcap = () => !era ? maxZoom : era.kind === 'carta' ? (era.year >= 1900 ? Z - 1.6 : Z - 4) : era.maxz + 1;
+
+  function clamp() {
+    view.z = Math.max(minZoom(), Math.min(zcap(), view.z));
+    view.x = Math.max(cx0, Math.min(cx1, view.x));
+    view.y = Math.max(cy0, Math.min(cy1, view.y));
+  }
+  function readHash() {
+    const g = /^#g(-?[\d.]+),(-?[\d.]+),(-?[\d.]+)/.exec(location.hash);       // a point on the ground (metres from the origin) + zoom: survives a rotation
+    if (g) { const M = world.enu2px, h0 = -12; view.x = M[0][0] * g[1] + M[0][1] * g[2] + M[0][2] * h0; view.y = M[1][0] * g[1] + M[1][1] * g[2] + M[1][2] * h0; view.z = +g[3]; return true; }
+    const m = /^#@(-?[\d.]+),(-?[\d.]+),(-?[\d.]+)/.exec(location.hash);
+    if (!m) return false;
+    view.x = +m[1]; view.y = +m[2]; view.z = +m[3];
+    return true;
+  }
+  let hashTimer, hashKey = '';
+  function writeHash() {
+    const k = `${Math.round(view.x)},${Math.round(view.y)},${view.z.toFixed(2)}`;
+    if (k === hashKey) return;
+    hashKey = k;
+    clearTimeout(hashTimer);
+    hashTimer = setTimeout(() => history.replaceState(null, '', `#@${Math.round(view.x)},${Math.round(view.y)},${view.z.toFixed(2)}`), 250);
+  }
+
+  // tile cache
+  let plain = false; fetch(vbase + 'tiles/0/0_0.webp', { method: 'HEAD' }).then(r => { plain = r.ok; }).catch(() => {});   // the unpainted render may be left out online
+  let layer = world.art ? 'tiles_art' : 'tiles';        // painted layer when present; press P to compare with the plain render
+  const cache = new Map();
+  function tile(z, x, y) {
+    const k = `${era ? 'past/' + era.year : vbase + layer}/${z}/${x}_${y}`;
+    let t = cache.get(k);
+    if (t) { t.used = performance.now(); return t; }
+    const hv = era ? era.have : have;
+    if (!hv[z] || !hv[z].has(`${x}_${y}`)) return null;
+    t = { img: new Image(), ok: false, used: performance.now() };
+    t.img.decoding = 'async';
+    t.img.onload = () => { if (season.ready && !k.startsWith('past/')) { const c = season.apply(t.img, z, x, y); if (c) t.img = c; } t.ok = true; draw(); };
+    t.img.src = `${k}.webp`;
+    cache.set(k, t);
+    if (cache.size > 500) {
+      const old = [...cache.entries()].sort((a, b) => a[1].used - b[1].used).slice(0, 150);
+      for (const [key, v] of old) { v.img.src = ''; cache.delete(key); }
+    }
+    return t;
+  }
+
+  let life = null, lastT = performance.now();
+  // departures board: the real timetable of Bellinzona station, shown while the station is in view
+  let board = null;
+  function initBoard(tt, live) {
+    if (!tt || !live || !live.stations || !live.stations.length) return;
+    const el = document.getElementById('board'), st = live.stations[0], M = world.enu2px;
+    const sx = M[0][0] * st[0] + M[0][1] * st[1] + M[0][2] * st[2], sy = M[1][0] * st[0] + M[1][1] * st[1] + M[1][2] * st[2];
+    const hm = m => String(Math.floor(m / 60) % 24).padStart(2, '0') + ':' + String(m % 60).padStart(2, '0');
+    const esc = t => String(t).replace(/[&<>]/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;' }[c]));
+    const refresh = () => {
+      const s = scale(), px = (sx - view.x) * s + W / 2, py = (sy - view.y) * s + H / 2;
+      const show = !era && view.z >= 5.5 && px > 0 && py > 0 && px < W && py < H;
+      el.hidden = !show;
+      if (!show) return;
+      const c = life.clock();
+      el.innerHTML = `<b>Stazione FFS · partenze</b><span>${hm(Math.floor(c / 60))}</span>` + life.departures(6).map(d =>
+        `<div><i>${hm(d[0])}</i><em>${esc(d[1])}</em><u>${esc(d[2])}</u><s>${d[3] ? 'bin. ' + esc(d[3]) : ''}</s></div>`).join('') + `<small>Orario feriale del ${tt.date.split('-').reverse().join('.')} · ${esc(tt.source)}</small>`;
+    };
+    refresh(); board = setInterval(refresh, 1000);
+  }
+  // another view: what ground is hidden behind buildings differs, so the visibility flags are recomputed from that view's mask
+  let seenAt = null;
+  async function reseen(d, live, bus) {
+    const vmk = world.vismask; if (!vmk) return;
+    const im = new Image(); im.src = vbase + 'vismask.png';
+    try { await im.decode(); } catch { return; }
+    const w = im.width, hgt = im.height, mask = new Uint8Array(w * hgt), c = document.createElement('canvas'), SH = 256;
+    c.width = w; c.height = SH; const x = c.getContext('2d', { willReadFrequently: true });
+    for (let y0 = 0; y0 < hgt; y0 += SH) {
+      const n = Math.min(SH, hgt - y0); x.clearRect(0, 0, w, SH); x.drawImage(im, 0, y0, w, n, 0, 0, w, n);
+      const px = x.getImageData(0, 0, w, n).data;
+      for (let i = 0, j = y0 * w; i < w * n; i++, j++) mask[j] = px[i * 4] > 127 ? 1 : 0;
+    }
+    const M = world.enu2px;
+    seenAt = (e, n, z) => {
+      const mx = Math.floor((M[0][0] * e + M[0][1] * n + M[0][2] * z - vmk.x0) / vmk.scale), my = Math.floor((M[1][0] * e + M[1][1] * n + M[1][2] * z - vmk.y0) / vmk.scale);
+      return mx >= 0 && my >= 0 && mx < w && my < hgt ? mask[my * w + mx] : 0;
+    };
+    const flag = p => { for (let i = 0; i < p.length; i += 4) p[i + 3] = seenAt(p[i], p[i + 1], p[i + 2]); };
+    for (const e of d.edges) flag(e.p);
+    if (bus) { for (const k in bus.segs || {}) flag(bus.segs[k]); if (bus.shelters) bus.shelters = bus.shelters.filter(s => seenAt(s[0], s[1], s[2])); }
+    if (live) for (const k of ['parked', 'tables']) if (Array.isArray(live[k])) live[k] = live[k].filter(p => seenAt(p[0], p[1], p[2]));
+  }
+  Promise.all([fetch('roads.json').then(r => r.ok ? r.json() : null), fetch('live.json').then(r => r.ok ? r.json() : null).catch(() => null), fetch('timetable.json').then(r => r.ok ? r.json() : null).catch(() => null), fetch('bus.json').then(r => r.ok ? r.json() : null).catch(() => null)]).then(async ([d, live, tt, bus]) => { if (d) { if (vista) await reseen(d, live, bus); life = new Life(d, world.enu2px, world.content, live); life.setTimetable(tt); fetch('signals.json').then(r => r.ok ? r.json() : null).then(sg => { if (sg) life.setSignals(sg); }).catch(() => {}); life.shiftMs = shiftMs; life.setBuses(bus); life.marketForce = new URLSearchParams(location.search).has('mercato');
+      Promise.all([fetch('extras.json').then(r => r.ok ? r.json() : null).then(x => { if (x && seenAt) for (const t of x.terraces || []) t.t = t.t.filter(p => seenAt(p[0], p[1], p[2])); return x; }), fetch('matches.json').then(r => r.ok ? r.json() : null).catch(() => null)]).then(([xd, mt]) => { if (!xd) return;
+        if (xd.market && xd.market.length) life.marketZone = xd.market;
+        extras = window.__extras = new Extras({ world, life, sky, data: xd, matches: mt, params, view: () => view, requestDraw: draw });
+        const wxEl = document.getElementById('wx'); setInterval(() => { wxEl.textContent = era ? era.caption : extras.status(seasonName); }, 1000);
+        initMoment();
+        const sb = document.getElementById('snd'); sb.onclick = () => { const on = sb.getAttribute('aria-pressed') !== 'true'; sb.setAttribute('aria-pressed', on); sb.textContent = on ? '🔔' : '🔇'; on ? extras.soundOn() : extras.soundOff(); };
+      }).catch(() => {}); window.__life = life; initBoard(tt, live); draw(); } }).catch(() => {});
+  // ---- time machine, snapshot, live rows for the place cards ----
+  async function setMoment(shift) {
+    shiftMs = shift;
+    if (life) { life.shiftMs = shift; life._ck = null; life._wd = null; life._hourAt = -1e9; }
+    if (extras) extras._cal = null;
+    sky.clock = () => Date.now() + shiftMs; sky.retarget();
+    if (!params.get('stagione')) {
+      const m = +new Intl.DateTimeFormat('en-GB', { timeZone: 'Europe/Zurich', month: 'numeric' }).format(new Date(Date.now() + shiftMs)), name = seasonFor(m);
+      if (name !== seasonName) { seasonName = name; season.setName(name); await season.load(); cache.clear(); }
+    }
+    draw();
+  }
+  // ---- snapshots of the past ----
+  const eraNote = document.getElementById('eranote');
+  let snapshots = [];
+  function setEra(year) {
+    const s = snapshots.find(x => String(x.year) === String(year)) || null;
+    era = s;
+    cache.clear();
+    document.getElementById('tm').classList.toggle('past', !!s);
+    document.getElementById('board').hidden = true;
+    for (const id of ['snd', 'shot']) document.getElementById(id).style.display = s && id === 'snd' ? 'none' : '';
+    document.body.classList.toggle('era', !!s);
+    eraNote.hidden = !s;
+    if (s) { eraNote.innerHTML = `<b>Bellinzona nel ${s.year}</b><br>${s.text}`; if (view.z > zcap()) view.z = zcap(); }
+    draw();
+  }
+  fetch('past/index.json').then(r => r.ok ? r.json() : null).then(j => {
+    if (!j) { document.getElementById('tme').hidden = true; document.getElementById('aboutpast').hidden = true; }   // published without the past eras
+    if (!j) return;
+    const sel = document.getElementById('tme');
+    snapshots = j.snapshots.map(s => {
+      const have = {}; for (const z in s.tiles) have[z] = new Set(s.tiles[z]);
+      const kind = s.kind || (s.year >= 1940 ? 'foto' : 'carta');
+      const text = s.note || (kind === 'foto'
+        ? `Foto aerea swisstopo del ${s.used}, stesa sul rilievo di oggi. In 3D solo gli edifici già costruiti, secondo il Registro federale degli edifici (${s.n3d} su ${s.ntot}). Gli edifici poi demoliti si vedono solo nella foto.`
+        : `Carta nazionale storica swisstopo (${s.year >= 1900 ? 'carta Siegfried' : 'carta Dufour'}, stato ${s.used}), stesa sul rilievo di oggi. In 3D castelli, mura e chiese, più gli edifici di oggi che il Registro federale data a prima di quell'anno (${s.n3d}).`);
+      return { ...s, have, kind, text, caption: `${s.year} · ${kind === 'foto' ? 'foto aerea storica' : kind === 'carta' ? 'carta storica' : 'ricostruzione ipotetica'}` };
+    });
+    for (const s of snapshots) { const o = document.createElement('option'); o.value = s.year; o.textContent = `${s.year}${s.kind === 'foto' ? '' : s.kind === 'carta' ? ' (carta)' : ' (ricostruzione)'}`; sel.appendChild(o); }
+    sel.onchange = () => setEra(sel.value);
+    if (params.get('epoca')) { sel.value = params.get('epoca'); setEra(params.get('epoca')); }
+  }).catch(() => {});
+  function initMoment() {
+    const tm = document.getElementById('tm'), d = document.getElementById('tmd'), r = document.getElementById('tmh'), l = document.getElementById('tml');
+    const parts = () => { const p = new Intl.DateTimeFormat('en-CA', { timeZone: 'Europe/Zurich', year: 'numeric', month: '2-digit', day: '2-digit', hour: '2-digit', minute: '2-digit', hourCycle: 'h23' }).formatToParts(new Date(Date.now() + shiftMs)); const g = k => p.find(x => x.type === k).value; return { date: `${g('year')}-${g('month')}-${g('day')}`, min: +g('hour') * 60 + +g('minute') }; };
+    const hm = m => String(Math.floor(m / 60)).padStart(2, '0') + ':' + String(m % 60).padStart(2, '0');
+    const sync = () => { const p = parts(); d.value = p.date; r.value = p.min; l.textContent = hm(p.min); };
+    const apply = () => { const m = +r.value; l.textContent = hm(m); const ms = zurichMs(`${d.value}T${hm(m)}`); if (Number.isFinite(ms)) setMoment(ms - Date.now()); };
+    document.getElementById('tmb').onclick = () => { tm.hidden = !tm.hidden; if (!tm.hidden) sync(); };
+    r.oninput = apply; d.onchange = apply;
+    document.getElementById('tmn').onclick = () => { setMoment(0).then(sync); };
+    document.getElementById('shot').onclick = () => {
+      const p = parts(), bar = Math.round(34 * dpr), c = document.createElement('canvas'); c.width = cv.width; c.height = cv.height + bar;
+      const x = c.getContext('2d'); x.drawImage(cv, 0, 0);
+      x.fillStyle = '#10233f'; x.fillRect(0, cv.height, c.width, bar);
+      x.fillStyle = '#fff'; x.font = `${Math.round(13 * dpr)}px system-ui, sans-serif`; x.textBaseline = 'middle';
+      x.fillText(era ? `Bellinzona nel ${era.year} · ${era.caption}` : `Bellinzona · ${p.date.split('-').reverse().join('.')} ${hm(p.min)} · ${era ? era.caption : extras ? extras.status(seasonName) : ''}`, 12 * dpr, cv.height + bar / 2);
+      c.toBlob(b => { const a = document.createElement('a'); a.href = URL.createObjectURL(b); a.download = `bellinzona-${p.date}-${hm(p.min).replace(':', '')}.png`; a.click(); setTimeout(() => URL.revokeObjectURL(a.href), 5000); }, 'image/png');
+    };
+    // what a place card can say about right now
+    const IT = { Mo: 'lun', Tu: 'mar', We: 'mer', Th: 'gio', Fr: 'ven', Sa: 'sab', Su: 'dom', Jan: 'gen', Feb: 'feb', Mar: 'mar', Apr: 'apr', May: 'mag', Jun: 'giu', Jul: 'lug', Aug: 'ago', Sep: 'set', Oct: 'ott', Nov: 'nov', Dec: 'dic', off: 'chiuso' };
+    window.__cardExtra = p => {
+      const rows = [], hmf = m => hm(Math.floor(m) % 1440);
+      if (p.hours) rows.push('Orari (OpenStreetMap): ' + p.hours.replace(/\b(Mo|Tu|We|Th|Fr|Sa|Su|Jan|Feb|Mar|Apr|May|Jun|Jul|Aug|Sep|Oct|Nov|Dec|off)\b/g, k => IT[k]));
+      if (/Stazione FFS/i.test(p.name) && life.tt) rows.push('Prossimi treni: ' + life.departures(3).map(t => `${hmf(t[0])} ${t[1]} → ${t[2]}`).join(' · '));
+      if (life.busTrips && p.e) {
+        if (!life._stopAt) { life._stopAt = new Map(); for (const t of life.busTrips) t.legs.forEach((s, i) => { if (!life._stopAt.has(t.st[i])) life._stopAt.set(t.st[i], [s.p[0], s.p[1]]); }); }
+        const [oe, on] = world.origin_lv95, px = p.e - oe, py = p.n - on;
+        let best = null;
+        for (const [id, q] of life._stopAt) { const dd = Math.hypot(q[0] - px, q[1] - py); if (dd < 400 && (!best || dd < best.d)) best = { id, d: dd }; }
+        if (best) {
+          const now = life.clock() / 60, next = [];
+          for (const t of life.busTrips) for (let i = 0; i < t.st.length - 1; i++) if (t.st[i] === best.id && t.tm[i] >= now) next.push([t.tm[i], t.line, t.to]);
+          next.sort((a, b) => a[0] - b[0]);
+          rows.push(`Bus da ${life.busStops[best.id]} (${Math.round(best.d / 10) * 10} m): ` + (next.length ? next.slice(0, 3).map(n => `${hmf(n[0])} linea ${n[1]} → ${n[2]}`).join(' · ') : 'nessuna corsa nelle prossime ore'));
+        }
+      }
+      if (extras) { const s = []; if (extras.wx && extras.wx.temp !== null) s.push(extras.wx.temp.toFixed(1).replace('.', ',') + ' °C'); const w = extras.weather(); s.push(w.kind === 'sereno' ? 'asciutto' : w.kind); if (extras.hydro && extras.hydro.flow !== null) s.push(`Ticino ${Math.round(extras.hydro.flow)} m³/s` + (extras.hydro.height ? `, livello ${String(extras.hydro.height).replace('.', ',')} m s.l.m.` : '')); rows.push('Adesso: ' + s.join(' · ')); }
+      return rows;
+    };
+  }
+  const walker = { draw() {} };   // the walk mode (walker.js) is switched off
+  let raf = 0;
+  function draw() { if (!raf) raf = requestAnimationFrame(render); }
+  const sky = window.__sky = new Sky(world, draw);  // day / dusk / night atmosphere
+  if (shiftMs) sky.clock = () => Date.now() + shiftMs;
+  season.load().then(() => { if (season.ready) { cache.clear(); draw(); } });   // repaint the tiles for the season
+  function render() {
+    raf = 0;
+    const s = scale();
+    ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
+    ctx.fillStyle = '#0e0f12';
+    ctx.fillRect(0, 0, W, H);
+    const zt = Math.max(0, Math.min(era ? era.maxz : Z, Math.ceil(view.z + Math.log2(dpr) - 0.35)));
+    ctx.imageSmoothingQuality = 'high';
+    // draw coarser levels first as placeholders, then the target level
+    for (const z of [...new Set([Math.max(0, zt - 4), Math.max(0, zt - 2), zt])]) {
+      const ts = T * Math.pow(2, Z - z);            // world px covered by one tile
+      const x0 = Math.floor((view.x - W / 2 / s) / ts), x1 = Math.floor((view.x + W / 2 / s) / ts);
+      const y0 = Math.floor((view.y - H / 2 / s) / ts), y1 = Math.floor((view.y + H / 2 / s) / ts);
+      for (let ty = y0; ty <= y1; ty++) for (let tx = x0; tx <= x1; tx++) {
+        const t = tile(z, tx, ty);
+        if (!t || !t.ok) continue;
+        const sx = Math.round((tx * ts - view.x) * s + W / 2), sy = Math.round((ty * ts - view.y) * s + H / 2);
+        const ex = Math.round(((tx + 1) * ts - view.x) * s + W / 2), ey = Math.round(((ty + 1) * ts - view.y) * s + H / 2);
+        ctx.drawImage(t.img, sx, sy, ex - sx, ey - sy);
+      }
+    }
+    if (life && !era) {
+      const now = performance.now();
+      const dt = Math.min(0.1, (now - lastT) / 1000), ts = (x, y) => [(x - view.x) * s + W / 2, (y - view.y) * s + H / 2];
+      life.step((now - lastT) / 1000); lastT = now;
+      if (extras) extras.prepare(dt);
+      life.draw(ctx, ts, s / world.mpp, W, H);
+      if (extras) extras.draw(ctx, ts, s / world.mpp, W, H, dt);
+      draw();                                       // keep animating
+      sky.draw(ctx, view.x, view.y, s, W, H);
+      if (extras) { extras.overlay(ctx, W, H, dt); extras.sound(); }
+    } else if (!era) sky.draw(ctx, view.x, view.y, s, W, H);
+    if (!era) walker.draw(ctx);   // after the sky so the player stays bright at night
+    for (const l of labels) {
+      const show = view.z >= l.minZ;
+      l.el.style.display = show ? '' : 'none';
+      if (show) { l.el.style.left = ((l.x - view.x) * s + W / 2) + 'px'; l.el.style.top = ((l.y - view.y) * s + H / 2 - 6) + 'px'; }
+    }
+    writeHash();
+  }
+
+  const MINZ = { city: -9, town: -9, village: Z - 4.2, suburb: Z - 3.2, castle: Z - 3.6, neighbourhood: Z - 2.2, quarter: Z - 2.6, hamlet: Z - 2.6, locality: Z - 1.6, isolated_dwelling: Z - 1.2 };
+  const labels = world.labels.filter(l => l.kind in MINZ).map(l => {
+    const el = document.createElement('div');
+    el.className = 'lb ' + l.kind;
+    el.textContent = l.name;
+    labelBox.appendChild(el);
+    return { ...l, el, minZ: MINZ[l.kind] };
+  });
+
+  function resize() {
+    dpr = Math.min(window.devicePixelRatio || 1, 2);
+    W = map.clientWidth; H = map.clientHeight;
+    cv.width = Math.round(W * dpr); cv.height = Math.round(H * dpr);
+    clamp(); draw();
+  }
+  function zoomAt(px, py, dz) {
+    const s0 = scale(), wx = view.x + (px - W / 2) / s0, wy = view.y + (py - H / 2) / s0;
+    view.z = Math.max(minZoom(), Math.min(zcap(), view.z + dz));
+    const s1 = scale();
+    view.x = wx - (px - W / 2) / s1; view.y = wy - (py - H / 2) / s1;
+    clamp(); draw();
+  }
+
+  // pointer interaction: drag to pan, pinch / wheel to zoom
+  const ptrs = new Map();
+  let pinch = 0;
+  map.addEventListener('pointerdown', e => { if (e.pointerType !== 'mouse') showTip(e.clientX, e.clientY);
+  }, true);
+  map.addEventListener('pointerdown', e => { map.setPointerCapture(e.pointerId); ptrs.set(e.pointerId, [e.clientX, e.clientY]); map.classList.add('drag'); pinch = 0; });
+  const tip = document.getElementById('tip');
+  const esc2 = t => String(t).replace(/[&<>]/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;' }[c]));
+  // what is this train or bus? hover (or tap) to ask
+  function showTip(x, y) {
+    const r = map.getBoundingClientRect(), i = life && life.pick(x - r.left, y - r.top);
+    tip.hidden = !i;
+    map.style.cursor = i ? 'help' : '';
+    if (!i) return;
+    tip.innerHTML = `<b class="${i.kind}">${esc2(i.title)}</b>${i.to ? ' <span>→ ' + esc2(i.to) + '</span>' : ''}${i.sub ? '<small>' + esc2(i.sub) + '</small>' : ''}`;
+    tip.style.left = Math.min(innerWidth - 270, x + 14) + 'px'; tip.style.top = Math.max(8, y - 54) + 'px';
+  }
+  map.addEventListener('pointerleave', () => { tip.hidden = true; });
+  map.addEventListener('pointermove', e => {
+    const p = ptrs.get(e.pointerId);
+    if (!p) { showTip(e.clientX, e.clientY); return; }
+    if (e.pointerType !== 'mouse' || Math.hypot(e.movementX, e.movementY) > 0) tip.hidden = true;
+    if (ptrs.size === 1) {
+      view.x -= (e.clientX - p[0]) / scale(); view.y -= (e.clientY - p[1]) / scale();
+      clamp(); draw();
+    }
+    p[0] = e.clientX; p[1] = e.clientY;
+    if (ptrs.size === 2) {
+      const [a, b] = [...ptrs.values()];
+      const d = Math.hypot(a[0] - b[0], a[1] - b[1]);
+      if (pinch) zoomAt((a[0] + b[0]) / 2, (a[1] + b[1]) / 2, Math.log2(d / pinch));
+      pinch = d;
+    }
+  });
+  const up = e => { ptrs.delete(e.pointerId); pinch = 0; if (!ptrs.size) map.classList.remove('drag'); };
+  map.addEventListener('pointerup', up); map.addEventListener('pointercancel', up);
+  map.addEventListener('wheel', e => { e.preventDefault(); zoomAt(e.clientX, e.clientY, -e.deltaY * (e.ctrlKey ? 0.01 : 0.0022)); }, { passive: false });
+  map.addEventListener('dblclick', e => zoomAt(e.clientX, e.clientY, 1));
+  document.getElementById('zin').onclick = () => zoomAt(W / 2, H / 2, 0.75);
+  document.getElementById('zout').onclick = () => zoomAt(W / 2, H / 2, -0.75);
+  window.addEventListener('keydown', e => {
+    const d = 120 / scale();
+    if (e.key === '+' || e.key === '=') zoomAt(W / 2, H / 2, 0.5);
+    else if (e.key === '-') zoomAt(W / 2, H / 2, -0.5);
+    else if ((e.key === 'p' || e.key === 'P') && world.art && plain) { layer = layer === 'tiles' ? 'tiles_art' : 'tiles'; }
+    else if (e.key === 'ArrowLeft') view.x -= d; else if (e.key === 'ArrowRight') view.x += d;
+    else if (e.key === 'ArrowUp') view.y -= d; else if (e.key === 'ArrowDown') view.y += d;
+    else return;
+    clamp(); draw();
+  });
+  window.addEventListener('hashchange', () => { if (readHash()) { clamp(); draw(); } });
+  window.addEventListener('resize', resize);
+
+  W = map.clientWidth; H = map.clientHeight;
+  if (!readHash()) { view.x = 0; view.y = 0; view.z = Z - 2; }      // open on Castelgrande
+  resize();
+  initExplore({ world, view, map, clamp, draw, toScreen: (x, y) => [(x - view.x) * scale() + W / 2, (y - view.y) * scale() + H / 2] });
+})();
+</script>
+</body>
+</html>

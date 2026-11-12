@@ -1,0 +1,121 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="What members of the Swiss parliament ask about artificial intelligence, who asks, and what the Federal Council answers.">
+    <meta name="author" content="Nicola Lo Russo">
+    <title>AI in the Swiss Parliament - Nicola Lo Russo</title>
+    <meta property="og:type" content="website">
+    <meta property="og:site_name" content="Nicola Lo Russo">
+    <meta property="og:title" content="AI in the Swiss Parliament">
+    <link rel="stylesheet" href="../../css/simple-grid.css">
+    <link rel="stylesheet" href="../../css/style.css">
+    <link rel="stylesheet" href="../projects.css">
+    <link rel="icon" href="../../images/nico.png" type="image/png">
+</head>
+<body>
+<header>
+    <div style="text-align: center;">
+        <h1><a href="../../index.html" style="text-decoration: none; color: inherit;">Nicola Lo Russo</a></h1>
+        <p class="site-tagline">Projects</p>
+    </div>
+</header>
+
+<main class="container project">
+    <p class="back"><a href="../index.html">&larr; All projects</a></p>
+    <p class="kicker">Politics · Open data</p>
+    <h1 class="project-title">AI in the Swiss Parliament</h1>
+    <p class="lede">What members of the Swiss parliament ask about artificial intelligence, who asks, and what the Federal Council answers, from the items filed since 2000.</p>
+    <p class="updated">Updated <span id="updated">…</span> · Source: Curia Vista, Swiss Parliament</p>
+
+    <ul class="findings" id="findings"></ul>
+
+    <div class="tiles" id="tiles"></div>
+
+    <div class="filters" id="filters">
+        <span class="seg" id="scope" role="group" aria-label="Which items to count">
+            <button type="button" data-scope="ai" class="on">About AI</button><button type="button" data-scope="core">Mainly about AI</button><button type="button" data-scope="all">Every mention</button>
+        </span>
+        <label class="check"><input type="checkbox" id="dupOnce" checked> Count identical texts once</label>
+        <span class="chips" id="chips"></span>
+        <button type="button" id="reset" hidden>Reset filters</button>
+    </div>
+    <p class="note hint-line">Click any bar to filter the whole page. "About AI" leaves out the items that mention it only in passing.</p>
+
+    <section>
+        <h2><span class="num">01</span> Over time</h2>
+        <p class="legend" id="yearLegend"></p>
+        <div class="cols" id="chart-year"></div>
+        <p class="note" id="yearNote"></p>
+    </section>
+
+    <section>
+        <h2><span class="num">02</span> Regulate or promote</h2>
+        <p class="note">What does the author want the State to do about AI? Each item was read by an AI model and put in one of three classes (see the method below). First by subject, then by parliamentary group.</p>
+        <p class="legend"><span><i style="background:var(--bar)"></i>Asks for rules or safeguards</span><span><i style="background:var(--stack-none)"></i>No clear request</span><span><i style="background:var(--bar-alt)"></i>Asks to promote AI or to remove rules</span></p>
+        <div id="chart-ask-topic"></div>
+        <p class="note" id="askNote"></p>
+        <p class="note sub">By group, for the items filed by members. A text filed by members of several groups counts for each of them. Groups with at least 10 items. A few members file most of the items of each group, so the shares of the smaller groups are uncertain by 20 points or more: the Greens, and the Social Democrats and Greens together, ask for rules more often than the others; the other differences are within the margin of error.</p>
+        <div id="chart-ask-group"></div>
+        <p class="note sub">The main kinds of rule the items ask for, with examples. Many items mix several kinds; each is listed under its main request, and the order of the kinds is not reliable.</p>
+        <div id="chart-rule"></div>
+    </section>
+
+    <section>
+        <h2><span class="num">03</span> What they are about</h2>
+        <p class="note">Main subject of each item, assigned by an AI model that read the text.</p>
+        <div class="bars" id="chart-topic"></div>
+    </section>
+
+    <section>
+        <h2><span class="num">04</span> Who files them</h2>
+        <p class="note">By parliamentary group of the author. These are counts, not adjusted for the size of the groups. A text filed by members of several groups is listed as cross-party.</p>
+        <div class="bars" id="chart-group"></div>
+        <p class="note sub">The most active members, by number of items filed as author.</p>
+        <div class="bars" id="chart-author"></div>
+    </section>
+
+    <section>
+        <h2><span class="num">05</span> What the Federal Council recommends</h2>
+        <p class="note">A motion asks the Federal Council to act, a postulate asks for a report, an interpellation or a question asks for an explanation.</p>
+        <div class="bars" id="chart-type"></div>
+        <p class="note sub">For motions and postulates the Federal Council proposes to accept or to reject. This is its proposal, not the vote of Parliament. Recent items have no proposal yet.</p>
+        <div id="chart-fc"></div>
+    </section>
+
+    <section>
+        <h2><span class="num">06</span> Data centres</h2>
+        <p class="note" id="dcNote"></p>
+        <div id="dc" class="dc"></div>
+    </section>
+
+    <section>
+        <h2><span class="num">07</span> All items</h2>
+        <p class="note">Each line in English is a summary written by an AI model; the original title is below it.</p>
+        <div class="list-controls">
+            <input type="search" id="search" placeholder="Search summaries, titles and authors" aria-label="Search summaries, titles and authors">
+            <span class="seg" id="lang" role="group" aria-label="Language of the original title">
+                <button type="button" data-lang="de" class="on">DE</button><button type="button" data-lang="fr">FR</button><button type="button" data-lang="it">IT</button>
+            </span>
+        </div>
+        <p class="note" id="listCount"></p>
+        <div id="list"></div>
+        <button type="button" id="more" hidden>Show more</button>
+    </section>
+
+    <section class="method">
+        <h2>How the data is collected</h2>
+        <p>The data comes from <a href="https://ws.parlament.ch/odata.svc" target="_blank" rel="noopener noreferrer">Curia Vista</a>, the open database of the Swiss Parliament. An item is included if its title, submitted text or justification contains one of these words: "künstliche Intelligenz", "KI", "ChatGPT", "Deepfake", words starting with "Algorithm", "Gesichtserkennung", "autonome Waffen" or "Killerroboter" in German; "intelligence artificielle", "algorithm…", "reconnaissance faciale", "armes autonomes" or "robots tueurs" in French; "intelligenza artificiale", "algoritm…", "riconoscimento facciale" or "armi autonome" in Italian. Items that mention data centres ("Rechenzentrum", "centre de données", "centro di calcolo", "data center") are included from 2023. Most of them do not mention AI: they are about energy, water, noise and permits.</p>
+        <p>This is a keyword match. Some items only mention these words in passing. By default the page counts the items where AI is the main subject or a substantial part; the buttons at the top switch to the items mainly about AI or to every mention. Items that discuss AI without using any of these words are missing. Three checks were run on the selection. A second reading of 90 items taken at random agreed on all 40 passing mentions and on 38 of the 50 items counted as about AI; of the other 12, all classed as only partly about AI, it judged 5 not about AI and 7 borderline. Of 240 items taken at random among the 11,508 filed from 2023 to 2026 and not selected, none was about AI. A search with 357 other words found no missed item that names AI, and about 25 items on self-driving vehicles and robots, which are not included. Two items where "KI" stands for small importers were removed by hand.</p>
+        <p>Several members sometimes file the same text on the same day. By default the page counts each text once, under the item with the lowest number, and lists it as cross-party when the members belong to several groups; untick the checkbox to count every copy.</p>
+        <p>Whether AI is the main subject of an item, its subject, the two scores (risk or opportunity, regulate or promote) and the English summary of each item were produced by an AI model (Claude) that read the submitted text and the justification, following a <a href="rubric.md">written rubric</a>. For the items that ask for rules, the kind of rule was assigned in the same way with a <a href="rubric-rules.md">second rubric</a>. Each score goes from -2 to 2; the charts show only its sign. A second pass by the same model on 60 items gave the same score nine times out of ten. This shows that the scores are stable, not that they are right. The scores are judgements, not measurements: do not use them to rank single items or members. "Asks for rules or safeguards" is broad: it includes requests to examine safeguards, and only about a third of these items ask for binding rules. People who file an item usually want something changed, so the whole set leans towards risk and regulation.</p>
+        <p>Parliamentary group, party and canton are those in the member's current record, also for older items. The chart on regulation by group uses only items filed by members, not those filed in the name of a group or a committee. Parliament does not translate titles into English, so the English lines in the list are the model's summaries.</p>
+        <p><a href="business.csv" download>&darr; Download the data (CSV)</a> · One item per row.</p>
+    </section>
+</main>
+
+<div id="tip" role="status" hidden></div>
+<script src="app.js"></script>
+</body>
+</html>
