@@ -46,7 +46,7 @@ const CSS = `
 #ex-results li small { font-size: 11px; color: #ffffff8c; white-space: nowrap; }
 #ex-results li.none { color: #ffffff8c; cursor: default; font-size: 13px; }
 
-#ex-card { position: fixed; left: 16px; top: calc(112px + env(safe-area-inset-top, 0px)); width: min(320px, calc(100vw - 32px));
+#ex-card { position: fixed; left: 16px; top: calc(146px + env(safe-area-inset-top, 0px)); width: min(320px, calc(100vw - 32px));
   box-sizing: border-box; z-index: 7; padding: 14px 16px 13px; border-radius: 10px; background: #1b1d22f2; color: #fff;
   border: 1px solid #ffffff1f; box-shadow: 0 8px 30px #000a; backdrop-filter: blur(8px); -webkit-backdrop-filter: blur(8px);
   max-height: calc(100vh - 170px); overflow-y: auto; display: none; }
@@ -56,6 +56,28 @@ const CSS = `
 #ex-card .when { margin: 3px 0 0; font-size: 12px; color: #ffffffa6; }
 #ex-card .d { margin: 9px 0 10px; font-size: 13.5px; line-height: 1.5; color: #ffffffe6; }
 #ex-card .live { margin: 0 0 7px; padding: 6px 8px; font-size: 12.5px; line-height: 1.4; color: #fff; background: #ffffff14; border-radius: 6px; }
+#ex-card .off { margin: 0 0 8px; padding: 6px 8px; background: #ffffff14; border-radius: 6px; font-size: 12.5px; line-height: 1.4; }
+#ex-card .off summary { cursor: pointer; font-weight: 650; }
+#ex-card .off p { margin: 6px 0 0; }
+#ex-card .off small { display: block; color: #ffffffa6; font-size: 11.5px; }
+#ex-chips { position: fixed; left: 16px; top: calc(108px + env(safe-area-inset-top, 0px)); z-index: 6; display: flex; gap: 6px; max-width: calc(100vw - 32px); overflow-x: auto; scrollbar-width: none; padding-bottom: 2px; }
+#ex-chips::-webkit-scrollbar { display: none; }
+#ex-chips button { flex: none; height: 30px; padding: 0 12px; border: 1px solid #ffffff2e; border-radius: 15px; background: #1b1d22e0; color: #fff; font: 500 12.5px ui-sans-serif, system-ui, sans-serif; cursor: pointer; white-space: nowrap; }
+#ex-chips button.on { background: #f0b84a; color: #1b1b1b; border-color: #f0b84a; }
+#ex-routes { position: fixed; left: 16px; top: calc(146px + env(safe-area-inset-top, 0px)); z-index: 7; width: min(320px, calc(100vw - 32px)); max-height: calc(100vh - 230px); overflow-y: auto; background: #1b1d22f2; color: #fff; border: 1px solid #ffffff1f; border-radius: 10px; padding: 10px 12px; font-size: 13px; line-height: 1.4; box-shadow: 0 6px 24px #0009; display: none; }
+#ex-routes.open { display: block; }
+#ex-routes h3 { margin: 0 0 2px; font-size: 15px; } #ex-routes p { margin: 0 0 8px; color: #ffffffb3; font-size: 12px; }
+#ex-routes button.r { display: block; width: 100%; text-align: left; margin: 0 0 6px; padding: 8px 10px; border: 0; border-radius: 7px; background: #ffffff14; color: #fff; font: inherit; cursor: pointer; }
+#ex-routes button.r:hover { background: #ffffff26; } #ex-routes button.r small { display: block; color: #ffffffa6; font-size: 11.5px; }
+#ex-routes ol { margin: 6px 0 8px; padding: 0; list-style: none; } #ex-routes li { display: flex; gap: 8px; align-items: baseline; padding: 5px 2px; border-top: 1px solid #ffffff17; cursor: pointer; }
+#ex-routes li i { flex: none; width: 20px; height: 20px; border-radius: 50%; background: #e2572b; color: #fff; font: 700 11px/20px ui-sans-serif, system-ui, sans-serif; text-align: center; }
+#ex-routes li span { flex: 1; } #ex-routes li small { color: #ffffffa6; white-space: nowrap; }
+#ex-routes .back { border: 0; background: none; color: #f0b84a; font: inherit; padding: 0; margin: 0 0 6px; cursor: pointer; }
+.ex-mk.stop i::after { content: attr(data-n); position: absolute; inset: 0; display: grid; place-items: center; color: #fff; font: 700 10px ui-sans-serif, system-ui, sans-serif; }
+.ex-mk.stop i { background: #e2572b !important; border-color: #fff !important; width: 18px !important; height: 18px !important; }
+#ex-card .vis { margin: 0 0 8px; padding: 7px 9px; background: #ffffff14; border-radius: 6px; font-size: 12.5px; line-height: 1.4; }
+#ex-card .vis p { margin: 3px 0 0; } #ex-card .vis small { display: block; margin-top: 4px; color: #ffffff99; font-size: 11px; } #ex-card .vis small a { font-size: 11px; }
+#ex-card .vis b { display: inline-block; padding: 1px 8px; border-radius: 10px; font-weight: 650; font-size: 12px; } #ex-card .vis b.yes { background: #2f9e5b; } #ex-card .vis b.no { background: #b3302a; }
 #ex-card a { font-size: 12px; color: #ffffffb3; text-decoration: underline; text-underline-offset: 2px; }
 #ex-card a:hover { color: #fff; }
 #ex-card .x { position: absolute; right: 6px; top: 6px; width: 32px; height: 32px; border: 0; background: none; color: #ffffffa6;
@@ -81,7 +103,7 @@ export async function initExplore({ world, view, map, clamp, draw, toScreen }) {
   const Z = world.native_zoom;
   let places = [];
   try {
-    const r = await fetch('places.json');
+    const r = await fetch('places.json', { cache: 'no-cache' });
     if (r.ok) places = (await r.json()).places || [];
     const M = world.enu2px, O = world.origin_lv95;        // place the markers with this view's own projection
     if (M && O) for (const p of places) if (p.e != null) { const a = p.e - O[0], b = p.n - O[1], c = (p.h || O[2]) - O[2]; p.x = M[0][0] * a + M[0][1] * b + M[0][2] * c; p.y = M[1][0] * a + M[1][1] * b + M[1][2] * c; }
@@ -107,7 +129,7 @@ export async function initExplore({ world, view, map, clamp, draw, toScreen }) {
     };
   });
   for (const m of markers) m.w = m.el.lastChild.offsetWidth || m.p.name.length * 7 + 14;   // label widths, for decluttering
-  let selected = null, hovered = null, lastKey = '';
+  let selected = null, hovered = null, lastKey = '', cat = '', route = null;      // cat: category filter; route: the itinerary being shown
 
   function layout(force) {
     const [ox, oy] = toScreen(0, 0);
@@ -118,17 +140,17 @@ export async function initExplore({ world, view, map, clamp, draw, toScreen }) {
     for (const m of markers) {
       const [sx, sy] = toScreen(m.p.x, m.p.y);
       m.sx = sx; m.sy = sy;
-      m.shown = (view.z >= m.minZ || m === selected) && sx > -40 && sy > -40 && sx < w + 40 && sy < h + 40;
+      m.shown = (m === selected || (route ? m.stop > 0 : cat ? m.p.cat === cat : view.z >= m.minZ)) && sx > -40 && sy > -40 && sx < w + 40 && sy < h + 40;
       m.el.style.display = m.shown ? '' : 'none';
       if (!m.shown) continue;
       m.el.style.transform = `translate(${sx.toFixed(1)}px,${sy.toFixed(1)}px)`;
     }
     // name labels: greedy declutter, most important first (selected, hovered, main sights)
-    const rank = m => (m === selected ? 0 : m === hovered ? 1 : 1 + m.p.tier);
+    const rank = m => (m === selected ? 0 : m === hovered ? 1 : route && m.stop ? 1.5 : 1 + m.p.tier);
     const placed = [];
     for (const m of markers.filter(k => k.shown && !k.dup).sort((a, b) => rank(a) - rank(b))) {
       const forced = m === selected || m === hovered;
-      let ok = forced || view.z >= m.nameZ;
+      let ok = forced || view.z >= m.nameZ || !!cat || (route && m.stop > 0);
       const box = [m.sx - m.w / 2 - 3, m.sy + 9, m.sx + m.w / 2 + 3, m.sy + 30];
       if (ok && !forced) ok = !placed.some(b => box[0] < b[2] && box[2] > b[0] && box[1] < b[3] && box[3] > b[1]);
       if (ok) placed.push(box);
@@ -184,7 +206,29 @@ export async function initExplore({ world, view, map, clamp, draw, toScreen }) {
     const phone = matchMedia('(max-width: 640px)').matches;
     card.style.bottom = phone && credits ? (credits.offsetHeight + 8) + 'px' : '';
   }
+  // Is the place open at this moment in Bellinzona? Only when the published hours allow a plain answer; otherwise null.
+  function openNow(v) {
+    if (!v.rows || !v.rows.length) return null;
+    const pt = new Intl.DateTimeFormat('en-GB', { timeZone: 'Europe/Zurich', weekday: 'short', year: 'numeric', month: '2-digit', day: '2-digit', hour: '2-digit', minute: '2-digit', hourCycle: 'h23' }).formatToParts(new Date());
+    const g = k => pt.find(x => x.type === k).value, md = g('month') + '-' + g('day'), ymd = g('year') + '-' + md, hm = g('hour') + ':' + g('minute');
+    const wd = ['sun', 'mon', 'tue', 'wed', 'thu', 'fri', 'sat'].indexOf(g('weekday').toLowerCase());
+    if ((v.shut || []).some(s => ymd >= s[0] && ymd <= s[1])) return { open: false, label: 'Chiuso in questi giorni' };
+    const inSeason = r => r.from <= r.to ? md >= r.from && md <= r.to : md >= r.from || md <= r.to;
+    const D = ['sun', 'mon', 'tue', 'wed', 'thu', 'fri', 'sat'];
+    const onDay = d => { if (!d) return false; const [a, b] = d.split('-'), i = D.indexOf(a), j = D.indexOf(b || a); return i <= j ? wd >= i && wd <= j : wd >= i || wd <= j; };
+    const season = v.rows.filter(inSeason);
+    if (!season.length) return null;
+    if (season.some(r => r.shut)) return { open: false, label: 'Chiuso in questa stagione' };
+    const today = season.filter(r => r.open && onDay(r.days));
+    if (!today.length) return season.some(r => r.open) ? { open: false, label: 'Chiuso oggi' } : null;
+    const r = today.find(x => hm >= x.open && hm < x.close);
+    if (r) return { open: true, label: 'Aperto ora · fino alle ' + r.close };
+    const later = today.find(x => hm < x.open);
+    return { open: false, label: later ? 'Chiuso ora · apre alle ' + later.open : 'Chiuso ora' };
+  }
+
   function openCard(m) {
+    if (typeof routesBox !== 'undefined') routesBox.style.visibility = 'hidden';
     if (selected) selected.el.classList.remove('sel');
     selected = m;
     m.el.classList.add('sel');
@@ -197,6 +241,28 @@ export async function initExplore({ world, view, map, clamp, draw, toScreen }) {
     card.appendChild(el('h2', {}, p.name));
     if (p.period) card.appendChild(el('p', { class: 'when' }, p.period));
     if (p.desc) card.appendChild(el('p', { class: 'd' }, p.desc));
+    if (p.visit) {                                            // opening hours and prices as published, with the date they were checked
+      const v = p.visit, box = el('div', { class: 'vis' }), st = openNow(v);
+      if (st) box.appendChild(el('b', { class: st.open ? 'yes' : 'no' }, st.label));
+      box.appendChild(el('p', {}, v.text));
+      if (v.prices.length) box.appendChild(el('p', {}, v.prices.map(x => x[0] + (x[1] === 0 ? ' gratis' : ' CHF ' + String(x[1]).replace('.', ','))).join(' · ')));
+      if (v.extra) box.appendChild(el('p', {}, v.extra));
+      const src = el('small'); src.appendChild(el('a', { href: v.source.url, target: '_blank', rel: 'noopener' }, v.source.label)); src.appendChild(document.createTextNode(' · verificato il ' + v.checked.split('-').reverse().join('.')));
+      box.appendChild(src); card.appendChild(box);
+    }
+    if (p.officials) {                                        // Palazzo Civico: who sits in the Municipio and in the Consiglio comunale
+      const o = p.officials, c = o.consiglio;
+      const sec = (title, open) => { const d = el('details', { class: 'off' }); if (open) d.open = true; d.appendChild(el('summary', {}, title)); card.appendChild(d); return d; };
+      const mu = sec('Municipio (' + o.municipio.length + ')', true);
+      for (const m of o.municipio) { const r = el('p', {}); r.appendChild(el('b', {}, m.name)); r.appendChild(document.createTextNode(' · ' + (m.role === 'Municipale' ? '' : m.role + ' · ') + m.party)); if (m.dicastero) r.appendChild(el('small', {}, m.dicastero)); mu.appendChild(r); }
+      const cc = sec('Consiglio comunale (' + c.seats + ')', false);
+      cc.appendChild(el('p', {}, 'Presidente: ' + c.president + (c.vice.length ? ' · Vicepresidente: ' + c.vice.join(', ') : '')));
+      for (const [g, names] of c.groups) { const r = el('p', {}); r.appendChild(el('b', {}, g + ' (' + names.length + ')')); r.appendChild(el('small', {}, names.join(', '))); cc.appendChild(r); }
+      const today = new Date().toISOString().slice(0, 10), nx = c.sessions.filter(x => x[0] >= today).slice(0, 2);
+      if (nx.length) cc.appendChild(el('p', {}, 'Prossime sedute: ' + nx.map(x => x[0].split('-').reverse().join('.') + (x[1] ? ' ore ' + x[1] : '')).join(', ') + ' · ' + c.room));
+      card.appendChild(el('a', { href: o.source.url, target: '_blank', rel: 'noopener' }, 'Autorità: ' + o.source.label + ' (letto il ' + o.retrieved.split('-').reverse().join('.') + ')'));
+      card.appendChild(el('br', {}));
+    }
     if (window.__cardExtra) { try { for (const row of window.__cardExtra(p)) card.appendChild(el('p', { class: 'live' }, row)); } catch (err) { /* live rows are optional */ } }
     if (p.source && p.source.url) {
       card.appendChild(el('a', { href: p.source.url, target: '_blank', rel: 'noopener' }, 'Fonte: ' + (p.source.label || 'Wikipedia')));
@@ -208,6 +274,7 @@ export async function initExplore({ world, view, map, clamp, draw, toScreen }) {
     layout(true);
   }
   function closeCard() {
+    if (typeof routesBox !== 'undefined') routesBox.style.visibility = '';
     if (!selected) return;
     selected.el.classList.remove('sel');
     selected = null;
@@ -256,6 +323,48 @@ export async function initExplore({ world, view, map, clamp, draw, toScreen }) {
   const list = el('ul', { id: 'ex-results', role: 'listbox' });
   box.append(input, clear, list);
   document.body.appendChild(box);
+
+  // ---------- categories and itineraries ----------
+  const chips = el('div', { id: 'ex-chips' }), routesBox = el('div', { id: 'ex-routes' });
+  document.body.append(chips, routesBox);
+  const CATS = [['', 'Tutti'], ['castelli', 'Castelli e fortini'], ['chiese', 'Chiese'], ['citta', 'Piazze e palazzi'], ['gite', 'Natura e gite']];
+  let routes = [], routesNote = '';
+  fetch('itinerari.json', { cache: 'no-cache' }).then(r => r.ok ? r.json() : null).then(j => { if (j) { routes = j.routes; routesNote = j.note || ''; } }).catch(() => {});
+  const fit = pts => {                                                   // show all of these world points
+    let x0 = 1e9, y0 = 1e9, x1 = -1e9, y1 = -1e9;
+    for (const [x, y] of pts) { x0 = Math.min(x0, x); y0 = Math.min(y0, y); x1 = Math.max(x1, x); y1 = Math.max(y1, y); }
+    const w = Math.max(200, map.clientWidth - 380), h = Math.max(200, map.clientHeight - 220);
+    const z = Math.min(Z - 0.3, Z + Math.log2(Math.min(w / Math.max(60, x1 - x0), h / Math.max(60, y1 - y0))));
+    flyTo((x0 + x1) / 2, (y0 + y1) / 2, z);
+  };
+  const setRoute = r => {
+    route = r; window.__route = r ? r.line : null;
+    for (const m of markers) { m.stop = 0; m.el.classList.remove('stop'); }
+    if (r) r.stops.forEach((st, k) => { const m = markers.find(q => q.p.id === st.id); if (m) { m.stop = k + 1; m.el.classList.add('stop'); m.el.firstChild.dataset.n = k + 1; } });
+    layout(true); draw();
+  };
+  const hm = n => n < 60 ? n + ' min' : Math.floor(n / 60) + ' h ' + String(n % 60).padStart(2, '0');
+  const showRoutes = () => {
+    routesBox.textContent = '';
+    if (!route) {
+      routesBox.append(el('h3', {}, 'Itinerari a piedi'), el('p', {}, routesNote));
+      for (const r of routes) { const b = el('button', { class: 'r', type: 'button' }, r.title); b.appendChild(el('small', {}, r.sub + ' · ' + r.km.toString().replace('.', ',') + ' km · circa ' + hm(Math.round(r.walk / 5) * 5) + ' di cammino' + (r.up >= 100 ? ' · ' + r.up + ' m di salita' : ''))); b.onclick = () => { closeCard(); setRoute(r); showRoutes(); const pts = []; for (let i = 0; i < r.line.length; i += 2) pts.push([r.line[i], r.line[i + 1]]); fit(pts); }; routesBox.appendChild(b); }
+    } else {
+      const bk = el('button', { class: 'back', type: 'button' }, '← Tutti gli itinerari'); bk.onclick = () => { setRoute(null); showRoutes(); };
+      routesBox.append(bk, el('h3', {}, route.title), el('p', {}, route.sub + ' · ' + route.km.toString().replace('.', ',') + ' km · circa ' + hm(Math.round(route.walk / 5) * 5) + ' di cammino, soste escluse'));
+      const ol = el('ol');
+      route.stops.forEach((st, k) => { const li = el('li'); li.append(el('i', {}, String(k + 1)), el('span', {}, st.name), el('small', {}, k ? '+' + st.min + ' min' : 'partenza')); li.onclick = () => { const m = markers.find(q => q.p.id === st.id); if (m) { flyTo(m.p.x, m.p.y, Math.max(view.z, Z - 1.2)); openCard(m); } }; ol.appendChild(li); });
+      routesBox.appendChild(ol);
+    }
+  };
+  const drawChips = () => {
+    chips.textContent = '';
+    const it = el('button', { type: 'button', class: routesBox.classList.contains('open') ? 'on' : '' }, '🧭 Itinerari');
+    it.onclick = () => { const o = routesBox.classList.toggle('open'); if (o) { closeCard(); cat = ''; showRoutes(); } else setRoute(null); layout(true); drawChips(); };
+    chips.appendChild(it);
+    for (const [id, label] of CATS) { const b = el('button', { type: 'button', class: !routesBox.classList.contains('open') && cat === id ? 'on' : '' }, label); b.onclick = () => { routesBox.classList.remove('open'); setRoute(null); cat = id; layout(true); drawChips(); if (id) fit(markers.filter(m => m.p.cat === id).map(m => [m.p.x, m.p.y])); }; chips.appendChild(b); }
+  };
+  drawChips();
 
   const LABEL_Z = { city: Z - 3, town: Z - 3, village: Z - 2.2, suburb: Z - 2, quarter: Z - 2, neighbourhood: Z - 1.5 };
   const index = [];

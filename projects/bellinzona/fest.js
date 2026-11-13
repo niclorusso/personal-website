@@ -1,0 +1,204 @@
+// Yearly events of Bellinzona: when each one is on, and what stands where.
+//
+// From published sources (checked 13 November 2026):
+// - Rabadan: Thursday to Shrove Tuesday. Official 2026 leaflet map "La Città del Carnevale" (rabadan.ch): the
+//   Capannone Eventi in Piazza del Sole and seven society tents (Taia e Medega beside Viale Stazione towards Piazza del
+//   Sole; Bau Band in Piazza Buffi; AC Ravecchia in Piazza Nosetto; HC Biasca 3 Valli, Sonada Balossa and FC Moderna in
+//   Piazza Governo, with the street food; Sci Club Lavorgo in Piazza Indipendenza), the guggen concert in Piazza
+//   Collegiata, music stands near Nosetto/Collegiata and in Piazza Governo. Opening hours of 2026. Sunday parade from
+//   13:30 along Viale Stazione, past Collegiata and Nosetto, to Piazza Indipendenza: in 2026 55 numbers (15 floats, 19
+//   groups, 19 guggen). Friday 14:30 children's parade starting from Piazza Indipendenza; Saturday 14:00 guggen
+//   parade; Tuesday 11:30 risotto at the Capannone.
+// - Natale in Città (ticino.ch): Piazza del Sole, last Thursday of November to 6 January; ice rink of 500 m2, chalet of
+//   about 500 m2, tube slide, Santa's hut, carousel, eight food stands; opening hours of 2026/27. Christmas tree in
+//   Piazza Collegiata. Christmas market on the two Sundays before Christmas, 10:00-18:00.
+// - 1 August (bellinzonaevalli.ch, tio.ch): Piazza del Sole from 17:30; fireworks planned around 22:00 from the
+//   Castello di Montebello (called off in 2018, 2024 and 2026 for drought, wind or fire risk: shown here as planned).
+// - PerBacco! (perbaccobellinzona.ch): Thursday to the first Sunday of September; wine bars and food stands in Piazza
+//   Nosetto, Collegiata, Governo and Buffi; two grape-treading vats in Piazza Governo.
+//
+// ASSUMED, because no source gives a plan to scale: the size of every structure, where exactly it stands inside its
+// square, how many people are there, how long the parades last.
+
+const DAY = 86400000;
+const VIVID = ['#e23a3a', '#f2c21a', '#2f9e5b', '#2d6fd6', '#b04ad0', '#f07f2e', '#19b5b0', '#f25fa0'];
+const hash = (a, b = 0) => { const x = Math.sin(a * 127.1 + b * 311.7) * 43758.5453; return x - Math.floor(x); };
+
+export function easter(y) {                                 // Gregorian computus -> [month, day]
+  const a = y % 19, b = Math.floor(y / 100), c = y % 100, d = Math.floor(b / 4), e = b % 4, f = Math.floor((b + 8) / 25), g = Math.floor((b - f + 1) / 3);
+  const h = (19 * a + b - d - g + 15) % 30, i = Math.floor(c / 4), k = c % 4, l = (32 + 2 * e + 2 * i - h - k) % 7, m = Math.floor((a + 11 * h + 22 * l) / 451);
+  return [Math.floor((h + l - 7 * m + 114) / 31), ((h + l - 7 * m + 114) % 31) + 1];
+}
+export const lastThuNov = y => 30 - ((new Date(Date.UTC(y, 10, 30)).getUTCDay() - 4 + 7) % 7);
+export const firstSunSep = y => 1 + ((7 - new Date(Date.UTC(y, 8, 1)).getUTCDay()) % 7);
+export const xmasSundays = y => { const last = 24 - new Date(Date.UTC(y, 11, 24)).getUTCDay(); return [last - 7, last]; };
+
+// c = { y, m, d, wd } in Bellinzona, h = hour of the day. Before 06:00 the night still belongs to the evening before.
+export function festState(c, h, force = {}) {
+  let s = { y: c.y, m: c.m, d: c.d, wd: c.wd, hh: h };
+  if (h < 6) { const t = new Date(Date.UTC(c.y, c.m - 1, c.d) - DAY); s = { y: t.getUTCFullYear(), m: t.getUTCMonth() + 1, d: t.getUTCDate(), wd: t.getUTCDay(), hh: h + 24 }; }
+  const out = {}, md = s.m * 100 + s.d, within = (o, x) => !!o && x >= o[0] && x <= o[1];
+  const [em, ed] = easter(s.y), back = Math.round((Date.UTC(s.y, em - 1, ed) - Date.UTC(s.y, s.m - 1, s.d)) / DAY);   // 52 = Thursday ... 47 = Tuesday
+  if (force.rabadan) out.rabadan = { open: 1, parade: 'corteo', risotto: false };
+  else if (back <= 52 && back >= 47) {
+    out.rabadan = {
+      open: within({ 52: [21, 28], 51: [19, 29], 50: [18, 29], 49: [17.75, 25], 48: [19, 27], 47: [19, 29] }[back], s.hh) ? 1 : 0,
+      parade: back === 49 && s.hh >= 13.5 && s.hh < 16.5 ? 'corteo' : back === 51 && s.hh >= 14.5 && s.hh < 16 ? 'bambini' : back === 50 && s.hh >= 14 && s.hh < 16 ? 'guggen' : null,
+      risotto: back === 47 && s.hh >= 11.5 && s.hh < 14,
+    };
+  }
+  if ((s.m === 11 && s.d >= lastThuNov(s.y)) || s.m === 12 || (s.m === 1 && s.d <= 6))
+    out.natale = { open: within({ 0: [10, 25], 1: [16, 25], 2: [16, 25], 3: [14, 25], 4: [16, 25], 5: [16, 26], 6: [10, 26] }[s.wd], s.hh) ? 1 : 0 };
+  if (s.m === 12 && xmasSundays(s.y).includes(s.d) && s.hh >= 10 && s.hh < 18) out.mercatino = true;
+  // Giubiasco, Piazza Grande (tio.ch): 5 December to 6 January, Wednesday to Sunday; the closing hour is not published (23:00 assumed)
+  if ((s.m === 12 && s.d >= 5) || (s.m === 1 && s.d <= 6)) out.giubiasco = { open: within({ 3: [12, 23], 4: [17, 23], 5: [17, 23], 6: [10, 23], 0: [10, 23] }[s.wd], s.hh) ? 1 : 0 };
+  if (md === 801 && s.hh >= 17.5 && s.hh <= 25) out.agosto = { fire: s.hh >= 22 && s.hh < 22.34 };
+  const fs = firstSunSep(s.y);
+  if (s.m === 9 && fs >= 4 && s.d >= fs - 3 && s.d <= fs) out.perbacco = { open: within({ 4: [17, 24], 5: [17, 25], 6: [10, 25], 0: [10, 16] }[s.wd], s.hh) ? 1 : 0 };
+  return out;
+}
+
+// The next date of each event, counted from the day c (real present): [{ id, label, when, venue }]
+export function festDates(c) {
+  const T = Date.UTC(c.y, c.m - 1, c.d), key = ms => new Date(ms).toISOString().slice(0, 10), out = [];
+  const pick = f => { for (const y of [c.y - 1, c.y, c.y + 1]) { const r = f(y); if (r && r.end >= T) return r; } return null; };
+  const rb = pick(y => { const [em, ed] = easter(y), E = Date.UTC(y, em - 1, ed); return { E, end: E - 47 * DAY }; });
+  if (rb) {
+    const day = k => Math.max(rb.E - k * DAY, 0);
+    if (day(50) >= T) out.push({ id: 'rabadan', label: 'Rabadan: sabato sera', when: key(day(50)) + 'T22:00', venue: 'sole' });
+    if (day(49) >= T) out.push({ id: 'corteo', label: 'Rabadan: corteo della domenica', when: key(day(49)) + 'T14:30', venue: 'collegiata' });
+    if (day(51) >= T) out.push({ id: 'bambini', label: 'Rabadan: corteo dei bambini', when: key(day(51)) + 'T14:50', venue: 'collegiata' });
+  }
+  const nat = pick(y => ({ start: Date.UTC(y, 10, lastThuNov(y)), end: Date.UTC(y + 1, 0, 6) }));
+  if (nat) out.push({ id: 'natale', label: 'Natale in Città: pista di ghiaccio', when: key(Math.max(nat.start, T)) + 'T18:30', venue: 'sole' });
+  const gb = pick(y => ({ start: Date.UTC(y, 11, 5), end: Date.UTC(y + 1, 0, 6) }));
+  if (gb) { let d = Math.max(gb.start, T); while ([1, 2].includes(new Date(d).getUTCDay())) d += DAY; out.push({ id: 'giubiasco', label: 'Villaggio di Natale a Giubiasco', when: key(d) + 'T18:00', venue: 'giubiasco' }); }
+  const mk = pick(y => { const su = xmasSundays(y).map(d => Date.UTC(y, 11, d)).filter(d => d >= T); return su.length ? { day: su[0], end: su[0] } : null; });
+  if (mk) out.push({ id: 'mercatino', label: 'Mercatino di Natale', when: key(mk.day) + 'T15:00', venue: 'collegiata' });
+  const ag = pick(y => ({ end: Date.UTC(y, 7, 1) }));
+  if (ag) out.push({ id: 'agosto', label: '1° agosto: fuochi d\'artificio', when: key(ag.end) + 'T22:05', venue: 'sole' });
+  const pb = pick(y => { const d = firstSunSep(y); return d >= 4 ? { sat: Date.UTC(y, 8, d - 1), end: Date.UTC(y, 8, d) } : null; });
+  if (pb) out.push({ id: 'perbacco', label: 'PerBacco! festa della vendemmia', when: key(Math.max(pb.sat, pb.end - DAY)) + 'T18:30', venue: 'nosetto' });
+  return out;
+}
+
+// What stands in the squares. V = venues from extras.json, T = seconds, fig = Extras.figure.
+export function festBuild(st, V, T, props, guests, fig) {
+  if (!V || !V.sole) return;
+  const box = (x, y, h, len, wid, hei, body, top, stripe, min = 0.35, ux = 0.928, uy = -0.373) => props.push({ q: [x, y, h, ux, uy], len, wid, hei, body, top, stripe: stripe || undefined, min });
+  const SU = [0.928, -0.373], SV = [0.373, 0.928], sc = V.sole.c;        // the axes of Piazza del Sole
+  const sole = (a, b) => [sc[0] + SU[0] * a + SV[0] * b, sc[1] + SU[1] * a + SV[1] * b];
+  const blocks = [];                                                     // footprints people keep out of: [x, y, half-length, half-width]
+  const tent = (x, y, h, len, wid, hei, k) => { box(x, y, h, len, wid, hei, '#f4f1ea', k % 2 ? '#d8362f' : '#f2c21a', k % 2 ? '#d8362f' : '#f2c21a'); blocks.push([x, y, len / 2 + 1, wid / 2 + 1]); };
+  const free = (x, y) => !blocks.some(b => { const dx = x - b[0], dy = y - b[1], a = dx * SU[0] + dy * SU[1], c = dx * SV[0] + dy * SV[1]; return Math.abs(a) < b[2] && Math.abs(c) < b[3]; });
+  const people = (v, n, seed, opt = {}) => {
+    const p = v.p, m = p.length / 3;
+    for (let j = 0; j < n; j++) {
+      const i = Math.floor(hash(j, seed) * m) * 3, x = p[i] + Math.sin(T * 0.3 + j) * 0.4, y = p[i + 1] + Math.cos(T * 0.27 + j * 1.7) * 0.4;
+      if (free(x, y)) guests.push(fig(seed * 1000 + j, x, y, p[i + 2], false, { vivid: !!opt.vivid, child: j % (opt.kids || 11) === 0 }));
+    }
+  };
+  const stands = (v, n, r, body, top, seed) => { for (let k = 0; k < n; k++) { const a = (k / n) * 6.283 + seed, x = v.c[0] + Math.cos(a) * r, y = v.c[1] + Math.sin(a) * r * 0.7; box(x, y, v.c[2], 3.2, 2.6, 2.5, body, top, '#ffffff', 0.6); blocks.push([x, y, 2.4, 2.1]); } };
+  const stage = (x, y, h, len = 11) => { box(x, y, h, len, 7, 1.3, '#2e3036', '#4a4d55', null, 0.4); box(x + SV[0] * 3.2, y + SV[1] * 3.2, h + 1.3, len, 0.6, 4.6, '#1f2126', '#b3302a', null, 0.4); blocks.push([x, y, len / 2 + 1, 4.5]); };
+
+  if (st.rabadan) {
+    const r = st.rabadan, h0 = sc[2];
+    box(sc[0], sc[1], h0, 56, 48, 9, '#f4f1ea', '#e9e3d6', '#d8362f'); blocks.push([sc[0], sc[1], 31, 36]);   // (people behind it would be drawn over its roof, so they are kept clear of the far side too) Capannone Eventi: it takes up almost the whole square (told by a resident)
+    tent(275, 162, -12.6, 14, 8, 4.2, 0);                                // Taia e Medega, towards Viale Stazione
+    tent(V.buffi.c[0], V.buffi.c[1], V.buffi.c[2], 20, 10, 4.6, 1);      // Bau Band
+    tent(V.nosetto.c[0], V.nosetto.c[1], V.nosetto.c[2], 15, 9, 4.4, 0); // AC Ravecchia
+    const g = V.governo.c;
+    // HC Biasca 3 Valli, Sonada Balossa and FC Moderna (told by a resident: two side by side, parallel to the Teatro Sociale,
+    // at that end of the square; the third at the far end, against Via Dogana)
+    tent(-30, -71, g[2], 16, 9, 4.4, 0); tent(-27, -86, g[2], 16, 9, 4.4, 1); tent(-72, -98, g[2], 16, 9, 4.4, 0);
+    for (let k = 0; k < 6; k++) { const x = -92 + k * 5.2, y = -72 - k * 2.1; box(x, y, g[2], 3.6, 2.6, 2.6, VIVID[k % VIVID.length], '#f4f1ea', '#ffffff', 0.6); blocks.push([x, y, 2.6, 2.1]); }   // RabaStreetFood
+    stage(-52, -84, g[2], 7);                                            // music stand in Piazza Governo
+    tent(V.indipendenza.c[0], V.indipendenza.c[1], V.indipendenza.c[2], 13, 8, 4.2, 1);   // Sci Club Lavorgo
+    const co = V.collegiata.c;
+    stage(co[0] - 4, co[1] + 12, co[2]);                                 // guggen concert
+    stage((co[0] + V.nosetto.c[0]) / 2 + 8, (co[1] + V.nosetto.c[1]) / 2 + 2, co[2], 7);
+    if (r.open) {
+      people(V.sole, 600, 51, { vivid: true }); people(V.governo, 170, 52, { vivid: true }); people(V.collegiata, 120, 53, { vivid: true });
+      people(V.nosetto, 40, 54, { vivid: true }); people(V.buffi, 60, 55, { vivid: true }); people(V.indipendenza, 26, 56, { vivid: true });
+    } else if (r.risotto) people(V.sole, 150, 57, { vivid: true, kids: 6 });
+  }
+
+  if (st.natale) {
+    const h0 = sc[2], open = st.natale.open;
+    const rk = sole(0, 0), ch = sole(0, 20);                             // the rink is in the middle of the square (told by a resident)
+    box(rk[0], rk[1], h0, 26, 21, 1.0, '#6b4027', '#8a5a3a', null, 0.3); box(rk[0], rk[1], h0 + 0.2, 25, 20, 0.85, '#bcd3e0', '#e4f3fb', null, 0.3);   // rink, 500 m2, inside its boards
+    box(ch[0], ch[1], h0, 36, 14, 5.2, '#8a5a3a', '#5d3722', '#f4f1ea', 0.3);                                                                         // chalet, about 500 m2
+    blocks.push([rk[0], rk[1], 13.5, 11], [ch[0], ch[1], 18.5, 7.5]);
+    for (let k = 0; k < 8; k++) { const p = sole(-24 + k * 5.6, -18); box(p[0], p[1], h0, 4.2, 3, 2.7, '#7a4b2c', k % 2 ? '#b3302a' : '#2f6b3f', '#f4f1ea', 0.6); blocks.push([p[0], p[1], 2.8, 2.2]); }   // eight food stands
+    const hut = sole(-25, 7); box(hut[0], hut[1], h0, 4.5, 4, 3.2, '#b3302a', '#f4f1ea', null, 0.6); blocks.push([hut[0], hut[1], 3, 2.8]);              // Santa's hut
+    const car = sole(-23, -6); props.push({ q: [car[0], car[1], h0 + 0.3], round: 3.6, flat: true, body: '#8a2d2d', top: '#c9a23a', min: 0.6 });
+    props.push({ q: [car[0], car[1], h0 + 3.6], round: 3.3, body: '#d8362f', top: '#f2c21a', trunk: 3.2, shadow: 3.6, min: 0.6 }); blocks.push([car[0], car[1], 4.2, 4.2]);   // carousel
+    const sl = sole(24, -8); box(sl[0], sl[1], h0, 4, 18, 2.6, '#dfe6ec', '#f6fafc', '#2d6fd6', 0.5); blocks.push([sl[0], sl[1], 3, 10]);                // tube slide
+    if (open) {
+      for (let j = 0; j < 26; j++) {                                     // skaters going round
+        const a = T * (0.32 + hash(j, 71) * 0.25) * (j % 5 ? 1 : -1) + j * 1.9, ra = 4 + hash(j, 72) * 7.5, rb = 3 + hash(j, 73) * 5.8;
+        const p = sole(Math.cos(a) * ra, Math.sin(a) * rb);
+        guests.push(fig(71000 + j, p[0], p[1], h0 + 1.05, true, { vivid: true, child: j % 3 === 0 }));
+      }
+      people(V.sole, 150, 74, { kids: 5 });
+    }
+    const t = V.collegiata.c, tx = t[0] + 2, ty = t[1] - 6;              // the tree in Piazza Collegiata
+    [[3.1, 3.6], [2.4, 6.4], [1.7, 8.8], [1.0, 10.8]].forEach((s, k) => props.push({ q: [tx, ty, t[2] + s[1]], round: s[0], body: '#1f5a34', top: '#2f7a48', trunk: k ? 0 : 3.4, shadow: k ? 0 : 3.6, min: 0.5 }));
+    props.push({ q: [tx, ty, t[2] + 12.2], round: 0.45, body: '#f2c21a', top: '#ffe58a', min: 0.7 });
+    for (let k = 0; k < 22; k++) { const a = k * 2.4, z = 2.6 + (k / 22) * 8, r = 3.1 * (1 - (z - 2.6) / 9.4) + 0.35; props.push({ q: [tx + Math.cos(a) * r, ty + Math.sin(a) * r, t[2] + z], round: 0.2, body: k % 2 ? '#ffe58a' : '#ff8a6a', top: '#fff6cf', min: 1.0 }); }
+    if (open) people(V.collegiata, 40, 75, { kids: 5 });
+  }
+
+  if (st.giubiasco && V.giubiasco) {
+    // Piazza Grande: an artificial ski slope 38 m long, two tents (bar and concerts; food, about 100 seats), a lit tree (tio.ch)
+    const G = V.giubiasco, u = G.u, w = [-u[1], u[0]], at = (a, b) => [G.c[0] + u[0] * a + w[0] * b, G.c[1] + u[1] * a + w[1] * b], h0 = G.c[2];
+    const gbox = (a, b, len, wid, hei, body, top, stripe) => { const p = at(a, b); props.push({ q: [p[0], p[1], h0, u[0], u[1]], len, wid, hei, body, top, stripe: stripe || undefined, min: 0.35 }); };
+    gbox(-4, 0, 38, 7, 0.5, '#c9d3da', '#f4f8fb', null); gbox(-17, 0, 12, 7, 3.2, '#b9c4cc', '#f4f8fb', '#2d6fd6'); gbox(-21, 0, 4, 7, 5, '#9aa6ae', '#e8eef2', null);   // the slope and its ramp
+    gbox(28, -5, 18, 9, 4.4, '#f4f1ea', '#d8362f', '#d8362f'); gbox(28, 6, 18, 9, 4.4, '#f4f1ea', '#2f6b3f', '#2f6b3f');                                             // the two tents
+    const t = at(-30, 0);
+    [[2.6, 3.2], [2.0, 5.6], [1.4, 7.7], [0.8, 9.4]].forEach((s2, k) => props.push({ q: [t[0], t[1], h0 + s2[1]], round: s2[0], body: '#1f5a34', top: '#2f7a48', trunk: k ? 0 : 3, shadow: k ? 0 : 3.2, min: 0.5 }));
+    props.push({ q: [t[0], t[1], h0 + 10.6], round: 0.4, body: '#f2c21a', top: '#ffe58a', min: 0.7 });
+    if (st.giubiasco.open) {
+      for (let j = 0; j < 8; j++) { const f = (T * (0.12 + hash(j, 95) * 0.1) + j * 0.37) % 1, p = at(-14 + f * 26, (hash(j, 96) - 0.5) * 4.5); guests.push(fig(96000 + j, p[0], p[1], h0 + 0.6 + (1 - f) * 2.6 * Math.max(0, 1 - f * 2.2), true, { vivid: true, child: j % 2 === 0 })); }   // skiers coming down
+      for (let j = 0; j < 70; j++) { const p = at((hash(j, 97) - 0.5) * 70, (hash(j, 98) - 0.5) * 26 + (hash(j, 99) < 0.5 ? 9 : -9) * 0); if (Math.abs((hash(j, 98) - 0.5) * 26) > 4.5 || Math.abs((hash(j, 97) - 0.5) * 70 + 4) > 21) guests.push(fig(97000 + j, p[0] + Math.sin(T * 0.3 + j) * 0.4, p[1], h0, false, { child: j % 5 === 0 })); }
+    }
+  }
+
+  if (st.agosto) {
+    const h0 = sc[2], sp = sole(0, 20);
+    stage(sp[0], sp[1], h0, 14);
+    for (let k = 0; k < 6; k++) { const p = sole(-18 + k * 7.2, -19); box(p[0], p[1], h0, 4.2, 3, 2.7, '#f4f1ea', '#d8362f', '#ffffff', 0.6); blocks.push([p[0], p[1], 2.8, 2.2]); }   // risotto and luganighe
+    people(V.sole, 330, 81, { kids: 7 });
+  }
+
+  if (st.perbacco) {
+    stands(V.nosetto, 5, 9, '#5c1f33', '#f4f1ea', 0.4); stands(V.collegiata, 6, 12, '#5c1f33', '#f4f1ea', 1.1); stands(V.buffi, 6, 11, '#5c1f33', '#f4f1ea', 2.0); stands(V.governo, 7, 15, '#5c1f33', '#f4f1ea', 0.2);
+    const g = V.governo.c;
+    for (const dx of [-3, 3]) { props.push({ q: [g[0] + dx, g[1], g[2] + 0.9], round: 1.7, flat: true, body: '#6b4027', top: '#7b2a4a', min: 0.7 }); blocks.push([g[0] + dx, g[1], 2.4, 2.4]); }   // the two treading vats
+    if (st.perbacco.open) { people(V.nosetto, 45, 91); people(V.collegiata, 80, 92); people(V.buffi, 70, 93); people(V.governo, 110, 94); }
+  }
+}
+
+// Fireworks over a point [e, n, h]; P projects ENU metres to the screen. Drawn over the night sky.
+export function fireworks(ctx, P, T, o) {
+  ctx.save(); ctx.globalCompositeOperation = 'lighter';
+  for (let k = 0; k < 6; k++) {
+    const tt = T / 2.8 + k / 6, id = Math.floor(tt), f = tt - id;
+    const ex = o[0] + (hash(id, k * 7 + 1) - 0.5) * 80, ny = o[1] + (hash(id, k * 7 + 2) - 0.5) * 50, top = o[2] + 45 + hash(id, k * 7 + 3) * 45;
+    if (f < 0.28) {
+      const p = P(ex, ny, o[2] + (top - o[2]) * (f / 0.28));
+      ctx.globalAlpha = 0.9; ctx.fillStyle = '#ffe6aa'; ctx.beginPath(); ctx.arc(p[0], p[1], 1.7, 0, 6.2832); ctx.fill();
+      continue;
+    }
+    const g = (f - 0.28) / 0.72, R = (30 + hash(id, k + 40) * 22) * (1 - Math.pow(1 - g, 3)), col = VIVID[Math.floor(hash(id, k + 9) * VIVID.length)];
+    const c = P(ex, ny, top), gl = ctx.createRadialGradient(c[0], c[1], 0, c[0], c[1], 90);
+    ctx.globalAlpha = (1 - g) * 0.35; gl.addColorStop(0, col); gl.addColorStop(1, 'rgba(0,0,0,0)'); ctx.fillStyle = gl; ctx.fillRect(c[0] - 90, c[1] - 90, 180, 180);
+    ctx.globalAlpha = 1 - g * g; ctx.fillStyle = g < 0.25 ? '#fff6dc' : col;
+    for (let i = 0; i < 54; i++) {
+      const th = hash(i, id + k) * 6.2832, ph = Math.acos(2 * hash(i, id + k + 50) - 1);
+      const p = P(ex + R * Math.sin(ph) * Math.cos(th), ny + R * Math.sin(ph) * Math.sin(th), top + R * Math.cos(ph) - 16 * g * g);
+      ctx.beginPath(); ctx.arc(p[0], p[1], 1.9 - g * 0.8, 0, 6.2832); ctx.fill();
+    }
+  }
+  ctx.restore();
+}

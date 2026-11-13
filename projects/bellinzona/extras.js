@@ -4,6 +4,8 @@
 // OpenStreetMap geometry, the calendar. Everything else (how many people, exact school hours, cabin timetable,
 // parade timing) is a stated assumption, kept in one place below.
 
+import { festState, festDates, festBuild, fireworks } from './fest.js?v=20261113j';
+
 const ASSUME = {
   school: { in1: [7.83, 8.33], out1: [11.58, 11.95], in2: [13.25, 13.58], out2: [15.75, 16.2] },   // typical Ticino timetable; Wednesday afternoon free
   superiore: { in1: [7.9, 8.25], out2: [16.4, 16.85] },
@@ -58,6 +60,7 @@ export class Extras {
     for (let k = 0; k < Math.min(520, rl / 14); k++) { let t = hash(k, 1) * rl, ri = 0; while (ri < this.rivers.length - 1 && t > this.rivers[ri].len) t -= this.rivers[ri++].len; this.flecks.push({ ri, s: t, lat: (hash(k, 2) - 0.5) * 30, len: 4 + hash(k, 3) * 7, v: 0.7 + hash(k, 4) * 0.6 }); }
     if (data.parade) { const p = data.parade, n = p.length / 4, cum = new Float32Array(n); for (let i = 1; i < n; i++) cum[i] = cum[i - 1] + Math.hypot(p[i * 4] - p[i * 4 - 4], p[i * 4 + 1] - p[i * 4 - 3]); this.parade = { p, n, cum, len: cum[n - 1] }; }
     this.sole = (life.live.squares || []).find(s => s.name === 'Piazza del Sole');
+    this.venues = data.venues || null;
     if (sky && data.floods) sky.floods = data.floods.slice();
     this.baseFloods = data.floods ? data.floods.length : 0;
     this.poll(); setInterval(() => this.poll(), 600000);
@@ -112,15 +115,28 @@ export class Extras {
     return { kind: this.wx.temp !== null && this.wx.temp <= 1 ? 'neve' : 'pioggia', k: Math.max(0.3, Math.min(1, this.wx.rain / 1.5)) };
   }
 
-  rabadan() {                                               // Thursday before Ash Wednesday to Shrove Tuesday
-    if (this.force.rabadan) return { on: true, parade: true, crowd: 1 };
-    const c = this.cal(), [em, ed] = easter(c.y), E = Date.UTC(c.y, em - 1, ed), T = Date.UTC(c.y, c.m - 1, c.d), back = Math.round((E - T) / 86400000);
-    const h = this.hours();
-    // days 52..47 before Easter; the small hours belong to the night before
-    const on = (back <= 52 && back >= 47) || (back === 46 && h < 3);
-    if (!on) return { on: false };
-    const hh = h < 3 ? h + 24 : h;
-    return { on: true, parade: back === 49 && h >= ASSUME.parade.from && h <= ASSUME.parade.to, crowd: hh >= ASSUME.rabadanCrowd[0] && hh <= ASSUME.rabadanCrowd[1] ? (hh > 18 ? 1 : 0.5) : 0 };
+  // The next occurrence of each simulated event, for the "Eventi" buttons of the time machine:
+  // [{ id, label, when: 'YYYY-MM-DDTHH:MM' (Bellinzona time), at: [world x, world y] }]
+  events() {
+    // counted from the real present, not from the moment the time machine is showing
+    const pt = new Intl.DateTimeFormat('en-GB', { timeZone: 'Europe/Zurich', weekday: 'short', year: 'numeric', month: '2-digit', day: '2-digit', hour: '2-digit', minute: '2-digit', hourCycle: 'h23' }).formatToParts(new Date());
+    const g = k => pt.find(x => x.type === k).value;
+    const c = { y: +g('year'), m: +g('month'), d: +g('day'), wd: ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'].indexOf(g('weekday')), key: `${g('year')}-${g('month')}-${g('day')}` };
+    const h = +g('hour') + +g('minute') / 60, DAY = 86400000;
+    const T = Date.UTC(c.y, c.m - 1, c.d), key = ms => new Date(ms).toISOString().slice(0, 10), out = [];
+    const sat = (6 - c.wd + 7) % 7 || (h < 13 ? 0 : 7);       // the Saturday market, 07:30-13:00
+    out.push({ id: 'mercato', label: 'Mercato del sabato', when: key(T + sat * DAY) + 'T10:00', at: [600, 40] });
+    const ms = this.matches.slice().sort((a, b) => (a[0] + a[1]).localeCompare(b[0] + b[1]));
+    const kick = m => { const [hh, mm] = m[1].split(':').map(Number); return hh * 60 + mm; };
+    const next = ms.find(m => m[0] > c.key || (m[0] === c.key && h * 60 < kick(m) + 110)) || ms[ms.length - 1];
+    if (next) { const k = kick(next) + 20; out.push({ id: 'partita', label: 'Partita allo stadio' + (next[2] ? ' (' + next[2] + ')' : ''), when: `${next[0]}T${String(Math.floor(k / 60)).padStart(2, '0')}:${String(k % 60).padStart(2, '0')}`, at: [-763, -1769] }); }
+    const M = this.M, V = this.venues;
+    if (V) for (const f of festDates(c)) { const v = V[f.venue].c; out.push({ id: f.id, label: f.label, when: f.when, at: [M[0][0] * v[0] + M[0][1] * v[1] + M[0][2] * v[2], M[1][0] * v[0] + M[1][1] * v[1] + M[1][2] * v[2]] }); }
+    if (this.data.sostare) {                                  // SoStare al Sole: fountain jets 10 July to 15 September
+      const md = c.m * 100 + c.d, y = md > 915 ? c.y + 1 : c.y;
+      out.push({ id: 'sostare', label: 'SoStare al Sole (estate)', when: (md >= 710 && md <= 915 ? c.key : y + '-07-15') + 'T15:00', at: [537, -588] });
+    }
+    return out.sort((a, b) => a.when.localeCompare(b.when));
   }
 
   match() {                                                 // a home game listed in matches.json: -60 min to +115 min around kick-off
@@ -178,38 +194,38 @@ export class Extras {
       }
     }
 
-    // Rabadan: tents and revellers in Piazza del Sole, the Sunday parade down Viale Stazione
-    const rb = this.rabadan();
-    if (rb.on && this.sole) {
+    // the summit cross on the Motto della Croce (told by a resident; its size is assumed)
+    props.push({ q: [2397.7, 191.3, 1014.2, 0.94, -0.34], len: 0.55, wid: 0.55, hei: 9, body: '#8d8f94', top: '#c9cbd0', min: 0.3 });
+    props.push({ q: [2397.7, 191.3, 1020.4, 0.94, -0.34], len: 4.2, wid: 0.5, hei: 0.5, body: '#8d8f94', top: '#c9cbd0', min: 0.3 });
+    // yearly events (fest.js): Rabadan, Natale in Città, 1 August, PerBacco
+    const fs = this.fest = festState(cal, h, this.force);
+    L.marketExtra = !!fs.mercatino;
+    L.squareClosed = fs.rabadan || fs.natale ? 'Piazza del Sole' : null;   // the usual strollers would walk through the tents
+    if (this.venues) festBuild(fs, this.venues, this.t, props, guests, (...a) => this.figure(...a));
+    const rb = fs.rabadan;
+    if (rb) {
       this.state.rabadan = true;
-      const sp = this.sole.p, n = sp.length / 3;
-      if (!this.tents) {
-        this.tents = [];
-        for (let k = 0; k < n && this.tents.length < 7; k += 7) { const i = Math.floor(hash(k, 31) * n) * 3; if (!this.tents.some(t => Math.hypot(t[0] - sp[i], t[1] - sp[i + 1]) < 24)) this.tents.push([sp[i], sp[i + 1], sp[i + 2]]); }
-      }
-      this.tents.forEach((t, k) => props.push({ q: [t[0], t[1], t[2], 0.94, -0.34], len: 15, wid: 8, hei: 4.2, body: '#f4f1ea', top: k % 2 ? '#d8362f' : '#f2c21a', stripe: k % 2 ? '#d8362f' : '#f2c21a', min: 0.3 }));
-      if (rb.crowd > 0) for (let j = 0; j < 220 * rb.crowd; j++) {
-        const i = Math.floor(hash(j, 41) * n) * 3;
-        if (this.tents.some(t => Math.abs(t[0] - sp[i]) < 9 && Math.abs(t[1] - sp[i + 1]) < 6)) continue;
-        guests.push(this.figure(5000 + j, sp[i] + Math.sin(this.t * 0.3 + j) * 0.4, sp[i + 1] + Math.cos(this.t * 0.27 + j * 1.7) * 0.4, sp[i + 2], false, { vivid: true, child: j % 9 === 0 }));
-      }
       if (rb.parade && this.parade) {
-        const R = this.parade, gap = 30, units = Math.ceil((R.len + 200) / gap);
+        // Sunday: floats, groups and guggen from the station to Piazza Indipendenza (15, 19 and 19 of 55 numbers in 2026);
+        // Friday: the children, starting from Piazza Indipendenza; Saturday: guggen only
+        const R = this.parade, gap = 26, units = Math.ceil((R.len + 200) / gap), back = rb.parade === 'bambini';
         for (let u = 0; u < units; u++) {
-          const s = (this.t * 0.7 + u * gap) % (units * gap) - 100;
+          let s = (this.t * 0.7 + u * gap) % (units * gap) - 100;
           if (s < 2 || s > R.len - 2) continue;
-          const q = L.at(R, s);
+          if (back) s = R.len - s;
+          const q = L.at(R, s), dir = back ? -1 : 1;
           if (!q[5]) continue;
-          if (u % 2 === 0) props.push({ q: [q[0], q[1], q[2], q[3], q[4]], len: 7.5, wid: 2.9, hei: 3.4 + hash(u, 5) * 1.6, body: VIVID[u % VIVID.length], top: VIVID[(u + 3) % VIVID.length], stripe: '#ffffff', min: 0.5 });
-          else for (let j = 0; j < 10; j++) guests.push(this.figure(7000 + u * 20 + j, q[0] - q[3] * (j >> 1) * 1.3 + q[4] * ((j & 1) - 0.5) * 1.6, q[1] - q[4] * (j >> 1) * 1.3 - q[3] * ((j & 1) - 0.5) * 1.6, q[2], true, { vivid: true }));   // a guggen band
+          const kind = rb.parade === 'guggen' ? 'band' : rb.parade === 'bambini' ? 'kids' : u % 11 < 3 ? 'float' : u % 11 < 7 ? 'group' : 'band';
+          if (kind === 'float') props.push({ q: [q[0], q[1], q[2], q[3], q[4]], len: 8.5, wid: 3, hei: 3.6 + hash(u, 5) * 2.2, body: VIVID[u % VIVID.length], top: VIVID[(u + 3) % VIVID.length], stripe: '#ffffff', min: 0.5 });
+          else { const n = kind === 'band' ? 12 : 16; for (let j = 0; j < n; j++) guests.push(this.figure(7000 + u * 20 + j, q[0] - dir * q[3] * (j >> 1) * 1.3 + q[4] * ((j & 1) - 0.5) * 1.6, q[1] - dir * q[4] * (j >> 1) * 1.3 - q[3] * ((j & 1) - 0.5) * 1.6, q[2], true, { vivid: true, child: kind === 'kids' && j % 4 !== 0 })); }
         }
-        for (let s = 3; s < R.len - 3; s += 2.4) {              // the crowd lining the street
+        for (let s = 3; s < R.len - 3; s += 1.6) {              // the crowd lining the route, two deep
           const q = L.at(R, s);
           if (!q[5]) continue;
-          for (const side of [-1, 1]) { const k = Math.round(s * 10) * side; if (hash(k, 7) < 0.75) guests.push(this.figure(9000 + k, q[0] + q[4] * side * (5.2 + hash(k, 8) * 1.6), q[1] - q[3] * side * (5.2 + hash(k, 8) * 1.6), q[2], false, { vivid: hash(k, 9) < 0.5, child: hash(k, 10) < 0.15 })); }
+          for (const side of [-1, 1]) for (const row of [0, 1]) { const k = (Math.round(s * 10) * 2 + row) * side; if (hash(k, 7) < (row ? 0.55 : 0.85)) guests.push(this.figure(9000 + k, q[0] + q[4] * side * (4.6 + row * 1.1 + hash(k, 8) * 0.8), q[1] - q[3] * side * (4.6 + row * 1.1 + hash(k, 8) * 0.8), q[2], false, { vivid: hash(k, 9) < 0.5, child: hash(k, 10) < (back ? 0.3 : 0.15) })); }
         }
       }
-    } else this.tents = null;
+    }
 
     // match day at the Stadio Comunale
     const mt = this.match();
@@ -322,6 +338,7 @@ export class Extras {
   // drawn right after the simulation: river, cables, hover targets
   draw(ctx, toScreen, ppm, W, H, dt) {
     const M = this.M, P = (e, n, h) => toScreen(M[0][0] * e + M[0][1] * n + M[0][2] * h, M[1][0] * e + M[1][1] * n + M[1][2] * h);
+    this._P = P; this._ppm = ppm;
     if (ppm > 0.3 && this.rivers.length) {                  // the Ticino flows: faster and busier when the gauge reads high
       const flow = this.hydro && this.hydro.flow !== null ? this.hydro.flow : 60, v = Math.max(0.6, Math.min(4, 0.5 + flow / 50));
       const share = Math.max(0.35, Math.min(1, flow / 150));
@@ -351,6 +368,26 @@ export class Extras {
 
   // drawn last, over everything: rain or snow
   overlay(ctx, W, H, dt) {
+    // headlights and tail lights of moving vehicles, over the dusk and the night
+    const lk = this.sky && this.sky.pick ? this.sky.pick()[4] : 0, B = this.life.beams;
+    if (lk > 0.15 && B && B.length && this._P && this._ppm > 0.55) {
+      const P = this._P, ppm = this._ppm, rr = Math.max(1.1, ppm * 0.22);
+      ctx.save(); ctx.globalCompositeOperation = 'lighter';
+      for (const b of B) {
+        const [e, n, h, te, tn, hl, hw] = b, re = tn, rn = -te, c = (f, r) => P(e + te * f + re * r, n + tn * f + rn * r, h + 0.3);
+        const a = c(hl, 0), z = c(hl + 13, 0);
+        if (a[0] < -40 || a[1] < -40 || a[0] > W + 40 || a[1] > H + 40) continue;
+        const g = ctx.createLinearGradient(a[0], a[1], z[0], z[1]); g.addColorStop(0, `rgba(255,238,190,${0.42 * lk})`); g.addColorStop(1, 'rgba(255,238,190,0)');
+        const p1 = c(hl, -hw * 0.9), p2 = c(hl + 13, -hw - 2.6), p3 = c(hl + 13, hw + 2.6), p4 = c(hl, hw * 0.9);
+        ctx.fillStyle = g; ctx.beginPath(); ctx.moveTo(p1[0], p1[1]); ctx.lineTo(p2[0], p2[1]); ctx.lineTo(p3[0], p3[1]); ctx.lineTo(p4[0], p4[1]); ctx.closePath(); ctx.fill();
+        ctx.fillStyle = `rgba(255,246,214,${0.95 * lk})`;
+        for (const r of [-0.7, 0.7]) { const q = c(hl, hw * r); ctx.beginPath(); ctx.arc(q[0], q[1], rr, 0, 6.2832); ctx.fill(); }
+        ctx.fillStyle = `rgba(255,40,30,${0.85 * lk})`;
+        for (const r of [-0.7, 0.7]) { const q = c(-hl, hw * r); ctx.beginPath(); ctx.arc(q[0], q[1], rr * 0.8, 0, 6.2832); ctx.fill(); }
+      }
+      ctx.restore();
+    }
+    if (this.fest && this.fest.agosto && this.fest.agosto.fire && this._P) fireworks(ctx, this._P, this.t, [404, -54, 73]);   // from the Castello di Montebello
     const w = this.state ? this.state.w : { kind: 'sereno' };
     if (w.kind === 'sereno') return;
     const snow = w.kind === 'neve', want = Math.round((snow ? 420 : 620) * w.k * (W * H) / 1e6);
@@ -379,7 +416,9 @@ export class Extras {
     if (live && this.hydro && this.hydro.flow !== null) out.push('Ticino ' + Math.round(this.hydro.flow) + ' m³/s');
     const hol = this.holiday(); if (hol.name) out.push(hol.name); else if (hol.school && this.cal().wd >= 1 && this.cal().wd <= 5) out.push('vacanze scolastiche');
     if (this.life.marketLevel() > 0) out.push('mercato');
-    if (s.rabadan) out.push('Rabadan');
+    const f = this.fest || {};
+    if (s.rabadan) out.push(f.rabadan && f.rabadan.parade ? { corteo: 'Rabadan: Grande Corteo', bambini: 'Rabadan: corteo dei bambini', guggen: 'Rabadan: corteo delle guggen' }[f.rabadan.parade] : f.rabadan && f.rabadan.risotto ? 'Rabadan: risottata' : 'Rabadan');
+    if (f.natale) out.push('Natale in Città'); if (f.giubiasco && f.giubiasco.open) out.push('villaggio di Natale a Giubiasco'); if (f.mercatino) out.push('mercatino di Natale'); if (f.agosto) out.push(f.agosto.fire ? '1° agosto: fuochi' : '1° agosto'); if (f.perbacco) out.push('PerBacco!');
     if (s.school) out.push('scuole: ' + s.school);
     if (s.match) out.push('partita' + (s.match.vs ? ' vs ' + s.match.vs : ''));
     return out.join(' · ');

@@ -1,1 +1,2244 @@
-{"about":"Luoghi notevoli di Bellinzona per la mappa isometrica. Coordinate (lat/lon WGS84) da OpenStreetMap; e/n = CH1903+/LV95 (EPSG:2056) via pyproj; h = quota del terreno (m); x/y = pixel mondo (enu2px di world.json). Descrizioni tratte dalla fonte indicata per ogni luogo.","credits":"Coordinate: © OpenStreetMap contributors (ODbL) · Testi: da Wikipedia/Wikidata (CC BY-SA / CC0)","retrieved":"2026-11-10","places":[{"id":"castelgrande","name":"Castelgrande","alt":["Castel Grande","Castello di San Michele","Castello d'Uri","Castel Vecchio"],"type":"Castello · UNESCO","period":"Parte più antica: X secolo","desc":"Occupa un promontorio roccioso lungo oltre duecento metri; la parte più antica ancora esistente risale al X secolo. Sul complesso svettano due torrioni, la Torre Bianca e la Torre Nera. Noto anche come Castel Vecchio, castello di San Michele o castello d'Uri, dal 2000 è patrimonio mondiale dell'UNESCO con Montebello, Sasso Corbaro e le cinte murarie.","source":{"label":"Wikipedia","url":"https://it.wikipedia.org/wiki/Castelgrande_(castello)"},"osm":"node/3256406527","wikidata":"Q664376","tier":1,"lat":46.1929023,"lon":9.0217456,"e":2722208.5,"n":1116948.1,"h":275.1,"x":-54.3,"y":-440.8,"web":"https://www.ticino.ch/de/commons/details/Castelgrande/2793.html"},{"id":"montebello","name":"Castello di Montebello","alt":["Montebello","Castello di Svitto","Castello di San Martino"],"type":"Castello · UNESCO","period":"XIII–XV secolo","desc":"Costruito probabilmente nel XIII secolo dai Rusca di Como e menzionato indirettamente nel 1313, fu ampliato con nuove mura fra il 1462 e il 1490. Fu chiamato anche castello di Svitto e poi di San Martino. Oggi ospita la sezione di archeologia e storia del Museo civico; dal 2000 è patrimonio dell'umanità dell'UNESCO.","source":{"label":"Wikipedia","url":"https://it.wikipedia.org/wiki/Castello_di_Montebello_(Bellinzona)"},"osm":"node/3256443027","wikidata":"Q664346","tier":1,"lat":46.1912869,"lon":9.0265655,"e":2722584.2,"n":1116776.1,"h":313.0,"x":1593.0,"y":-454.1,"hours":"Mo-Su 08:00-20:00","web":"https://www.ticino.ch/de/commons/details/Burg-Montebello/2796.html"},{"id":"sasso-corbaro","name":"Castello di Sasso Corbaro","alt":["Sasso Corbaro","Castello di Cima","Castello di Unterwalden","Castello di Santa Barbara"],"type":"Castello · UNESCO","period":"Fine del XV secolo","desc":"È l'ultimo dei castelli edificati a Bellinzona: fu voluto da Ludovico il Moro per evitare l'aggiramento a monte dello sbarramento formato dai due castelli sottostanti e dalle mura. È detto anche castello di Cima, di Unterwalden o di Santa Barbara. Dal 2000 è patrimonio dell'umanità dell'UNESCO e ospita esposizioni temporanee.","source":{"label":"Wikipedia","url":"https://it.wikipedia.org/wiki/Sasso_Corbaro"},"osm":"node/3256443038","wikidata":"Q663436","tier":1,"lat":46.1881229,"lon":9.030132,"e":2722866.6,"n":1116430.0,"h":460.8,"x":3128.0,"y":-225.7,"hours":"Apr-Nov: Mo-Su 10:00-18:00","web":"https://www.bellinzonese-altoticino.ch/it/commons/details/Castello-di-Sasso-Corbaro/2797.html"},{"id":"murata","name":"Murata","alt":["La Murata","Mura di Bellinzona"],"type":"Mura difensive · UNESCO","period":"Ricostruita nel 1486–1487","desc":"Muraglia che da Castelgrande prosegue verso ovest e serviva a sbarrare il fondovalle fra il castello e il fiume Ticino: una doppia cortina merlata con un passaggio interno coperto a volta. Fu ricostruita nel 1486-1487 sotto la direzione di Gabriele Ghiringhelli; nel 1515 una piena del Ticino ne distrusse circa 150 metri, mai più riedificati. Fa parte del sito UNESCO dei castelli di Bellinzona.","source":{"label":"Wikipedia (in tedesco)","url":"https://de.wikipedia.org/wiki/Murata_(Bellinzona)"},"osm":"way/43385263","wikidata":"Q1953573","tier":1,"lat":46.193004,"lon":9.016198,"e":2721780.1,"n":1116950.8,"h":224.5,"x":-1668.3,"y":109.6},{"id":"collegiata","name":"Collegiata dei Santi Pietro e Stefano","alt":["Chiesa collegiata","Collegiata","SS. Pietro e Stefano"],"type":"Chiesa","period":"1515–1543","desc":"Chiesa rinascimentale con inserti barocchi, sede della parrocchia cittadina, costruita dal 1515 al 1543 sulle fondamenta della precedente chiesa di Santo Stefano. Il campanile fu realizzato fra il 1567 e il 1573 e la facciata fu rivestita in pietra di Castione fra il 1640 e il 1654. Conserva la grande acquasantiera detta Fontana Trivulzio, del 1465.","source":{"label":"Wikipedia","url":"https://it.wikipedia.org/wiki/Chiesa_collegiata_dei_Santi_Pietro_e_Stefano"},"osm":"way/183551917","wikidata":"Q3668029","tier":1,"lat":46.1916512,"lon":9.0239384,"e":2722380.6,"n":1116812.5,"h":232.5,"x":778.0,"y":-126.3},{"id":"piazza-del-sole","name":"Piazza del Sole","alt":[],"type":"Piazza","period":"1996–1999 (sistemazione attuale)","desc":"Piazza cittadina il cui progetto figura fra le opere dell'architetto ticinese Livio Vacchini, datato 1996-1999.","source":{"label":"Wikipedia","url":"https://it.wikipedia.org/wiki/Livio_Vacchini"},"osm":"relation/17012396","tier":1,"lat":46.1932603,"lon":9.0239984,"e":2722381.6,"n":1116991.4,"h":227.1,"x":537.0,"y":-587.5},{"id":"piazza-collegiata","name":"Piazza Collegiata","alt":[],"type":"Piazza","desc":"Piazza pedonale del centro, su cui si affaccia la Collegiata dei Santi Pietro e Stefano (Piazza Collegiata 20).","source":{"label":"OpenStreetMap","url":"https://www.openstreetmap.org/way/204820079"},"osm":"way/204820079","tier":2,"lat":46.1917402,"lon":9.023362,"e":2722335.9,"n":1116821.5,"h":229.3,"x":597.7,"y":-98.1},{"id":"piazza-nosetto","name":"Piazza Nosetto","alt":[],"type":"Piazza","desc":"Piazza pedonale del centro, su cui si trova il Municipio di Bellinzona.","source":{"label":"OpenStreetMap","url":"https://www.openstreetmap.org/way/205800536"},"osm":"way/205800536","tier":2,"lat":46.1910279,"lon":9.0225221,"e":2722272.7,"n":1116741.0,"h":230.0,"x":470.1,"y":175.1},{"id":"palazzo-civico","name":"Palazzo Civico","alt":["Palazzo comunale","Municipio"],"type":"Palazzo comunale","period":"1924","desc":"Palazzo comunale realizzato nel 1924 in stile rinascimentale, in sostituzione di una casa municipale quattrocentesca. È dotato di torre dell'orologio e di una corte interna con due ordini di loggiati.","source":{"label":"Wikipedia","url":"https://it.wikipedia.org/wiki/Bellinzona#Il_centro_storico"},"osm":"node/1261933575","wikidata":"Q29884005","tier":2,"lat":46.1909362,"lon":9.022418,"e":2722264.8,"n":1116730.7,"h":229.9,"x":454.8,"y":210.5},{"id":"palazzo-orsoline","name":"Palazzo delle Orsoline","alt":["Palazzo del Governo","Governo","Gran Consiglio","Consiglio di Stato"],"type":"Sede del Governo cantonale","period":"1738","desc":"Costruito nel 1738 come convento delle Orsoline, passò al Cantone con la legge del 1848 sulla soppressione dei conventi. Oggi ospita il Gran Consiglio e il Consiglio di Stato del Canton Ticino; nel suo refettorio si tenne la prima sessione del Gran Consiglio, il 26 agosto 1803.","source":{"label":"Wikipedia","url":"https://it.wikipedia.org/wiki/Palazzo_delle_Orsoline_(Bellinzona)"},"osm":"node/10568570447","wikidata":"Q29884010","tier":2,"lat":46.1914117,"lon":9.0203942,"e":2722107.6,"n":1116780.4,"h":227.1,"x":-204.3,"y":238.5},{"id":"teatro-sociale","name":"Teatro Sociale","alt":[],"type":"Teatro","period":"1846–1847","desc":"Teatro principale della città, in Piazza Governo, edificato tra il 1846 e il 1847 secondo i disegni dell'architetto milanese Giacomo Moraglia e inaugurato il 26 dicembre 1847. Segue la tipologia del teatro all'italiana, con palchi in legno su tre piani. Attorno al 1995 è stato oggetto di un restauro conservativo.","source":{"label":"Wikipedia","url":"https://it.wikipedia.org/wiki/Teatro_Sociale_(Bellinzona)"},"osm":"node/1261933589","wikidata":"Q555639","tier":2,"lat":46.1910346,"lon":9.021321,"e":2722180.0,"n":1116739.9,"h":229.3,"x":123.1,"y":269.7,"web":"http://www.teatrosociale.ch"},{"id":"stazione","name":"Stazione FFS di Bellinzona","alt":["Stazione","Stazione di Bellinzona","Ferrovia","Treno"],"type":"Stazione ferroviaria","period":"Dal 1874","desc":"Principale stazione ferroviaria della città, in servizio dal 1874 sulla ferrovia del Gottardo. Per i treni a lunga percorrenza è la prima stazione a sud della galleria di base del San Gottardo. Completamente rinnovata, è stata re-inaugurata il 15 ottobre 2016.","source":{"label":"Wikipedia","url":"https://it.wikipedia.org/wiki/Stazione_di_Bellinzona"},"osm":"node/3080372078","wikidata":"Q662556","tier":1,"lat":46.1951237,"lon":9.0290235,"e":2722765.3,"n":1117206.4,"h":240.7,"x":1685.0,"y":-1568.6},{"id":"villa-dei-cedri","name":"Villa dei Cedri","alt":["Museo Villa dei Cedri","Museo civico"],"type":"Museo d'arte","period":"Edificio del 1870–1890 · museo dal 1985","desc":"Villa ottocentesca di forme tardo neoclassiche a Ravecchia, immersa in un parco i cui grandi cedri le danno il nome. Acquistata dal Comune nel 1978, dal 1985 ospita il museo d'arte cittadino, dedicato alla produzione artistica ticinese, lombarda e svizzera dall'Ottocento a oggi.","source":{"label":"Wikipedia","url":"https://it.wikipedia.org/wiki/Museo_civico_Villa_dei_Cedri"},"osm":"node/4756670609","wikidata":"Q27479764","tier":2,"lat":46.1846293,"lon":9.0204639,"e":2722128.2,"n":1116026.6,"h":235.0,"x":904.2,"y":2199.4,"web":"https://www.villacedri.ch"},{"id":"santa-maria-delle-grazie","name":"Santa Maria delle Grazie","alt":["Chiesa di Santa Maria delle Grazie","Convento"],"type":"Chiesa","period":"1480–1495 circa","desc":"Chiesa francescana costruita con il convento dei Frati Minori fra il 1480 circa e il 1495 e consacrata nel 1505. Conserva l'originale forma gotica, con una semplice facciata a capanna, e all'interno un grande tramezzo affrescato con le storie della Vita e Passione di Cristo. Fu devastata da un incendio il 31 dicembre 1996; gli affreschi sono stati in seguito restaurati.","source":{"label":"Wikipedia","url":"https://it.wikipedia.org/wiki/Chiesa_di_Santa_Maria_delle_Grazie_(Bellinzona)"},"osm":"way/158829401","wikidata":"Q3673952","tier":2,"lat":46.185633,"lon":9.018839,"e":2722000.5,"n":1116135.7,"h":227.5,"x":275.1,"y":2054.4},{"id":"san-biagio","name":"San Biagio","alt":["Chiesa di San Biagio","Ravecchia"],"type":"Chiesa","period":"Citata dal 1237","desc":"Chiesa parrocchiale di Ravecchia, citata per la prima volta nel 1237. La facciata a capanna in pietra a vista è ornata da affreschi trecenteschi, fra cui un gigantesco San Cristoforo; l'interno è a tre navate. Fu riportata all'aspetto medievale con i restauri del 1912-1914.","source":{"label":"Wikipedia","url":"https://it.wikipedia.org/wiki/Chiesa_di_San_Biagio_(Bellinzona)"},"osm":"way/204825085","wikidata":"Q3669694","tier":2,"lat":46.185518,"lon":9.0211805,"e":2722181.5,"n":1116126.5,"h":235.9,"x":968.0,"y":1880.0},{"id":"ponte-torretta","name":"Ponte della Torretta","alt":["Passerella della Torretta","Torretta"],"type":"Ponte","period":"1815 · passerella del 2021–2022","desc":"Del ponte in pietra a dieci arcate completato nel 1815 restano due arcate: le altre furono demolite nel 1969 per la costruzione dell'autostrada A2. Ad esse si collega la passerella ciclopedonale ad arco in acciaio Corten, lunga 172 metri e costruita nel 2021-2022, che scavalca il fiume Ticino e l'autostrada.","source":{"label":"Wikipedia (in tedesco)","url":"https://de.wikipedia.org/wiki/Passerella_della_Torretta"},"osm":"way/140679701","wikidata":"Q137946464","tier":2,"lat":46.193802,"lon":9.0094847,"e":2721260.2,"n":1117029.1,"h":217.2,"x":-3729.8,"y":425.1},{"id":"stadio-comunale","name":"Stadio Comunale","alt":["Stadio","AC Bellinzona"],"type":"Stadio","period":"1947","desc":"Impianto sportivo multifunzione adibito soprattutto al calcio, con le partite casalinghe del Bellinzona, e all'atletica leggera. Fu inaugurato ufficialmente il 25 maggio 1947; la prima partita vi si era disputata il 1º dicembre 1946.","source":{"label":"Wikipedia","url":"https://it.wikipedia.org/wiki/Stadio_comunale_(Bellinzona)"},"osm":"way/140645171","wikidata":"Q690053","tier":1,"lat":46.1978325,"lon":9.022033,"e":2722219.7,"n":1117496.5,"h":225.7,"x":-762.8,"y":-1769.4},{"id":"san-rocco","name":"San Rocco","alt":["Chiesa di San Rocco","Santa Maria del Ponte"],"type":"Chiesa","period":"XIV secolo · ricostruita nel 1478","desc":"Trae origine dal testamento di Jacopo Cattaneo, che nel 1330 ne chiese la costruzione con il nome di Santa Maria del Ponte. Rasa al suolo quasi completamente, fu ricostruita nel 1478; la facciata fu rifatta nel 1832.","source":{"label":"Wikipedia","url":"https://it.wikipedia.org/wiki/Chiesa_di_San_Rocco_(Bellinzona)"},"osm":"way/325935780","wikidata":"Q3671865","tier":2,"lat":46.1899027,"lon":9.0230778,"e":2722318.1,"n":1116616.8,"h":230.1,"x":810.7,"y":461.0},{"id":"san-giovanni","name":"Chiesa dei Santi Giovanni Battista ed Evangelista","alt":["San Giovanni","Chiesa di San Giovanni"],"type":"Chiesa","period":"Dal 1760","desc":"Costruita a partire dal 1760 su progetto di Gaetano Matteo Pisoni per i frati Agostiniani, nel 1812 non era ancora terminata e nel 1834 fu adibita ad arsenale. Venne ultimata solo alla fine del XX secolo.","source":{"label":"Wikipedia","url":"https://it.wikipedia.org/wiki/Chiesa_dei_Santi_Giovanni_Battista_ed_Evangelista_(Bellinzona)"},"osm":"way/318272016","wikidata":"Q29883942","tier":2,"lat":46.1949238,"lon":9.0251858,"e":2722469.5,"n":1117178.2,"h":227.4,"x":611.9,"y":-1169.7},{"id":"chiesa-rossa","name":"Chiesa Rossa (San Paolo)","alt":["Chiesa di San Paolo","Chiesa Rossa","Arbedo"],"type":"Chiesa","period":"Citata dal 1255","desc":"Chiesa di Arbedo detta «Rossa» per il colore della facciata. È citata per la prima volta nel 1255, ma gli scavi hanno riportato alla luce fondamenta del VII-VIII secolo; il campanile romanico risale ai secoli XII-XIII. Nel XV secolo fu in gran parte ricostruita e ingrandita.","source":{"label":"Wikipedia","url":"https://it.wikipedia.org/wiki/Chiesa_di_San_Paolo_detta_Chiesa_Rossa"},"osm":"way/373484375","wikidata":"Q3671568","tier":2,"lat":46.2059956,"lon":9.0392295,"e":2723528.3,"n":1118430.7,"h":231.8,"x":2878.1,"y":-5535.6},{"id":"palazzo-franscini","name":"Palazzo Franscini","alt":["Biblioteca cantonale","Archivio di Stato"],"type":"Polo culturale","period":"1999","desc":"Polo culturale del Cantone inaugurato nel 1999, frutto del concorso vinto nel 1988 dall'architetto Luca Ortelli. Ospita fra l'altro la Biblioteca cantonale di Bellinzona, l'Archivio di Stato del Cantone Ticino e il Centro di dialettologia e di etnografia.","source":{"label":"Wikipedia","url":"https://it.wikipedia.org/wiki/Palazzo_Franscini"},"osm":"relation/19932935","wikidata":"Q66372233","tier":2,"lat":46.1931971,"lon":9.0120648,"e":2721460.7,"n":1116965.9,"h":225.3,"x":-2889.7,"y":376.4},{"id":"tribunale-penale-federale","name":"Tribunale penale federale","alt":["TPF"],"type":"Tribunale","period":"A Bellinzona dal 2004","desc":"Tribunale della Confederazione svizzera con sede a Bellinzona, dove ha iniziato le sue attività nel 2004. Tramite la propria Corte penale giudica le cause che la legge sottopone alla giurisdizione penale federale.","source":{"label":"Wikipedia","url":"https://it.wikipedia.org/wiki/Tribunale_penale_federale"},"osm":"node/3230716700","wikidata":"Q641514","tier":2,"lat":46.1898609,"lon":9.0195497,"e":2722045.9,"n":1116606.7,"h":226.1,"x":-198.7,"y":762.7},{"id":"san-bernardo","name":"San Bernardo","alt":["Chiesa di San Bernardo","Monte Carasso"],"type":"Chiesa","period":"Fine dell'XI secolo","desc":"Chiesa sopra Monte Carasso eretta alla fine dell'XI secolo e ampliata nel XV; campanile e portico sono del XVI secolo. L'interno è quasi completamente ricoperto da affreschi, i più antichi dei quali risalgono al XV secolo; quelli della facciata sono del 1582.","source":{"label":"Wikipedia","url":"https://it.wikipedia.org/wiki/Chiesa_di_San_Bernardo_(Bellinzona)"},"osm":"way/556507154","wikidata":"Q3669646","tier":2,"lat":46.1938929,"lon":8.9875576,"e":2719567.5,"n":1117005.5,"h":618.1,"x":-10059.8,"y":991.2,"hours":"Dec-Feb: Sa,Su 11:00-14:00; Mar,Nov: Th-Su 11:00-15:00; Apr-Jun: We-Su 10:30-16:30; Jul-Oct: We-Su 10:00-17:00"},{"id":"ponte-tibetano","name":"Ponte tibetano Carasc","alt":["Ponte tibetano","Carasc"],"type":"Ponte pedonale sospeso","period":"2015","desc":"Ponte pedonale sospeso («tibetano») fra i territori di Monte Carasso e Sementina. L'apertura ufficiale risale al 2015.","source":{"label":"Wikidata","url":"https://www.wikidata.org/wiki/Q20617346"},"osm":"way/352164083","wikidata":"Q20617346","tier":2,"lat":46.1947797,"lon":8.9746084,"e":2718566.1,"n":1117084.5,"h":547.9,"x":-13931.8,"y":1948.9},{"id":"sacro-cuore","name":"Chiesa del Sacro Cuore","alt":["Sacro Cuore"],"type":"Chiesa","period":"1934–1936","desc":"Chiesa conventuale costruita fra il 1934 e il 1936 su progetto dei fratelli Carlo e Rino Tami; dal 1986 è monumento storico nazionale. Le pareti interne ospitano una grande Via Crucis affrescata da Guido Gonzato.","source":{"label":"Wikipedia","url":"https://it.wikipedia.org/wiki/Chiesa_del_Sacro_Cuore_(Bellinzona)"},"osm":"way/325974653","wikidata":"Q3668583","tier":2,"lat":46.2012348,"lon":9.0293504,"e":2722776.7,"n":1117886.1,"h":228.5,"x":798.1,"y":-3351.7}]}
+{
+ "about": "Luoghi notevoli di Bellinzona per la mappa isometrica. Coordinate (lat/lon WGS84) da OpenStreetMap; e/n = CH1903+/LV95 (EPSG:2056) via pyproj; h = quota del terreno (m); x/y = pixel mondo (enu2px di world.json). Descrizioni tratte dalla fonte indicata per ogni luogo.",
+ "credits": "Coordinate: © OpenStreetMap contributors (ODbL) · Testi: da Wikipedia/Wikidata (CC BY-SA / CC0)",
+ "retrieved": "2026-11-13",
+ "places": [
+  {
+   "id": "castelgrande",
+   "name": "Castelgrande",
+   "alt": [
+    "Castel Grande",
+    "Castello di San Michele",
+    "Castello d'Uri",
+    "Castel Vecchio"
+   ],
+   "type": "Castello · UNESCO",
+   "cat": "castelli",
+   "period": "Parte più antica: X secolo",
+   "desc": "Occupa un promontorio roccioso lungo oltre duecento metri; la parte più antica ancora esistente risale al X secolo. Sul complesso svettano due torrioni, la Torre Bianca e la Torre Nera. Noto anche come Castel Vecchio, castello di San Michele o castello d'Uri, dal 2000 è patrimonio mondiale dell'UNESCO con Montebello, Sasso Corbaro e le cinte murarie.",
+   "source": {
+    "label": "Wikipedia",
+    "url": "https://it.wikipedia.org/wiki/Castelgrande_(castello)"
+   },
+   "osm": "node/3256406527",
+   "wikidata": "Q664376",
+   "tier": 1,
+   "lat": 46.1929023,
+   "lon": 9.0217456,
+   "e": 2722208.5,
+   "n": 1116948.1,
+   "h": 275.1,
+   "x": -54.3,
+   "y": -440.8,
+   "visit": {
+    "text": "Aperto tutto l'anno: fino al 18 marzo 2027 tutti i giorni 10:30-16:00 (ultimo ingresso 15:30), in estate 10:00-18:00; adulti CHF 15, ridotto CHF 8.",
+    "rows": [
+     {
+      "from": "03-28",
+      "to": "11-08",
+      "days": "mon-sun",
+      "open": "10:00",
+      "close": "18:00",
+      "shut": false
+     },
+     {
+      "from": "11-09",
+      "to": "03-18",
+      "days": "mon-sun",
+      "open": "10:30",
+      "close": "16:00",
+      "shut": false
+     }
+    ],
+    "prices": [
+     [
+      "Adulti",
+      15
+     ],
+     [
+      "Ridotto",
+      8
+     ],
+     [
+      "Famiglia (2 adulti + max 3 bambini)",
+      35
+     ],
+     [
+      "Famiglia (1 adulto + max 3 bambini)",
+      23
+     ]
+    ],
+    "shut": [],
+    "source": {
+     "label": "Fortezza di Bellinzona",
+     "url": "https://fortezzabellinzona.ch/visitare/"
+    },
+    "checked": "2026-11-13",
+    "extra": "Fortezza Pass per i tre castelli: adulti CHF 28, ridotto CHF 18; in vendita solo in stagione (prossima: 19.3–7.11.2027)."
+   }
+  },
+  {
+   "id": "montebello",
+   "name": "Castello di Montebello",
+   "alt": [
+    "Montebello",
+    "Castello di Svitto",
+    "Castello di San Martino"
+   ],
+   "type": "Castello · UNESCO",
+   "cat": "castelli",
+   "period": "XIII–XV secolo",
+   "desc": "Costruito probabilmente nel XIII secolo dai Rusca di Como e menzionato indirettamente nel 1313, fu ampliato con nuove mura fra il 1462 e il 1490. Fu chiamato anche castello di Svitto e poi di San Martino. Oggi ospita la sezione di archeologia e storia del Museo civico; dal 2000 è patrimonio dell'umanità dell'UNESCO.",
+   "source": {
+    "label": "Wikipedia",
+    "url": "https://it.wikipedia.org/wiki/Castello_di_Montebello_(Bellinzona)"
+   },
+   "osm": "node/3256443027",
+   "wikidata": "Q664346",
+   "tier": 1,
+   "lat": 46.1912869,
+   "lon": 9.0265655,
+   "e": 2722584.2,
+   "n": 1116776.1,
+   "h": 313.0,
+   "x": 1593.0,
+   "y": -454.1,
+   "visit": {
+    "text": "Castello e museo chiusi fino al 18 marzo 2027 (restano visitabili le corti); in stagione tutti i giorni 10:00-18:00, adulti CHF 10.",
+    "rows": [
+     {
+      "from": "03-28",
+      "to": "11-08",
+      "days": "mon-sun",
+      "open": "10:00",
+      "close": "18:00",
+      "shut": false
+     },
+     {
+      "from": "11-09",
+      "to": "03-18",
+      "days": null,
+      "open": null,
+      "close": null,
+      "shut": true
+     }
+    ],
+    "prices": [
+     [
+      "Adulti",
+      10
+     ],
+     [
+      "Ridotto",
+      5
+     ],
+     [
+      "Famiglia (2 adulti + max 3 bambini)",
+      20
+     ],
+     [
+      "Famiglia (1 adulto + max 3 bambini)",
+      18
+     ]
+    ],
+    "shut": [],
+    "source": {
+     "label": "Fortezza di Bellinzona",
+     "url": "https://fortezzabellinzona.ch/visitare/"
+    },
+    "checked": "2026-11-13",
+    "extra": "Fortezza Pass per i tre castelli: adulti CHF 28, ridotto CHF 18; in vendita solo in stagione (prossima: 19.3–7.11.2027)."
+   }
+  },
+  {
+   "id": "sasso-corbaro",
+   "name": "Castello di Sasso Corbaro",
+   "alt": [
+    "Sasso Corbaro",
+    "Castello di Cima",
+    "Castello di Unterwalden",
+    "Castello di Santa Barbara"
+   ],
+   "type": "Castello · UNESCO",
+   "cat": "castelli",
+   "period": "Fine del XV secolo",
+   "desc": "È l'ultimo dei castelli edificati a Bellinzona: fu voluto da Ludovico il Moro per evitare l'aggiramento a monte dello sbarramento formato dai due castelli sottostanti e dalle mura. È detto anche castello di Cima, di Unterwalden o di Santa Barbara. Dal 2000 è patrimonio dell'umanità dell'UNESCO e ospita esposizioni temporanee.",
+   "source": {
+    "label": "Wikipedia",
+    "url": "https://it.wikipedia.org/wiki/Sasso_Corbaro"
+   },
+   "osm": "node/3256443038",
+   "wikidata": "Q663436",
+   "tier": 1,
+   "lat": 46.1881229,
+   "lon": 9.030132,
+   "e": 2722866.6,
+   "n": 1116430.0,
+   "h": 460.8,
+   "x": 3128.0,
+   "y": -225.7,
+   "visit": {
+    "text": "Castello e mostre chiusi fino al 18 marzo 2027 (restano visitabili le corti); in stagione tutti i giorni 10:00-18:00, adulti CHF 15.",
+    "rows": [
+     {
+      "from": "03-28",
+      "to": "11-08",
+      "days": "mon-sun",
+      "open": "10:00",
+      "close": "18:00",
+      "shut": false
+     },
+     {
+      "from": "11-09",
+      "to": "03-18",
+      "days": null,
+      "open": null,
+      "close": null,
+      "shut": true
+     }
+    ],
+    "prices": [
+     [
+      "Adulti",
+      15
+     ],
+     [
+      "Ridotto",
+      8
+     ],
+     [
+      "Famiglia (2 adulti + max 3 bambini)",
+      35
+     ],
+     [
+      "Famiglia (1 adulto + max 3 bambini)",
+      23
+     ]
+    ],
+    "shut": [],
+    "source": {
+     "label": "Fortezza di Bellinzona",
+     "url": "https://fortezzabellinzona.ch/visitare/"
+    },
+    "checked": "2026-11-13",
+    "extra": "Fortezza Pass per i tre castelli: adulti CHF 28, ridotto CHF 18; in vendita solo in stagione (prossima: 19.3–7.11.2027)."
+   }
+  },
+  {
+   "id": "murata",
+   "name": "Murata",
+   "alt": [
+    "La Murata",
+    "Mura di Bellinzona"
+   ],
+   "type": "Mura difensive · UNESCO",
+   "cat": "castelli",
+   "period": "Ricostruita nel 1486–1487",
+   "desc": "Muraglia che da Castelgrande prosegue verso ovest e serviva a sbarrare il fondovalle fra il castello e il fiume Ticino: una doppia cortina merlata con un passaggio interno coperto a volta. Fu ricostruita nel 1486-1487 sotto la direzione di Gabriele Ghiringhelli; nel 1515 una piena del Ticino ne distrusse circa 150 metri, mai più riedificati. Fa parte del sito UNESCO dei castelli di Bellinzona.",
+   "source": {
+    "label": "Wikipedia (in tedesco)",
+    "url": "https://de.wikipedia.org/wiki/Murata_(Bellinzona)"
+   },
+   "osm": "way/43385263",
+   "wikidata": "Q1953573",
+   "tier": 1,
+   "lat": 46.193004,
+   "lon": 9.016198,
+   "e": 2721780.1,
+   "n": 1116950.8,
+   "h": 224.5,
+   "x": -1668.3,
+   "y": 109.6,
+   "visit": {
+    "text": "Si accede dalla corte esterna di Castelgrande, da via Carlo Salvioni 12A o da viale Portone (tra i n. 39 e 41); orari e prezzo non sono pubblicati.",
+    "rows": [],
+    "prices": [],
+    "shut": [],
+    "source": {
+     "label": "Fortezza di Bellinzona",
+     "url": "https://fortezzabellinzona.ch/visitare/"
+    },
+    "checked": "2026-11-13"
+   }
+  },
+  {
+   "id": "collegiata",
+   "name": "Collegiata dei Santi Pietro e Stefano",
+   "alt": [
+    "Chiesa collegiata",
+    "Collegiata",
+    "SS. Pietro e Stefano"
+   ],
+   "type": "Chiesa",
+   "cat": "chiese",
+   "period": "1515–1543",
+   "desc": "Chiesa rinascimentale con inserti barocchi, sede della parrocchia cittadina, costruita dal 1515 al 1543 sulle fondamenta della precedente chiesa di Santo Stefano. Il campanile fu realizzato fra il 1567 e il 1573 e la facciata fu rivestita in pietra di Castione fra il 1640 e il 1654. Conserva la grande acquasantiera detta Fontana Trivulzio, del 1465.",
+   "source": {
+    "label": "Wikipedia",
+    "url": "https://it.wikipedia.org/wiki/Chiesa_collegiata_dei_Santi_Pietro_e_Stefano"
+   },
+   "osm": "way/183551917",
+   "wikidata": "Q3668029",
+   "tier": 1,
+   "lat": 46.1916512,
+   "lon": 9.0239384,
+   "e": 2722380.6,
+   "n": 1116812.5,
+   "h": 232.5,
+   "x": 778.0,
+   "y": -126.3,
+   "visit": {
+    "text": "Orari di visita non pubblicati sulle pagine consultate; la chiesa si trova in Piazza Collegiata.",
+    "rows": [],
+    "prices": [],
+    "shut": [],
+    "source": {
+     "label": "Ticino Turismo",
+     "url": "https://www.ticino.ch/it/commons/details/Collegiata-dei-SS-Pietro-e-Stefano/2841.html"
+    },
+    "checked": "2026-11-13"
+   }
+  },
+  {
+   "id": "piazza-del-sole",
+   "name": "Piazza del Sole",
+   "alt": [],
+   "type": "Piazza",
+   "cat": "citta",
+   "period": "1996–1999 (sistemazione attuale)",
+   "desc": "Piazza cittadina il cui progetto figura fra le opere dell'architetto ticinese Livio Vacchini, datato 1996-1999.",
+   "source": {
+    "label": "Wikipedia",
+    "url": "https://it.wikipedia.org/wiki/Livio_Vacchini"
+   },
+   "osm": "relation/17012396",
+   "tier": 1,
+   "lat": 46.1932603,
+   "lon": 9.0239984,
+   "e": 2722381.6,
+   "n": 1116991.4,
+   "h": 227.1,
+   "x": 537.0,
+   "y": -587.5
+  },
+  {
+   "id": "piazza-collegiata",
+   "name": "Piazza Collegiata",
+   "alt": [],
+   "type": "Piazza",
+   "cat": "citta",
+   "desc": "Piazza pedonale del centro, su cui si affaccia la Collegiata dei Santi Pietro e Stefano (Piazza Collegiata 20).",
+   "source": {
+    "label": "OpenStreetMap",
+    "url": "https://www.openstreetmap.org/way/204820079"
+   },
+   "osm": "way/204820079",
+   "tier": 2,
+   "lat": 46.1917402,
+   "lon": 9.023362,
+   "e": 2722335.9,
+   "n": 1116821.5,
+   "h": 229.3,
+   "x": 597.7,
+   "y": -98.1
+  },
+  {
+   "id": "piazza-nosetto",
+   "name": "Piazza Nosetto",
+   "alt": [],
+   "type": "Piazza",
+   "cat": "citta",
+   "desc": "Piazza pedonale del centro, su cui si trova il Municipio di Bellinzona.",
+   "source": {
+    "label": "OpenStreetMap",
+    "url": "https://www.openstreetmap.org/way/205800536"
+   },
+   "osm": "way/205800536",
+   "tier": 2,
+   "lat": 46.1910279,
+   "lon": 9.0225221,
+   "e": 2722272.7,
+   "n": 1116741.0,
+   "h": 230.0,
+   "x": 470.1,
+   "y": 175.1
+  },
+  {
+   "id": "palazzo-civico",
+   "name": "Palazzo Civico",
+   "alt": [
+    "Palazzo comunale",
+    "Municipio"
+   ],
+   "type": "Palazzo comunale",
+   "cat": "citta",
+   "period": "1924",
+   "desc": "Palazzo comunale realizzato nel 1924 in stile rinascimentale, in sostituzione di una casa municipale quattrocentesca. È dotato di torre dell'orologio e di una corte interna con due ordini di loggiati.",
+   "source": {
+    "label": "Wikipedia",
+    "url": "https://it.wikipedia.org/wiki/Bellinzona#Il_centro_storico"
+   },
+   "osm": "node/1261933575",
+   "wikidata": "Q29884005",
+   "tier": 2,
+   "lat": 46.1909362,
+   "lon": 9.022418,
+   "e": 2722264.8,
+   "n": 1116730.7,
+   "h": 229.9,
+   "x": 454.8,
+   "y": 210.5,
+   "officials": {
+    "municipio": [
+     {
+      "name": "Mario Branda",
+      "role": "Sindaco",
+      "party": "Unità di sinistra",
+      "dicastero": "Amministrazione generale"
+     },
+     {
+      "name": "Fabio Käppeli",
+      "role": "Vicesindaco",
+      "party": "PLR",
+      "dicastero": "Finanze, economia e sport"
+     },
+     {
+      "name": "Henrik Bang",
+      "role": "Municipale",
+      "party": "Unità di sinistra",
+      "dicastero": "Opere pubbliche"
+     },
+     {
+      "name": "Renato Bison",
+      "role": "Municipale",
+      "party": "PLR",
+      "dicastero": "Educazione, cultura, giovani e socialità"
+     },
+     {
+      "name": "Mattia Lepori",
+      "role": "Municipale",
+      "party": "Il Centro",
+      "dicastero": "Territorio e mobilità"
+     },
+     {
+      "name": "Vito Lo Russo",
+      "role": "Municipale",
+      "party": "PLR",
+      "dicastero": "Anziani e ambiente"
+     },
+     {
+      "name": "Mauro Minotti",
+      "role": "Municipale",
+      "party": "Lega-UDC",
+      "dicastero": "Sicurezza e servizi industriali"
+     }
+    ],
+    "consiglio": {
+     "seats": 60,
+     "president": "Emilio Scossa-Baggi",
+     "vice": [
+      "Manuela Genetelli"
+     ],
+     "groups": [
+      [
+       "PLR",
+       [
+        "Anita Banfi",
+        "Nadia Bianchi",
+        "Fabio Briccola",
+        "Andrea Cereda",
+        "Renato Dotta",
+        "Bixio Gianini",
+        "Silvio Gruosso",
+        "Nicolò Guidotti",
+        "Giorgio Krüsi",
+        "Carmelo Malingamba",
+        "Alberto Marietta",
+        "Matteo Mastromarco",
+        "Roberto Mercoli",
+        "Giulia Mozzini",
+        "Marco Pellegrini",
+        "Patrick Rusconi",
+        "Karim Spinelli",
+        "Dila Zanetti",
+        "Tiziano Zanetti"
+       ]
+      ],
+      [
+       "Unità di sinistra",
+       [
+        "Massimiliano Ay",
+        "Lisa Boscolo",
+        "Denise Carniel",
+        "Alberto Casari",
+        "Michele Egloff",
+        "Enea Gentilini",
+        "Alessandro Lucchini",
+        "Michela Luraschi",
+        "Martina Minoletti",
+        "Martina Malacrida Nembrini",
+        "Nadia Holenstein Notari",
+        "Claudio Tettamanti",
+        "Maruska Vanza"
+       ]
+      ],
+      [
+       "Il Centro",
+       [
+        "Marguerite Ndiaye Broggini",
+        "Nevio Canepa",
+        "Claudio Cattori",
+        "Pietro Ghisletta",
+        "Camilla Pedrioli",
+        "Giovanna Pedroni",
+        "Lorenza Rigozzi",
+        "Elena Scossa-Baggi",
+        "Emilio Scossa-Baggi",
+        "Giorgio Soldini"
+       ]
+      ],
+      [
+       "Lega-UDC",
+       [
+        "Ivano Beltraminelli",
+        "Tiziano Bossalini",
+        "Manuel Donati",
+        "Manuela Genetelli",
+        "Sacha Gobbi",
+        "Brenno Grisetti",
+        "Daniela Minotti",
+        "Rodolfo Quatraccioni",
+        "Enrico Zanti"
+       ]
+      ],
+      [
+       "Avanti-Più Donne-Il Noce",
+       [
+        "Orlando Del Don",
+        "Maura Mossi-Nembrini",
+        "Brenno Martignoni Polti",
+        "Rosalia Sansossio-Cippà"
+       ]
+      ],
+      [
+       "Verdi-FA-Ind.",
+       [
+        "Elisa Chiapuzzi",
+        "Sara Nisi",
+        "Lorenza Röhrenbach"
+       ]
+      ],
+      [
+       "MPS-Ind.",
+       [
+        "Martino Colombo",
+        "Matteo Pronzini"
+       ]
+      ]
+     ],
+     "sessions": [
+      [
+       "2026-03-09",
+       "19:00"
+      ],
+      [
+       "2026-03-10",
+       "20:00"
+      ],
+      [
+       "2026-04-13",
+       "19:00"
+      ],
+      [
+       "2026-04-14",
+       "20:00"
+      ],
+      [
+       "2026-06-15",
+       "19:00"
+      ],
+      [
+       "2026-06-16",
+       "20:00"
+      ],
+      [
+       "2026-09-21",
+       "20:00"
+      ],
+      [
+       "2026-10-19",
+       "19:00"
+      ],
+      [
+       "2026-11-16",
+       "20:00"
+      ],
+      [
+       "2026-12-21",
+       null
+      ],
+      [
+       "2026-12-22",
+       null
+      ],
+      [
+       "2027-02-01",
+       null
+      ],
+      [
+       "2027-02-02",
+       null
+      ],
+      [
+       "2027-03-15",
+       null
+      ],
+      [
+       "2027-03-16",
+       null
+      ],
+      [
+       "2027-04-19",
+       null
+      ],
+      [
+       "2027-04-20",
+       null
+      ],
+      [
+       "2027-05-24",
+       null
+      ],
+      [
+       "2027-05-25",
+       null
+      ],
+      [
+       "2027-06-21",
+       null
+      ],
+      [
+       "2027-06-22",
+       null
+      ]
+     ],
+     "room": "Sala del Consiglio comunale, Palazzo Civico"
+    },
+    "source": {
+     "label": "bellinzona.ch",
+     "url": "https://www.bellinzona.ch/municipio"
+    },
+    "retrieved": "2026-11-13"
+   }
+  },
+  {
+   "id": "palazzo-orsoline",
+   "name": "Palazzo delle Orsoline",
+   "alt": [
+    "Palazzo del Governo",
+    "Governo",
+    "Gran Consiglio",
+    "Consiglio di Stato"
+   ],
+   "type": "Sede del Governo cantonale",
+   "cat": "citta",
+   "period": "1738",
+   "desc": "Costruito nel 1738 come convento delle Orsoline, passò al Cantone con la legge del 1848 sulla soppressione dei conventi. Oggi ospita il Gran Consiglio e il Consiglio di Stato del Canton Ticino; nel suo refettorio si tenne la prima sessione del Gran Consiglio, il 26 agosto 1803.",
+   "source": {
+    "label": "Wikipedia",
+    "url": "https://it.wikipedia.org/wiki/Palazzo_delle_Orsoline_(Bellinzona)"
+   },
+   "osm": "node/10568570447",
+   "wikidata": "Q29884010",
+   "tier": 2,
+   "lat": 46.1914117,
+   "lon": 9.0203942,
+   "e": 2722107.6,
+   "n": 1116780.4,
+   "h": 227.1,
+   "x": -204.3,
+   "y": 238.5
+  },
+  {
+   "id": "teatro-sociale",
+   "name": "Teatro Sociale",
+   "alt": [],
+   "type": "Teatro",
+   "cat": "citta",
+   "period": "1846–1847",
+   "desc": "Teatro principale della città, in Piazza Governo, edificato tra il 1846 e il 1847 secondo i disegni dell'architetto milanese Giacomo Moraglia e inaugurato il 26 dicembre 1847. Segue la tipologia del teatro all'italiana, con palchi in legno su tre piani. Attorno al 1995 è stato oggetto di un restauro conservativo.",
+   "source": {
+    "label": "Wikipedia",
+    "url": "https://it.wikipedia.org/wiki/Teatro_Sociale_(Bellinzona)"
+   },
+   "osm": "node/1261933589",
+   "wikidata": "Q555639",
+   "tier": 2,
+   "lat": 46.1910346,
+   "lon": 9.021321,
+   "e": 2722180.0,
+   "n": 1116739.9,
+   "h": 229.3,
+   "x": 123.1,
+   "y": 269.7,
+   "visit": {
+    "text": "La cassa del teatro apre solo nei giorni di spettacolo (45 minuti prima la sera, 30 il pomeriggio); prevendita all'InfoPoint di Piazza Collegiata 12 e su Ticketcorner; visite guidate su richiesta all'InfoPoint.",
+    "rows": [],
+    "prices": [],
+    "shut": [],
+    "source": {
+     "label": "Teatro Sociale Bellinzona",
+     "url": "https://www.teatrosociale.ch/Cassa-e-prevendita-81a74500"
+    },
+    "checked": "2026-11-13"
+   }
+  },
+  {
+   "id": "stazione",
+   "name": "Stazione FFS di Bellinzona",
+   "alt": [
+    "Stazione",
+    "Stazione di Bellinzona",
+    "Ferrovia",
+    "Treno"
+   ],
+   "type": "Stazione ferroviaria",
+   "cat": "citta",
+   "period": "Dal 1874",
+   "desc": "Principale stazione ferroviaria della città, in servizio dal 1874 sulla ferrovia del Gottardo. Per i treni a lunga percorrenza è la prima stazione a sud della galleria di base del San Gottardo. Completamente rinnovata, è stata re-inaugurata il 15 ottobre 2016.",
+   "source": {
+    "label": "Wikipedia",
+    "url": "https://it.wikipedia.org/wiki/Stazione_di_Bellinzona"
+   },
+   "osm": "node/3080372078",
+   "wikidata": "Q662556",
+   "tier": 1,
+   "lat": 46.1951237,
+   "lon": 9.0290235,
+   "e": 2722765.3,
+   "n": 1117206.4,
+   "h": 240.7,
+   "x": 1685.0,
+   "y": -1568.6
+  },
+  {
+   "id": "villa-dei-cedri",
+   "name": "Villa dei Cedri",
+   "alt": [
+    "Museo Villa dei Cedri",
+    "Museo civico"
+   ],
+   "type": "Museo d'arte",
+   "cat": "citta",
+   "period": "Edificio del 1870–1890 · museo dal 1985",
+   "desc": "Villa ottocentesca di forme tardo neoclassiche a Ravecchia, immersa in un parco i cui grandi cedri le danno il nome. Acquistata dal Comune nel 1978, dal 1985 ospita il museo d'arte cittadino, dedicato alla produzione artistica ticinese, lombarda e svizzera dall'Ottocento a oggi.",
+   "source": {
+    "label": "Wikipedia",
+    "url": "https://it.wikipedia.org/wiki/Museo_civico_Villa_dei_Cedri"
+   },
+   "osm": "node/4756670609",
+   "wikidata": "Q27479764",
+   "tier": 2,
+   "lat": 46.1846293,
+   "lon": 9.0204639,
+   "e": 2722128.2,
+   "n": 1116026.6,
+   "h": 235.0,
+   "x": 904.2,
+   "y": 2199.4,
+   "visit": {
+    "text": "Museo: mer-gio 14:00-18:00, ven-dom e festivi 10:00-18:00, chiuso lunedì e martedì; adulti CHF 12, ridotto CHF 8, gratis fino a 16 anni. Parco aperto ogni giorno 07:00-18:00 in inverno (07:00-20:00 da aprile a settembre).",
+    "rows": [
+     {
+      "from": "01-01",
+      "to": "12-31",
+      "days": "wed-thu",
+      "open": "14:00",
+      "close": "18:00",
+      "shut": false
+     },
+     {
+      "from": "01-01",
+      "to": "12-31",
+      "days": "fri-sun",
+      "open": "10:00",
+      "close": "18:00",
+      "shut": false
+     },
+     {
+      "from": "12-27",
+      "to": "12-30",
+      "days": "mon-sun",
+      "open": "10:00",
+      "close": "18:00",
+      "shut": false
+     },
+     {
+      "from": "01-03",
+      "to": "01-10",
+      "days": "mon-sun",
+      "open": "10:00",
+      "close": "18:00",
+      "shut": false
+     }
+    ],
+    "prices": [
+     [
+      "Adulti",
+      12
+     ],
+     [
+      "Ridotto",
+      8
+     ],
+     [
+      "Ticino Ticket",
+      8.4
+     ],
+     [
+      "Expo Pass Bellinzona",
+      30
+     ]
+    ],
+    "shut": [
+     [
+      "2026-12-24",
+      "2026-12-26"
+     ],
+     [
+      "2026-12-31",
+      "2027-01-02"
+     ]
+    ],
+    "source": {
+     "label": "Museo Villa dei Cedri",
+     "url": "https://www.museovilladeicedri.ch/Orari-e-tariffe-28875800"
+    },
+    "checked": "2026-11-13"
+   }
+  },
+  {
+   "id": "santa-maria-delle-grazie",
+   "name": "Santa Maria delle Grazie",
+   "alt": [
+    "Chiesa di Santa Maria delle Grazie",
+    "Convento"
+   ],
+   "type": "Chiesa",
+   "cat": "chiese",
+   "period": "1480–1495 circa",
+   "desc": "Chiesa francescana costruita con il convento dei Frati Minori fra il 1480 circa e il 1495 e consacrata nel 1505. Conserva l'originale forma gotica, con una semplice facciata a capanna, e all'interno un grande tramezzo affrescato con le storie della Vita e Passione di Cristo. Fu devastata da un incendio il 31 dicembre 1996; gli affreschi sono stati in seguito restaurati.",
+   "source": {
+    "label": "Wikipedia",
+    "url": "https://it.wikipedia.org/wiki/Chiesa_di_Santa_Maria_delle_Grazie_(Bellinzona)"
+   },
+   "osm": "way/158829401",
+   "wikidata": "Q3673952",
+   "tier": 2,
+   "lat": 46.185633,
+   "lon": 9.018839,
+   "e": 2722000.5,
+   "n": 1116135.7,
+   "h": 227.5,
+   "x": 275.1,
+   "y": 2054.4,
+   "visit": {
+    "text": "Orari di visita non pubblicati sulle pagine consultate; la chiesa si trova in Via Convento 5.",
+    "rows": [],
+    "prices": [],
+    "shut": [],
+    "source": {
+     "label": "Ticino Turismo",
+     "url": "https://www.ticino.ch/it/commons/details/Chiesa-di-Santa-Maria-delle-Grazie/80199.html"
+    },
+    "checked": "2026-11-13"
+   }
+  },
+  {
+   "id": "san-biagio",
+   "name": "San Biagio",
+   "alt": [
+    "Chiesa di San Biagio",
+    "Ravecchia"
+   ],
+   "type": "Chiesa",
+   "cat": "chiese",
+   "period": "Citata dal 1237",
+   "desc": "Chiesa parrocchiale di Ravecchia, citata per la prima volta nel 1237. La facciata a capanna in pietra a vista è ornata da affreschi trecenteschi, fra cui un gigantesco San Cristoforo; l'interno è a tre navate. Fu riportata all'aspetto medievale con i restauri del 1912-1914.",
+   "source": {
+    "label": "Wikipedia",
+    "url": "https://it.wikipedia.org/wiki/Chiesa_di_San_Biagio_(Bellinzona)"
+   },
+   "osm": "way/204825085",
+   "wikidata": "Q3669694",
+   "tier": 2,
+   "lat": 46.185518,
+   "lon": 9.0211805,
+   "e": 2722181.5,
+   "n": 1116126.5,
+   "h": 235.9,
+   "x": 968.0,
+   "y": 1880.0
+  },
+  {
+   "id": "ponte-torretta",
+   "name": "Ponte della Torretta",
+   "alt": [
+    "Passerella della Torretta",
+    "Torretta"
+   ],
+   "type": "Ponte",
+   "cat": "citta",
+   "period": "1815 · passerella del 2021–2022",
+   "desc": "Del ponte in pietra a dieci arcate completato nel 1815 restano due arcate: le altre furono demolite nel 1969 per la costruzione dell'autostrada A2. Ad esse si collega la passerella ciclopedonale ad arco in acciaio Corten, lunga 172 metri e costruita nel 2021-2022, che scavalca il fiume Ticino e l'autostrada.",
+   "source": {
+    "label": "Wikipedia (in tedesco)",
+    "url": "https://de.wikipedia.org/wiki/Passerella_della_Torretta"
+   },
+   "osm": "way/140679701",
+   "wikidata": "Q137946464",
+   "tier": 2,
+   "lat": 46.193802,
+   "lon": 9.0094847,
+   "e": 2721260.2,
+   "n": 1117029.1,
+   "h": 217.2,
+   "x": -3729.8,
+   "y": 425.1
+  },
+  {
+   "id": "stadio-comunale",
+   "name": "Stadio Comunale",
+   "alt": [
+    "Stadio",
+    "AC Bellinzona"
+   ],
+   "type": "Stadio",
+   "cat": "citta",
+   "period": "1947",
+   "desc": "Impianto sportivo multifunzione adibito soprattutto al calcio, con le partite casalinghe del Bellinzona, e all'atletica leggera. Fu inaugurato ufficialmente il 25 maggio 1947; la prima partita vi si era disputata il 1º dicembre 1946.",
+   "source": {
+    "label": "Wikipedia",
+    "url": "https://it.wikipedia.org/wiki/Stadio_comunale_(Bellinzona)"
+   },
+   "osm": "way/140645171",
+   "wikidata": "Q690053",
+   "tier": 1,
+   "lat": 46.1978325,
+   "lon": 9.022033,
+   "e": 2722219.7,
+   "n": 1117496.5,
+   "h": 225.7,
+   "x": -762.8,
+   "y": -1769.4,
+   "visit": {
+    "text": "Biglietti delle partite dell'AC Bellinzona in prevendita su Ticketcorner; le casse dello stadio aprono 90 minuti prima del calcio d'inizio.",
+    "rows": [],
+    "prices": [],
+    "shut": [],
+    "source": {
+     "label": "AC Bellinzona",
+     "url": "https://www.acbellinzona.ch/it/prezzi-biglietti-e-settori"
+    },
+    "checked": "2026-11-13"
+   }
+  },
+  {
+   "id": "san-rocco",
+   "name": "San Rocco",
+   "alt": [
+    "Chiesa di San Rocco",
+    "Santa Maria del Ponte"
+   ],
+   "type": "Chiesa",
+   "cat": "chiese",
+   "period": "XIV secolo · ricostruita nel 1478",
+   "desc": "Trae origine dal testamento di Jacopo Cattaneo, che nel 1330 ne chiese la costruzione con il nome di Santa Maria del Ponte. Rasa al suolo quasi completamente, fu ricostruita nel 1478; la facciata fu rifatta nel 1832.",
+   "source": {
+    "label": "Wikipedia",
+    "url": "https://it.wikipedia.org/wiki/Chiesa_di_San_Rocco_(Bellinzona)"
+   },
+   "osm": "way/325935780",
+   "wikidata": "Q3671865",
+   "tier": 2,
+   "lat": 46.1899027,
+   "lon": 9.0230778,
+   "e": 2722318.1,
+   "n": 1116616.8,
+   "h": 230.1,
+   "x": 810.7,
+   "y": 461.0
+  },
+  {
+   "id": "san-giovanni",
+   "name": "Chiesa dei Santi Giovanni Battista ed Evangelista",
+   "alt": [
+    "San Giovanni",
+    "Chiesa di San Giovanni"
+   ],
+   "type": "Chiesa",
+   "cat": "chiese",
+   "period": "Dal 1760",
+   "desc": "Costruita a partire dal 1760 su progetto di Gaetano Matteo Pisoni per i frati Agostiniani, nel 1812 non era ancora terminata e nel 1834 fu adibita ad arsenale. Venne ultimata solo alla fine del XX secolo.",
+   "source": {
+    "label": "Wikipedia",
+    "url": "https://it.wikipedia.org/wiki/Chiesa_dei_Santi_Giovanni_Battista_ed_Evangelista_(Bellinzona)"
+   },
+   "osm": "way/318272016",
+   "wikidata": "Q29883942",
+   "tier": 2,
+   "lat": 46.1949238,
+   "lon": 9.0251858,
+   "e": 2722469.5,
+   "n": 1117178.2,
+   "h": 227.4,
+   "x": 611.9,
+   "y": -1169.7
+  },
+  {
+   "id": "chiesa-rossa",
+   "name": "Chiesa Rossa (San Paolo)",
+   "alt": [
+    "Chiesa di San Paolo",
+    "Chiesa Rossa",
+    "Arbedo"
+   ],
+   "type": "Chiesa",
+   "cat": "chiese",
+   "period": "Citata dal 1255",
+   "desc": "Chiesa di Arbedo detta «Rossa» per il colore della facciata. È citata per la prima volta nel 1255, ma gli scavi hanno riportato alla luce fondamenta del VII-VIII secolo; il campanile romanico risale ai secoli XII-XIII. Nel XV secolo fu in gran parte ricostruita e ingrandita.",
+   "source": {
+    "label": "Wikipedia",
+    "url": "https://it.wikipedia.org/wiki/Chiesa_di_San_Paolo_detta_Chiesa_Rossa"
+   },
+   "osm": "way/373484375",
+   "wikidata": "Q3671568",
+   "tier": 2,
+   "lat": 46.2059956,
+   "lon": 9.0392295,
+   "e": 2723528.3,
+   "n": 1118430.7,
+   "h": 231.8,
+   "x": 2878.1,
+   "y": -5535.6,
+   "visit": {
+    "text": "Nessun orario fisso: la chiave si ritira presso la parrocchia di Arbedo, via alla chiesa 18 (tel. 091 829 11 39).",
+    "rows": [],
+    "prices": [],
+    "shut": [],
+    "source": {
+     "label": "Ticino Turismo",
+     "url": "https://www.ticino.ch/it/commons/details/Chiesa-di-S-Paolo-o-Chiesa-Rossa/2837.html"
+    },
+    "checked": "2026-11-13"
+   }
+  },
+  {
+   "id": "palazzo-franscini",
+   "name": "Palazzo Franscini",
+   "alt": [
+    "Biblioteca cantonale",
+    "Archivio di Stato"
+   ],
+   "type": "Polo culturale",
+   "cat": "citta",
+   "period": "1999",
+   "desc": "Polo culturale del Cantone inaugurato nel 1999, frutto del concorso vinto nel 1988 dall'architetto Luca Ortelli. Ospita fra l'altro la Biblioteca cantonale di Bellinzona, l'Archivio di Stato del Cantone Ticino e il Centro di dialettologia e di etnografia.",
+   "source": {
+    "label": "Wikipedia",
+    "url": "https://it.wikipedia.org/wiki/Palazzo_Franscini"
+   },
+   "osm": "relation/19932935",
+   "wikidata": "Q66372233",
+   "tier": 2,
+   "lat": 46.1931971,
+   "lon": 9.0120648,
+   "e": 2721460.7,
+   "n": 1116965.9,
+   "h": 225.3,
+   "x": -2889.7,
+   "y": 376.4
+  },
+  {
+   "id": "tribunale-penale-federale",
+   "name": "Tribunale penale federale",
+   "alt": [
+    "TPF"
+   ],
+   "type": "Tribunale",
+   "cat": "citta",
+   "period": "A Bellinzona dal 2004",
+   "desc": "Tribunale della Confederazione svizzera con sede a Bellinzona, dove ha iniziato le sue attività nel 2004. Tramite la propria Corte penale giudica le cause che la legge sottopone alla giurisdizione penale federale.",
+   "source": {
+    "label": "Wikipedia",
+    "url": "https://it.wikipedia.org/wiki/Tribunale_penale_federale"
+   },
+   "osm": "node/3230716700",
+   "wikidata": "Q641514",
+   "tier": 2,
+   "lat": 46.1898609,
+   "lon": 9.0195497,
+   "e": 2722045.9,
+   "n": 1116606.7,
+   "h": 226.1,
+   "x": -198.7,
+   "y": 762.7
+  },
+  {
+   "id": "san-bernardo",
+   "name": "San Bernardo",
+   "alt": [
+    "Chiesa di San Bernardo",
+    "Monte Carasso"
+   ],
+   "type": "Chiesa",
+   "cat": "chiese",
+   "period": "Fine dell'XI secolo",
+   "desc": "Chiesa sopra Monte Carasso eretta alla fine dell'XI secolo e ampliata nel XV; campanile e portico sono del XVI secolo. L'interno è quasi completamente ricoperto da affreschi, i più antichi dei quali risalgono al XV secolo; quelli della facciata sono del 1582.",
+   "source": {
+    "label": "Wikipedia",
+    "url": "https://it.wikipedia.org/wiki/Chiesa_di_San_Bernardo_(Bellinzona)"
+   },
+   "osm": "way/556507154",
+   "wikidata": "Q3669646",
+   "tier": 2,
+   "lat": 46.1938929,
+   "lon": 8.9875576,
+   "e": 2719567.5,
+   "n": 1117005.5,
+   "h": 618.1,
+   "x": -10059.8,
+   "y": 991.2,
+   "visit": {
+    "text": "Visitabile con la guida da aprile a ottobre, da giovedì a domenica 11:00-16:00 (luglio e agosto 10:30-16:30); da novembre a marzo nessun orario pubblicato, gruppi su richiesta allo 058 203 14 50.",
+    "rows": [
+     {
+      "from": "04-01",
+      "to": "06-30",
+      "days": "thu-sun",
+      "open": "11:00",
+      "close": "16:00",
+      "shut": false
+     },
+     {
+      "from": "07-01",
+      "to": "08-31",
+      "days": "thu-sun",
+      "open": "10:30",
+      "close": "16:30",
+      "shut": false
+     },
+     {
+      "from": "09-01",
+      "to": "10-31",
+      "days": "thu-sun",
+      "open": "11:00",
+      "close": "16:00",
+      "shut": false
+     }
+    ],
+    "prices": [],
+    "shut": [],
+    "source": {
+     "label": "Ente autonomo Carasc",
+     "url": "https://www.carasc.ch/"
+    },
+    "checked": "2026-11-13"
+   }
+  },
+  {
+   "id": "ponte-tibetano",
+   "name": "Ponte tibetano Carasc",
+   "alt": [
+    "Ponte tibetano",
+    "Carasc"
+   ],
+   "type": "Ponte pedonale sospeso",
+   "cat": "gite",
+   "period": "2015",
+   "desc": "Ponte pedonale sospeso («tibetano») fra i territori di Monte Carasso e Sementina. L'apertura ufficiale risale al 2015.",
+   "source": {
+    "label": "Wikidata",
+    "url": "https://www.wikidata.org/wiki/Q20617346"
+   },
+   "osm": "way/352164083",
+   "wikidata": "Q20617346",
+   "tier": 2,
+   "lat": 46.1947797,
+   "lon": 8.9746084,
+   "e": 2718566.1,
+   "n": 1117084.5,
+   "h": 547.9,
+   "x": -13931.8,
+   "y": 1948.9,
+   "visit": {
+    "text": "Si raggiunge a piedi o con la funivia Monte Carasso-Mornera scendendo a Curzútt; non sono pubblicati orari, chiusure stagionali né un biglietto d'ingresso.",
+    "rows": [],
+    "prices": [],
+    "shut": [],
+    "source": {
+     "label": "Ticino Turismo",
+     "url": "https://www.ticino.ch/it/commons/details/Ponte-tibetano-Carasc-/137557.html"
+    },
+    "checked": "2026-11-13"
+   }
+  },
+  {
+   "id": "sacro-cuore",
+   "name": "Chiesa del Sacro Cuore",
+   "alt": [
+    "Sacro Cuore"
+   ],
+   "type": "Chiesa",
+   "cat": "chiese",
+   "period": "1934–1936",
+   "desc": "Chiesa conventuale costruita fra il 1934 e il 1936 su progetto dei fratelli Carlo e Rino Tami; dal 1986 è monumento storico nazionale. Le pareti interne ospitano una grande Via Crucis affrescata da Guido Gonzato.",
+   "source": {
+    "label": "Wikipedia",
+    "url": "https://it.wikipedia.org/wiki/Chiesa_del_Sacro_Cuore_(Bellinzona)"
+   },
+   "osm": "way/325974653",
+   "wikidata": "Q3668583",
+   "tier": 2,
+   "lat": 46.2012348,
+   "lon": 9.0293504,
+   "e": 2722776.7,
+   "n": 1117886.1,
+   "h": 228.5,
+   "x": 798.1,
+   "y": -3351.7
+  },
+  {
+   "id": "fortino-ai-scarsitt",
+   "name": "Fortino Ai Scarsitt",
+   "alt": [
+    "Fortini della Fame",
+    "Fortino della Fame",
+    "Linea Dufour",
+    "Ai Scarsitt",
+    "Camorino"
+   ],
+   "type": "Fortino della Fame",
+   "cat": "castelli",
+   "period": "1853–1854",
+   "desc": "Una delle cinque torri di Camorino della linea difensiva ideata dal generale Guillaume-Henri Dufour e costruita a sud di Bellinzona nel 1853–1854, lungo la Morobbia e la valle di Sementina. I lavori occuparono circa 500 uomini per un paio d'anni, dando lavoro a molte persone ridotte in miseria: per questo la gente li chiamò «fortini della fame».",
+   "source": {
+    "label": "Wikipedia",
+    "url": "https://it.wikipedia.org/wiki/Fortini_della_fame"
+   },
+   "osm": "way/1380932656",
+   "wikidata": "Q1299691",
+   "tier": 2,
+   "lat": 46.1649862,
+   "lon": 9.0101267,
+   "e": 2721373.9,
+   "n": 1113827.4,
+   "h": 324.4,
+   "x": 1077.8,
+   "y": 8521.7,
+   "visit": {
+    "text": "Sentiero segnalato di circa 2 ore da Camorino Piazza, percorribile in ogni stagione; visite guidate su richiesta all'Associazione Fortini della Fame.",
+    "rows": [],
+    "prices": [],
+    "shut": [],
+    "source": {
+     "label": "Associazione Fortini della Fame Camorino",
+     "url": "https://www.fortini-camorino.com/"
+    },
+    "checked": "2026-11-13"
+   }
+  },
+  {
+   "id": "fortino-ai-munt",
+   "name": "Fortino Ai Munt",
+   "alt": [
+    "Fortini della Fame",
+    "Fortino della Fame",
+    "Linea Dufour",
+    "Ai Munt",
+    "Camorino"
+   ],
+   "type": "Fortino della Fame",
+   "cat": "castelli",
+   "period": "1853–1854",
+   "desc": "Una delle cinque torri di Camorino della linea difensiva ideata dal generale Guillaume-Henri Dufour e costruita a sud di Bellinzona nel 1853–1854, lungo la Morobbia e la valle di Sementina. I lavori occuparono circa 500 uomini per un paio d'anni, dando lavoro a molte persone ridotte in miseria: per questo la gente li chiamò «fortini della fame».",
+   "source": {
+    "label": "Wikipedia",
+    "url": "https://it.wikipedia.org/wiki/Fortini_della_fame"
+   },
+   "osm": "way/1380932644",
+   "wikidata": "Q1299691",
+   "tier": 2,
+   "lat": 46.1652943,
+   "lon": 9.0145797,
+   "e": 2721717.1,
+   "n": 1113868.6,
+   "h": 399.2,
+   "x": 2311.5,
+   "y": 7868.7,
+   "visit": {
+    "text": "Sentiero segnalato di circa 2 ore da Camorino Piazza, percorribile in ogni stagione; visite guidate su richiesta all'Associazione Fortini della Fame.",
+    "rows": [],
+    "prices": [],
+    "shut": [],
+    "source": {
+     "label": "Associazione Fortini della Fame Camorino",
+     "url": "https://www.fortini-camorino.com/"
+    },
+    "checked": "2026-11-13"
+   }
+  },
+  {
+   "id": "fortino-ala-pelera",
+   "name": "Fortino Ala Peléra",
+   "alt": [
+    "Fortini della Fame",
+    "Fortino della Fame",
+    "Linea Dufour",
+    "Ala Peléra",
+    "Camorino"
+   ],
+   "type": "Fortino della Fame",
+   "cat": "castelli",
+   "period": "1853–1854",
+   "desc": "Una delle cinque torri di Camorino della linea difensiva ideata dal generale Guillaume-Henri Dufour e costruita a sud di Bellinzona nel 1853–1854, lungo la Morobbia e la valle di Sementina. I lavori occuparono circa 500 uomini per un paio d'anni, dando lavoro a molte persone ridotte in miseria: per questo la gente li chiamò «fortini della fame».",
+   "source": {
+    "label": "Wikipedia",
+    "url": "https://it.wikipedia.org/wiki/Fortini_della_fame"
+   },
+   "osm": "way/1380932645",
+   "wikidata": "Q1299691",
+   "tier": 2,
+   "lat": 46.1647964,
+   "lon": 9.0170901,
+   "e": 2721912.1,
+   "n": 1113817.1,
+   "h": 434.4,
+   "x": 3114.8,
+   "y": 7717.3,
+   "visit": {
+    "text": "Sentiero segnalato di circa 2 ore da Camorino Piazza, percorribile in ogni stagione; visite guidate su richiesta all'Associazione Fortini della Fame.",
+    "rows": [],
+    "prices": [],
+    "shut": [],
+    "source": {
+     "label": "Associazione Fortini della Fame Camorino",
+     "url": "https://www.fortini-camorino.com/"
+    },
+    "checked": "2026-11-13"
+   }
+  },
+  {
+   "id": "fortino-al-sass-del-camosc",
+   "name": "Fortino Al Sass del Camósc",
+   "alt": [
+    "Fortini della Fame",
+    "Fortino della Fame",
+    "Linea Dufour",
+    "Al Sass del Camósc",
+    "Camorino"
+   ],
+   "type": "Fortino della Fame",
+   "cat": "castelli",
+   "period": "1853–1854",
+   "desc": "Una delle cinque torri di Camorino della linea difensiva ideata dal generale Guillaume-Henri Dufour e costruita a sud di Bellinzona nel 1853–1854, lungo la Morobbia e la valle di Sementina. I lavori occuparono circa 500 uomini per un paio d'anni, dando lavoro a molte persone ridotte in miseria: per questo la gente li chiamò «fortini della fame».",
+   "source": {
+    "label": "Wikipedia",
+    "url": "https://it.wikipedia.org/wiki/Fortini_della_fame"
+   },
+   "osm": "way/886129355",
+   "wikidata": "Q1299691",
+   "tier": 2,
+   "lat": 46.1640906,
+   "lon": 9.0199862,
+   "e": 2722137.3,
+   "n": 1113743.2,
+   "h": 503.6,
+   "x": 4062.5,
+   "y": 7500.0,
+   "visit": {
+    "text": "Sentiero segnalato di circa 2 ore da Camorino Piazza, percorribile in ogni stagione; visite guidate su richiesta all'Associazione Fortini della Fame.",
+    "rows": [],
+    "prices": [],
+    "shut": [],
+    "source": {
+     "label": "Associazione Fortini della Fame Camorino",
+     "url": "https://www.fortini-camorino.com/"
+    },
+    "checked": "2026-11-13"
+   }
+  },
+  {
+   "id": "fortino-al-pian-di-bur",
+   "name": "Fortino Al Pian di Bur",
+   "alt": [
+    "Fortini della Fame",
+    "Fortino della Fame",
+    "Linea Dufour",
+    "Al Pian di Bur",
+    "Camorino"
+   ],
+   "type": "Fortino della Fame",
+   "cat": "castelli",
+   "period": "1853–1854",
+   "desc": "Una delle cinque torri di Camorino della linea difensiva ideata dal generale Guillaume-Henri Dufour e costruita a sud di Bellinzona nel 1853–1854, lungo la Morobbia e la valle di Sementina. I lavori occuparono circa 500 uomini per un paio d'anni, dando lavoro a molte persone ridotte in miseria: per questo la gente li chiamò «fortini della fame».",
+   "source": {
+    "label": "Wikipedia",
+    "url": "https://it.wikipedia.org/wiki/Fortini_della_fame"
+   },
+   "osm": "way/1380932646",
+   "wikidata": "Q1299691",
+   "tier": 2,
+   "lat": 46.1655672,
+   "lon": 9.0226973,
+   "e": 2722343.4,
+   "n": 1113911.5,
+   "h": 489.4,
+   "x": 4606.7,
+   "y": 6893.5,
+   "visit": {
+    "text": "Sentiero segnalato di circa 2 ore da Camorino Piazza, percorribile in ogni stagione; visite guidate su richiesta all'Associazione Fortini della Fame.",
+    "rows": [],
+    "prices": [],
+    "shut": [],
+    "source": {
+     "label": "Associazione Fortini della Fame Camorino",
+     "url": "https://www.fortini-camorino.com/"
+    },
+    "checked": "2026-11-13"
+   }
+  },
+  {
+   "id": "fortini-torre-murata",
+   "name": "Torre della murata",
+   "alt": [
+    "Fortini della Fame",
+    "Fortino",
+    "Linea Dufour",
+    "Sementina",
+    "Torre di Sementina"
+   ],
+   "type": "Fortino della Fame · torre",
+   "cat": "castelli",
+   "period": "1853–1854",
+   "desc": "Tratto di Sementina e Monte Carasso della linea difensiva ideata dal generale Dufour e costruita nel 1853–1854: sfruttava la valle del riale Sementina, con muraglioni mai terminati che ne delimitavano l'ingresso sulla destra del Ticino. Come le torri di Camorino, sull'altro lato della valle, fa parte dei «fortini della fame».",
+   "source": {
+    "label": "Wikipedia (in tedesco)",
+    "url": "https://de.wikipedia.org/wiki/Fortini_della_Fame"
+   },
+   "osm": null,
+   "wikidata": "Q1299691",
+   "tier": 2,
+   "lat": 46.186779,
+   "lon": 8.989979,
+   "e": 2719770.1,
+   "n": 1116218.6,
+   "h": 318.8,
+   "x": -8221.9,
+   "y": 3733.6
+  },
+  {
+   "id": "fortini-mura-portale",
+   "name": "Mura e portale dei Fortini",
+   "alt": [
+    "Fortini della Fame",
+    "Murata",
+    "Portale",
+    "Linea Dufour",
+    "Monte Carasso"
+   ],
+   "type": "Fortino della Fame · mura e portale",
+   "cat": "castelli",
+   "period": "1853–1854",
+   "desc": "Tratto di Sementina e Monte Carasso della linea difensiva ideata dal generale Dufour e costruita nel 1853–1854: sfruttava la valle del riale Sementina, con muraglioni mai terminati che ne delimitavano l'ingresso sulla destra del Ticino. Come le torri di Camorino, sull'altro lato della valle, fa parte dei «fortini della fame».",
+   "source": {
+    "label": "Wikipedia (in tedesco)",
+    "url": "https://de.wikipedia.org/wiki/Fortini_della_Fame"
+   },
+   "osm": null,
+   "wikidata": "Q1299691",
+   "tier": 2,
+   "lat": 46.187941,
+   "lon": 8.991217,
+   "e": 2719863.1,
+   "n": 1116349.6,
+   "h": 298.5,
+   "x": -8051.5,
+   "y": 3352.6
+  },
+  {
+   "id": "fortini-torre-monte-carasso",
+   "name": "Torre dei Fortini (Monte Carasso)",
+   "alt": [
+    "Fortini della Fame",
+    "Fortino",
+    "Linea Dufour",
+    "Monte Carasso"
+   ],
+   "type": "Fortino della Fame · torre",
+   "cat": "castelli",
+   "period": "1853–1854",
+   "desc": "Tratto di Sementina e Monte Carasso della linea difensiva ideata dal generale Dufour e costruita nel 1853–1854: sfruttava la valle del riale Sementina, con muraglioni mai terminati che ne delimitavano l'ingresso sulla destra del Ticino. Come le torri di Camorino, sull'altro lato della valle, fa parte dei «fortini della fame».",
+   "source": {
+    "label": "Wikipedia (in tedesco)",
+    "url": "https://de.wikipedia.org/wiki/Fortini_della_Fame"
+   },
+   "osm": null,
+   "wikidata": "Q1299691",
+   "tier": 2,
+   "lat": 46.187856,
+   "lon": 8.991512,
+   "e": 2719886.0,
+   "n": 1116340.6,
+   "h": 298.6,
+   "x": -7952.9,
+   "y": 3354.1
+  },
+  {
+   "id": "ex-ospedale-ravecchia",
+   "name": "Ex ospedale di Ravecchia",
+   "alt": [
+    "Ospedale di Ravecchia",
+    "Ex ospedale",
+    "Vecchio ospedale",
+    "Polizia militare",
+    "Via Pedotti",
+    "Via Federico Pedotti"
+   ],
+   "type": "Ex ospedale",
+   "cat": "citta",
+   "period": "Costruito prima del 1919",
+   "desc": "Edificio in Via Federico Pedotti 14, a Ravecchia, che ospitava il vecchio ospedale. Appartiene alla Confederazione ed è stato sede della Polizia militare. Nel 2019 il Municipio di Bellinzona concordò con armasuisse un prezzo di 4,6 milioni di franchi per acquistarlo e farne una casa della cultura e delle associazioni; nel 2020 la Città rinunciò all'acquisto, perché la Confederazione aveva bisogno degli spazi.",
+   "source": {
+    "label": "laRegione, 23.9.2020",
+    "url": "https://www.laregione.ch/1463335"
+   },
+   "osm": null,
+   "tier": 2,
+   "lat": 46.1857355,
+   "lon": 9.0214456,
+   "e": 2722201.5,
+   "n": 1116151.1,
+   "h": 236.2,
+   "x": 1009.4,
+   "y": 1794.4
+  },
+  {
+   "id": "chiesa-daro",
+   "name": "Chiesa dei Santi Pietro martire, Quirico e Giulitta",
+   "alt": [
+    "SS. Quirico e Giulitta",
+    "Chiesa di Daro",
+    "Daro"
+   ],
+   "type": "Chiesa parrocchiale · Daro",
+   "cat": "chiese",
+   "period": "Citata nel 1173",
+   "desc": "Chiesa parrocchiale di Daro. Citata già nel 1173, fu completamente ricostruita nel XV secolo; nel 1775 venne aggiunta la canonica. Ha una sola navata con volta a crociera e cappelle laterali.",
+   "source": {
+    "label": "Wikipedia",
+    "url": "https://it.wikipedia.org/wiki/Chiesa_dei_Santi_Pietro_martire,_Quirico_e_Giulitta"
+   },
+   "osm": "way/207972150",
+   "wikidata": "Q3668389",
+   "tier": 2,
+   "lat": 46.196145,
+   "lon": 9.032775,
+   "e": 2723052.5,
+   "n": 1117325.8,
+   "h": 264.2,
+   "x": 2601.3,
+   "y": -2230.1
+  },
+  {
+   "id": "chiesa-artore",
+   "name": "Chiesa di San Sebastiano",
+   "alt": [
+    "San Sebastiano",
+    "Madonna della Salute",
+    "Chiesa di Artore",
+    "Artore"
+   ],
+   "type": "Chiesa · Artore",
+   "cat": "chiese",
+   "period": "Origine medievale",
+   "desc": "Chiesa di Artore, anticamente detta «Madonna della Salute». Della costruzione medievale in stile romanico resta solo l'abside; fu più volte rimaneggiata fino alla ristrutturazione completa del 1858, quando venne aggiunto il coro semicircolare.",
+   "source": {
+    "label": "Wikipedia",
+    "url": "https://it.wikipedia.org/wiki/Chiesa_di_San_Sebastiano_(Bellinzona)"
+   },
+   "osm": "way/204822459",
+   "wikidata": "Q3671999",
+   "tier": 2,
+   "lat": 46.191631,
+   "lon": 9.033067,
+   "e": 2723085.3,
+   "n": 1116824.5,
+   "h": 390.7,
+   "x": 3410.1,
+   "y": -1287.5
+  },
+  {
+   "id": "chiesa-carasso",
+   "name": "Chiesa di Sant'Andrea",
+   "alt": [
+    "Sant'Andrea",
+    "San Andrea",
+    "Chiesa di Carasso",
+    "Carasso"
+   ],
+   "type": "Chiesa · Carasso",
+   "cat": "chiese",
+   "period": "Prima del 1285",
+   "desc": "Chiesa tardobarocca di Carasso. Costruita in stile romanico prima del 1285, fu distrutta e ricostruita all'inizio del XVI secolo e ancora modificata nel XVIII (il portale porta l'anno 1735). Restaurata nel 1983, con altare, ambone e fonte battesimale di Ivo Soldini, e nel 2004; ospita un organo Kuhn inaugurato nel 1984.",
+   "source": {
+    "label": "Wikipedia",
+    "url": "https://it.wikipedia.org/wiki/Chiesa_di_Sant%27Andrea_(Bellinzona)"
+   },
+   "osm": "way/204958142",
+   "wikidata": "Q3672386",
+   "tier": 2,
+   "lat": 46.206051,
+   "lon": 9.017263,
+   "e": 2721833.1,
+   "n": 1118402.5,
+   "h": 236.3,
+   "x": -3455.1,
+   "y": -3833.7
+  },
+  {
+   "id": "chiesa-camorino",
+   "name": "Chiesa di San Martino",
+   "alt": [
+    "San Martino",
+    "Chiesa di Camorino",
+    "Camorino"
+   ],
+   "type": "Chiesa parrocchiale · Camorino",
+   "cat": "chiese",
+   "period": "Documentata nel 1237",
+   "desc": "Chiesa parrocchiale di Camorino, di origine romanica e già documentata nel 1237. Nei secoli XVII e XVIII fu arricchita di decorazioni barocche; nel 1888 fu costruita la nuova abside. La facciata rossa ha un portale rinascimentale del 1533. Con i restauri del 1994 sono arrivate le vetrate e gli arredi di Nag Arnoldi.",
+   "source": {
+    "label": "Wikipedia",
+    "url": "https://it.wikipedia.org/wiki/Chiesa_di_San_Martino_(Bellinzona)"
+   },
+   "osm": "way/351653017",
+   "wikidata": "Q3671026",
+   "tier": 2,
+   "lat": 46.161387,
+   "lon": 9.004918,
+   "e": 2720979.6,
+   "n": 1113419.3,
+   "h": 292.7,
+   "x": 154.2,
+   "y": 10077.3
+  },
+  {
+   "id": "chiesa-arbedo",
+   "name": "Chiesa di Santa Maria Assunta (Arbedo)",
+   "alt": [
+    "Santa Maria Assunta",
+    "Chiesa di Arbedo",
+    "Arbedo"
+   ],
+   "type": "Chiesa · Arbedo",
+   "cat": "chiese",
+   "period": "Origine medievale",
+   "desc": "Chiesa di Arbedo, parrocchiale fino al 1583. Eretta nel Medioevo, fu ricostruita nel XVI secolo e ingrandita nel 1625; nel XVII secolo si aggiunsero le due cappelle laterali e il fonte battesimale. Conserva resti di affreschi gotici e pitture di Baldassarre Orelli nel coro.",
+   "source": {
+    "label": "Wikipedia",
+    "url": "https://it.wikipedia.org/wiki/Chiesa_di_Santa_Maria_Assunta_(Arbedo-Castione)"
+   },
+   "osm": "way/142770624",
+   "wikidata": "Q3673254",
+   "tier": 2,
+   "lat": 46.212492,
+   "lon": 9.04678,
+   "e": 2724096.2,
+   "n": 1119164.7,
+   "h": 278.7,
+   "x": 4008.4,
+   "y": -8168.4
+  },
+  {
+   "id": "chiesa-san-giuseppe-arbedo",
+   "name": "Chiesa di San Giuseppe (Arbedo)",
+   "alt": [
+    "San Giuseppe",
+    "Arbedo"
+   ],
+   "type": "Chiesa · Arbedo",
+   "cat": "chiese",
+   "period": "1969",
+   "desc": "Chiesa di Arbedo costruita nel 1969 su progetto dell'architetto Giampiero Mina.",
+   "source": {
+    "label": "Wikipedia",
+    "url": "https://it.wikipedia.org/wiki/Chiesa_di_San_Giuseppe_(Arbedo-Castione)"
+   },
+   "osm": "way/342353484",
+   "wikidata": "Q3670599",
+   "tier": 2,
+   "lat": 46.211373,
+   "lon": 9.041668,
+   "e": 2723704.3,
+   "n": 1119032.2,
+   "h": 244.0,
+   "x": 2716.6,
+   "y": -7339.0
+  },
+  {
+   "id": "chiesa-giubiasco",
+   "name": "Chiesa di Santa Maria Assunta (Giubiasco)",
+   "alt": [
+    "Santa Maria Assunta",
+    "Chiesa di Giubiasco",
+    "Giubiasco"
+   ],
+   "type": "Chiesa parrocchiale · Giubiasco",
+   "cat": "chiese",
+   "period": "XII secolo",
+   "desc": "Principale chiesa cattolica di Giubiasco. Costruita nel XII secolo, probabilmente al posto di una chiesa più antica (Santa Maria di Plumasca o Primasca, ricordata in un atto del 929), fu ampliata nel XV secolo e poi in stile barocco nel XVII. È stata restaurata più volte nel Novecento, l'ultima nel 1997.",
+   "source": {
+    "label": "Wikipedia",
+    "url": "https://it.wikipedia.org/wiki/Chiesa_di_Santa_Maria_Assunta_(Giubiasco)"
+   },
+   "osm": "way/157461993",
+   "wikidata": "Q3673293",
+   "tier": 2,
+   "lat": 46.17224,
+   "lon": 9.011882,
+   "e": 2721493.3,
+   "n": 1114636.3,
+   "h": 244.6,
+   "x": 419.9,
+   "y": 6481.7
+  },
+  {
+   "id": "chiesa-san-giobbe",
+   "name": "Chiesa di San Giobbe",
+   "alt": [
+    "San Giobbe",
+    "Sant'Anna",
+    "Oratorio di Sant'Anna",
+    "Giubiasco"
+   ],
+   "type": "Chiesa · Giubiasco",
+   "cat": "chiese",
+   "desc": "Chiesa di Giubiasco, presso la Piazzetta Mario Chiattone.",
+   "source": {
+    "label": "OpenStreetMap",
+    "url": "https://www.openstreetmap.org/way/161515681"
+   },
+   "osm": "way/161515681",
+   "wikidata": "Q55382087",
+   "tier": 2,
+   "lat": 46.172036,
+   "lon": 9.007255,
+   "e": 2721136.5,
+   "n": 1114606.5,
+   "h": 239.2,
+   "x": -880.5,
+   "y": 6921.3
+  },
+  {
+   "id": "chiesa-san-bartolomeo",
+   "name": "Chiesa di San Bartolomeo",
+   "alt": [
+    "San Bartolomeo",
+    "S. Bartolomeo",
+    "San Burtulumee",
+    "Camorino"
+   ],
+   "type": "Chiesa · Camorino",
+   "cat": "chiese",
+   "desc": "Chiesa in località San Burtulumee, nel territorio di Camorino.",
+   "source": {
+    "label": "OpenStreetMap",
+    "url": "https://www.openstreetmap.org/way/351889715"
+   },
+   "osm": "way/351889715",
+   "wikidata": "Q55382086",
+   "tier": 2,
+   "lat": 46.16816,
+   "lon": 9.012666,
+   "e": 2721562.9,
+   "n": 1114184.1,
+   "h": 291.4,
+   "x": 1300.3,
+   "y": 7483.9
+  },
+  {
+   "id": "chiesa-santa-maria-neve",
+   "name": "Chiesa di Santa Maria della Neve",
+   "alt": [
+    "Santa Maria della Neve",
+    "Madonna della Neve",
+    "Ravecchia",
+    "Artore"
+   ],
+   "type": "Chiesa",
+   "cat": "chiese",
+   "desc": "Chiesa sul versante sopra Ravecchia, lungo il Sentiero Prada.",
+   "source": {
+    "label": "OpenStreetMap",
+    "url": "https://www.openstreetmap.org/way/204825086"
+   },
+   "osm": "way/204825086",
+   "wikidata": "Q55414277",
+   "tier": 2,
+   "lat": 46.185685,
+   "lon": 9.030123,
+   "e": 2722871.4,
+   "n": 1116159.1,
+   "h": 325.5,
+   "x": 3516.8,
+   "y": 872.6
+  },
+  {
+   "id": "chiesa-trinita",
+   "name": "Chiesa della Santissima Trinità",
+   "alt": [
+    "Santissima Trinità",
+    "SS. Trinità",
+    "Pedmúnt",
+    "Monte Carasso"
+   ],
+   "type": "Chiesa · Monte Carasso",
+   "cat": "chiese",
+   "desc": "Chiesa in località Pedmúnt, a Monte Carasso.",
+   "source": {
+    "label": "OpenStreetMap",
+    "url": "https://www.openstreetmap.org/way/322739305"
+   },
+   "osm": "way/322739305",
+   "wikidata": "Q29527039",
+   "tier": 2,
+   "lat": 46.18777,
+   "lon": 8.991858,
+   "e": 2719912.9,
+   "n": 1116331.6,
+   "h": 298.6,
+   "x": -7839.5,
+   "y": 3352.1
+  },
+  {
+   "id": "chiesa-evangelica",
+   "name": "Chiesa evangelica riformata",
+   "alt": [
+    "Chiesa evangelica",
+    "Chiesa riformata",
+    "Chiesa protestante"
+   ],
+   "type": "Chiesa evangelica riformata",
+   "cat": "chiese",
+   "desc": "Chiesa della comunità evangelica riformata, in Viale Stefano Franscini 1.",
+   "source": {
+    "label": "OpenStreetMap",
+    "url": "https://www.openstreetmap.org/way/372077207"
+   },
+   "osm": "way/372077207",
+   "wikidata": "Q29883956",
+   "tier": 2,
+   "lat": 46.189512,
+   "lon": 9.021003,
+   "e": 2722158.8,
+   "n": 1116570.2,
+   "h": 227.9,
+   "x": 275.9,
+   "y": 745.4
+  },
+  {
+   "id": "chiesa-sementina",
+   "name": "Chiesa di San Michele",
+   "alt": [
+    "San Michele",
+    "Chiesa di Sementina",
+    "Sementina"
+   ],
+   "type": "Chiesa parrocchiale · Sementina",
+   "cat": "chiese",
+   "period": "Parrocchiale dal 1440",
+   "desc": "Chiesa parrocchiale di Sementina. La costruzione iniziò nel XIV o XV secolo per sostituire la chiesa di Sant'Eusebio a Moia, distrutta da un'alluvione; nel 1440 divenne parrocchiale. Fu ampliata nel 1625 e di nuovo nel 1761, quando prese l'aspetto tardobarocco di oggi.",
+   "source": {
+    "label": "Wikipedia",
+    "url": "https://it.wikipedia.org/wiki/Chiesa_di_San_Michele_(Bellinzona)"
+   },
+   "osm": null,
+   "wikidata": "Q3671246",
+   "tier": 2,
+   "lat": 46.183076,
+   "lon": 8.986767,
+   "e": 2719530.3,
+   "n": 1115802.1,
+   "h": 227.2,
+   "x": -8553.5,
+   "y": 5331.6
+  },
+  {
+   "id": "chiesa-monte-carasso",
+   "name": "Chiesa dei Santi Bernardino e Girolamo",
+   "alt": [
+    "Santi Bernardino e Girolamo",
+    "San Bernardino",
+    "San Girolamo",
+    "Chiesa di Monte Carasso",
+    "Monte Carasso",
+    "Orenno"
+   ],
+   "type": "Chiesa · Monte Carasso",
+   "cat": "chiese",
+   "period": "XI o XII secolo",
+   "desc": "Chiesa in località Orenno, a Monte Carasso, sorta fra l'XI e il XII secolo. Era un'ala del convento delle Agostiniane, eretto nel 1450 e soppresso nel 1859. Il coro fu aggiunto fra il 1658 e il 1660; l'ultimo secolo ha visto più restauri, fra cui quello di Luigi Snozzi (1987-1993).",
+   "source": {
+    "label": "Wikipedia",
+    "url": "https://it.wikipedia.org/wiki/Chiesa_dei_Santi_Bernardino_e_Girolamo"
+   },
+   "osm": null,
+   "wikidata": "Q3668088",
+   "tier": 2,
+   "lat": 46.187028,
+   "lon": 8.997246,
+   "e": 2720330.5,
+   "n": 1116257.4,
+   "h": 244.1,
+   "x": -6168.4,
+   "y": 3299.5
+  },
+  {
+   "id": "chiesa-pianezzo",
+   "name": "Chiesa dei Santi Giacomo e Filippo",
+   "alt": [
+    "Santi Giacomo e Filippo",
+    "Chiesa di Pianezzo",
+    "Pianezzo",
+    "Valle Morobbia"
+   ],
+   "type": "Chiesa parrocchiale · Pianezzo",
+   "cat": "chiese",
+   "period": "Citata nel 1371",
+   "desc": "Chiesa parrocchiale di Pianezzo, in Valle Morobbia. Citata già nel 1371, l'edificio attuale fu eretto nel XVI secolo inglobando muri della chiesa tardogotica precedente. Sulla facciata restano due dipinti del 1557, con san Cristoforo e i santi titolari.",
+   "source": {
+    "label": "Wikipedia",
+    "url": "https://it.wikipedia.org/wiki/Chiesa_dei_Santi_Giacomo_e_Filippo_(Bellinzona)"
+   },
+   "osm": null,
+   "wikidata": "Q3668185",
+   "tier": 2,
+   "lat": 46.169631,
+   "lon": 9.029873,
+   "e": 2722888.3,
+   "n": 1114374.4,
+   "h": 492.1,
+   "x": 6021.9,
+   "y": 5128.3
+  },
+  {
+   "id": "chiesa-gorduno",
+   "name": "Chiesa dei Santi Rocco e Sebastiano",
+   "alt": [
+    "Santi Rocco e Sebastiano",
+    "Chiesa di Gorduno",
+    "Gorduno"
+   ],
+   "type": "Chiesa parrocchiale · Gorduno",
+   "cat": "chiese",
+   "desc": "Chiesa parrocchiale di Gorduno.",
+   "source": {
+    "label": "Wikidata",
+    "url": "https://www.wikidata.org/wiki/Q29883959"
+   },
+   "osm": null,
+   "wikidata": "Q29883959",
+   "tier": 2,
+   "lat": 46.21687,
+   "lon": 9.03235,
+   "e": 2722972.9,
+   "n": 1119628.5,
+   "h": 282.6,
+   "x": -848.2,
+   "y": -8325.7
+  },
+  {
+   "id": "oratorio-corpus-domini",
+   "name": "Oratorio del Corpus Domini",
+   "alt": [
+    "Corpus Domini",
+    "Oratorio"
+   ],
+   "type": "Oratorio",
+   "cat": "chiese",
+   "desc": "Oratorio nel centro storico, accanto alla Collegiata dei Santi Pietro e Stefano.",
+   "source": {
+    "label": "Wikidata",
+    "url": "https://www.wikidata.org/wiki/Q29883993"
+   },
+   "osm": null,
+   "wikidata": "Q29883993",
+   "tier": 2,
+   "lat": 46.19133,
+   "lon": 9.02408,
+   "e": 2722392.3,
+   "n": 1116777.0,
+   "h": 233.8,
+   "x": 870.3,
+   "y": -47.0
+  },
+  {
+   "id": "oratorio-santa-marta",
+   "name": "Oratorio di Santa Marta",
+   "alt": [
+    "Santa Marta",
+    "Oratorio"
+   ],
+   "type": "Oratorio",
+   "cat": "chiese",
+   "desc": "Oratorio nel centro storico, accanto alla Collegiata dei Santi Pietro e Stefano.",
+   "source": {
+    "label": "Wikidata",
+    "url": "https://www.wikidata.org/wiki/Q29883999"
+   },
+   "osm": null,
+   "wikidata": "Q29883999",
+   "tier": 2,
+   "lat": 46.19181,
+   "lon": 9.02397,
+   "e": 2722382.7,
+   "n": 1116830.2,
+   "h": 234.9,
+   "x": 761.6,
+   "y": -182.2
+  },
+  {
+   "id": "info-point",
+   "name": "InfoPoint Bellinzona",
+   "alt": [
+    "Ufficio turistico",
+    "Informazioni turistiche",
+    "Info",
+    "Turismo",
+    "Bellinzona e Valli Turismo"
+   ],
+   "type": "Ufficio turistico",
+   "cat": "citta",
+   "desc": "Ufficio turistico di Bellinzona e Valli Turismo, in Piazza Collegiata 12: informazioni, biglietti e prevendita del Teatro Sociale. Tel. +41 91 825 21 31.",
+   "source": {
+    "label": "bellinzonaevalli.ch",
+    "url": "https://www.bellinzonaevalli.ch/en/infopoint.html"
+   },
+   "osm": null,
+   "tier": 1,
+   "lat": 46.1921349,
+   "lon": 9.0234547,
+   "e": 2722342.2,
+   "n": 1116865.5,
+   "h": 228.1,
+   "x": 561.0,
+   "y": -217.5,
+   "visit": {
+    "text": "InfoPoint Bellinzona, Piazza Collegiata 12: in inverno lun-ven 09:00-18:00, sabato 09:00-16:00, domenica e festivi 10:00-16:00; tel. +41 91 825 21 31.",
+    "rows": [
+     {
+      "from": "11-01",
+      "to": "03-31",
+      "days": "mon-fri",
+      "open": "09:00",
+      "close": "18:00",
+      "shut": false
+     },
+     {
+      "from": "11-01",
+      "to": "03-31",
+      "days": "sat",
+      "open": "09:00",
+      "close": "16:00",
+      "shut": false
+     },
+     {
+      "from": "11-01",
+      "to": "03-31",
+      "days": "sun",
+      "open": "10:00",
+      "close": "16:00",
+      "shut": false
+     },
+     {
+      "from": "04-01",
+      "to": "10-31",
+      "days": "mon-fri",
+      "open": "09:00",
+      "close": "18:00",
+      "shut": false
+     },
+     {
+      "from": "04-01",
+      "to": "10-31",
+      "days": "sat",
+      "open": "09:00",
+      "close": "17:00",
+      "shut": false
+     },
+     {
+      "from": "04-01",
+      "to": "10-31",
+      "days": "sun",
+      "open": "10:00",
+      "close": "16:00",
+      "shut": false
+     }
+    ],
+    "prices": [],
+    "shut": [],
+    "source": {
+     "label": "Bellinzona e Valli Turismo",
+     "url": "https://www.bellinzonaevalli.ch/en/infopoint.html"
+    },
+    "checked": "2026-11-13"
+   }
+  },
+  {
+   "id": "motto-della-croce",
+   "name": "Motto della Croce",
+   "alt": [
+    "Motto",
+    "Croce"
+   ],
+   "type": "Cima",
+   "cat": "gite",
+   "desc": "Cima a 1254 m s.l.m. sul versante a est della città.",
+   "source": {
+    "label": "OpenStreetMap",
+    "url": "https://www.openstreetmap.org/node/866258357"
+   },
+   "osm": "node/866258357",
+   "wikidata": "Q22408433",
+   "tier": 2,
+   "lat": 46.1931265,
+   "lon": 9.0524463,
+   "e": 2724577.7,
+   "n": 1117021.3,
+   "h": 1254.2,
+   "x": 8750.5,
+   "y": -5696.6
+  },
+  {
+   "id": "funivia-mornera",
+   "name": "Funivia Monte Carasso–Mornera",
+   "alt": [
+    "Funivia",
+    "Mornera",
+    "Funivia di Monte Carasso"
+   ],
+   "type": "Funivia",
+   "cat": "gite",
+   "desc": "Funivia che dal paese di Monte Carasso (230 m s.l.m.) sale, passando per la frazione ristrutturata di Curzútt (600 m), all'Alpe Mornera a 1347 m. Da lì si prosegue a piedi fino all'Alpe Albagno, a 1867 m.",
+   "source": {
+    "label": "Wikipedia",
+    "url": "https://it.wikipedia.org/wiki/Monte_Carasso"
+   },
+   "osm": "node/599189130",
+   "tier": 2,
+   "lat": 46.189413,
+   "lon": 8.997479,
+   "e": 2720343.2,
+   "n": 1116522.8,
+   "h": 246.5,
+   "x": -6483.8,
+   "y": 2574.9,
+   "visit": {
+    "text": "In funzione tutti i giorni 06:30-21:30 (ferma il mercoledì 08:00-10:00 e chiusa per manutenzione dal 9 al 13 novembre 2026); andata e ritorno adulti CHF 11 fino a Curzútt e CHF 21 fino a Mornera.",
+    "rows": [
+     {
+      "from": "01-01",
+      "to": "12-31",
+      "days": "mon-sun",
+      "open": "06:30",
+      "close": "21:30",
+      "shut": false
+     }
+    ],
+    "prices": [
+     [
+      "Adulti a/r Mornera",
+      21
+     ],
+     [
+      "Adulti a/r Pientina",
+      14
+     ],
+     [
+      "Adulti a/r Curzútt/S. Barnard",
+      11
+     ],
+     [
+      "AVS/AI a/r Mornera",
+      18
+     ]
+    ],
+    "shut": [
+     [
+      "2026-11-09",
+      "2026-11-13"
+     ]
+    ],
+    "source": {
+     "label": "Funivia Monte Carasso - Mornera",
+     "url": "https://www.mornera.ch/funivia/"
+    },
+    "checked": "2026-11-13"
+   }
+  },
+  {
+   "id": "curzutt",
+   "name": "Curzútt",
+   "alt": [
+    "Curzutt",
+    "Curzùtt",
+    "Corte di Sotto"
+   ],
+   "type": "Nucleo",
+   "cat": "gite",
+   "desc": "Frazione ristrutturata sul versante sopra Monte Carasso, a circa 600 m s.l.m., fermata intermedia della funivia che dal paese sale all'Alpe Mornera.",
+   "source": {
+    "label": "Wikipedia",
+    "url": "https://it.wikipedia.org/wiki/Monte_Carasso"
+   },
+   "osm": "node/2002218407",
+   "tier": 2,
+   "lat": 46.1944463,
+   "lon": 8.9928985,
+   "e": 2719978.6,
+   "n": 1117075.2,
+   "h": 609.7,
+   "x": -8610.2,
+   "y": 432.3
+  },
+  {
+   "id": "convento-agostiniane",
+   "name": "Antico convento delle Agostiniane",
+   "alt": [
+    "Convento",
+    "Convento di Monte Carasso",
+    "Snozzi",
+    "Scuola elementare di Monte Carasso"
+   ],
+   "type": "Ex convento",
+   "cat": "chiese",
+   "period": "Fondato verso il 1450",
+   "desc": "Ex convento delle Agostiniane, fondato verso il 1450 e soppresso nel 1859. Dal 1987 al 1993 l'architetto Luigi Snozzi, che dagli anni Ottanta ha ridisegnato il centro di Monte Carasso, lo ha trasformato in scuola elementare e centro culturale.",
+   "source": {
+    "label": "Wikipedia",
+    "url": "https://it.wikipedia.org/wiki/Monte_Carasso"
+   },
+   "osm": "way/447727369",
+   "wikidata": "Q130368389",
+   "tier": 2,
+   "lat": 46.1874184,
+   "lon": 8.9971277,
+   "e": 2720320.5,
+   "n": 1116300.6,
+   "h": 244.1,
+   "x": -6265.1,
+   "y": 3194.5
+  }
+ ]
+}

@@ -41,6 +41,12 @@
   #eranote { position: fixed; left: 50%; transform: translateX(-50%); top: calc(14px + env(safe-area-inset-top, 0px)); z-index: 20; max-width: min(560px, 70vw); background: #2a1d10ee; color: #f6e9d2; border-radius: 10px; padding: 8px 14px; font-size: 12.5px; line-height: 1.4; box-shadow: 0 3px 14px #0007; }
   body.era #sky, body.era #walk-go, body.era #walk-hint { display: none !important; }
   #eranote b { font-size: 15px; } #eranote[hidden] { display: none; } #tm input[type=range] { width: 100%; } #tm input[type=date] { font: inherit; padding: 3px 6px; border-radius: 6px; border: 0; }
+  #evb { right: 246px; }
+  #evp { position: fixed; right: 16px; top: calc(60px + env(safe-area-inset-top, 0px)); z-index: 25; width: min(290px, calc(100vw - 32px)); max-height: calc(100vh - 150px); overflow: auto; background: #10233ff2; color: #fff; border-radius: 10px; padding: 10px 12px; font-size: 13px; box-shadow: 0 3px 14px #0007; display: grid; gap: 6px; }
+  #evp[hidden] { display: none; } #evp p { margin: 0 0 2px; opacity: .8; font-size: 12px; line-height: 1.35; }
+  #evp button { font: inherit; border: 0; border-radius: 6px; cursor: pointer; text-align: left; padding: 7px 9px; background: #ffffff1f; color: #fff; } #evp button:hover { background: #ffffff33; }
+  #evp button.on { background: #f0b84a; color: #1b1b1b; } #evp small { display: block; opacity: .75; font-size: 11px; } #evp button.now { text-align: center; background: #fff; color: #222; }
+  body.era #evb, body.era #evp { display: none !important; }
   #tm span { font-variant-numeric: tabular-nums; font-size: 15px; font-weight: 650; } #tm button { font: inherit; border: 0; border-radius: 6px; padding: 5px; cursor: pointer; }
   #tip { position: fixed; z-index: 30; max-width: 250px; pointer-events: none; background: #10233ff2; color: #fff; border-radius: 8px; padding: 7px 10px; font-size: 13px; line-height: 1.3; box-shadow: 0 3px 14px #0007; }
   #tip b { display: inline-block; padding: 0 6px; border-radius: 4px; background: #d0242b; } #tip b.bus { background: #f2c21a; color: #1b1b1b; }
@@ -51,7 +57,7 @@
   #info { right: 200px; }
   #about { position: fixed; left: 16px; top: calc(110px + env(safe-area-inset-top, 0px)); z-index: 26; max-width: min(330px, calc(100vw - 58px)); background: #10233ff2; color: #fff; border-radius: 10px; padding: 10px 13px; font-size: 13px; line-height: 1.45; box-shadow: 0 3px 14px #0007; }
   #about[hidden] { display: none; } #about p { margin: 0 0 6px; } #about p:last-child { margin: 0; opacity: .8; font-size: 12px; }
-  @media (max-width: 640px) { #title h1 { font-size: 15px; line-height: 1.15; max-width: 110px; } #stats { display: none; } }
+  @media (max-width: 640px) { #title h1 { font-size: 12.5px; line-height: 1.15; max-width: 70px; } #stats { display: none; } }
 </style>
 </head>
 <body>
@@ -67,6 +73,8 @@
 <button id="info" class="tool" title="Che cos'è questa mappa" aria-expanded="false">ℹ️</button>
 <button id="shot" class="tool" title="Fotografia del momento">📷</button>
 <div id="tm" hidden><b>Macchina del tempo</b><select id="tme"><option value="">Oggi</option></select><input type="date" id="tmd"><input type="range" id="tmh" min="0" max="1439" step="5"><span id="tml"></span><button id="tmn">Adesso</button></div>
+<button id="evb" class="tool" aria-expanded="false" title="Eventi: mercato, partite, Rabadan, Natale, 1° agosto…">🎉</button>
+<div id="evp" hidden></div>
 <button id="snd" aria-pressed="false" title="Suoni: campane, stazione, mercato, pioggia, fiume">🔇</button>
 <footer id="credits"></footer>
 <script>
@@ -77,16 +85,16 @@
   addEventListener('keydown', e => { if (e.key === 'Escape') set(false); }); }
 </script>
 <script type="module">
-import { Life, setSun } from './life.js';
-import { initExplore } from './explore.js';
-import { Sky } from './sky.js';
-import { Extras, zurichMs } from './extras.js';
-import { Season, seasonFor } from './season.js';
+import { Life, setSun } from './life.js?v=20261113j';
+import { initExplore } from './explore.js?v=20261113j';
+import { Sky } from './sky.js?v=20261113j';
+import { Extras, zurichMs } from './extras.js?v=20261113j';
+import { Season, seasonFor } from './season.js?v=20261113j';
 (async () => {
   // ?vista=<heading> shows the city from another side (web/views/<heading>/, rendered by 03_render.py with VIEW_HEADING)
   const vista = (/[?&]vista=(\d+)/.exec(location.search) || [])[1] || '';
   const vbase = vista ? `views/${vista}/` : '';
-  const world = await (await fetch(vbase + 'world.json')).json();
+  const world = await (await fetch(vbase + 'world.json', { cache: 'no-cache' })).json();
   const T = world.tile_size, Z = world.native_zoom;
   const have = {};
   for (const z in world.tiles) have[z] = new Set(world.tiles[z]);
@@ -202,8 +210,8 @@ import { Season, seasonFor } from './season.js';
     if (bus) { for (const k in bus.segs || {}) flag(bus.segs[k]); if (bus.shelters) bus.shelters = bus.shelters.filter(s => seenAt(s[0], s[1], s[2])); }
     if (live) for (const k of ['parked', 'tables']) if (Array.isArray(live[k])) live[k] = live[k].filter(p => seenAt(p[0], p[1], p[2]));
   }
-  Promise.all([fetch('roads.json').then(r => r.ok ? r.json() : null), fetch('live.json').then(r => r.ok ? r.json() : null).catch(() => null), fetch('timetable.json').then(r => r.ok ? r.json() : null).catch(() => null), fetch('bus.json').then(r => r.ok ? r.json() : null).catch(() => null)]).then(async ([d, live, tt, bus]) => { if (d) { if (vista) await reseen(d, live, bus); life = new Life(d, world.enu2px, world.content, live); life.setTimetable(tt); fetch('signals.json').then(r => r.ok ? r.json() : null).then(sg => { if (sg) life.setSignals(sg); }).catch(() => {}); life.shiftMs = shiftMs; life.setBuses(bus); life.marketForce = new URLSearchParams(location.search).has('mercato');
-      Promise.all([fetch('extras.json').then(r => r.ok ? r.json() : null).then(x => { if (x && seenAt) for (const t of x.terraces || []) t.t = t.t.filter(p => seenAt(p[0], p[1], p[2])); return x; }), fetch('matches.json').then(r => r.ok ? r.json() : null).catch(() => null)]).then(([xd, mt]) => { if (!xd) return;
+  Promise.all([fetch('roads.json', { cache: 'no-cache' }).then(r => r.ok ? r.json() : null), fetch('live.json', { cache: 'no-cache' }).then(r => r.ok ? r.json() : null).catch(() => null), fetch('timetable.json', { cache: 'no-cache' }).then(r => r.ok ? r.json() : null).catch(() => null), fetch('bus.json', { cache: 'no-cache' }).then(r => r.ok ? r.json() : null).catch(() => null)]).then(async ([d, live, tt, bus]) => { if (d) { if (vista) await reseen(d, live, bus); life = new Life(d, world.enu2px, world.content, live); life.setTimetable(tt); fetch('signals.json', { cache: 'no-cache' }).then(r => r.ok ? r.json() : null).then(sg => { if (sg) life.setSignals(sg); }).catch(() => {}); life.shiftMs = shiftMs; life.setBuses(bus); life.marketForce = new URLSearchParams(location.search).has('mercato');
+      Promise.all([fetch('extras.json', { cache: 'no-cache' }).then(r => r.ok ? r.json() : null).then(x => { if (x && seenAt) for (const t of x.terraces || []) t.t = t.t.filter(p => seenAt(p[0], p[1], p[2])); return x; }), fetch('matches.json', { cache: 'no-cache' }).then(r => r.ok ? r.json() : null).catch(() => null)]).then(([xd, mt]) => { if (!xd) return;
         if (xd.market && xd.market.length) life.marketZone = xd.market;
         extras = window.__extras = new Extras({ world, life, sky, data: xd, matches: mt, params, view: () => view, requestDraw: draw });
         const wxEl = document.getElementById('wx'); setInterval(() => { wxEl.textContent = era ? era.caption : extras.status(seasonName); }, 1000);
@@ -259,9 +267,26 @@ import { Season, seasonFor } from './season.js';
     const hm = m => String(Math.floor(m / 60)).padStart(2, '0') + ':' + String(m % 60).padStart(2, '0');
     const sync = () => { const p = parts(); d.value = p.date; r.value = p.min; l.textContent = hm(p.min); };
     const apply = () => { const m = +r.value; l.textContent = hm(m); const ms = zurichMs(`${d.value}T${hm(m)}`); if (Number.isFinite(ms)) setMoment(ms - Date.now()); };
-    document.getElementById('tmb').onclick = () => { tm.hidden = !tm.hidden; if (!tm.hidden) sync(); };
+    document.getElementById('tmb').onclick = () => { evp.hidden = true; tm.hidden = !tm.hidden; if (!tm.hidden) sync(); };
     r.oninput = apply; d.onchange = apply;
     document.getElementById('tmn').onclick = () => { setMoment(0).then(sync); };
+    // Eventi: one button per simulated event; it jumps to the event's next date and flies to the place
+    const evb = document.getElementById('evb'), evp = document.getElementById('evp');
+    let evOn = null;
+    const fillEvents = () => {
+      evp.textContent = '';
+      const p = document.createElement('p'); p.textContent = 'Scegli un evento: la mappa salta al giorno e all\'ora giusti.'; evp.append(p);
+      for (const ev of extras.events()) {
+        const b = document.createElement('button'), ms = zurichMs(ev.when);
+        const day = new Intl.DateTimeFormat('it-CH', { timeZone: 'Europe/Zurich', weekday: 'short', day: 'numeric', month: 'short', year: 'numeric', hour: '2-digit', minute: '2-digit' }).format(new Date(ms));
+        b.append(ev.label); const sm = document.createElement('small'); sm.textContent = day; b.append(sm);
+        if (evOn === ev.id) b.className = 'on';
+        b.onclick = () => { evOn = ev.id; setMoment(ms - Date.now()).then(() => { sync(); fillEvents(); if (window.__explore) window.__explore.flyTo(ev.at[0], ev.at[1], Z - 1); }); };
+        evp.append(b);
+      }
+      const n = document.createElement('button'); n.className = 'now'; n.textContent = 'Torna ad adesso'; n.onclick = () => { evOn = null; setMoment(0).then(() => { sync(); fillEvents(); }); }; evp.append(n);
+    };
+    evb.onclick = () => { tm.hidden = true; evp.hidden = !evp.hidden; evb.setAttribute('aria-expanded', !evp.hidden); if (!evp.hidden) fillEvents(); };
     document.getElementById('shot').onclick = () => {
       const p = parts(), bar = Math.round(34 * dpr), c = document.createElement('canvas'); c.width = cv.width; c.height = cv.height + bar;
       const x = c.getContext('2d'); x.drawImage(cv, 0, 0);
@@ -331,6 +356,11 @@ import { Season, seasonFor } from './season.js';
       if (extras) { extras.overlay(ctx, W, H, dt); extras.sound(); }
     } else if (!era) sky.draw(ctx, view.x, view.y, s, W, H);
     if (!era) walker.draw(ctx);   // after the sky so the player stays bright at night
+    if (!era && window.__route) {                             // the itinerary chosen in explore.js: world px pairs [x, y, x, y, ...]
+      const R = window.__route; ctx.save(); ctx.lineJoin = ctx.lineCap = 'round';
+      for (const [col, wd] of [['#ffffff', 7], ['#e2572b', 3.6]]) { ctx.strokeStyle = col; ctx.lineWidth = wd; ctx.beginPath(); for (let i = 0; i < R.length; i += 2) { const x = (R[i] - view.x) * s + W / 2, y = (R[i + 1] - view.y) * s + H / 2; i ? ctx.lineTo(x, y) : ctx.moveTo(x, y); } ctx.stroke(); }
+      ctx.restore();
+    }
     for (const l of labels) {
       const show = view.z >= l.minZ;
       l.el.style.display = show ? '' : 'none';
@@ -418,7 +448,7 @@ import { Season, seasonFor } from './season.js';
   W = map.clientWidth; H = map.clientHeight;
   if (!readHash()) { view.x = 0; view.y = 0; view.z = Z - 2; }      // open on Castelgrande
   resize();
-  initExplore({ world, view, map, clamp, draw, toScreen: (x, y) => [(x - view.x) * scale() + W / 2, (y - view.y) * scale() + H / 2] });
+  Promise.resolve(initExplore({ world, view, map, clamp, draw, toScreen: (x, y) => [(x - view.x) * scale() + W / 2, (y - view.y) * scale() + H / 2] })).then(e => { window.__explore = e; });
 })();
 </script>
 </body>

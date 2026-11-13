@@ -253,7 +253,7 @@ export class Life {
 
   // Saturday market in the old town (07:30-13:00, per ticino.ch): 0 = no market, 1 = in full swing; stalls go up and come down around it
   marketLevel() {
-    if (this.marketForce) return 1;
+    if (this.marketForce || this.marketExtra) return 1;                 // marketExtra: the Christmas market Sundays (extras.js)
     const now = Date.now() + (this.shiftMs || 0);
     if (!this._wd || now - this._wd.at > 60000) this._wd = { at: now, d: new Intl.DateTimeFormat('en-GB', { timeZone: 'Europe/Zurich', weekday: 'short' }).format(new Date(now)) };
     if (this._wd.d !== 'Sat') return 0;
@@ -637,6 +637,31 @@ export class Life {
         poly(rf, top);
       }
     };
+    // a car: wheels, body, glasshouse with a roof, lights at both ends. moving cars are remembered in this.beams so
+    // that their headlights can be drawn over the night (extras.js)
+    const beams = this.beams = [];
+    const car = (q, len, wid, color, moving) => {
+      const [e, n, h, te, tn] = q, re = tn, rn = -te, hl = len / 2, hw = wid / 2;
+      const c = (f, r, z) => P(e + te * f + re * r, n + tn * f + rn * r, h + z);
+      const s0 = [e + SHADOW[0] * 1.3, n + SHADOW[1] * 1.3], S = (f, r) => P(s0[0] + te * f + re * r, s0[1] + tn * f + rn * r, h);
+      poly([c(-hl, -hw, 0), c(hl, -hw, 0), S(hl, -hw), S(hl, hw), S(-hl, hw), c(-hl, hw, 0)], 'rgba(30,32,60,0.28)');
+      const prism = (f0, f1, r0, r1, z0, z1, side, top) => {
+        const b = [c(f0, r0, z0), c(f1, r0, z0), c(f1, r1, z0), c(f0, r1, z0)], t = [c(f0, r0, z1), c(f1, r0, z1), c(f1, r1, z1), c(f0, r1, z1)];
+        for (let i = 0; i < 4; i++) { const j = (i + 1) % 4; poly([b[i], b[j], t[j], t[i]], shade(side, i % 2 ? 0.62 : 0.8)); }
+        poly(t, top);
+      };
+      if (ppm > 2.2) for (const f of [-hl * 0.6, hl * 0.6]) for (const r of [-1, 1]) prism(f - 0.34, f + 0.34, r * hw - (r > 0 ? 0.22 : -0.02), r * hw + (r > 0 ? 0.02 : 0.22), 0, 0.62, '#17181b', '#17181b');   // wheels
+      prism(-hl, hl, -hw, hw, 0.22, 0.82, color, shade(color, 1.05));                                   // body
+      const frontSeen = c(hl, 0, 0)[1] > c(-hl, 0, 0)[1];
+      if (ppm > 1.6) {                                       // lights on the end that faces the viewer
+        const f = frontSeen ? hl : -hl, col = frontSeen ? '#fff3c4' : '#d8231f';
+        for (const r of [-1, 1]) poly([c(f, r * hw * 0.5, 0.48), c(f, r * hw * 0.92, 0.48), c(f, r * hw * 0.92, 0.72), c(f, r * hw * 0.5, 0.72)], col);
+      }
+      prism(-hl * 0.58, hl * 0.28, -hw * 0.86, hw * 0.86, 0.82, 1.38, '#26303c', '#26303c');            // glasshouse
+      if (ppm > 1.6) poly([c(hl * 0.28, -hw * 0.8, 0.86), c(hl * 0.28, hw * 0.8, 0.86), c(hl * 0.1, hw * 0.74, 1.36), c(hl * 0.1, -hw * 0.74, 1.36)], '#7fa0b8');   // windscreen
+      poly([c(-hl * 0.46, -hw * 0.8, 1.4), c(hl * 0.1, -hw * 0.8, 1.4), c(hl * 0.1, hw * 0.8, 1.4), c(-hl * 0.46, hw * 0.8, 1.4)], shade(color, 1.08));               // roof
+      if (moving) beams.push([e, n, h, te, tn, hl, hw]);
+    };
     const on = p => p[0] > -60 && p[1] > -60 && p[0] < W + 60 && p[1] < H + 60;
     const hot = this.hot = [];
     const hm = m => String(Math.floor(m / 60) % 24).padStart(2, '0') + ':' + String(Math.floor(m) % 60).padStart(2, '0');
@@ -648,7 +673,7 @@ export class Life {
       }
       for (const c of this.parkedCars) {
         if (!on(P(c.q[0], c.q[1], c.q[2]))) continue;
-        box(c.q, c.len, 1.8, 1.45, c.color, c.color, true, null);
+        car(c.q, c.len, 1.8, c.color, false);
       }
     }
     if (ppm > 0.55) {
@@ -659,7 +684,7 @@ export class Life {
         const off = e.o ? 0 : Math.min(e.w / 4, 1.7);       // keep right
         q[0] += q[4] * off; q[1] -= q[3] * off;
         if (!on(P(q[0], q[1], q[2]))) continue;
-        box(q, v.len, v.wid, v.hei, v.color, v.color, !v.bus, null);
+        if (v.bus) { box(q, v.len, v.wid, v.hei, v.color, v.color, false, '#26303c'); beams.push([q[0], q[1], q[2], q[3], q[4], v.len / 2, v.wid / 2]); } else car(q, v.len, v.wid, v.color, true);
         if (v.bus) box([q[0], q[1], q[2] + v.hei, q[3], q[4]], v.len * 0.9, v.wid * 0.7, 0.18, '#d8dade', '#e6e8ea', false, null);
       }
     }
@@ -684,7 +709,7 @@ export class Life {
         q[0] += q[4] * 1.6; q[1] -= q[3] * 1.6;             // keep right
         const c = P(q[0], q[1], q[2] + 1.5);
         if (!on(c)) continue;
-        box(q, 11.5, 2.5, 3.0, BUS_COLORS[0], BUS_COLORS[0], false, null);
+        box(q, 11.5, 2.5, 3.0, BUS_COLORS[0], BUS_COLORS[0], false, '#26303c'); beams.push([q[0], q[1], q[2], q[3], q[4], 5.75, 1.25]);
         box([q[0], q[1], q[2] + 3.0, q[3], q[4]], 10.3, 1.75, 0.18, '#d8dade', '#e6e8ea', false, null);
         hot.push({ x: c[0], y: c[1], r: Math.max(7, 6 * ppm), info: () => ({ kind: 'bus', title: 'Bus ' + b.t.line, to: b.t.to,
           sub: (b.stopped ? 'In fermata · prossima: ' : 'Prossima fermata: ') + this.busStops[b.next] + ' ' + hm(b.eta) }) });
@@ -734,6 +759,7 @@ export class Life {
         draw.push([c, p]);
       }
       for (const p of this.strollers) {
+        if (this.squareClosed && p.sq.name === this.squareClosed) continue;   // the square is taken up by an event (extras.js)
         const c = P(p.x, p.y, p.h);
         if (c[0] < -10 || c[1] < -10 || c[0] > W + 10 || c[1] > H + 30) continue;
         draw.push([c, { still: !p.moving, pause: 0, child: p.child, h: p.hh, speed: p.speed, ph: p.ph, legs: p.legs, coat: p.coat, skin: p.skin, hair: p.hair }]);
