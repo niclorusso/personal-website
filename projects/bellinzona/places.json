@@ -30,6 +30,41 @@
    "h": 275.1,
    "x": -54.3,
    "y": -440.8,
+   "tags": [
+    "coperto",
+    "bambini"
+   ],
+   "timeline": [
+    {
+     "year": "VI millennio a.C. – IV secolo d.C.",
+     "title": "Dalla preistoria ai Romani",
+     "text": "La collina è abitata da oltre 7000 anni: ne sono testimonianza insediamenti neolitici del VI millennio a.C., presidi romani e le prime fortificazioni, del IV secolo d.C."
+    },
+    {
+     "year": "VI–VIII secolo",
+     "title": "Longobardi e Franchi",
+     "text": "Fra il VI e l'VIII secolo vi sono attestati Longobardi e Franchi; dall'inizio dell'XI secolo il castello appartenne al vescovo di Como, che vi ebbe una residenza."
+    },
+    {
+     "year": "XIII–XV secolo",
+     "title": "Il castello attuale",
+     "text": "Il complesso che si vede oggi risale a una prima fase edificatoria del XIII secolo, a cui si sovrappose un secondo periodo «milanese», fra il 1473 e il 1486."
+    },
+    {
+     "year": "1500–1818",
+     "title": "Castello di Uri, poi di San Michele",
+     "text": "Con la sovranità confederata su Bellinzona (1500) prese il nome di castello di Uri, nel 1506; dopo l'indipendenza del Canton Ticino (1803) fu detto di San Michele, dal 1818."
+    },
+    {
+     "year": "oggi",
+     "title": "Museo e patrimonio UNESCO",
+     "text": "È sede del museo storico archeologico; con gli altri due castelli e le mura è patrimonio UNESCO dal 2000."
+    }
+   ],
+   "timeline_source": {
+    "label": "Fortezza di Bellinzona",
+    "url": "https://fortezzabellinzona.ch/scoprire-castel-grande/"
+   },
    "visit": {
     "text": "Aperto tutto l'anno: fino al 18 marzo 2027 tutti i giorni 10:30-16:00 (ultimo ingresso 15:30), in estate 10:00-18:00; adulti CHF 15, ridotto CHF 8.",
     "rows": [
@@ -103,6 +138,41 @@
    "h": 313.0,
    "x": 1593.0,
    "y": -454.1,
+   "tags": [
+    "coperto",
+    "bambini"
+   ],
+   "timeline": [
+    {
+     "year": "Fine del XIII secolo",
+     "title": "I Rusca",
+     "text": "Il castello fu eretto alla fine del XIII secolo dalla famiglia ghibellina comasca dei Rusca, come residenza."
+    },
+    {
+     "year": "1335",
+     "title": "I Visconti",
+     "text": "Con l'avvento del dominio visconteo su Como passò ai signori di Milano. La rocca fu protetta da un'alta cinta muraria con merli ghibellini e torri angolari, con un fossato e un ponte levatoio in legno."
+    },
+    {
+     "year": "1462–1490",
+     "title": "Ampliamento",
+     "text": "Il castello fu ampliato e consolidato, con una seconda cinta muraria più massiccia e torri a pianta arrotondata."
+    },
+    {
+     "year": "1506–1818",
+     "title": "Castello di Svitto, poi di San Martino",
+     "text": "Durante il dominio confederato prese il nome di castello di Svitto, nel 1506; dopo il 1818 fu detto di San Martino."
+    },
+    {
+     "year": "oggi",
+     "title": "Museo e patrimonio UNESCO",
+     "text": "Ospita un museo archeologico; con gli altri due castelli e le mura è patrimonio UNESCO dal 2000."
+    }
+   ],
+   "timeline_source": {
+    "label": "Fortezza di Bellinzona",
+    "url": "https://fortezzabellinzona.ch/scoprire-montebello/"
+   },
    "visit": {
     "text": "Castello e museo chiusi fino al 18 marzo 2027 (restano visitabili le corti); in stagione tutti i giorni 10:00-18:00, adulti CHF 10.",
     "rows": [
@@ -156,13 +226,14 @@
    "alt": [
     "Sasso Corbaro",
     "Castello di Cima",
+    "Castello di Untervaldo",
     "Castello di Unterwalden",
     "Castello di Santa Barbara"
    ],
    "type": "Castello · UNESCO",
    "cat": "castelli",
    "period": "Fine del XV secolo",
-   "desc": "È l'ultimo dei castelli edificati a Bellinzona: fu voluto da Ludovico il Moro per evitare l'aggiramento a monte dello sbarramento formato dai due castelli sottostanti e dalle mura. È detto anche castello di Cima, di Unterwalden o di Santa Barbara. Dal 2000 è patrimonio dell'umanità dell'UNESCO e ospita esposizioni temporanee.",
+   "desc": "È l'ultimo dei castelli edificati a Bellinzona: lo fece costruire il duca di Milano a partire dal 1479, dopo la sconfitta di Giornico del 1478, per evitare l'aggiramento a monte dello sbarramento formato dai due castelli sottostanti e dalle mura. È detto anche castello di Cima, di Untervaldo o di Santa Barbara. Dal 2000 è patrimonio dell'umanità dell'UNESCO e ospita esposizioni temporanee.",
    "source": {
     "label": "Wikipedia",
     "url": "https://it.wikipedia.org/wiki/Sasso_Corbaro"
@@ -177,6 +248,37 @@
    "h": 460.8,
    "x": 3128.0,
    "y": -225.7,
+   "timeline": [
+    {
+     "year": "Fine del XIV secolo",
+     "title": "Una torre di osservazione",
+     "text": "Sul colle è documentata, dalla fine del XIV secolo, una torre per il controllo e l'osservazione del territorio."
+    },
+    {
+     "year": "1479",
+     "title": "La fortezza sforzesca",
+     "text": "Nei primi mesi del 1479 iniziò la costruzione del castello attuale, una tipica fortezza sforzesca. L'architetto Benedetto Ferrini morì di peste in autunno; i lavori furono portati a termine dall'ingegnere ducale Gabriele Ghiringhelli."
+    },
+    {
+     "year": "1494",
+     "title": "Anche prigione",
+     "text": "Oltre alla funzione difensiva il castello servì da luogo di detenzione: è documentata un'evasione nel 1494."
+    },
+    {
+     "year": "1506–1818",
+     "title": "Castello di Untervaldo, poi di Santa Barbara",
+     "text": "Dal 1506 fu detto castello di Untervaldo e dal 1818 castello di Santa Barbara."
+    },
+    {
+     "year": "oggi",
+     "title": "Mostre e patrimonio UNESCO",
+     "text": "È l'unica fortificazione di Bellinzona non collegata alle altre; le sue sale ospitano mostre. È patrimonio UNESCO dal 2000."
+    }
+   ],
+   "timeline_source": {
+    "label": "Fortezza di Bellinzona",
+    "url": "https://fortezzabellinzona.ch/scoprire-sasso-corbaro/"
+   },
    "visit": {
     "text": "Castello e mostre chiusi fino al 18 marzo 2027 (restano visitabili le corti); in stagione tutti i giorni 10:00-18:00, adulti CHF 15.",
     "rows": [
@@ -249,6 +351,37 @@
    "h": 224.5,
    "x": -1668.3,
    "y": 109.6,
+   "timeline": [
+    {
+     "year": "XIV–XV secolo",
+     "title": "Il primo muro",
+     "text": "I Visconti di Milano chiusero il fondovalle fra Castelgrande e il Ticino con un muro: il sito della Fortezza lo data a dopo la conquista viscontea del 1340, altre fonti a dopo la battaglia di Arbedo del 1422."
+    },
+    {
+     "year": "Anni 1480",
+     "title": "Il muro raddoppiato",
+     "text": "In epoca sforzesca, per le crescenti mire dei Confederati, la Murata fu rafforzata e ampliata con un secondo muro."
+    },
+    {
+     "year": "1487–1489",
+     "title": "Il ponte sul Ticino",
+     "text": "Per ordine del duca Ludovico Sforza fu costruito un ponte, detto anche Ponte della Torretta, per chiudere la valle da Castelgrande alla riva destra del fiume (le fonti danno il 1487 o il 1489)."
+    },
+    {
+     "year": "1515",
+     "title": "La buzza di Biasca",
+     "text": "Nel maggio del 1515 la piena del Ticino nota come «buzza di Biasca» distrusse il ponte e circa 150 metri della Murata."
+    },
+    {
+     "year": "oggi",
+     "title": "Patrimonio UNESCO",
+     "text": "Fa parte del sito UNESCO dei castelli di Bellinzona, dal 2000; vi si accede dalla corte esterna di Castelgrande, da via Carlo Salvioni 12A o da viale Portone."
+    }
+   ],
+   "timeline_source": {
+    "label": "Fortezza di Bellinzona",
+    "url": "https://fortezzabellinzona.ch/scoprire-la-murata/"
+   },
    "visit": {
     "text": "Si accede dalla corte esterna di Castelgrande, da via Carlo Salvioni 12A o da viale Portone (tra i n. 39 e 41); orari e prezzo non sono pubblicati.",
     "rows": [],
@@ -287,6 +420,37 @@
    "h": 232.5,
    "x": 778.0,
    "y": -126.3,
+   "timeline": [
+    {
+     "year": "1424–1473",
+     "title": "Santo Stefano",
+     "text": "Sul posto sorgeva la chiesa di Santo Stefano, attestata dal 1424 e consacrata nel 1473."
+    },
+    {
+     "year": "1515–1543",
+     "title": "La chiesa nuova",
+     "text": "Sulle fondamenta di Santo Stefano fu costruito l'edificio attuale, in forme rinascimentali."
+    },
+    {
+     "year": "1567–1654",
+     "title": "Campanile e facciata",
+     "text": "Dal 1567 fu costruito il campanile; fra il 1640 e il 1654 la facciata fu rivestita in pietra di Castione."
+    },
+    {
+     "year": "1684–1785",
+     "title": "Il coro",
+     "text": "Dal 1684 il coro fu ampliato; i lavori su questa parte della chiesa proseguirono fino al 1785."
+    },
+    {
+     "year": "oggi",
+     "title": "La parrocchiale",
+     "text": "È la chiesa della parrocchia cittadina, restaurata tre volte nel Novecento (gli interni fra il 1990 e il 1999). Conserva l'acquasantiera detta Fontana Trivulzio, del 1465."
+    }
+   ],
+   "timeline_source": {
+    "label": "Wikipedia",
+    "url": "https://it.wikipedia.org/wiki/Chiesa_collegiata_dei_Santi_Pietro_e_Stefano"
+   },
    "visit": {
     "text": "Orari di visita non pubblicati sulle pagine consultate; la chiesa si trova in Piazza Collegiata.",
     "rows": [],
@@ -388,6 +552,27 @@
    "h": 229.9,
    "x": 454.8,
    "y": 210.5,
+   "timeline": [
+    {
+     "year": "XV secolo",
+     "title": "La casa municipale",
+     "text": "Al suo posto sorgeva una casa municipale quattrocentesca."
+    },
+    {
+     "year": "1924",
+     "title": "Il nuovo palazzo",
+     "text": "Fu costruito il palazzo comunale attuale, in stile rinascimentale, con torre dell'orologio e corte interna a due ordini di loggiati."
+    },
+    {
+     "year": "oggi",
+     "title": "Il palazzo comunale",
+     "text": "È il palazzo comunale della città, in Piazza Nosetto."
+    }
+   ],
+   "timeline_source": {
+    "label": "Wikipedia",
+    "url": "https://it.wikipedia.org/wiki/Bellinzona"
+   },
    "officials": {
     "municipio": [
      {
@@ -666,7 +851,7 @@
    "type": "Teatro",
    "cat": "citta",
    "period": "1846–1847",
-   "desc": "Teatro principale della città, in Piazza Governo, edificato tra il 1846 e il 1847 secondo i disegni dell'architetto milanese Giacomo Moraglia e inaugurato il 26 dicembre 1847. Segue la tipologia del teatro all'italiana, con palchi in legno su tre piani. Attorno al 1995 è stato oggetto di un restauro conservativo.",
+   "desc": "Teatro principale della città, in Piazza Governo, edificato tra il 1846 e il 1847 secondo i disegni dell'architetto milanese Giacomo Moraglia e inaugurato il 26 dicembre 1847. Segue la tipologia del teatro all'italiana, con palchi in legno su tre piani. Negli anni Novanta è stato oggetto di un restauro conservativo, concluso nel 1997.",
    "source": {
     "label": "Wikipedia",
     "url": "https://it.wikipedia.org/wiki/Teatro_Sociale_(Bellinzona)"
@@ -681,6 +866,40 @@
    "h": 229.3,
    "x": 123.1,
    "y": 269.7,
+   "tags": [
+    "coperto"
+   ],
+   "timeline": [
+    {
+     "year": "1846–1847",
+     "title": "La costruzione",
+     "text": "Fu edificato dall'ingegner Von Mentlen su disegno del milanese Giacomo Moraglia e inaugurato il 26 dicembre 1847; poteva accogliere 700 spettatori."
+    },
+    {
+     "year": "Fine del XIX – inizio del XX secolo",
+     "title": "Le prime modifiche",
+     "text": "Maurizio Conti aggiunse una parte per il casinò sociale, oggi ristorante (nel 1894 secondo alcune fonti, nel Novecento secondo altre); nel 1919 l'edificio fu rifunzionalizzato e le travi portanti furono ristrutturate."
+    },
+    {
+     "year": "1950–1970",
+     "title": "Cinema, poi abbandono",
+     "text": "Nel 1950 fu trasformato in cinematografo; chiuso nel 1970, rimase abbandonato fino ai lavori degli anni Novanta."
+    },
+    {
+     "year": "1990–1997",
+     "title": "Il restauro",
+     "text": "Fra il 1990 e il 1997 (dal 1992 secondo altre fonti) gli architetti Giancarlo Durisch, Pia Durisch e Aldo Nolli recuperarono foyer, sala e facciate con interventi conservativi; la macchina scenica fu rifatta."
+    },
+    {
+     "year": "oggi",
+     "title": "Teatro all'italiana",
+     "text": "È il teatro principale della città, con 300 posti: per la Svizzera, un raro esempio di teatro d'opera ottocentesco ancora attivo."
+    }
+   ],
+   "timeline_source": {
+    "label": "Wikipedia",
+    "url": "https://it.wikipedia.org/wiki/Teatro_Sociale_(Bellinzona)"
+   },
    "visit": {
     "text": "La cassa del teatro apre solo nei giorni di spettacolo (45 minuti prima la sera, 30 il pomeriggio); prevendita all'InfoPoint di Piazza Collegiata 12 e su Ticketcorner; visite guidate su richiesta all'InfoPoint.",
     "rows": [],
@@ -705,7 +924,7 @@
    "type": "Stazione ferroviaria",
    "cat": "citta",
    "period": "Dal 1874",
-   "desc": "Principale stazione ferroviaria della città, in servizio dal 1874 sulla ferrovia del Gottardo. Per i treni a lunga percorrenza è la prima stazione a sud della galleria di base del San Gottardo. Completamente rinnovata, è stata re-inaugurata il 15 ottobre 2016.",
+   "desc": "Principale stazione ferroviaria della città, in servizio dal 1874, quando furono aperte le prime tratte ticinesi della ferrovia del Gottardo; la linea completa, con la galleria del San Gottardo, fu aperta nel 1882. Per i treni a lunga percorrenza è la prima stazione a sud della galleria di base del San Gottardo. Completamente rinnovata, è stata re-inaugurata il 15 ottobre 2016.",
    "source": {
     "label": "Wikipedia",
     "url": "https://it.wikipedia.org/wiki/Stazione_di_Bellinzona"
@@ -746,6 +965,9 @@
    "h": 235.0,
    "x": 904.2,
    "y": 2199.4,
+   "tags": [
+    "coperto"
+   ],
    "visit": {
     "text": "Museo: mer-gio 14:00-18:00, ven-dom e festivi 10:00-18:00, chiuso lunedì e martedì; adulti CHF 12, ridotto CHF 8, gratis fino a 16 anni. Parco aperto ogni giorno 07:00-18:00 in inverno (07:00-20:00 da aprile a settembre).",
     "rows": [
@@ -842,6 +1064,37 @@
    "h": 227.5,
    "x": 275.1,
    "y": 2054.4,
+   "timeline": [
+    {
+     "year": "1480–1495",
+     "title": "Il convento francescano",
+     "text": "La chiesa fu costruita, con il convento dei Frati Minori, fra il 1480 circa e il 1495."
+    },
+    {
+     "year": "1495–1515",
+     "title": "Gli affreschi del tramezzo",
+     "text": "Il tramezzo fu affrescato con una grande Crocifissione e quindici scene della vita di Cristo; la data è discussa: fra il 1495 e il 1505 per alcuni critici, verso il 1513–1515 per i più recenti."
+    },
+    {
+     "year": "1505",
+     "title": "La consacrazione",
+     "text": "Fu consacrata nel 1505, con la dedicazione a Santa Maria delle Grazie."
+    },
+    {
+     "year": "1996",
+     "title": "L'incendio",
+     "text": "Il 31 dicembre 1996 un incendio devastò l'edificio; gli affreschi del tramezzo sono stati in seguito restaurati."
+    },
+    {
+     "year": "oggi",
+     "title": "La chiesa",
+     "text": "Conserva l'originale forma gotica, con la semplice facciata a capanna e il tramezzo affrescato."
+    }
+   ],
+   "timeline_source": {
+    "label": "Wikipedia",
+    "url": "https://it.wikipedia.org/wiki/Chiesa_di_Santa_Maria_delle_Grazie_(Bellinzona)"
+   },
    "visit": {
     "text": "Orari di visita non pubblicati sulle pagine consultate; la chiesa si trova in Via Convento 5.",
     "rows": [],
@@ -904,7 +1157,38 @@
    "n": 1117029.1,
    "h": 217.2,
    "x": -3729.8,
-   "y": 425.1
+   "y": 425.1,
+   "timeline": [
+    {
+     "year": "1487–1489",
+     "title": "Il ponte di Ludovico il Moro",
+     "text": "Alla fine della Murata, Ludovico il Moro fece costruire un ponte sul Ticino (le fonti danno il 1487 o il 1489)."
+    },
+    {
+     "year": "1515",
+     "title": "La buzza di Biasca",
+     "text": "Nel maggio del 1515 la piena del Ticino detta «buzza di Biasca», provocata dal cedimento della diga naturale che una frana del Monte Crenone aveva formato nel 1513, distrusse il ponte e circa 150 metri della Murata."
+    },
+    {
+     "year": "1815",
+     "title": "Il ponte in pietra",
+     "text": "Fu completato il ponte in pietra a dieci arcate, che dopo tre secoli ricollegò direttamente la città a Locarno. La torre detta Torretta, che gli dà il nome, fu demolita verso il 1820."
+    },
+    {
+     "year": "1969",
+     "title": "L'autostrada",
+     "text": "Per la costruzione dell'autostrada A2 il ponte fu demolito, tranne due arcate sul lato est."
+    },
+    {
+     "year": "oggi",
+     "title": "La passerella",
+     "text": "Alle due arcate si collega la passerella ciclopedonale ad arco in acciaio Corten, lunga 172 metri, costruita nel 2021–2022 sopra il Ticino e l'autostrada."
+    }
+   ],
+   "timeline_source": {
+    "label": "Wikipedia (in tedesco)",
+    "url": "https://de.wikipedia.org/wiki/Passerella_della_Torretta"
+   }
   },
   {
    "id": "stadio-comunale",
@@ -1888,7 +2172,7 @@
    "type": "Chiesa · Monte Carasso",
    "cat": "chiese",
    "period": "XI o XII secolo",
-   "desc": "Chiesa in località Orenno, a Monte Carasso, sorta fra l'XI e il XII secolo. Era un'ala del convento delle Agostiniane, eretto nel 1450 e soppresso nel 1859. Il coro fu aggiunto fra il 1658 e il 1660; l'ultimo secolo ha visto più restauri, fra cui quello di Luigi Snozzi (1987-1993).",
+   "desc": "Chiesa in località Orenno, a Monte Carasso, sorta fra l'XI e il XII secolo. Era un'ala del convento delle Agostiniane, fondato verso il 1450 e soppresso nel 1859. Il coro fu aggiunto fra il 1658 e il 1660; l'ultimo secolo ha visto più restauri, fra cui quello di Luigi Snozzi (1987-1993).",
    "source": {
     "label": "Wikipedia",
     "url": "https://it.wikipedia.org/wiki/Chiesa_dei_Santi_Bernardino_e_Girolamo"
@@ -2145,7 +2429,7 @@
    "x": -6483.8,
    "y": 2574.9,
    "visit": {
-    "text": "In funzione tutti i giorni 06:30-21:30 (ferma il mercoledì 08:00-10:00 e chiusa per manutenzione dal 9 al 13 novembre 2026); andata e ritorno adulti CHF 11 fino a Curzútt e CHF 21 fino a Mornera.",
+    "text": "In funzione tutti i giorni 06:30-21:30 (ferma il mercoledì 08:00-10:00); andata e ritorno adulti CHF 11 fino a Curzútt e CHF 21 fino a Mornera.",
     "rows": [
      {
       "from": "01-01",
@@ -2174,12 +2458,7 @@
       18
      ]
     ],
-    "shut": [
-     [
-      "2026-11-09",
-      "2026-11-13"
-     ]
-    ],
+    "shut": [],
     "source": {
      "label": "Funivia Monte Carasso - Mornera",
      "url": "https://www.mornera.ch/funivia/"
@@ -2239,6 +2518,180 @@
    "h": 244.1,
    "x": -6265.1,
    "y": 3194.5
+  },
+  {
+   "id": "parco-giochi-gerretta",
+   "name": "Parco giochi della Gerretta",
+   "alt": [
+    "Gerretta",
+    "Geretta",
+    "Parco Geretta",
+    "Via Vallone"
+   ],
+   "type": "Parco giochi",
+   "cat": "citta",
+   "desc": "Parco giochi in via Vallone, riaperto nel marzo 2026 dopo il rinnovo: casette di legno collegate da percorsi di equilibrio e arrampicata, tre scivoli e altalene.",
+   "source": {
+    "label": "tio.ch, 27.2.2026",
+    "url": "https://www.tio.ch/ticino/attualita/1907637/il-parco-giochi-della-gerretta-e-pronto-a-riabbracciare-i-bambini"
+   },
+   "osm": "way/624818679",
+   "tier": 2,
+   "lat": 46.2033653,
+   "lon": 9.0314735,
+   "e": 2722935.8,
+   "n": 1118126.2,
+   "h": 228.8,
+   "x": 1067.4,
+   "y": -4144.6,
+   "tags": [
+    "bambini"
+   ],
+   "minor": true
+  },
+  {
+   "id": "parco-giochi-guisan",
+   "name": "Parco giochi di Via Henri Guisan",
+   "alt": [
+    "Via Guisan",
+    "Via H. Guisan",
+    "Viale Officina"
+   ],
+   "type": "Parco giochi",
+   "cat": "citta",
+   "desc": "Parco giochi non recintato nel centro città, con torre con scivolo, strutture di corde per arrampicarsi, altalene e bagni pubblici.",
+   "source": {
+    "label": "ticino.ch",
+    "url": "https://www.ticino.ch/it/commons/details/Parco-giochi-a-Bellinzona-Via-H-Guisan/107159.html"
+   },
+   "osm": "way/736990413",
+   "tier": 2,
+   "lat": 46.1962528,
+   "lon": 9.025736,
+   "e": 2722509.0,
+   "n": 1117326.7,
+   "h": 227.0,
+   "x": 557.1,
+   "y": -1601.7,
+   "tags": [
+    "bambini"
+   ],
+   "minor": true
+  },
+  {
+   "id": "parco-giochi-bolla",
+   "name": "Parco giochi Bolla",
+   "alt": [
+    "Bolla",
+    "Semine",
+    "Via Arnaldo Bolla"
+   ],
+   "type": "Parco giochi",
+   "cat": "citta",
+   "desc": "Parco giochi del quartiere Semine, accanto al cimitero, rinnovato dalla Città nel 2026: aree per arrampicata ed equilibrio, scivoli, altalene e un tavolo da ping-pong.",
+   "source": {
+    "label": "laRegione, 15.6.2026",
+    "url": "https://www.laregione.ch/cantone/bellinzonese/1931691/giochi-semine-gioco-due-servizi"
+   },
+   "osm": "way/208019094",
+   "tier": 2,
+   "lat": 46.1855397,
+   "lon": 9.0161098,
+   "e": 2721790.0,
+   "n": 1116121.1,
+   "h": 223.1,
+   "x": -496.1,
+   "y": 2309.5,
+   "tags": [
+    "bambini"
+   ],
+   "minor": true
+  },
+  {
+   "id": "parco-giochi-montebello",
+   "name": "Parco giochi di Montebello",
+   "alt": [
+    "Montebello"
+   ],
+   "type": "Parco giochi",
+   "cat": "citta",
+   "desc": "Parco giochi presso il Castello di Montebello, segnato sulla mappa del sito ufficiale della Fortezza.",
+   "source": {
+    "label": "Fortezza di Bellinzona",
+    "url": "https://fortezzabellinzona.ch/scoprire-montebello/"
+   },
+   "osm": "way/1058063294",
+   "tier": 2,
+   "lat": 46.191845,
+   "lon": 9.0277644,
+   "e": 2722675.5,
+   "n": 1116840.0,
+   "h": 302.1,
+   "x": 1848.7,
+   "y": -681.6,
+   "tags": [
+    "bambini"
+   ],
+   "minor": true
+  },
+  {
+   "id": "bagno-pubblico",
+   "name": "Bagno pubblico comunale",
+   "alt": [
+    "Bagno pubblico",
+    "Piscina",
+    "Piscine",
+    "Via Mirasole"
+   ],
+   "type": "Piscina pubblica",
+   "cat": "citta",
+   "desc": "Piscine all'aperto in Via Mirasole 20, aperte da maggio a settembre: vasca olimpionica, vasca per non nuotatori, vasca per i tuffi e vasca per bambini.",
+   "source": {
+    "label": "ticino.ch",
+    "url": "https://www.ticino.ch/it/commons/details/Bagno-pubblico-comunale-Bellinzona/1469.html"
+   },
+   "osm": null,
+   "tier": 2,
+   "lat": 46.1980256,
+   "lon": 9.0181818,
+   "e": 2721922.0,
+   "n": 1117512.0,
+   "h": 225.8,
+   "x": -1902.8,
+   "y": -1523.0,
+   "tags": [
+    "bambini"
+   ],
+   "minor": true
+  },
+  {
+   "id": "parco-giochi-pianezzo",
+   "name": "Parco giochi di Pianezzo",
+   "alt": [
+    "Pianezzo",
+    "Parco comunale di Pianezzo",
+    "Valle Morobbia"
+   ],
+   "type": "Parco giochi",
+   "cat": "citta",
+   "desc": "Area giochi nel Parco comunale di Pianezzo, in Valle Morobbia, lungo Via alle Scuole.",
+   "source": {
+    "label": "OpenStreetMap",
+    "url": "https://www.openstreetmap.org/way/1213950031"
+   },
+   "osm": "way/1213950031",
+   "tier": 2,
+   "lat": 46.1683632,
+   "lon": 9.0305613,
+   "e": 2722944.3,
+   "n": 1114234.6,
+   "h": 465.0,
+   "x": 6423.7,
+   "y": 5522.4,
+   "tags": [
+    "bambini"
+   ],
+   "minor": true
   }
  ]
 }

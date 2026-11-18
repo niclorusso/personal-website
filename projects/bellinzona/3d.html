@@ -1,0 +1,170 @@
+<!doctype html>
+<html lang="it">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, viewport-fit=cover">
+<title>Bellinzona 3D</title>
+<meta name="description" content="Bellinzona in tre dimensioni: il rilievo, i tre castelli, la città e le montagne, da dati aperti swisstopo.">
+<meta name="theme-color" content="#0e0f12">
+<style>
+  html, body { margin: 0; height: 100%; background: #0e0f12; overflow: hidden; overscroll-behavior: none;
+    font-family: ui-sans-serif, system-ui, sans-serif; -webkit-tap-highlight-color: transparent; color: #fff; }
+  #c { position: fixed; inset: 0; width: 100%; height: 100%; display: block; touch-action: none; cursor: grab; outline: none; }
+  #c:active { cursor: grabbing; }
+  body.walking #c { cursor: crosshair; }
+  #labels { position: fixed; inset: 0; pointer-events: none; overflow: hidden; }
+  .lb { position: absolute; left: 0; top: 0; white-space: nowrap; color: #fff; font: 600 12.5px/1 ui-sans-serif, system-ui, sans-serif; letter-spacing: .02em;
+    background: #1b1d22cc; border: 0; padding: 4px 8px; border-radius: 10px; cursor: pointer; pointer-events: auto; box-shadow: 0 1px 6px #0006; }
+  .lb::after { content: ''; position: absolute; left: 50%; bottom: -5px; margin-left: -4px; border: 4px solid transparent; border-top-color: #1b1d22cc; border-bottom: 0; }
+  .lb.t1 { font-size: 13.5px; padding: 5px 10px; }
+  .lb.t1.castelli { background: #10233fe8; } .lb.t1.castelli::after { border-top-color: #10233fe8; }
+  .lb.t2 { font-weight: 500; font-size: 12px; opacity: .92; }
+  .lb:hover { background: #10233f; }
+  .lb[hidden] { display: none; }
+  .lb.led::before { content: ''; position: absolute; left: 50%; top: calc(100% + 4px); width: 2px; margin-left: -1px; height: var(--lead, 0px); background: #10233fcc; }
+  #top { position: fixed; top: calc(12px + env(safe-area-inset-top, 0px)); left: 14px; display: flex; flex-direction: column; gap: 6px; pointer-events: none; max-width: calc(100vw - 230px); }
+  #back { pointer-events: auto; align-self: flex-start; color: #222; background: #ffffffe6; text-decoration: none; font-size: 13px; font-weight: 600;
+    padding: 8px 11px; border-radius: 8px; box-shadow: 0 2px 10px #0006; white-space: nowrap; }
+  #back:hover { background: #fff; }
+  #title { text-shadow: 0 1px 4px #000a; }
+  #title h1 { margin: 0; font-size: 20px; font-weight: 700; letter-spacing: .01em; }
+  #title p { margin: 2px 0 0; font-size: 12px; opacity: .85; }
+  #tools { position: fixed; right: 14px; top: calc(12px + env(safe-area-inset-top, 0px)); display: flex; gap: 8px; }
+  .tool { height: 38px; min-width: 38px; border: 0; border-radius: 8px; background: #ffffffe6; color: #222; font: 600 13px ui-sans-serif, system-ui, sans-serif;
+    cursor: pointer; box-shadow: 0 2px 10px #0006; padding: 0 10px; white-space: nowrap; }
+  .tool:hover { background: #fff; }
+  #mode { background: #f0b84a; }
+  .panel { position: fixed; right: 14px; top: calc(58px + env(safe-area-inset-top, 0px)); z-index: 25; width: min(290px, calc(100vw - 28px)); background: #10233ff2; color: #fff;
+    border-radius: 10px; padding: 10px 12px; font-size: 13px; line-height: 1.45; box-shadow: 0 3px 14px #0007; box-sizing: border-box; }
+  .panel[hidden], #goto[hidden], #timep[hidden] { display: none; }
+  #goto { display: grid; gap: 6px; }
+  #goto button, #card button, #timep button { font: inherit; border: 0; border-radius: 6px; cursor: pointer; text-align: left; padding: 8px 10px; background: #ffffff1f; color: #fff; }
+  #goto button:hover, #card button:hover, #timep button:hover { background: #ffffff33; }
+  #timep { display: grid; gap: 8px; } #timep input[type=range] { width: 100%; } #timep b { font-size: 15px; font-variant-numeric: tabular-nums; }
+  #timep label { display: flex; gap: 8px; align-items: center; } #timep small { opacity: .75; font-size: 11.5px; }
+  #about p { margin: 0 0 7px; } #about p:last-child { margin: 0; opacity: .8; font-size: 12px; }
+  #card { position: fixed; z-index: 30; left: 14px; bottom: calc(40px + env(safe-area-inset-bottom, 0px)); width: min(360px, calc(100vw - 28px)); max-height: 55vh; overflow: auto;
+    background: #10233ff5; border-radius: 12px; padding: 12px 14px; font-size: 13.5px; line-height: 1.45; box-shadow: 0 4px 18px #0008; box-sizing: border-box; }
+  #card[hidden] { display: none; }
+  #card h2 { margin: 0 26px 2px 0; font-size: 17px; } #card .meta { font-size: 12px; opacity: .75; margin-bottom: 6px; }
+  #card p { margin: 0 0 8px; } #card .visit { font-size: 12.5px; opacity: .85; border-left: 3px solid #f0b84a; padding-left: 8px; }
+  #card .row { display: flex; gap: 8px; align-items: center; flex-wrap: wrap; } #card .row a { color: #9cc8ff; font-size: 12.5px; margin-left: auto; }
+  #card .x { position: absolute; right: 8px; top: 8px; width: 30px; height: 30px; padding: 0; text-align: center; font-size: 20px; line-height: 1; }
+  #joy { position: fixed; left: 26px; bottom: calc(52px + env(safe-area-inset-bottom, 0px)); width: 120px; height: 120px; border-radius: 50%; background: #ffffff26;
+    border: 2px solid #ffffff66; display: none; touch-action: none; box-shadow: 0 2px 12px #0005; }
+  #knob { position: absolute; left: 50%; top: 50%; width: 52px; height: 52px; margin: -26px 0 0 -26px; border-radius: 50%; background: #ffffffd9; box-shadow: 0 2px 8px #0006; }
+  body.walking.touch #joy { display: block; }
+  #compass { position: fixed; right: 14px; bottom: calc(40px + env(safe-area-inset-bottom, 0px)); width: 44px; height: 44px; border-radius: 50%; border: 0; background: #ffffffe6;
+    box-shadow: 0 2px 10px #0006; cursor: pointer; padding: 0; }
+  #compass svg { width: 44px; height: 44px; display: block; }
+  #hint { position: fixed; left: 50%; bottom: calc(40px + env(safe-area-inset-bottom, 0px)); transform: translate(-50%, 8px); max-width: min(520px, calc(100vw - 120px)); text-align: center;
+    background: #10233fe8; padding: 7px 12px; border-radius: 8px; font-size: 12.5px; opacity: 0; transition: opacity .4s, transform .4s; pointer-events: none; }
+  #hint.on { opacity: 1; transform: translate(-50%, 0); }
+  body.walking.touch #hint { bottom: calc(190px + env(safe-area-inset-bottom, 0px)); }
+  #credits { position: fixed; right: 0; bottom: 0; max-width: calc(100vw - 32px); background: #ffffffd9; color: #333; font-size: 11px; line-height: 1.4;
+    padding: 3px 8px calc(3px + env(safe-area-inset-bottom, 0px)); border-top-left-radius: 6px; }
+  #loading { position: fixed; left: 50%; top: 50%; transform: translate(-50%, -50%); background: #10233ff2; padding: 12px 16px; border-radius: 10px; font-size: 14px; text-align: center; }
+  #loading a { color: #9cc8ff; }
+  #loading[hidden], #dbg[hidden], #veil[hidden] { display: none; }
+  #veil { position: fixed; inset: 0; z-index: 60; background: #0e0f12; display: flex; align-items: center; justify-content: center; flex-direction: column; gap: 10px;
+    transition: opacity .5s; color: #fff; }
+  #veil.off { opacity: 0; pointer-events: none; }
+  #veil b { font-size: 16px; font-weight: 600; letter-spacing: .02em; }
+  #veil i { width: 120px; height: 3px; border-radius: 2px; background: #ffffff22; overflow: hidden; position: relative; }
+  #veil i::after { content: ''; position: absolute; inset: 0; width: 40%; background: #f0b84a; animation: veil 1.1s ease-in-out infinite alternate; }
+  @keyframes veil { from { transform: translateX(-10%); } to { transform: translateX(160%); } }
+  #goto { max-height: calc(100vh - 76px - env(safe-area-inset-top, 0px)); overflow-y: auto; }
+  #goto .gsec { display: flex; align-items: center; justify-content: space-between; margin: 6px 0 -1px; padding-top: 8px; border-top: 1px solid #ffffff2e; font-weight: 600; }
+  #goto .gsec button { padding: 4px 9px; font-size: 12px; }
+  #goto .pgrid { display: grid; grid-template-columns: 1fr 1fr; gap: 5px; }
+  #goto .pgrid button { padding: 7px 8px; font-size: 12.5px; line-height: 1.25; }
+  #pano { position: fixed; z-index: 20; left: 14px; bottom: calc(max(34px, var(--foot, 34px)) + 6px); width: min(440px, calc(100vw - 92px)); box-sizing: border-box;
+    background: #10233fe6; border-radius: 10px; padding: 6px; box-shadow: 0 3px 14px #0007; font-size: 12.5px; line-height: 1.35; }
+  #pano[hidden] { display: none; }
+  #pano .pr { display: flex; align-items: center; gap: 4px; }
+  #pano button { font: inherit; border: 0; border-radius: 6px; cursor: pointer; padding: 5px 9px; background: #ffffff1f; color: #fff; white-space: nowrap; }
+  #pano button:hover { background: #ffffff33; }
+  #pano .pn { flex: none; width: 32px; height: 40px; padding: 0; font-size: 22px; line-height: 1; }
+  #pano .pt { flex: 1; min-width: 0; padding: 0 3px; }
+  #pano #pname { display: block; background: none; padding: 0; text-align: left; font-weight: 700; font-size: 13.5px; cursor: default; white-space: normal; }
+  #pano #pname small { font-weight: 500; font-size: 11px; opacity: .65; }
+  #pano.moved #pname { cursor: pointer; text-decoration: underline dotted #ffffff99; }
+  #pano #pcap { display: block; opacity: .85; }
+  #pano .pa { display: flex; gap: 6px; align-items: center; margin-top: 5px; }
+  #pmsg { font-size: 12px; color: #f0b84a; white-space: nowrap; overflow: hidden; }
+  #pano #pclose { margin-left: auto; width: 30px; padding: 5px 0; font-size: 16px; line-height: 1; }
+  body.pano-on #hint { bottom: calc(150px + env(safe-area-inset-bottom, 0px)); }
+  #dbg { position: fixed; left: 14px; bottom: calc(26px + env(safe-area-inset-bottom, 0px)); font: 11px ui-monospace, monospace; background: #000a; padding: 3px 6px; border-radius: 4px; }
+  @media (max-width: 640px) {
+    #title h1 { font-size: 15px; } #title p { font-size: 11px; }
+    #top { max-width: calc(100vw - 190px); }
+    #back { padding: 8px 9px; font-size: 12.5px; }
+    .tool span { display: none; }
+    #tools { gap: 6px; }
+    #credits { left: 0; max-width: none; border-radius: 0; padding: 4px 12px calc(4px + env(safe-area-inset-bottom, 0px)); font-size: 10px; }
+    #card { left: 10px; right: 10px; width: auto; bottom: calc(34px + env(safe-area-inset-bottom, 0px)); }
+    #compass { bottom: calc(34px + env(safe-area-inset-bottom, 0px)); }
+    #hint { bottom: calc(92px + env(safe-area-inset-bottom, 0px)); max-width: calc(100vw - 40px); }
+    #pano { left: 10px; right: 64px; width: auto; bottom: calc(var(--foot, 34px) + 6px); }
+    #pano .lg { display: none; }
+    #pano .pa { gap: 5px; } #pano .pa button { padding: 5px 8px; }
+    body.pano-on #hint { display: none; }
+  }
+</style>
+<script type="importmap">{ "imports": { "three": "./3d/vendor/three.module.min.js" } }</script>
+</head>
+<body>
+<canvas id="c" tabindex="0" aria-label="Vista 3D di Bellinzona"></canvas>
+<div id="labels"></div>
+<div id="top">
+  <a id="back" href="./">← Torna alla mappa</a>
+  <div id="title"><h1>Bellinzona 3D</h1><p id="sunlbl"></p></div>
+</div>
+<div id="tools">
+  <button id="mode" class="tool" title="Cammina a terra">🚶<span> Cammina</span></button>
+  <button id="gotob" class="tool" title="Vai a un luogo o a un punto panoramico" aria-haspopup="true">📍<span> Vai a</span></button>
+  <button id="timeb" class="tool" title="Ora del giorno e ombre">🕓</button>
+  <button id="infob" class="tool" title="Che cos'è questa vista">ℹ️</button>
+</div>
+<div id="goto" class="panel" hidden></div>
+<div id="timep" class="panel" hidden>
+  <b id="tlbl"></b>
+  <input type="range" id="tslider" min="0" max="1439" step="5" aria-label="Ora del giorno">
+  <small>La luce segue il sole vero di Bellinzona; sposta il cursore per vedere un'altra ora di oggi.</small>
+  <button id="tnow">Adesso</button>
+  <label><input type="checkbox" id="shadows"> Ombre degli edifici</label>
+</div>
+<div id="about" class="panel" hidden>
+  <p>Bellinzona in tre dimensioni: il rilievo vero del terreno, la fotografia aerea, gli edifici rilevati (con le loro forme e altezze) e gli alberi, tutti da dati aperti. Nessuna esagerazione verticale.</p>
+  <p><b>In volo</b>: trascina per ruotare, pizzica o usa la rotella per lo zoom, due dita (o tasto destro) per spostarti; doppio clic per avvicinarti.<br><b>A piedi</b>: joystick o tasti WASD, trascina per guardarti intorno.</p>
+  <p>Il colore delle facciate non è nei dati e resta neutro; i tetti prendono il colore dalla foto aerea. Gli alberi sono forme semplici, colorate secondo la stagione. Lontano dalla città il rilievo e la foto sono meno dettagliati; all'orizzonte (fino a ~16 km) il rilievo è swissALTIRegio. I ponti vengono da OpenStreetMap e si possono attraversare a piedi.</p>
+</div>
+<div id="card" hidden></div>
+<div id="pano" hidden>
+  <div class="pr">
+    <button id="pprev" class="pn" title="Panorama precedente" aria-label="Panorama precedente">‹</button>
+    <div class="pt"><button id="pname"></button><span id="pcap"></span></div>
+    <button id="pnext" class="pn" title="Panorama successivo" aria-label="Panorama successivo">›</button>
+  </div>
+  <div class="pa">
+    <button id="ptour" title="Mostra i panorami uno dopo l'altro">▶ giro</button>
+    <button id="psave" title="Scarica questa vista come immagine">📷 Salva<span class="lg"> immagine</span></button>
+    <button id="pshare" title="Condividi il link a questo panorama">Condividi</button>
+    <span id="pmsg" aria-live="polite"></span>
+    <button id="pclose" title="Chiudi" aria-label="Chiudi">×</button>
+  </div>
+</div>
+<div id="joy" aria-hidden="true"><div id="knob"></div></div>
+<button id="compass" title="Orienta verso nord" aria-label="Orienta verso nord"><svg viewBox="0 0 44 44"><g id="needle"><path d="M22 7 L27 22 L22 20 L17 22 Z" fill="#d0242b"/><path d="M22 37 L27 22 L22 24 L17 22 Z" fill="#555"/><text x="22" y="6.5" font-size="7" text-anchor="middle" fill="#222" font-family="system-ui" font-weight="700">N</text></g></svg></button>
+<div id="hint"></div>
+<footer id="credits"></footer>
+<div id="loading">Caricamento del rilievo…</div>
+<div id="veil" hidden><b>carico…</b><i></i></div>
+<div id="dbg" hidden></div>
+<script>
+  if ('ontouchstart' in window || matchMedia('(pointer: coarse)').matches) document.body.classList.add('touch');
+  if (typeof DecompressionStream === 'undefined') document.getElementById('loading').innerHTML = 'Questo browser è troppo vecchio per la vista 3D.<br><a href="./">Torna alla mappa</a>';
+</script>
+<script type="module" src="3d/app.js"></script>
+</body>
+</html>

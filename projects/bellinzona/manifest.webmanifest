@@ -1,0 +1,16 @@
+{
+  "name": "Bellinzona in tempo reale",
+  "short_name": "Bellinzona",
+  "description": "Mappa illustrata di Bellinzona in tempo reale: luce e meteo di adesso, treni e bus con i ritardi, castelli, luoghi da visitare e itinerari a piedi.",
+  "lang": "it",
+  "start_url": "./",
+  "scope": "./",
+  "display": "standalone",
+  "background_color": "#1a1f16",
+  "theme_color": "#0e0f12",
+  "icons": [
+    { "src": "icons/icon-192.png", "sizes": "192x192", "type": "image/png" },
+    { "src": "icons/icon-512.png", "sizes": "512x512", "type": "image/png" },
+    { "src": "icons/favicon.svg", "sizes": "any", "type": "image/svg+xml" }
+  ]
+}

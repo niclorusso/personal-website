@@ -51,33 +51,41 @@ export class Season {
     x.drawImage(img, 0, 0, T, T);
     const im = x.getImageData(0, 0, T, T), d = im.data, tr = this.trees, hm = this.hm;
     const autumn = this.name === 'autunno', winter = this.name === 'inverno', spring = this.name === 'primavera', line = this.snow;
-    const step = span / T;
+    const step = span / T, snow = line < 9000;
+    // tree-crown coverage from the render, sampled smoothly (mask is 1/8 of native); trow, uy: the mask's row for this pixel row
+    const crowns = (wx, trow, uy) => {
+      const fx = (wx - bx) / 8 - 0.5, x0 = Math.max(0, Math.min(tr.w - 2, Math.floor(fx))), ux = Math.max(0, Math.min(1, fx - x0)), o = trow + x0;
+      return ((tr.d[o] * (1 - ux) + tr.d[o + 1] * ux) * (1 - uy) + (tr.d[o + tr.w] * (1 - ux) + tr.d[o + tr.w + 1] * ux) * uy) / 255;
+    };
+    // (the crown mask and the noise are worked out only for the pixels that need them: most of a town is roofs and streets)
     for (let py = 0; py < T; py++) {
       const wy = ty * span + (py + 0.5) * step;
-      const hy = Math.min(hm.h - 1, Math.max(0, ((wy - by) / 32) | 0));
+      const hy = Math.min(hm.h - 1, Math.max(0, ((wy - by) / 32) | 0)), hrow = hy * hm.w;
+      const fy = (wy - by) / 8 - 0.5, y0 = Math.max(0, Math.min(tr.h - 2, Math.floor(fy))), uy = Math.max(0, Math.min(1, fy - y0)), trow = y0 * tr.w;
       for (let px = 0; px < T; px++) {
         const i = (py * T + px) * 4;
         if (d[i + 3] === 0) continue;
         const wx = tx * span + (px + 0.5) * step;
         let r = d[i], g = d[i + 1], b = d[i + 2];
         let green = g > r * 1.06 && g > b * 1.18 && g > 55;
+        let cover = -1;
         // stable noise, smooth between its cells: patches the size of a crown and of a whole grove, without square edges
-        const a = vnoise(wx / 34, wy / 34, 12.9898, 78.233, 43758.5453), e = vnoise(wx / 170, wy / 170, 4.13, 9.71, 9631.77);
-        // tree-crown coverage from the render, sampled smoothly (mask is 1/8 of native)
-        const fx = (wx - bx) / 8 - 0.5, fy = (wy - by) / 8 - 0.5, x0 = Math.max(0, Math.min(tr.w - 2, Math.floor(fx))), y0 = Math.max(0, Math.min(tr.h - 2, Math.floor(fy)));
-        const ux = Math.max(0, Math.min(1, fx - x0)), uy = Math.max(0, Math.min(1, fy - y0)), o = y0 * tr.w + x0;
-        const cover = ((tr.d[o] * (1 - ux) + tr.d[o + 1] * ux) * (1 - uy) + (tr.d[o + tr.w] * (1 - ux) + tr.d[o + tr.w + 1] * ux) * uy) / 255;
+        let e = -1;
         // ornamental blossom (pink or white crowns) belongs to spring only: the rest of the year those crowns are leaves like the others
         let blossom = false;
         if (!spring) {                                       // pink blossom is told by its colour alone (bluer than any plaster or roof tile); white needs the crown mask
           const mx = Math.max(r, g, b), mn = Math.min(r, g, b);
-          blossom = (r > 100 && r > g * 1.15 && b >= g * 0.99) || (cover > 0.8 && mn > 185 && mx - mn < 34);
+          blossom = r > 100 && r > g * 1.15 && b >= g * 0.99;
+          if (!blossom && mn > 185 && mx - mn < 34) blossom = (cover = crowns(wx, trow, uy)) > 0.8;
           if (blossom) { const l = (0.3 * r + 0.59 * g + 0.11 * b) / 172; r = 98 * l; g = 142 * l; b = 58 * l; green = true; }
         }
         if (green) {
+          if (cover < 0) cover = crowns(wx, trow, uy);
           const tree = cover > 0.5 || blossom;
           const lum = 0.3 * r + 0.59 * g + 0.11 * b, conifer = tree && lum < 78;      // dark crowns stay green
           if (autumn && tree && !conifer) {
+            const a = vnoise(wx / 34, wy / 34, 12.9898, 78.233, 43758.5453);
+            e = vnoise(wx / 170, wy / 170, 4.13, 9.71, 9631.77);
             const k = a * 0.6 + e * 0.4;
             if (k > 0.2) {
               const tc = k > 0.78 ? [176, 78, 44] : k > 0.5 ? [222, 128, 40] : [226, 184, 58], f = 0.82, l = lum / 135;
@@ -93,10 +101,13 @@ export class Season {
             r = r * (1 - f) + 150 * l * f; g = g * (1 - f) + 140 * l * f; b = b * (1 - f) + 96 * l * f;    // faded grass
           }
         }
-        if (line < 9000) {
-          const alt = 200 + hm.d[hy * hm.w + Math.min(hm.w - 1, Math.max(0, ((wx - bx) / 32) | 0))] * 9;
-          const s = Math.max(0, Math.min(1, (alt - line + (e - 0.5) * 90) / 200));
-          if (s > 0) { const l = 0.3 * r + 0.59 * g + 0.11 * b, w = 205 + l * 0.2, f = s * 0.86; r = r * (1 - f) + w * f; g = g * (1 - f) + w * f; b = b * (1 - f) + (w + 6) * f; }
+        if (snow) {
+          const alt = 200 + hm.d[hrow + Math.min(hm.w - 1, Math.max(0, ((wx - bx) / 32) | 0))] * 9;
+          if (alt - line + 45 > 0) {                         // the noise moves the line by 45 m at most
+            if (e < 0) e = vnoise(wx / 170, wy / 170, 4.13, 9.71, 9631.77);
+            const s = Math.max(0, Math.min(1, (alt - line + (e - 0.5) * 90) / 200));
+            if (s > 0) { const l = 0.3 * r + 0.59 * g + 0.11 * b, w = 205 + l * 0.2, f = s * 0.86; r = r * (1 - f) + w * f; g = g * (1 - f) + w * f; b = b * (1 - f) + (w + 6) * f; }
+          }
         }
         d[i] = r; d[i + 1] = g; d[i + 2] = b;
       }

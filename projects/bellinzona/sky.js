@@ -3,9 +3,11 @@
 // light map (deep blue ambient + additive street-lamp pools), so lit streets keep their painted colours.
 // Lamp positions come from roads.json (loaded lazily, the first time lamps are needed).
 
+import { t, locale } from './i18n.js?v=20261118e';
+
 const LAT = 46.19, LON = 9.02, TZ = 'Europe/Zurich';
 const KEY = 'bellinzona.sky.mode';
-const MODES = [['auto', 'Automatico'], ['day', 'Giorno'], ['dusk', 'Tramonto'], ['night', 'Notte']];
+const MODES = ['auto', 'day', 'dusk', 'night'].map(m => [m, t('sky.' + m)]);
 
 // ambient multiply colour (r, g, b), warm soft-light grade, lamp intensity
 const DAY = [255, 255, 255, 0, 0], DUSK = [255, 204, 168, 1, 0.4], NIGHT = [56, 70, 128, 0, 1];
@@ -19,16 +21,23 @@ const HEAD = [7, 5.5, 4];           // lamp head height in metres
 
 const smooth = (a, b, x) => { const t = Math.max(0, Math.min(1, (x - a) / (b - a))); return t * t * (3 - 2 * t); };
 
-// solar elevation in degrees (low-precision almanac formulae, good to a fraction of a degree)
-export function sunElevation(ms, lat = LAT, lon = LON) {
+// solar elevation and azimuth (clockwise from north) in degrees (low-precision almanac formulae, good to a fraction of a degree)
+export function sunPosition(ms, lat = LAT, lon = LON) {
   const R = Math.PI / 180, d = ms / 86400000 - 10957.5;               // days since J2000
   const g = (357.529 + 0.98560028 * d) * R;
   const L = (280.459 + 0.98564736 * d + 1.915 * Math.sin(g) + 0.02 * Math.sin(2 * g)) * R;
   const e = (23.439 - 3.6e-7 * d) * R;
   const ra = Math.atan2(Math.cos(e) * Math.sin(L), Math.cos(L)), dec = Math.asin(Math.sin(e) * Math.sin(L));
   const ha = ((18.697374558 + 24.06570982441908 * d) * 15 + lon) * R - ra;
-  return Math.asin(Math.sin(lat * R) * Math.sin(dec) + Math.cos(lat * R) * Math.cos(dec) * Math.cos(ha)) / R;
+  const el = Math.asin(Math.sin(lat * R) * Math.sin(dec) + Math.cos(lat * R) * Math.cos(dec) * Math.cos(ha)) / R;
+  const az = Math.atan2(-Math.sin(ha), Math.tan(dec) * Math.cos(lat * R) - Math.sin(lat * R) * Math.cos(ha)) / R;
+  return { el, az: (az + 360) % 360 };
 }
+export const sunElevation = (ms, lat, lon) => sunPosition(ms, lat, lon).el;
+
+// the live weather's look (extras.js sets sky.wx from the measurements; all zero when there are none):
+// over: overcast by day, a flatter, greyer light · clear: north foehn, crisper air · mist: haze lying on the valley floor
+const MIST_FULL = 250, MIST_TOP = 300;   // m a.s.l.: the floor of the valley at Bellinzona is at 225-245 m (the Ticino at the gauge ~227 m); thinning out to nothing by 300 m, so the hills and the castles' heights stay clear
 
 function stateFor(el) {
   const d = smooth(-1, 7, el), n = smooth(-1, -7, el), k = (1 - d) * (1 - n);
@@ -73,13 +82,29 @@ export class Sky {
     this.lm = null; this.grade = null;
     this.buf = new Float32Array(3 * 4096); this.cbuf = new Float32Array(5 * 512);
     this.carsOk = true;
+    this.wx = { over: 0, clear: 0, mist: 0 }; this.wxc = { over: 0, clear: 0, mist: 0 }; this.mist = null;
     this.ui();
     // in automatic mode the light changes on its own even when nothing else asks for a frame
     setInterval(() => { if (this.mode === 'auto' && !document.hidden) { this.retarget(); if (!this.settled()) this.requestDraw(); } }, 30000);
   }
 
   pick() { return this.mode === 'day' ? DAY : this.mode === 'dusk' ? DUSK : this.mode === 'night' ? NIGHT : stateFor(sunElevation(this.clock())); }
-  retarget() { this.target = this.pick(); this.autoAt = performance.now(); }
+  retarget() { this.target = this.pick(); this.autoAt = performance.now(); this.hint(); }
+
+  // sunrise and sunset of the day shown (the time machine's day too), as a hint on the automatic button
+  hint() {
+    const b = this.el && this.el.firstChild, t0 = this.clock();
+    if (!b) return;
+    try {
+      const fmt = new Intl.DateTimeFormat(locale, { timeZone: TZ, hour: '2-digit', minute: '2-digit', hourCycle: 'h23' });
+      const p = new Intl.DateTimeFormat('en-CA', { timeZone: TZ, year: 'numeric', month: '2-digit', day: '2-digit' }).formatToParts(t0), g = k => +p.find(x => x.type === k).value;
+      const noon = Date.UTC(g('year'), g('month') - 1, g('day'), 12) - LON * 240000;   // solar noon of the day in Bellinzona
+      if (noon === this.hintNoon && (Math.abs(t0 - Date.now()) < 2700000) === this.hintLive) return;
+      this.hintNoon = noon; this.hintLive = Math.abs(t0 - Date.now()) < 2700000;
+      const cross = dir => { let t = noon; while (Math.abs(t - noon) < 43200000 && sunElevation(t) > -0.833) t += dir * 60000; return fmt.format(t); };
+      b.title = t(this.hintLive ? 'sky.hint.live' : 'sky.hint.tm', { rise: cross(-1), set: cross(1) });
+    } catch {}
+  }
   settled() { for (let i = 0; i < 5; i++) if (this.cur[i] !== this.target[i]) return false; return true; }
 
   setMode(m) {
@@ -97,19 +122,14 @@ export class Sky {
     st.textContent = CSS;
     document.head.appendChild(st);
     const el = this.el = document.createElement('div');
-    el.id = 'sky'; el.setAttribute('role', 'group'); el.setAttribute('aria-label', 'Ora del giorno');
+    el.id = 'sky'; el.setAttribute('role', 'group'); el.setAttribute('aria-label', t('sky.aria'));
     for (const [m, label] of MODES) {
       const b = document.createElement('button');
       b.type = 'button'; b.dataset.m = m; b.textContent = label; b.setAttribute('aria-pressed', m === this.mode);
       b.onclick = () => this.setMode(m);
       el.appendChild(b);
     }
-    try {                                                  // today's sunrise and sunset as a hint on the automatic button
-      const fmt = new Intl.DateTimeFormat('it-CH', { timeZone: TZ, hour: '2-digit', minute: '2-digit' });
-      const noon = Math.floor((this.clock() - LON * 240000) / 86400000) * 86400000 + 43200000 - LON * 240000;   // local solar noon
-      const cross = dir => { let t = noon; while (Math.abs(t - noon) < 43200000 && sunElevation(t) > -0.833) t += dir * 60000; return fmt.format(t); };
-      el.firstChild.title = `Segue l'ora reale di Bellinzona · alba ${cross(-1)}, tramonto ${cross(1)}`;
-    } catch {}
+    this.hint();
     document.body.appendChild(el);
     const place = () => {                                  // sit above the credits strip when it reaches the left edge (phones)
       const cr = document.getElementById('credits'), r = cr && cr.getBoundingClientRect();
@@ -122,10 +142,8 @@ export class Sky {
   async load() {
     if (this.loading) return;
     this.loading = true;
-    let edges = window.__life && window.__life.edges;
-    if (!edges) {
-      try { edges = (await (await fetch('roads.json')).json()).edges; } catch { return; }
-    }
+    const edges = window.__life && window.__life.edges;
+    if (!edges) { this.loading = false; return; }         // the roads come with the simulation (index.html): asked again on a later frame
     const M = this.M, pts = [], seen = new Set();
     edges.forEach((e, ei) => {
       if (!(e.c >= 1 && e.c <= 5) && e.c !== 7) return;
@@ -185,7 +203,9 @@ export class Sky {
 
   // call once per frame after everything else is on the canvas; the context is in css pixels
   draw(ctx, vx, vy, s, W, H) {
-    const now = performance.now(), cur = this.cur;
+    const now = performance.now();
+    if (!this.drawn) { this.drawn = true; this.retarget(); this.cur = this.target.slice(); }   // the viewer may have set the clock after construction (?quando=): no fade from today's light
+    const cur = this.cur;
     if (this.mode === 'auto' && now - this.autoAt > 5000) this.retarget();
     if (!this.settled()) {
       const k = 1 - Math.exp(-Math.min(0.1, (now - this.last) / 1000) / 0.8);
@@ -196,7 +216,15 @@ export class Sky {
       }
       if (!done) this.requestDraw();
     }
+    const kw = 1 - Math.exp(-Math.min(0.1, (now - this.last) / 1000) / 2.5), wc = this.wxc;   // live weather: eased in and out over a few seconds
+    let wet = false;
+    for (const k in wc) {
+      const t = Math.max(0, Math.min(1, +(this.wx && this.wx[k]) || 0));
+      wc[k] += (t - wc[k]) * kw; if (Math.abs(t - wc[k]) < 0.004) wc[k] = t; else this.requestDraw();
+      if (wc[k] > 0.004) wet = true;
+    }
     this.last = now;
+    if (wet) this.weather(ctx, vx, vy, s, W, H);
     if (cur[0] === 255 && cur[1] === 255 && cur[2] === 255 && cur[3] === 0 && cur[4] === 0) return;      // plain day: nothing to do
 
     const amb = `rgb(${cur[0] | 0},${cur[1] | 0},${cur[2] | 0})`, warm = cur[3], lampK = cur[4];
@@ -293,6 +321,43 @@ export class Sky {
       }
     }
     ctx.restore();
+  }
+
+  // drawn under the dusk and night grading, so that mist turns dark at night and an overcast sky fades out with the daylight
+  weather(ctx, vx, vy, s, W, H) {
+    const wc = this.wxc, day = Math.max(0, Math.min(1, (this.cur[2] - 168) / 87));   // 1 by day, 0 from dusk on (blue channel of the ambient light)
+    ctx.save();
+    if (wc.mist > 0.004) {
+      const m = this.mistMap();
+      if (m) { ctx.globalAlpha = 0.42 * wc.mist; ctx.imageSmoothingEnabled = true; ctx.drawImage(m.c, (m.x - vx) * s + W / 2, (m.y - vy) * s + H / 2, m.c.width * 32 * s, m.c.height * 32 * s); }
+    }
+    const o = wc.over * day;
+    if (o > 0.004) {                                       // overcast: a grey veil (less contrast, less colour) and slightly less light
+      ctx.globalAlpha = 0.16 * o; ctx.fillStyle = 'rgb(172,178,186)'; ctx.fillRect(0, 0, W, H);
+      ctx.globalCompositeOperation = 'multiply'; ctx.globalAlpha = o; ctx.fillStyle = 'rgb(236,238,242)'; ctx.fillRect(0, 0, W, H);
+    }
+    const c = wc.clear * day * (1 - wc.over);
+    if (c > 0.004) { ctx.globalCompositeOperation = 'soft-light'; ctx.globalAlpha = 0.3 * c; ctx.drawImage(ctx.canvas, 0, 0, W, H); }   // foehn: the picture blended onto itself, a little more contrast and colour
+    ctx.restore();
+  }
+
+  // where mist lies: the height map of the view (hmap.png, 1/32 of native, (h - 200) / 9 m) turned into an alpha mask, once
+  mistMap() {
+    if (this.mist) return this.mist.c ? this.mist : null;
+    this.mist = {};
+    const im = new Image();
+    im.onload = () => {
+      try {
+        const c = document.createElement('canvas'); c.width = im.width; c.height = im.height;
+        const g = c.getContext('2d', { willReadFrequently: true }); g.drawImage(im, 0, 0);
+        const d = g.getImageData(0, 0, c.width, c.height), p = d.data;
+        for (let i = 0; i < p.length; i += 4) { const v = p[i], a = v ? smooth(MIST_TOP, MIST_FULL, 200 + 9 * v) : 0; p[i] = 226; p[i + 1] = 230; p[i + 2] = 235; p[i + 3] = Math.round(255 * a); }   // 0 = no ground there
+        g.putImageData(d, 0, 0);
+        this.mist = { c, x: this.world.bounds[0][0], y: this.world.bounds[0][1] }; this.requestDraw();
+      } catch { /* no mist then */ }
+    };
+    im.src = (this.world.base || '') + 'hmap.png';
+    return null;
   }
 
   // vehicles of the life layer light the road ahead; returns how many light points were queued in cbuf
