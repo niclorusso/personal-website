@@ -25,6 +25,10 @@ const CSS = `
   font-size: 11.5px; font-weight: 500; letter-spacing: .01em; background: #1b1d22cc; padding: 1px 7px; border-radius: 9px;
   opacity: 0; transition: opacity .15s ease; }
 .ex-mk.named span, .ex-mk.hover span, .ex-mk.sel span { opacity: 1; }
+.ex-mk.mini i { width: 17px; height: 17px; left: -10px; top: -10px; background: #fff; border: 1px solid #0007; }
+.ex-mk.mini i::after { content: attr(data-ic); position: absolute; inset: 0; display: grid; place-items: center; font: normal 11px/1 system-ui, sans-serif; }
+.ex-mk.mini.stop i::after { content: attr(data-n); }
+.ex-mk.mini span { top: 13px; }
 .ex-mk.dup span { display: none; }
 .ex-mk.hover i { transform: scale(1.25); }
 .ex-mk.sel i { transform: scale(1.35); background: #fff; box-shadow: 0 0 0 2px #f0b84a, 0 2px 8px #000c; }
@@ -153,7 +157,7 @@ const CSS = `
 }
 `;
 
-import { t, tc, lang, locale, speechLang, num, hm as zhm, dt, date, LANGS, NAMES, switchLang, textReady } from './i18n.js?v=20261118e';
+import { t, tc, lang, locale, speechLang, num, hm as zhm, dt, date, LANGS, NAMES, switchLang, textReady } from './i18n.js?v=20261118j';
 
 // the kinds of the map's own names (world.json labels), in the search results
 const KIND_IT = { city: t('kind.city'), town: t('kind.city'), village: t('kind.village'), suburb: t('kind.suburb'), quarter: t('kind.suburb'), neighbourhood: t('kind.suburb'),
@@ -203,7 +207,7 @@ export async function initExplore({ world, view, map, clamp, draw, halt, toScree
   document.head.appendChild(el('style')).textContent = CSS;
   const phone = () => matchMedia('(max-width: 640px)').matches;
   let geoP = null, geoM = null;                                      // geo.js, loaded on first use
-  const geo = () => geoP || (geoP = import('./geo.js?v=20261118e').then(m => { geoM = m; return new m.Geo(world, lang); }));
+  const geo = () => geoP || (geoP = import('./geo.js?v=20261118j').then(m => { geoM = m; return new m.Geo(world, lang); }));
   const embed = new URLSearchParams(location.search).has('incorpora');   // inside someone else's page (index.html hides the rest)
 
   // ---------- markers ----------
@@ -212,14 +216,17 @@ export async function initExplore({ world, view, map, clamp, draw, halt, toScree
   const labelNames = new Set(world.labels.map(l => norm(l.name)));
   const markers = places.map(p => {
     const m = el('div', { class: 'ex-mk' });
-    m.appendChild(el('i'));
+    const dot = el('i');
+    // small points (playgrounds, the outdoor gym, the pool): a little badge with their sign, shown when their menu entry is picked
+    if (p.minor) { m.classList.add('mini'); dot.dataset.ic = (p.tags || []).includes('giochi') ? '🛝' : (p.tags || []).includes('sport') ? '💪' : '🏊'; }
+    m.appendChild(dot);
     m.appendChild(el('span', {}, pn(p)));
     layer.appendChild(m);
     const dup = labelNames.has(norm(p.name));                      // the viewer already labels the castles
     if (dup) m.classList.add('dup');
     return {
       p, el: m, sx: 0, sy: 0, shown: false, dup, w: 0,
-      minZ: Z - (p.tier === 1 ? 4.2 : 3.2),                       // main sights from further out
+      minZ: Z - (p.minor ? 2.4 : p.tier === 1 ? 4.2 : 3.2),                       // main sights from further out
       nameZ: Z - (p.tier === 1 ? 2.6 : 1.7),
     };
   });
@@ -246,7 +253,7 @@ export async function initExplore({ world, view, map, clamp, draw, halt, toScree
   function wakeMob() {                                   // nothing is asked of those services before the list is opened
     if (document.body.classList.contains('era')) return;
     if (mob) mob.wake();
-    else if (!mobP) mobP = import('./mobility.js?v=20261118e').then(M => { mob = M.initMobility({ geo, layer, toScreen, active: mobLayer, onChange: mobChanged }); mob.wake(); }).catch(() => { /* no such layers */ });
+    else if (!mobP) mobP = import('./mobility.js?v=20261118j').then(M => { mob = M.initMobility({ geo, layer, toScreen, active: mobLayer, onChange: mobChanged }); mob.wake(); }).catch(() => { /* no such layers */ });
   }
   function mobChanged() {                                // live data in, changed or gone (stale, failed, time machine)
     if (mobLayer() && !mob.has(mobLayer())) { cat = ''; drawChips(); }   // the layer has nothing current: back to the places
@@ -261,7 +268,7 @@ export async function initExplore({ world, view, map, clamp, draw, halt, toScree
     if (!force && key === lastKey) return;
     lastKey = key;
     const w = map.clientWidth, h = map.clientHeight;
-    // small points (playgrounds…) only under their own tag; while building an itinerary all places stay tappable
+    // small points (playgrounds…) only when the visitor picks their entry in the menu (the owner, 18 Nov 2026); while building an itinerary all places stay tappable
     const wanted = m => route ? m.stop > 0 || m.p.id === route.from || (editing && !m.p.minor && view.z >= m.minZ)
       : openIds ? openIds.has(m.p.id) : cat ? inCat(m.p, cat) : !m.p.minor && view.z >= m.minZ;
     for (const m of markers) {
@@ -673,7 +680,7 @@ export async function initExplore({ world, view, map, clamp, draw, halt, toScree
   (function sheet() { document.body.classList.toggle('ex-sheet', card.classList.contains('open') || routesBox.classList.contains('open')); setTimeout(sheet, 250); })();   // a bottom sheet is up (phones hide what it would cover)
   // [id, icon, name in the list, name on the button]
   const CATS = [['', '🗺️', t('cat.all'), t('bar.what')], ...['castelli', 'chiese', 'citta', 'gite'].map((c, i) => [c, ['🏰', '⛪', '🏛️', '🌲'][i], t('cat.' + c), t('cat.' + c + '.s')])];
-  const TAGS = [['tag:coperto', '☔', t('tag.coperto'), t('tag.coperto.s')], ['tag:bambini', '🧒', t('tag.bambini'), t('tag.bambini.s')]];   // listed only when some place carries the tag
+  const TAGS = [['tag:coperto', '☔', t('tag.coperto'), t('tag.coperto.s')], ['tag:bambini', '🧒', t('tag.bambini'), t('tag.bambini.s')], ['tag:giochi', '🛝', t('tag.giochi'), t('tag.giochi.s')], ['tag:sport', '💪', t('tag.sport'), t('tag.sport.s')]];   // listed only when some place carries the tag
   let routes = [], routesNote = '';
   // the itineraries with their texts in the page's language, and their stops named as the places are
   const routesReady = fetch('itinerari.json', { cache: 'no-cache', priority: 'low' }).then(r => r.ok ? r.json() : null).then(j => { if (j) {

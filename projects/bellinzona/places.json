@@ -2545,7 +2545,8 @@
    "x": 1067.4,
    "y": -4144.6,
    "tags": [
-    "bambini"
+    "bambini",
+    "giochi"
    ],
    "minor": true
   },
@@ -2574,7 +2575,8 @@
    "x": 557.1,
    "y": -1601.7,
    "tags": [
-    "bambini"
+    "bambini",
+    "giochi"
    ],
    "minor": true
   },
@@ -2603,7 +2605,8 @@
    "x": -496.1,
    "y": 2309.5,
    "tags": [
-    "bambini"
+    "bambini",
+    "giochi"
    ],
    "minor": true
   },
@@ -2630,7 +2633,8 @@
    "x": 1848.7,
    "y": -681.6,
    "tags": [
-    "bambini"
+    "bambini",
+    "giochi"
    ],
    "minor": true
   },
@@ -2689,7 +2693,937 @@
    "x": 6423.7,
    "y": 5522.4,
    "tags": [
-    "bambini"
+    "bambini",
+    "giochi"
+   ],
+   "minor": true
+  },
+  {
+   "id": "parco-giochi-sementina-incontri",
+   "name": "Parco giochi Incontri, Sementina",
+   "alt": [
+    "Incontri",
+    "Via Preda"
+   ],
+   "type": "Parco giochi",
+   "cat": "citta",
+   "desc": "Parco giochi in Via Preda, 6514 Sementina. Figura sulla mappa dei parchi giochi della Città di Bellinzona.",
+   "source": {
+    "label": "Città di Bellinzona",
+    "url": "https://www.bellinzona.ch/Sementina-Incontri-14158a00"
+   },
+   "osm": null,
+   "tier": 2,
+   "lat": 46.181587,
+   "lon": 8.994943,
+   "e": 2720164.7,
+   "n": 1115649.1,
+   "h": 229.8,
+   "x": -5959.4,
+   "y": 5117.2,
+   "tags": [
+    "bambini",
+    "giochi"
+   ],
+   "minor": true
+  },
+  {
+   "id": "parco-giochi-monte-carasso-palestra",
+   "name": "Parco giochi Palestra, Monte Carasso",
+   "alt": [
+    "Palestra",
+    "Via El Sementéri"
+   ],
+   "type": "Parco giochi",
+   "cat": "citta",
+   "desc": "Parco giochi in Via El Sementéri, 6513 Monte Carasso. Figura sulla mappa dei parchi giochi della Città di Bellinzona.",
+   "source": {
+    "label": "Città di Bellinzona",
+    "url": "https://www.bellinzona.ch/Monte-Carasso-Palestra-0d896600"
+   },
+   "osm": null,
+   "tier": 2,
+   "lat": 46.187203,
+   "lon": 8.997921,
+   "e": 2720382.2,
+   "n": 1116277.9,
+   "h": 241.8,
+   "x": -6002.1,
+   "y": 3201.5,
+   "tags": [
+    "bambini",
+    "giochi"
+   ],
+   "minor": true
+  },
+  {
+   "id": "parco-giochi-monte-carasso-convento",
+   "name": "Parco giochi Convento, Monte Carasso",
+   "alt": [
+    "Convento",
+    "Via El Cunvént"
+   ],
+   "type": "Parco giochi",
+   "cat": "citta",
+   "desc": "Parco giochi in Via El Cunvént, 6513 Monte Carasso. Figura sulla mappa dei parchi giochi della Città di Bellinzona.",
+   "source": {
+    "label": "Città di Bellinzona",
+    "url": "https://www.bellinzona.ch/Monte-Carasso-Convento-3f809d00"
+   },
+   "osm": null,
+   "tier": 2,
+   "lat": 46.187123,
+   "lon": 8.99661,
+   "e": 2720281.2,
+   "n": 1116267.0,
+   "h": 246.3,
+   "x": -6366.9,
+   "y": 3315.6,
+   "tags": [
+    "bambini",
+    "giochi"
+   ],
+   "minor": true
+  },
+  {
+   "id": "parco-giochi-monte-carasso-protezione-civile",
+   "name": "Parco giochi Protezione civile, Monte Carasso",
+   "alt": [
+    "Protezione civile",
+    "Via El Cunvént"
+   ],
+   "type": "Parco giochi",
+   "cat": "citta",
+   "desc": "Parco giochi in Via El Cunvént, 6513 Monte Carasso. Figura sulla mappa dei parchi giochi della Città di Bellinzona.",
+   "source": {
+    "label": "Città di Bellinzona",
+    "url": "https://www.bellinzona.ch/Monte-Carasso-Protezione-civile-ab11c800"
+   },
+   "osm": null,
+   "tier": 2,
+   "lat": 46.186762,
+   "lon": 8.998213,
+   "e": 2720405.7,
+   "n": 1116229.3,
+   "h": 240.6,
+   "x": -5847.2,
+   "y": 3311.3,
+   "tags": [
+    "bambini",
+    "giochi"
+   ],
+   "minor": true
+  },
+  {
+   "id": "parco-giochi-monte-carasso-curzutt",
+   "name": "Parco giochi Curzutt, Monte Carasso",
+   "alt": [
+    "Curzutt"
+   ],
+   "type": "Parco giochi",
+   "cat": "citta",
+   "desc": "Parco giochi a Curzutt, sopra Monte Carasso. Figura sulla mappa dei parchi giochi della Città di Bellinzona.",
+   "source": {
+    "label": "Città di Bellinzona",
+    "url": "https://www.bellinzona.ch/Monte-Carasso-Curzutt-02209e00"
+   },
+   "osm": null,
+   "tier": 2,
+   "lat": 46.194272,
+   "lon": 8.992864,
+   "e": 2719976.3,
+   "n": 1117055.8,
+   "h": 605.5,
+   "x": -8592.2,
+   "y": 497.9,
+   "tags": [
+    "bambini",
+    "giochi"
+   ],
+   "minor": true
+  },
+  {
+   "id": "parco-giochi-monte-carasso-mornera",
+   "name": "Parco giochi Mornera, Monte Carasso",
+   "alt": [
+    "Mornera"
+   ],
+   "type": "Parco giochi",
+   "cat": "citta",
+   "desc": "Parco giochi a Mornera, sopra Monte Carasso. Figura sulla mappa dei parchi giochi della Città di Bellinzona.",
+   "source": {
+    "label": "Città di Bellinzona",
+    "url": "https://www.bellinzona.ch/Monte-Carasso-Mornera-bf8ca100"
+   },
+   "osm": null,
+   "tier": 2,
+   "lat": 46.208046,
+   "lon": 8.987084,
+   "e": 2719499.9,
+   "n": 1118577.9,
+   "h": 1380.3,
+   "x": -12464.9,
+   "y": -5278.1,
+   "tags": [
+    "bambini",
+    "giochi"
+   ],
+   "minor": true
+  },
+  {
+   "id": "parco-giochi-giubiasco-se-palasio",
+   "name": "Parco giochi SE Palasio, Giubiasco",
+   "alt": [
+    "SE Palasio",
+    "Viale Stefano Franscini 2"
+   ],
+   "type": "Parco giochi",
+   "cat": "citta",
+   "desc": "Parco giochi in Viale Stefano Franscini 2, 6512 Giubiasco. Figura sulla mappa dei parchi giochi della Città di Bellinzona.",
+   "source": {
+    "label": "Città di Bellinzona",
+    "url": "https://www.bellinzona.ch/Giubiasco-SE-Palasio-34f72600"
+   },
+   "osm": null,
+   "tier": 2,
+   "lat": 46.175708,
+   "lon": 9.016174,
+   "e": 2721816.9,
+   "n": 1115028.4,
+   "h": 234.0,
+   "x": 1100.0,
+   "y": 5156.4,
+   "tags": [
+    "bambini",
+    "giochi"
+   ],
+   "minor": true
+  },
+  {
+   "id": "parco-giochi-giubiasco-se-viale-stazione",
+   "name": "Parco giochi SE Viale Stazione, Giubiasco",
+   "alt": [
+    "SE Viale Stazione",
+    "Viale Stazione 5"
+   ],
+   "type": "Parco giochi",
+   "cat": "citta",
+   "desc": "Parco giochi in Viale Stazione 5, 6512 Giubiasco. Figura sulla mappa dei parchi giochi della Città di Bellinzona.",
+   "source": {
+    "label": "Città di Bellinzona",
+    "url": "https://www.bellinzona.ch/Giubiasco-SE-Viale-Stazione-322e8600"
+   },
+   "osm": null,
+   "tier": 2,
+   "lat": 46.173229,
+   "lon": 9.006698,
+   "e": 2721090.8,
+   "n": 1114738.2,
+   "h": 236.4,
+   "x": -1232.4,
+   "y": 6623.5,
+   "tags": [
+    "bambini",
+    "giochi"
+   ],
+   "minor": true
+  },
+  {
+   "id": "parco-giochi-giubiasco-serta",
+   "name": "Parco giochi Serta, Giubiasco",
+   "alt": [
+    "Serta",
+    "Strada di Serta"
+   ],
+   "type": "Parco giochi",
+   "cat": "citta",
+   "desc": "Parco giochi in Strada di Serta, 6512 Giubiasco. Figura sulla mappa dei parchi giochi della Città di Bellinzona.",
+   "source": {
+    "label": "Città di Bellinzona",
+    "url": "https://www.bellinzona.ch/Giubiasco-Serta-c4469700"
+   },
+   "osm": null,
+   "tier": 2,
+   "lat": 46.180725,
+   "lon": 9.029399,
+   "e": 2722826.7,
+   "n": 1115606.7,
+   "h": 482.5,
+   "x": 4104.5,
+   "y": 1939.9,
+   "tags": [
+    "bambini",
+    "giochi"
+   ],
+   "minor": true
+  },
+  {
+   "id": "parco-giochi-giubiasco-forbo",
+   "name": "Parco giochi Forbo, Giubiasco",
+   "alt": [
+    "Forbo",
+    "Via Industrie"
+   ],
+   "type": "Parco giochi",
+   "cat": "citta",
+   "desc": "Parco giochi in Via Industrie, 6512 Giubiasco. Figura sulla mappa dei parchi giochi della Città di Bellinzona.",
+   "source": {
+    "label": "Città di Bellinzona",
+    "url": "https://www.bellinzona.ch/Giubiasco-Forbo-975da100"
+   },
+   "osm": null,
+   "tier": 2,
+   "lat": 46.17861,
+   "lon": 9.00882,
+   "e": 2721242.7,
+   "n": 1115339.6,
+   "h": 226.2,
+   "x": -1484.2,
+   "y": 4907.1,
+   "tags": [
+    "bambini",
+    "giochi"
+   ],
+   "minor": true
+  },
+  {
+   "id": "parco-giochi-giubiasco-san-rocco",
+   "name": "Parco giochi San Rocco, Giubiasco",
+   "alt": [
+    "San Rocco",
+    "Via San Rocco"
+   ],
+   "type": "Parco giochi",
+   "cat": "citta",
+   "desc": "Parco giochi in Via San Rocco, 6512 Giubiasco. Figura sulla mappa dei parchi giochi della Città di Bellinzona. Secondo la Città è chiuso per lavori di riqualifica (avviso letto il 18.11.2026).",
+   "source": {
+    "label": "Città di Bellinzona",
+    "url": "https://www.bellinzona.ch/Giubiasco-San-Rocco-03ab3200"
+   },
+   "osm": null,
+   "tier": 2,
+   "lat": 46.171487,
+   "lon": 9.020926,
+   "e": 2722193.3,
+   "n": 1114566.7,
+   "h": 410.5,
+   "x": 3146.3,
+   "y": 5520.3,
+   "tags": [
+    "bambini",
+    "giochi"
+   ],
+   "minor": true
+  },
+  {
+   "id": "parco-giochi-giubiasco-ada-martinoli",
+   "name": "Parco giochi Ada Martinoli, Giubiasco",
+   "alt": [
+    "Ada Martinoli",
+    "Via Ada Martinoli"
+   ],
+   "type": "Parco giochi",
+   "cat": "citta",
+   "desc": "Parco giochi in Via Ada Martinoli, 6512 Giubiasco. Figura sulla mappa dei parchi giochi della Città di Bellinzona.",
+   "source": {
+    "label": "Città di Bellinzona",
+    "url": "https://www.bellinzona.ch/Giubiasco-Ada-Martinoli-dfea6100"
+   },
+   "osm": null,
+   "tier": 2,
+   "lat": 46.173688,
+   "lon": 9.009638,
+   "e": 2721316.8,
+   "n": 1114793.8,
+   "h": 238.4,
+   "x": -459.0,
+   "y": 6251.5,
+   "tags": [
+    "bambini",
+    "giochi"
+   ],
+   "minor": true
+  },
+  {
+   "id": "parco-giochi-giubiasco-pedevilla",
+   "name": "Parco giochi Pedevilla, Giubiasco",
+   "alt": [
+    "Pedevilla",
+    "Via Pedevilla"
+   ],
+   "type": "Parco giochi",
+   "cat": "citta",
+   "desc": "Parco giochi in Via Pedevilla, 6512 Giubiasco. Figura sulla mappa dei parchi giochi della Città di Bellinzona.",
+   "source": {
+    "label": "Città di Bellinzona",
+    "url": "https://www.bellinzona.ch/Giubiasco-Pedevilla-8a28ea00"
+   },
+   "osm": null,
+   "tier": 2,
+   "lat": 46.180525,
+   "lon": 9.019135,
+   "e": 2722034.8,
+   "n": 1115568.4,
+   "h": 227.5,
+   "x": 1180.0,
+   "y": 3529.0,
+   "tags": [
+    "bambini",
+    "giochi"
+   ],
+   "minor": true
+  },
+  {
+   "id": "parco-giochi-giubiasco-piazza-grande",
+   "name": "Parco giochi Piazza Grande, Giubiasco",
+   "alt": [
+    "Piazza Grande",
+    "Piazza Grande"
+   ],
+   "type": "Parco giochi",
+   "cat": "citta",
+   "desc": "Parco giochi in Piazza Grande, 6512 Giubiasco. Figura sulla mappa dei parchi giochi della Città di Bellinzona.",
+   "source": {
+    "label": "Città di Bellinzona",
+    "url": "https://www.bellinzona.ch/Giubiasco-Piazza-Grande-68b8f300"
+   },
+   "osm": null,
+   "tier": 2,
+   "lat": 46.170969,
+   "lon": 9.010851,
+   "e": 2721416.5,
+   "n": 1114493.5,
+   "h": 249.2,
+   "x": 326.7,
+   "y": 6922.7,
+   "tags": [
+    "bambini",
+    "giochi"
+   ],
+   "minor": true
+  },
+  {
+   "id": "parco-giochi-camorino-morobbia",
+   "name": "Parco giochi Morobbia, Camorino",
+   "alt": [
+    "Morobbia",
+    "Via al Mai"
+   ],
+   "type": "Parco giochi",
+   "cat": "citta",
+   "desc": "Parco giochi in Via al Mai, 6528 Camorino. Figura sulla mappa dei parchi giochi della Città di Bellinzona.",
+   "source": {
+    "label": "Città di Bellinzona",
+    "url": "https://www.bellinzona.ch/Camorino-Morobbia-34e8ab00"
+   },
+   "osm": null,
+   "tier": 2,
+   "lat": 46.168032,
+   "lon": 9.006396,
+   "e": 2721079.0,
+   "n": 1114160.2,
+   "h": 239.1,
+   "x": -485.8,
+   "y": 8163.6,
+   "tags": [
+    "bambini",
+    "giochi"
+   ],
+   "minor": true
+  },
+  {
+   "id": "parco-giochi-camorino-se",
+   "name": "Parco giochi SE, Camorino",
+   "alt": [
+    "SE",
+    "Via al Guast 6"
+   ],
+   "type": "Parco giochi",
+   "cat": "citta",
+   "desc": "Parco giochi in Via al Guast 6, 6528 Camorino. Figura sulla mappa dei parchi giochi della Città di Bellinzona.",
+   "source": {
+    "label": "Città di Bellinzona",
+    "url": "https://www.bellinzona.ch/Camorino-SE-a98df700"
+   },
+   "osm": null,
+   "tier": 2,
+   "lat": 46.163347,
+   "lon": 8.99901,
+   "e": 2720519.0,
+   "n": 1113628.1,
+   "h": 225.5,
+   "x": -1862.7,
+   "y": 10158.0,
+   "tags": [
+    "bambini",
+    "giochi"
+   ],
+   "minor": true
+  },
+  {
+   "id": "parco-giochi-camorino-motto-grande",
+   "name": "Parco giochi Motto Grande, Camorino",
+   "alt": [
+    "Motto Grande",
+    "Via al Mòtt"
+   ],
+   "type": "Parco giochi",
+   "cat": "citta",
+   "desc": "Parco giochi in Via al Mòtt, 6528 Camorino. Figura sulla mappa dei parchi giochi della Città di Bellinzona. Secondo la Città è chiuso per lavori di riqualifica (avviso letto il 18.11.2026).",
+   "source": {
+    "label": "Città di Bellinzona",
+    "url": "https://www.bellinzona.ch/Camorino-Motto-Grande-7702b000"
+   },
+   "osm": null,
+   "tier": 2,
+   "lat": 46.161163,
+   "lon": 9.008106,
+   "e": 2721226.3,
+   "n": 1113399.4,
+   "h": 324.2,
+   "x": 1108.8,
+   "y": 9802.6,
+   "tags": [
+    "bambini",
+    "giochi"
+   ],
+   "minor": true
+  },
+  {
+   "id": "parco-giochi-bellinzona-villa-dei-cedri",
+   "name": "Parco giochi Villa dei Cedri, Bellinzona",
+   "alt": [
+    "Villa dei Cedri",
+    "Via San Biagio"
+   ],
+   "type": "Parco giochi",
+   "cat": "citta",
+   "desc": "Parco giochi in Via San Biagio, 6500 Bellinzona. Figura sulla mappa dei parchi giochi della Città di Bellinzona.",
+   "source": {
+    "label": "Città di Bellinzona",
+    "url": "https://www.bellinzona.ch/Bellinzona-Villa-dei-Cedri-5b2e8900"
+   },
+   "osm": null,
+   "tier": 2,
+   "lat": 46.184813,
+   "lon": 9.020873,
+   "e": 2722159.3,
+   "n": 1116047.7,
+   "h": 237.0,
+   "x": 992.5,
+   "y": 2107.7,
+   "tags": [
+    "bambini",
+    "giochi"
+   ],
+   "minor": true
+  },
+  {
+   "id": "parco-giochi-bellinzona-ravecchia",
+   "name": "Parco giochi Ravecchia, Bellinzona",
+   "alt": [
+    "Ravecchia",
+    "Via Belsoggiorno"
+   ],
+   "type": "Parco giochi",
+   "cat": "citta",
+   "desc": "Parco giochi in Via Belsoggiorno, 6500 Bellinzona. Figura sulla mappa dei parchi giochi della Città di Bellinzona.",
+   "source": {
+    "label": "Città di Bellinzona",
+    "url": "https://www.bellinzona.ch/Bellinzona-Ravecchia-82468600"
+   },
+   "osm": null,
+   "tier": 2,
+   "lat": 46.184492,
+   "lon": 9.025058,
+   "e": 2722483.1,
+   "n": 1116018.6,
+   "h": 267.7,
+   "x": 2249.5,
+   "y": 1785.1,
+   "tags": [
+    "bambini",
+    "giochi"
+   ],
+   "minor": true
+  },
+  {
+   "id": "parco-giochi-bellinzona-grottino-ticinese",
+   "name": "Parco giochi Grottino Ticinese, Bellinzona",
+   "alt": [
+    "Grottino Ticinese",
+    "Via L. Lavizzari"
+   ],
+   "type": "Parco giochi",
+   "cat": "citta",
+   "desc": "Parco giochi in Via L. Lavizzari, 6500 Bellinzona. Figura sulla mappa dei parchi giochi della Città di Bellinzona.",
+   "source": {
+    "label": "Città di Bellinzona",
+    "url": "https://www.bellinzona.ch/Bellinzona-Grottino-Ticinese-54033d00"
+   },
+   "osm": null,
+   "tier": 2,
+   "lat": 46.196277,
+   "lon": 9.01915,
+   "e": 2722000.6,
+   "n": 1117319.2,
+   "h": 225.1,
+   "x": -1343.4,
+   "y": -1084.4,
+   "tags": [
+    "bambini",
+    "giochi"
+   ],
+   "minor": true
+  },
+  {
+   "id": "parco-giochi-bellinzona-greina",
+   "name": "Parco giochi Greina, Bellinzona",
+   "alt": [
+    "Greina",
+    "Via Greina"
+   ],
+   "type": "Parco giochi",
+   "cat": "citta",
+   "desc": "Parco giochi in Via Greina, 6500 Bellinzona. Figura sulla mappa dei parchi giochi della Città di Bellinzona.",
+   "source": {
+    "label": "Città di Bellinzona",
+    "url": "https://www.bellinzona.ch/Bellinzona-Greina-6ceb2c00"
+   },
+   "osm": null,
+   "tier": 2,
+   "lat": 46.207366,
+   "lon": 9.028219,
+   "e": 2722675.6,
+   "n": 1118565.8,
+   "h": 231.3,
+   "x": -511.8,
+   "y": -5068.2,
+   "tags": [
+    "bambini",
+    "giochi"
+   ],
+   "minor": true
+  },
+  {
+   "id": "parco-giochi-bellinzona-golena",
+   "name": "Parco giochi Golena, Bellinzona",
+   "alt": [
+    "Golena",
+    "Viale S. Franscini"
+   ],
+   "type": "Parco giochi",
+   "cat": "citta",
+   "desc": "Parco giochi in Viale S. Franscini, 6500 Bellinzona. Figura sulla mappa dei parchi giochi della Città di Bellinzona.",
+   "source": {
+    "label": "Città di Bellinzona",
+    "url": "https://www.bellinzona.ch/Bellinzona-Golena-9b4d5500"
+   },
+   "osm": null,
+   "tier": 2,
+   "lat": 46.192136,
+   "lon": 9.009712,
+   "e": 2721281.4,
+   "n": 1116844.3,
+   "h": 223.3,
+   "x": -3397.1,
+   "y": 878.4,
+   "tags": [
+    "bambini",
+    "giochi"
+   ],
+   "minor": true
+  },
+  {
+   "id": "parco-giochi-bellinzona-galbisio",
+   "name": "Parco giochi Galbisio, Bellinzona",
+   "alt": [
+    "Galbisio",
+    "Via Ronchetto"
+   ],
+   "type": "Parco giochi",
+   "cat": "citta",
+   "desc": "Parco giochi in Via Ronchetto, 6500 Bellinzona. Figura sulla mappa dei parchi giochi della Città di Bellinzona.",
+   "source": {
+    "label": "Città di Bellinzona",
+    "url": "https://www.bellinzona.ch/Bellinzona-Galbisio-3b841f00"
+   },
+   "osm": null,
+   "tier": 2,
+   "lat": 46.212147,
+   "lon": 9.031282,
+   "e": 2722901.2,
+   "n": 1119101.9,
+   "h": 266.4,
+   "x": -397.5,
+   "y": -6810.7,
+   "tags": [
+    "bambini",
+    "giochi"
+   ],
+   "minor": true
+  },
+  {
+   "id": "parco-giochi-bellinzona-carasso",
+   "name": "Parco giochi Carasso, Bellinzona",
+   "alt": [
+    "Carasso",
+    "Via alle Torri"
+   ],
+   "type": "Parco giochi",
+   "cat": "citta",
+   "desc": "Parco giochi in Via alle Torri, 6500 Bellinzona. Figura sulla mappa dei parchi giochi della Città di Bellinzona.",
+   "source": {
+    "label": "Città di Bellinzona",
+    "url": "https://www.bellinzona.ch/Bellinzona-Carasso-56a86a00"
+   },
+   "osm": null,
+   "tier": 2,
+   "lat": 46.205365,
+   "lon": 9.016411,
+   "e": 2721768.9,
+   "n": 1118325.0,
+   "h": 232.8,
+   "x": -3590.4,
+   "y": -3555.4,
+   "tags": [
+    "bambini",
+    "giochi"
+   ],
+   "minor": true
+  },
+  {
+   "id": "parco-giochi-bellinzona-artore",
+   "name": "Parco giochi Artore, Bellinzona",
+   "alt": [
+    "Artore",
+    "Via delle Vigne"
+   ],
+   "type": "Parco giochi",
+   "cat": "citta",
+   "desc": "Parco giochi in Via delle Vigne, 6500 Bellinzona. Figura sulla mappa dei parchi giochi della Città di Bellinzona.",
+   "source": {
+    "label": "Città di Bellinzona",
+    "url": "https://www.bellinzona.ch/Bellinzona-Artore-9d0f1800"
+   },
+   "osm": null,
+   "tier": 2,
+   "lat": 46.191292,
+   "lon": 9.033162,
+   "e": 2723093.4,
+   "n": 1116787.0,
+   "h": 384.3,
+   "x": 3491.9,
+   "y": -1177.4,
+   "tags": [
+    "bambini",
+    "giochi"
+   ],
+   "minor": true
+  },
+  {
+   "id": "parco-giochi-sementina-all-isola",
+   "name": "Parco giochi all'Isola, Sementina",
+   "alt": [
+    "all'Isola",
+    "Via all'Isola"
+   ],
+   "type": "Parco giochi",
+   "cat": "citta",
+   "desc": "Parco giochi in Via all'Isola, 6514 Sementina. Figura sulla mappa dei parchi giochi della Città di Bellinzona.",
+   "source": {
+    "label": "Città di Bellinzona",
+    "url": "https://www.bellinzona.ch/Sementina-all-Isola-f3ee3100"
+   },
+   "osm": null,
+   "tier": 2,
+   "lat": 46.17986,
+   "lon": 8.977298,
+   "e": 2718806.3,
+   "n": 1115430.3,
+   "h": 215.8,
+   "x": -10766.2,
+   "y": 7052.4,
+   "tags": [
+    "bambini",
+    "giochi"
+   ],
+   "minor": true
+  },
+  {
+   "id": "parco-giochi-sementina-arcobaleno",
+   "name": "Parco giochi Arcobaleno, Sementina",
+   "alt": [
+    "Arcobaleno",
+    "Via Pro Grand"
+   ],
+   "type": "Parco giochi",
+   "cat": "citta",
+   "desc": "Parco giochi in Via Pro Grand, 6514 Sementina. Figura sulla mappa dei parchi giochi della Città di Bellinzona.",
+   "source": {
+    "label": "Città di Bellinzona",
+    "url": "https://www.bellinzona.ch/Sementina-Arcobaleno-88a24200"
+   },
+   "osm": null,
+   "tier": 2,
+   "lat": 46.182364,
+   "lon": 8.989231,
+   "e": 2719722.0,
+   "n": 1115726.7,
+   "h": 230.8,
+   "x": -7729.6,
+   "y": 5336.0,
+   "tags": [
+    "bambini",
+    "giochi"
+   ],
+   "minor": true
+  },
+  {
+   "id": "parco-giochi-giubiasco-bonasco",
+   "name": "Parco giochi Bonasco, Giubiasco",
+   "alt": [
+    "Bonasco",
+    "Via S. Franscini"
+   ],
+   "type": "Parco giochi",
+   "cat": "citta",
+   "desc": "Parco giochi in Via S. Franscini, 6512 Giubiasco. Figura sulla mappa dei parchi giochi della Città di Bellinzona.",
+   "source": {
+    "label": "Città di Bellinzona",
+    "url": "https://www.bellinzona.ch/Giubiasco-Bonasco-0e4ed800"
+   },
+   "osm": null,
+   "tier": 2,
+   "lat": 46.178175,
+   "lon": 9.017618,
+   "e": 2721922.9,
+   "n": 1115304.9,
+   "h": 228.0,
+   "x": 1120.1,
+   "y": 4336.4,
+   "tags": [
+    "bambini",
+    "giochi"
+   ],
+   "minor": true
+  },
+  {
+   "id": "parco-giochi-bellinzona-bagno-pubblico",
+   "name": "Parco giochi Bagno pubblico, Bellinzona",
+   "alt": [
+    "Bagno pubblico",
+    "Via Mirasole"
+   ],
+   "type": "Parco giochi",
+   "cat": "citta",
+   "desc": "Parco giochi in Via Mirasole, 6500 Bellinzona. Figura sulla mappa dei parchi giochi della Città di Bellinzona.",
+   "source": {
+    "label": "Città di Bellinzona",
+    "url": "https://www.bellinzona.ch/Bellinzona-Bagno-pubblico-ffcafd00"
+   },
+   "osm": null,
+   "tier": 2,
+   "lat": 46.199177,
+   "lon": 9.015707,
+   "e": 2721728.4,
+   "n": 1117636.1,
+   "h": 225.7,
+   "x": -2800.2,
+   "y": -1665.1,
+   "tags": [
+    "bambini",
+    "giochi"
+   ],
+   "minor": true
+  },
+  {
+   "id": "parco-giochi-giubiasco-rovedaro",
+   "name": "Parco giochi Rovedaro, Giubiasco",
+   "alt": [
+    "Rovedaro",
+    "via Rovedaro 10"
+   ],
+   "type": "Parco giochi",
+   "cat": "citta",
+   "desc": "Parco giochi in via Rovedaro 10, 6512 Giubiasco. Figura sulla mappa dei parchi giochi della Città di Bellinzona.",
+   "source": {
+    "label": "Città di Bellinzona",
+    "url": "https://www.bellinzona.ch/Giubiasco-Rovedaro-58cbeb00"
+   },
+   "osm": null,
+   "tier": 2,
+   "lat": 46.170924,
+   "lon": 9.001338,
+   "e": 2720682.0,
+   "n": 1114473.8,
+   "h": 229.4,
+   "x": -2407.0,
+   "y": 7741.4,
+   "tags": [
+    "bambini",
+    "giochi"
+   ],
+   "minor": true
+  },
+  {
+   "id": "parco-calistenico",
+   "name": "Parco calistenico",
+   "alt": [
+    "Calisthenics",
+    "Calistenico",
+    "Palestra all'aperto",
+    "Belli+"
+   ],
+   "type": "Palestra all'aperto",
+   "cat": "citta",
+   "desc": "Palestra all'aperto nel comparto Stadio, fra il parcheggio ex Stallone e il campo sintetico, aperta nel 2026: sbarre a diverse altezze, parallele e altre postazioni per il calisthenics. Accessibile 24 ore su 24, 7 giorni su 7; l'uso degli attrezzi è consentito dai 14 anni, o a chi è alto più di 140 cm. La posizione sulla mappa è approssimata.",
+   "source": {
+    "label": "Corriere del Ticino",
+    "url": "https://www.cdt.ch/news/ticino/a-bellinzona-apre-al-pubblico-il-parco-calistenico-nel-comparto-stadio-435014"
+   },
+   "osm": null,
+   "tier": 2,
+   "lat": 46.196933,
+   "lon": 9.023258,
+   "e": 2722316.2,
+   "n": 1117398.5,
+   "h": 225.9,
+   "x": -265.7,
+   "y": -1602.8,
+   "tags": [
+    "sport"
+   ],
+   "minor": true
+  },
+  {
+   "id": "percorso-vita",
+   "name": "Percorso Vita",
+   "alt": [
+    "Percorsovita",
+    "Vitaparcours",
+    "Parcours Vita",
+    "Percorso vita Bellinzona",
+    "Golena"
+   ],
+   "type": "Percorso ginnico",
+   "cat": "citta",
+   "desc": "Percorso ginnico all'aperto nella golena del Ticino: un anello di 2,6 km con 10 m di dislivello e postazioni di esercizi lungo il tragitto. Parte dal Ponte della Torretta, dove il segnaposto indica l'inizio. Libero e gratuito; è il percorso n. 330 della rete Zurich percorsovita, gestito dalla Città di Bellinzona.",
+   "source": {
+    "label": "Zurich percorsovita",
+    "url": "https://www.zurichpercorsovita.ch/it/Finder/Details/44c4c941-4fa7-4b8b-9543-c3bf2999c7bd"
+   },
+   "osm": null,
+   "tier": 2,
+   "lat": 46.190246,
+   "lon": 9.008033,
+   "e": 2721156.0,
+   "n": 1116631.6,
+   "h": 223.0,
+   "x": -3577.5,
+   "y": 1565.8,
+   "tags": [
+    "sport"
    ],
    "minor": true
   }
