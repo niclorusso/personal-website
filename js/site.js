@@ -54,6 +54,7 @@
   var lastT = Date.now();
   setInterval(function () {
     var now = Date.now(), dt = Math.min(.05, (now - lastT) / 1000); lastT = now;
+    if (!PLAIN && !still && ptr) look();
     if (still || PLAIN) return;
     for (var i = 0; i < plates.length; i++) if (plates[i].hover) { plates[i].t += dt * 1.5; draw(plates[i]); }
   }, 33);
@@ -93,11 +94,33 @@
   }
   addEventListener('pageshow', function () { $$('.n-door').forEach(function (w) { w.remove(); }); });
 
+  // ---- the dot is an eye: a small pupil turns slowly towards the pointer (or the last touch)
+  var eyes = $$('.n-dot').map(function (d) { var i = document.createElement('i'); d.appendChild(i); return { d: d, i: i, x: 0, y: 0 }; }), ptr = null;
+  function aim(e) { ptr = [e.clientX, e.clientY]; }
+  addEventListener('pointermove', aim, { passive: true }); addEventListener('pointerdown', aim, { passive: true });
+  function look() {
+    eyes.forEach(function (o) {
+      var r = o.d.getBoundingClientRect(); if (!r.width) return;
+      o.d.classList.toggle('n-small', o.d.offsetWidth < 9); // too small to hold anything: it stays a plain dot
+      var dx = ptr[0] - (r.left + r.width / 2), dy = ptr[1] - (r.top + r.height / 2), dist = Math.hypot(dx, dy) || 1, k = Math.min(1, dist / 140) * o.d.offsetWidth * .15;
+      o.x += (dx / dist * k - o.x) * .12; o.y += (dy / dist * k - o.y) * .12;
+      o.i.style.transform = 'translate(' + o.x.toFixed(2) + 'px,' + o.y.toFixed(2) + 'px)';
+    });
+  }
+  // ---- and a counter: a dark arc on its edge shows how many of the worlds this visitor has seen (kept by versions/world.js)
+  function seen() {
+    var a = []; try { a = JSON.parse(localStorage.getItem('nlr-seen') || '[]'); } catch (e) {}
+    var n = WORLDS.filter(function (w) { return a.indexOf(w) >= 0; }).length; rs.setProperty('--n-seen', (n / WORLDS.length * 100).toFixed(1));
+  }
+  seen(); addEventListener('pageshow', seen);
+  function sizes() { eyes.forEach(function (o) { o.d.classList.toggle('n-small', o.d.offsetWidth < 9); }); }
+  sizes(); setTimeout(sizes, 600); addEventListener('resize', function () { setTimeout(sizes, 150); });
+
   // ---- plain version
   var pb = $('#n-plain'), onPlain = [];
   function plain(v) {
     PLAIN = v; v ? store.set('plain', 1) : store.del('plain'); root.classList.toggle('n-plain', v);
-    if (pb) pb.textContent = v ? 'Turn the colours on' : 'Plain version';
+    if (pb) pb.textContent = v ? 'Full version' : 'Plain version';
     onPlain.forEach(function (f) { f(v); }); placeDots(); if (!v) requestAnimationFrame(function () { plates.forEach(draw); });
   }
   // the head script stores "1" as plain text

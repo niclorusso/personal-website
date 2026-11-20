@@ -30,6 +30,10 @@ body{margin:0;background:var(--n-bg);color:var(--n-ink);font-family:"Bricolage G
 .n-bl{display:inline-block;width:0;height:0}
 .n-dot{all:unset;cursor:pointer;position:absolute;border-radius:50%;background:var(--n-B);touch-action:none;transition:transform .25s cubic-bezier(.3,1.8,.4,1)}
 .n-dot:hover{transform:scale(1.45)}.n-dot:active{transform:scale(.8)}
+/* inside the dot: a pupil that follows the pointer, and on the edge an arc for the worlds already seen */
+.n-dot i{position:absolute;left:50%;top:50%;width:34%;height:34%;margin:-17% 0 0 -17%;border-radius:50%;background:var(--n-ink);pointer-events:none}
+.n-dot::before{content:"";position:absolute;inset:0;border-radius:50%;pointer-events:none;background:conic-gradient(var(--n-ink) calc(var(--n-seen,0)*1%),transparent 0);-webkit-mask:radial-gradient(circle closest-side,transparent 0 78%,#000 82%);mask:radial-gradient(circle closest-side,transparent 0 78%,#000 82%)}
+.n-plain .n-dot i,.n-plain .n-dot::before,.n-dot.n-small i,.n-dot.n-small::before{display:none}
 .n-dot:focus-visible{outline:2px solid var(--n-onA);outline-offset:4px}
 
 /* ---------- home ---------- */

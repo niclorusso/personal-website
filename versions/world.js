@@ -4,6 +4,8 @@
 (function () {
   var ALL = ['chase', 'depth', 'doors', 'terminal', 'torch', 'slot', 'scratch', 'breakout', 'orbit', 'popups', 'type', 'claw', 'maze', 'radio', 'vinyl', 'plates', 'justified', 'magazine', 'receipt'];
   var here = (location.pathname.match(/([a-z]+)\.html$/) || [])[1];
+  // remember that this world has been seen: the dot on the site shows the count as an arc
+  try { var sn = JSON.parse(localStorage.getItem('nlr-seen') || '[]'); if (ALL.indexOf(here) >= 0 && sn.indexOf(here) < 0) { sn.push(here); localStorage.setItem('nlr-seen', JSON.stringify(sn)); } } catch (e) {}
   function next() {
     var q = []; try { q = JSON.parse(sessionStorage.getItem('nlr-worlds') || '[]'); } catch (e) {}
     q = q.filter(function (w) { return ALL.indexOf(w) >= 0 && w !== here; });
