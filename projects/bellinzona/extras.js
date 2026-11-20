@@ -4,10 +4,10 @@
 // 2020 (Ticino, Bellinzona) and 2068 (Riazzino), FOEN forest-fire warnings, OpenStreetMap geometry, the calendar. Everything else
 // (how many people, exact school hours, cabin timetable, parade timing) is a stated assumption, kept in one place below.
 
-import { festState, festDates, festBuild, fireworks } from './fest.js?v=20261121c';
-import { source, info, infoRows, MIN, HOUR } from './livedata.js?v=20261121c';
-import { sunPosition } from './sky.js?v=20261121c';
-import { t, lang, num as nf } from './i18n.js?v=20261121c';
+import { festState, festDates, festBuild, fireworks } from './fest.js?v=20261121d';
+import { source, info, infoRows, MIN, HOUR } from './livedata.js?v=20261121d';
+import { sunPosition } from './sky.js?v=20261121d';
+import { t, lang, num as nf } from './i18n.js?v=20261121d';
 
 const ASSUME = {
   school: { in1: [7.83, 8.33], out1: [11.58, 11.95], in2: [13.25, 13.58], out2: [15.75, 16.2] },   // typical Ticino timetable; Wednesday afternoon free
