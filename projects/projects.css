@@ -4,7 +4,10 @@
     --bar-soft: #dbe4f7;
     --bar-alt: #c2410c;
 }
-.project { padding-bottom: 4rem; }
+/* the page sits under the band of the site (css/site.css); these are the old variable names the pages still use */
+.project { --color-text-secondary: #3d3b36; --color-text-primary: #0d0d0c; --color-border-light: #0d0d0c1f; --color-bg-alt: #ebe8df; --font-body: "Bricolage Grotesque", system-ui, sans-serif; --color-accent-hover: #0b3fd0; --bar: #0b3fd0; --bar-soft: #dbe3fb; }
+.container.project { max-width: 1180px; margin: 0 auto; padding: clamp(26px, 4vw, 54px) clamp(16px, 3.2vw, 48px) 4rem; }
+.project a { color: var(--n-link, #0b3fd0); }
 .project .back { margin: 1.5rem 0 1rem; font-size: 0.9rem; }
 .project .kicker { font-family: var(--font-mono); font-size: 0.75rem; letter-spacing: 0.06em; text-transform: uppercase; color: var(--color-text-muted); margin: 0; }
 .project-title { font-size: 2rem; line-height: 1.2; margin: 0.3rem 0 0.8rem; }

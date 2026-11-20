@@ -9,25 +9,28 @@
     <meta property="og:type" content="website">
     <meta property="og:site_name" content="Nicola Lo Russo">
     <meta property="og:title" content="Ticino over fifty years">
-    <link rel="stylesheet" href="../../css/simple-grid.css">
-    <link rel="stylesheet" href="../../css/style.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wdth,wght@12..96,75..100,300..800&family=Source+Serif+4:ital,opsz,wght@0,8..60,400..700;1,8..60,400..700&family=JetBrains+Mono:wght@400;500&display=swap">
+    <link rel="stylesheet" href="../../css/site.css">
+    <script>try{if(localStorage.getItem('nlr-plain')==='1')document.documentElement.classList.add('n-plain')}catch(e){}</script>
     <link rel="stylesheet" href="../projects.css">
     <link rel="stylesheet" href="style.css">
-    <link rel="icon" href="../../images/nico.png" type="image/png">
+    <link rel="icon" href="../../images/dot.png" type="image/png">
 </head>
 <body>
-<header>
-    <div style="text-align: center;">
-        <h1><a href="../../index.html" style="text-decoration: none; color: inherit;">Nicola Lo Russo</a></h1>
-        <p class="site-tagline">Projects</p>
-    </div>
+<div class="n-progress"></div>
+<header class="n-band n-grain">
+    <nav class="n-nav">
+        <a class="n-wm n-d" href="../../index.html" aria-label="Nicola Lo Russo">N<span class="n-ii">&#305;<span class="n-bl"></span><button class="n-dot" type="button" aria-label="Another version of this site"></button></span>cola Lo Russo</a>
+        <div class="n-links n-mono"><a href="../../projects.html">&larr; All projects</a><a href="../../cv.html">About me</a><button id="n-plain" type="button"></button></div>
+    </nav>
+    <div class="n-meta n-mono"><span>Ticino · Historical data</span></div>
+    <h1 class="n-d">Ticino over fifty years</h1>
+    <p class="n-lede"><span>Five things that changed since the 1970s, and <span id="count">…</span> indicators to compare any year with today.</span></p>
 </header>
 
 <main class="container project">
-    <p class="back"><a href="../index.html">&larr; All projects</a></p>
-    <p class="kicker">Ticino · Historical data</p>
-    <h1 class="project-title">Ticino over fifty years</h1>
-    <p class="lede">Five things that changed since the 1970s, and <span id="count">…</span> indicators to compare any year with today.</p>
     <p class="updated">Updated <span id="updated">…</span> · Sources: Federal Statistical Office, State Secretariat for Economic Affairs, Federal Office of Public Health, MeteoSwiss</p>
 
     <div id="features"></div>
@@ -58,6 +61,13 @@
         <p><a href="indicators.csv" download>&darr; Download the data (CSV)</a> · One value per row, with unit and source.</p>
     </section>
 </main>
+
+<div class="n-end n-grain">
+    <a class="n-big n-d" href="../../index.html" aria-label="Nicola Lo Russo">N<span class="n-ii">&#305;<span class="n-bl"></span><button class="n-dot" type="button" aria-label="Another version of this site"></button></span>cola Lo Russo</a>
+    <div class="n-mono"><a href="../../projects.html">&larr; All projects</a><span>&copy; 2026</span></div>
+</div>
+<script src="../../js/figures.js"></script>
+<script src="../../js/site.js"></script>
 
 <div id="tip" role="status" hidden></div>
 <script src="app.js"></script>

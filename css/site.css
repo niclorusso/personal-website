@@ -35,7 +35,6 @@ body{margin:0;background:var(--n-bg);color:var(--n-ink);font-family:"Bricolage G
 /* ---------- home ---------- */
 .n-top{position:relative;background:var(--n-A);color:var(--n-onA);padding:0 var(--n-pad) 20px}
 .n-in{position:relative;z-index:3}
-.n-wipe{position:absolute;inset:0;z-index:1;transition:clip-path .45s cubic-bezier(.5,0,.2,1)}
 .n-top .n-nav{display:flex;justify-content:space-between;align-items:center;gap:16px;padding:13px 0 8px}
 .n-top .n-links{display:flex;gap:8px;white-space:nowrap}
 .n-name{margin:0;line-height:.8;white-space:nowrap;font-size:clamp(50px,7.6vw,112px);padding-bottom:.04em;cursor:text}
@@ -152,7 +151,7 @@ body{margin:0;background:var(--n-bg);color:var(--n-ink);font-family:"Bricolage G
 /* ---------- plain version: no colour, no figures, nothing moves ---------- */
 .n-plain .n-po{display:inline}
 .n-plain .n-top{background:var(--n-bg);color:var(--n-ink);padding-bottom:6px;max-width:760px;margin:0 auto}
-.n-plain .n-grain::after,.n-plain .n-hint,.n-plain .n-stamp,.n-plain .n-tile,.n-plain .n-arr,.n-plain #n-reset,.n-plain .n-wipe,.n-plain .n-progress{display:none}
+.n-plain .n-grain::after,.n-plain .n-hint,.n-plain .n-stamp,.n-plain .n-tile,.n-plain .n-arr,.n-plain #n-reset,.n-plain .n-progress{display:none}
 .n-plain .n-name{font-size:30px;line-height:1.1;cursor:auto;font-weight:700;font-stretch:100%;letter-spacing:-.01em}
 .n-plain .n-dot{background:currentColor;pointer-events:none;transform:none!important;visibility:visible!important}
 .n-plain .n-page{max-width:760px;margin:0 auto}
@@ -184,7 +183,7 @@ body{margin:0;background:var(--n-bg);color:var(--n-ink);font-family:"Bricolage G
   .n-article{font-size:18px}.n-about{grid-template-columns:1fr}.n-about aside{display:none}
   .n-about section>div,.n-about .language-item{grid-template-columns:1fr}.n-about section>div>.date{grid-row:auto;grid-column:1;padding:0 0 4px}.n-about section>div>*{grid-column:1}
   .n-band .n-links{gap:14px}.n-wm{font-size:24px}.n-more .n-arr{display:none}.n-meta .n-tile,.n-more .n-tile{width:76px}}
-@media(prefers-reduced-motion:reduce){html{scroll-behavior:auto}.n-tile,.n-row,.n-wipe,.n-dot,.n-stamp,.n-band,.n-end{transition:none}.n-stamp:hover svg{animation:none}}
+@media(prefers-reduced-motion:reduce){html{scroll-behavior:auto}.n-tile,.n-row,.n-dot,.n-stamp,.n-band,.n-end{transition:none}.n-stamp:hover svg{animation:none}}
 @media print{.n-stamp,.n-progress,.n-toc,.n-more,.n-links,.no-print{display:none!important}.n-band,.n-end,.n-top{background:none!important;color:#000!important}.n-grain::after{display:none}}
 /* headings inside the boxes of older posts are not section headings */
 .n-article.post-content .riddle-box h2,.n-article.post-content .voting-box h2,.n-article.post-content .playground h2{border-top:0;padding-top:0;margin:0 0 .6em;font-size:24px;letter-spacing:-.02em;color:var(--n-ink)}
@@ -199,12 +198,7 @@ body{margin:0;background:var(--n-bg);color:var(--n-ink);font-family:"Bricolage G
 .n-plain .n-end{max-width:1100px;margin:0 auto;padding-top:22px;padding-bottom:30px}
 .n-plain .n-about .language-bar-fill{background:#0d0d0c}
 
-/* platforms strip, project button in a post, and the switch out of the plain version */
-.n-plat{display:flex;gap:16px;align-items:center;margin-left:auto;flex-wrap:wrap}
-.n-plat span{color:var(--n-soft)}
-.n-plat a{color:inherit;text-decoration:none;border-bottom:1.5px solid var(--n-ink);padding-bottom:1px}
-.n-plat a:hover{border-bottom-color:var(--n-link);color:var(--n-link)}
-.n-plat b{font-weight:400}
+/* project button in a post, and the switch out of the plain version */
 .n-cta{display:inline-block;margin-top:22px;padding:11px 18px;border:1.5px solid currentColor;border-radius:999px;color:inherit;text-decoration:none;transition:background .15s,color .15s}
 .n-cta:hover{background:var(--n-onA);color:var(--n-A)}
 .n-plain .n-cta:hover{background:var(--n-ink);color:var(--n-bg)}
@@ -212,7 +206,6 @@ body{margin:0;background:var(--n-bg);color:var(--n-ink);font-family:"Bricolage G
 .n-plain #n-plain::before{content:"";display:inline-block;width:7px;height:7px;border-radius:50%;margin-right:7px;background:conic-gradient(#0b3fd0,#ff4fa3,#ffe600,#00754f,#0b3fd0)}
 .n-plain #n-plain:hover{background:var(--n-ink);color:var(--n-bg);text-decoration:none}
 .n-plain .n-top .n-links,.n-plain .n-band .n-links{align-items:center}
-@media(max-width:760px){.n-plat{margin-left:0;width:100%}}
 
 /* ---- projects view of the home page */
 .n-projects{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:0 clamp(22px,2.8vw,44px);border-bottom:1.5px solid var(--n-ink)}

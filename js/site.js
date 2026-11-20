@@ -10,7 +10,7 @@
   'use strict';
   var F = window.NLR_F || {}, root = document.documentElement, rs = root.style;
   var still = matchMedia('(prefers-reduced-motion: reduce)').matches;
-  var COLOURS = [['#0b3fd0', '#ffe600'], ['#ef4a23', '#111111'], ['#00754f', '#ffd23f'], ['#111111', '#ff4fa3'], ['#ff4fa3', '#0b3fd0'], ['#5b3fa8', '#ff8a3d'], ['#ffe600', '#ef4a23'], ['#111111', '#f4efe4']];
+  var COLOURS = [['#0b3fd0', '#ffe600']]; // the site is blue and yellow
   var INK = '#0d0d0c';
   var $ = function (s, el) { return (el || document).querySelector(s); }, $$ = function (s, el) { return Array.prototype.slice.call((el || document).querySelectorAll(s)); };
   function lum(h) { var n = parseInt(h.slice(1), 16); return (.2126 * (n >> 16) + .7152 * (n >> 8 & 255) + .0722 * (n & 255)) / 255; }
@@ -20,7 +20,7 @@
     set: function (k, v) { try { localStorage.setItem('nlr-' + k, JSON.stringify(v)); } catch (e) {} },
     del: function (k) { try { localStorage.removeItem('nlr-' + k); } catch (e) {} }
   };
-  var K = 0; store.del('colour'); // every page opens in blue and yellow: the colour a visitor picks lasts until the page is left
+  var K = 0; store.del('colour'); // an older version let visitors change the colours and saved the choice
   var PLAIN = root.classList.contains('n-plain');
 
   // ---- the dot of the "i": placed from the metrics of the font in use
@@ -74,8 +74,6 @@
       var t = T[p.ti]; p.host.style.setProperty('--n-p', t[0]); p.host.style.setProperty('--n-a', t[1]); p.tile.style.setProperty('--n-p', t[0]); p.bg = t[0]; p.a = t[1]; p.b = t[2]; draw(p);
     });
   }
-  function paint(k, later) { K = k; if (!later) band(k); paintTiles(); }
-  function another() { var k; do { k = Math.floor(Math.random() * COLOURS.length); } while (k === K); return k; }
 
   band(K);
 
@@ -142,7 +140,7 @@
     var top_ = $('.n-top'), nameEl = $('.n-name'), II = $('.n-ii', nameEl), dotEl = $('.n-dot', nameEl), stamp = $('.n-stamp'), resetB = $('#n-reset'), chips = $('#n-chips');
     var cat = main.getAttribute('data-cat') === 'projects' ? 'projects' : 'posts', dragged = false, thrown = false, phys = null, busy = false;
     // the list as written by the server; the rows are kept and only moved around
-    var ITEMS = $$('.n-row', main).map(function (a) { return { el: a, t: $('h3', a).textContent, d: a.getAttribute('data-date') || '', cat: a.getAttribute('data-cat'), meta: $('.n-mono', a) }; });
+    var ITEMS = $$('.n-row', main).map(function (a) { return { el: a, t: $('h3', a).textContent, d: a.getAttribute('data-date') || '', meta: $('.n-mono', a) }; });
     ITEMS.forEach(function (it) { it.label = it.meta.textContent; });
     function byDate(x, y) { return y.d.localeCompare(x.d); }
     // an order saved by the visitor is used only if it still lists exactly the posts of today
@@ -295,7 +293,7 @@
     resetB.addEventListener('click', function () {
       stopPhys(); var from = dotEl.getBoundingClientRect();
       ['order', 'stamp', 'name'].forEach(store.del);
-      ITEMS.sort(byDate); cat = main.getAttribute('data-cat') || 'all'; stamp.style.translate = ''; dotEl.style.transition = 'none'; dotEl.style.transform = '';
+      ITEMS.sort(byDate); cat = main.getAttribute('data-cat') === 'projects' ? 'projects' : 'posts'; stamp.style.translate = ''; dotEl.style.transition = 'none'; dotEl.style.transform = '';
       setName(NAME); K = 0; band(0); render(); changed();
       var to = dotEl.getBoundingClientRect(), x = from.left - to.left, y = from.top - to.top;
       if (still || Math.hypot(x, y) < 2) { dotEl.style.transition = ''; return; }

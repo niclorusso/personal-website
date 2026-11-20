@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Every roll-call vote of the Swiss National Council since December 2023: how each member and group voted, who decides close votes, and a quiz to find who votes like you.">
+    <meta name="author" content="Nicola Lo Russo">
+        <link rel="canonical" href="https://nicolalorusso.ch/posts/swissdata-parliament.html">
+        <title>Introducing SwissData Parliament - Nicola Lo Russo</title>
+    <meta property="og:type" content="article">
+    <meta property="og:site_name" content="Nicola Lo Russo">
+    <meta property="og:title" content="Introducing SwissData Parliament">
+    <meta property="og:description" content="Every roll-call vote of the Swiss National Council since December 2023: how each member and group voted, who decides close votes, and a quiz to find who votes like you.">
+    <meta property="og:url" content="https://nicolalorusso.ch/posts/swissdata-parliament.html">
+    <meta name="twitter:card" content="summary">
+    <meta name="twitter:title" content="Introducing SwissData Parliament">
+    <meta name="twitter:description" content="Every roll-call vote of the Swiss National Council since December 2023: how each member and group voted, who decides close votes, and a quiz to find who votes like you.">
+    <link rel="alternate" type="application/rss+xml" title="Nicola Lo Russo" href="https://nicolalorusso.ch/rss.xml">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wdth,wght@12..96,75..100,300..800&family=Source+Serif+4:ital,opsz,wght@0,8..60,400..700;1,8..60,400..700&family=JetBrains+Mono:wght@400;500&display=swap">
+        <link rel="stylesheet" href="../css/blog-post-style.css">
+        <link rel="stylesheet" href="../css/site.css">
+    <script>try{if(localStorage.getItem('nlr-plain')==='1')document.documentElement.classList.add('n-plain')}catch(e){}</script>
+    <script src="../js/email_decrypt.js"></script>
+        <script src="../js/mathjax-config.js"></script>
+    <script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3.2.2/es5/tex-mml-chtml.js" integrity="sha384-Wuix6BuhrWbjDBs24bXrjf4ZQ5aFeFWBuKkFekO2t8xFU0iNaLQfp2K6/1Nxveei" crossorigin="anonymous"></script>
+        <link rel="icon" href="../images/dot.png" type="image/png">
+</head>
+<body>
+<script type="application/ld+json">{
+    "@context": "https://schema.org",
+    "@type": "BlogPosting",
+    "headline": "Introducing SwissData Parliament",
+    "author": {
+        "@type": "Person",
+        "name": "Nicola Lo Russo"
+    },
+    "publisher": {
+        "@type": "Person",
+        "name": "Nicola Lo Russo"
+    },
+    "datePublished": "2026-11-20T00:00:00+00:00",
+    "description": "Every roll-call vote of the Swiss National Council since December 2023: how each member and group voted, who decides close votes, and a quiz to find who votes like you."
+}</script><div class="n-progress"></div>
+<header class="n-band n-grain">
+    <nav class="n-nav">
+        <a class="n-wm n-d" href="../index.html" aria-label="Nicola Lo Russo">N<span class="n-ii">&#305;<span class="n-bl"></span><button class="n-dot" type="button" aria-label="Another version of this site"></button></span>cola Lo Russo</a>
+        <div class="n-links n-mono"><a href="../index.html">&larr; All</a><a href="../cv.html">About me</a><button id="n-plain" type="button"></button></div>
+    </nav>
+    <div class="n-meta n-mono"><div class="n-tile n-grain" data-fig="votes"><canvas></canvas></div><span>20 November 2026<br>2 min read</span></div>
+    <h1 class="n-d">Introducing SwissData Parliament</h1>
+    <p class="n-lede"><span>Every roll-call vote of the Swiss National Council since December 2023: how each member and group voted, who decides close votes, and a quiz to find who votes like you.</span></p>    <a class="n-cta n-mono" href="https://parliament.swissdata-platform.ch" target="_blank" rel="noopener noreferrer">Open the project <b>&nearr;</b></a></header>
+    
+<div class="n-read">
+    <nav class="n-toc" aria-label="In this post"></nav>
+    <article class="n-article post-content" data-title="Introducing SwissData Parliament">
+        <p>After EU Lens, I wanted the same thing for Switzerland, so I built <strong><a href="https://parliament.swissdata-platform.ch">SwissData Parliament</a></strong>. It shows every roll-call vote of the National Council since the current legislature began in December 2023: more than 4,200 votes and over 835,000 individual ballots, in German, French, Italian and English.</p>
+<p>For every vote you can see the result, how each parliamentary group and each canton's members voted, and what a yes or a no actually meant (in the Swiss parliament, "yes" is often just "the committee's proposal"). The pages link to the debate in the Official Bulletin, so you can read who spoke before the vote.</p>
+<p>Each member has a profile with their voting record, the members they vote most like, how often they break with their group, and their declared interests and committees.</p>
+<p>A few things I found interesting while building it:</p>
+<ul>
+<li><strong>21 votes ended in a tie</strong> and were decided by the casting vote of the member in the chair.</li>
+<li><strong>26 votes would have gone the other way</strong> if every absent member had voted with their group's majority.</li>
+<li><strong>Parliament vs the people:</strong> for 36 popular votes you can compare Parliament's position with how the country actually voted.</li>
+</ul>
+<p>There's also a statistical map of the members built from their votes, group cohesion statistics, and a quiz, "Who votes like me?", that matches your answers to members and groups.</p>
+<p>The data comes from the Swiss Parliament's open data service, Swissvotes and the Federal Statistical Office, and it updates itself every week. It's part of <a href="https://swissdata-platform.ch">SwissData</a>, next to <a href="https://spending.swissdata-platform.ch">SwissData Spending</a>.</p>
+<p>On the tech side it's a React app with a Node/Express API, running as a serverless function, and a PostgreSQL database. Like EU Lens, I built it with a lot of help from Claude.</p>
+<p>Have a look: <strong><a href="https://parliament.swissdata-platform.ch">parliament.swissdata-platform.ch</a></strong></p>    </article>
+</div>
+
+<div class="n-more">
+    <div class="n-mono"><span>Keep reading</span><a href="../index.html">21 posts</a></div>
+    <a class="n-row" href="ai-parliament.html" data-date="2026-11-12"><div class="n-tile n-grain" data-fig="parliament"><canvas></canvas></div><div><h3 class="n-d">What the Swiss parliament asks about AI</h3><span class="n-mono">12 Nov 2026 &middot; Older</span></div><span class="n-arr">&rarr;</span></a>
+    </div>
+
+<div class="n-end n-grain">
+    <a class="n-big n-d" href="../index.html" aria-label="Nicola Lo Russo">N<span class="n-ii">&#305;<span class="n-bl"></span><button class="n-dot" type="button" aria-label="Another version of this site"></button></span>cola Lo Russo</a>
+    <div class="n-mono"><a href="../index.html">&larr; All posts</a><span>&copy; 2026</span></div>
+</div>
+<script src="../js/figures.js"></script>
+<script src="../js/site.js"></script>
+    </body>
+</html>

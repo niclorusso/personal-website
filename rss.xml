@@ -6,7 +6,15 @@
     <description>Personal website and blog</description>
     <language>en-us</language>
     <atom:link href="https://nicolalorusso.ch/rss.php" rel="self" type="application/rss+xml"/>
-    <lastBuildDate>Fri, 20 Nov 2026 13:51:22 +0000</lastBuildDate>
+    <lastBuildDate>Fri, 20 Nov 2026 14:05:24 +0000</lastBuildDate>
+    <item>
+      <title>Introducing SwissData Parliament</title>
+      <link>https://nicolalorusso.ch/posts/swissdata-parliament.html</link>
+      <guid isPermaLink="true">https://nicolalorusso.ch/posts/swissdata-parliament.html</guid>
+      <pubDate>Fri, 20 Nov 2026 00:00:00 +0000</pubDate>
+      <description>Every roll-call vote of the Swiss National Council since December 2023: how each member and group voted, who decides close votes, and a quiz to find who votes like you.</description>
+      <author>nic.lorusso@icloud.com (Nicola Lo Russo)</author>
+    </item>
     <item>
       <title>What the Swiss parliament asks about AI</title>
       <link>https://nicolalorusso.ch/posts/ai-parliament.html</link>
@@ -153,14 +161,6 @@
       <guid isPermaLink="true">https://nicolalorusso.ch/posts/unfair-coin.html</guid>
       <pubDate>Sun, 03 Nov 2024 00:00:00 +0000</pubDate>
       <description>You are given 1000 coins: 999 are fair and 1 is rigged...</description>
-      <author>nic.lorusso@icloud.com (Nicola Lo Russo)</author>
-    </item>
-    <item>
-      <title>A logic puzzle</title>
-      <link>https://nicolalorusso.ch/posts/watson-riddle.html</link>
-      <guid isPermaLink="true">https://nicolalorusso.ch/posts/watson-riddle.html</guid>
-      <pubDate>Mon, 28 Oct 2024 00:00:00 +0000</pubDate>
-      <description>A solution to a logic puzzle published by Oxford University Press in October 2024.</description>
       <author>nic.lorusso@icloud.com (Nicola Lo Russo)</author>
     </item>
   </channel>
