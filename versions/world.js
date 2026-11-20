@@ -4,8 +4,6 @@
 (function () {
   var ALL = ['chase', 'depth', 'doors', 'terminal', 'torch', 'slot', 'scratch', 'breakout', 'orbit', 'popups', 'type', 'claw', 'maze', 'radio', 'vinyl', 'plates', 'justified', 'magazine', 'receipt'];
   var here = (location.pathname.match(/([a-z]+)\.html$/) || [])[1];
-  // remember that this world has been seen: the dot on the site shows the count as an arc
-  try { var sn = JSON.parse(localStorage.getItem('nlr-seen') || '[]'); if (ALL.indexOf(here) >= 0 && sn.indexOf(here) < 0) { sn.push(here); localStorage.setItem('nlr-seen', JSON.stringify(sn)); } } catch (e) {}
   function next() {
     var q = []; try { q = JSON.parse(sessionStorage.getItem('nlr-worlds') || '[]'); } catch (e) {}
     q = q.filter(function (w) { return ALL.indexOf(w) >= 0 && w !== here; });
@@ -20,9 +18,8 @@
     '.nlr-dot{all:unset;cursor:pointer;pointer-events:auto;position:absolute;border-radius:50%;background:#ffe600;box-shadow:var(--nlr-ring,none);transition:transform .25s cubic-bezier(.3,1.8,.4,1)}' +
     '.nlr-dot:hover{transform:scale(1.5)}.nlr-dot:active{transform:scale(.8)}.nlr-dot:focus-visible{outline:2px solid currentColor;outline-offset:4px}' +
     '.nlr-dot::after{content:"";position:absolute;inset:-16px}' +
-    /* inside the dot: a pupil that turns towards the pointer, and on the edge an arc for the worlds already seen */
+    /* inside the dot: a pupil that turns towards the pointer */
     '.nlr-p{position:absolute;left:50%;top:50%;width:34%;height:34%;margin:-17% 0 0 -17%;border-radius:50%;background:#0d0d0c;pointer-events:none;display:block}' +
-    '.nlr-eye::before{content:"";position:absolute;inset:0;border-radius:50%;pointer-events:none;background:conic-gradient(#0d0d0c calc(var(--nlr-seen,0)*1%),transparent 0);-webkit-mask:radial-gradient(circle closest-side,transparent 0 78%,#000 82%);mask:radial-gradient(circle closest-side,transparent 0 78%,#000 82%)}' +
     '#nlr-w{position:fixed;right:12px;bottom:12px;z-index:9999;padding:9px 13px;border-radius:999px;background:#0d0d0c;color:#f4f2ec;font:500 11px/1 "JetBrains Mono",ui-monospace,monospace;letter-spacing:.06em;text-transform:uppercase;text-decoration:none;box-shadow:0 6px 18px -8px #000a}' +
     '#nlr-w:hover{background:#f4f2ec;color:#0d0d0c}' +
     '#nlr-wipe{position:fixed;inset:0;z-index:10000;pointer-events:none;transition:clip-path .45s cubic-bezier(.5,0,.2,1)}';
@@ -75,7 +72,6 @@
       o.x += (dx / dist * k - o.x) * .12; o.y += (dy / dist * k - o.y) * .12; o.i.style.transform = 'translate(' + o.x.toFixed(2) + 'px,' + o.y.toFixed(2) + 'px)';
     });
   }, 33);
-  try { var sn2 = JSON.parse(localStorage.getItem('nlr-seen') || '[]'); document.documentElement.style.setProperty('--nlr-seen', (ALL.filter(function (w) { return sn2.indexOf(w) >= 0; }).length / ALL.length * 100).toFixed(1)); } catch (e) {}
   window.nlrDress = dress; window.nlrGo = travel; dress();
   if (document.fonts && document.fonts.ready) document.fonts.ready.then(dress);
   addEventListener('resize', dress);

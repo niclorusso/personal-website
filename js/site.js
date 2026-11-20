@@ -107,12 +107,7 @@
       o.i.style.transform = 'translate(' + o.x.toFixed(2) + 'px,' + o.y.toFixed(2) + 'px)';
     });
   }
-  // ---- and a counter: a dark arc on its edge shows how many of the worlds this visitor has seen (kept by versions/world.js)
-  function seen() {
-    var a = []; try { a = JSON.parse(localStorage.getItem('nlr-seen') || '[]'); } catch (e) {}
-    var n = WORLDS.filter(function (w) { return a.indexOf(w) >= 0; }).length; rs.setProperty('--n-seen', (n / WORLDS.length * 100).toFixed(1));
-  }
-  seen(); addEventListener('pageshow', seen);
+  try { localStorage.removeItem('nlr-seen'); } catch (e) {} // key of an older version, which counted the worlds seen
   function sizes() { eyes.forEach(function (o) { o.d.classList.toggle('n-small', o.d.offsetWidth < 9); }); }
   sizes(); setTimeout(sizes, 600); addEventListener('resize', function () { setTimeout(sizes, 150); });
 
