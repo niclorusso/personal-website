@@ -1,7 +1,7 @@
 /**
  * Behaviour of the public pages.
  * - the dot of the "i" in the name changes the two colours of the site, at random (on every page)
- * - home: one list of posts and projects; rows can be dragged, the dot can be thrown,
+ * - home: one list of posts and projects; the dot can be thrown,
  *   the name can be rewritten. All of it stays in the visitor's browser (localStorage keys "nlr-*").
  * - "Plain version" turns colour, figures and motion off.
  * Everything is inside one function so that no name leaks into the scripts of the posts.
@@ -137,25 +137,19 @@
 
   // =====================================================================================
   function home() {
-    var top_ = $('.n-top'), nameEl = $('.n-name'), II = $('.n-ii', nameEl), dotEl = $('.n-dot', nameEl), resetB = $('#n-reset'), chips = $('#n-chips');
-    var cat = main.getAttribute('data-cat') === 'projects' ? 'projects' : 'posts', dragged = false, thrown = false, phys = null, busy = false;
+    var top_ = $('.n-top'), nameEl = $('.n-name'), II = $('.n-ii', nameEl), dotEl = $('.n-dot', nameEl), chips = $('#n-chips');
+    var cat = main.getAttribute('data-cat') === 'projects' ? 'projects' : 'posts', thrown = false, phys = null, busy = false;
     // the list as written by the server; the rows are kept and only moved around
     var ITEMS = $$('.n-row', main).map(function (a) { return { el: a, t: $('h3', a).textContent, d: a.getAttribute('data-date') || '', meta: $('.n-mono', a) }; });
     ITEMS.forEach(function (it) { it.label = it.meta.textContent; });
-    function byDate(x, y) { return y.d.localeCompare(x.d); }
-    // an order saved by the visitor is used only if it still lists exactly the posts of today
-    var ord = store.get('order');
-    if (ord && (ord.length !== ITEMS.length || ITEMS.some(function (it) { return ord.indexOf(it.t) < 0; }))) { store.del('order'); ord = null; }
-    if (ord) ITEMS.sort(function (x, y) { return ord.indexOf(x.t) - ord.indexOf(y.t); });
+    ['order', 'name', 'stamp'].forEach(store.del); // keys of an older version, in which visitors could move the rows and rewrite the name
     var projEl = $('.n-projects', main), PROJ = $$('.n-proj', main);
     PROJ.forEach(function (el, i) { plate($('.n-tile', el), i, el).t = 3; });
-    function changed() { resetB.hidden = !(store.get('order') || store.get('name')); }
 
     var list = $('.n-list', main);
     ITEMS.forEach(function (it, i) {
-      var p = plate($('.n-tile', it.el), i, it.el); it.plate = p; it.el.draggable = false; dragRow(it);
+      var p = plate($('.n-tile', it.el), i, it.el); it.plate = p; it.el.draggable = false;
       it.el.addEventListener('click', function (e) {
-        if (dragged) { e.preventDefault(); return; }
         if (PLAIN || still || e.metaKey || e.ctrlKey || e.shiftKey || it.el.target === '_blank') return;
         e.preventDefault(); var r = it.el.getBoundingClientRect(), f = document.createElement('div'); f.className = 'n-fly';
         f.style.cssText = 'left:' + r.left + 'px;top:' + r.top + 'px;width:' + r.width + 'px;height:' + r.height + 'px;background:' + p.bg; document.body.appendChild(f);
@@ -168,7 +162,7 @@
     function render() {
       var vis = ITEMS;
       list.hidden = cat !== 'posts'; if (projEl) projEl.hidden = cat !== 'projects';
-      ITEMS.forEach(function (it) { it.el.classList.remove('n-lead', 'n-drag', 'n-over'); it.el.style.transform = ''; list.appendChild(it.el); });
+      ITEMS.forEach(function (it) { it.el.classList.remove('n-lead'); list.appendChild(it.el); });
       vis.forEach(function (it, i) { it.plate.ti = (i + Math.floor((i + 1) / 3)) % 3; it.meta.textContent = (i === 0 ? 'Latest · ' : '') + it.label; });
       if (vis[0]) vis[0].el.classList.add('n-lead');
       rows();
@@ -184,30 +178,7 @@
       b.addEventListener('click', function () { cat = c[0]; render(); }); chips.appendChild(b);
     });
 
-    // ---- rows can be dragged onto another row (mouse only: on touch it would fight with scrolling)
-    function dragRow(it) {
-      var a = it.el;
-      a.addEventListener('pointerdown', function (e) {
-        if (PLAIN || e.pointerType !== 'mouse' || e.button) return;
-        var sx = e.clientX, sy = e.clientY, active = false, over = null;
-        function under(ev) { var t = document.elementFromPoint(ev.clientX, ev.clientY); return t && t.closest('.n-row'); }
-        function mv(ev) {
-          var dx = ev.clientX - sx, dy = ev.clientY - sy; if (!active && Math.hypot(dx, dy) < 8) return;
-          active = true; a.classList.add('n-drag'); a.style.transform = 'translate(' + dx + 'px,' + dy + 'px) rotate(-1.2deg)';
-          var t = under(ev); if (t !== over) { if (over) over.classList.remove('n-over'); over = t; if (over) over.classList.add('n-over'); }
-        }
-        function up(ev) {
-          removeEventListener('pointermove', mv); if (!active) return;
-          dragged = true; setTimeout(function () { dragged = false; }, 60);
-          var t = under(ev), target = t && ITEMS.filter(function (x) { return x.el === t; })[0];
-          if (target && target !== it) { ITEMS.splice(ITEMS.indexOf(it), 1); ITEMS.splice(ITEMS.indexOf(target), 0, it); store.set('order', ITEMS.map(function (x) { return x.t; })); changed(); }
-          render();
-        }
-        addEventListener('pointermove', mv); addEventListener('pointerup', up, { once: true });
-      });
-    }
-
-    // ---- the dot: a click changes the colours (the new one spreads from the dot); it can also be grabbed and thrown
+    // ---- the dot: a click leads to another version of the site; it can also be grabbed and thrown
     function setTf(x, y) { dotEl.style.transform = 'translate(' + x.toFixed(1) + 'px,' + y.toFixed(1) + 'px)'; }
     function rest() { dotEl.style.transform = ''; setTimeout(function () { dotEl.style.transition = ''; }, 50); }
     function stopPhys() { if (phys) { clearInterval(phys); phys = null; } }
@@ -256,44 +227,9 @@
     (document.fonts && document.fonts.ready ? document.fonts.ready : Promise.resolve()).then(function () { setTimeout(start, 900); }); setTimeout(start, 2500);
 
 
-    // ---- the name can be rewritten (double-click). The dot goes on its first i, or after the name if there is none
-    var NAME = 'Nicola Lo Russo';
-    function setName(str) {
-      str = (str || '').trim().slice(0, 26) || NAME; var k = str.indexOf('i'); II.remove(); nameEl.textContent = '';
-      if (k >= 0) { nameEl.appendChild(document.createTextNode(str.slice(0, k))); nameEl.appendChild(II); nameEl.appendChild(document.createTextNode(str.slice(k + 1))); II.style.color = ''; }
-      else { nameEl.appendChild(document.createTextNode(str)); nameEl.appendChild(II); II.style.color = 'transparent'; }
-      nameEl.setAttribute('aria-label', str); nameEl.style.fontSize = '';
-      if (!PLAIN) { var avail = nameEl.parentElement.clientWidth - 140, rg = document.createRange(); rg.selectNodeContents(nameEl); var wd = rg.getBoundingClientRect().width; if (wd > avail) nameEl.style.fontSize = parseFloat(getComputedStyle(nameEl).fontSize) * avail / wd + 'px'; }
-      idot(II);
-    }
-    nameEl.title = 'Double-click to rename';
-    nameEl.addEventListener('dblclick', function (e) {
-      if (PLAIN || e.target === dotEl) return;
-      var inp = document.createElement('input'); inp.className = 'n-nameedit n-d'; inp.value = nameEl.getAttribute('aria-label'); inp.maxLength = 26; inp.setAttribute('aria-label', 'Name');
-      nameEl.style.display = 'none'; nameEl.parentNode.insertBefore(inp, nameEl.nextSibling); inp.focus(); inp.select(); var done = false;
-      function end(ok) {
-        if (done) return; done = true; var v = inp.value.trim(); inp.remove(); nameEl.style.display = '';
-        if (ok && v) { if (v === NAME) store.del('name'); else store.set('name', v); setName(v); changed(); } else idot(II);
-      }
-      inp.addEventListener('keydown', function (ev) { if (ev.key === 'Enter') end(true); if (ev.key === 'Escape') end(false); ev.stopPropagation(); });
-      inp.addEventListener('blur', function () { end(true); });
-    });
-    if (store.get('name')) setName(store.get('name'));
-
-    // ---- everything goes back in place without reloading; the dot travels home from wherever it is at that moment
-    resetB.addEventListener('click', function () {
-      stopPhys(); var from = dotEl.getBoundingClientRect();
-      ['order', 'stamp', 'name'].forEach(store.del); // 'stamp' is a key of an older version
-      ITEMS.sort(byDate); cat = main.getAttribute('data-cat') === 'projects' ? 'projects' : 'posts'; dotEl.style.transition = 'none'; dotEl.style.transform = '';
-      setName(NAME); K = 0; band(0); render(); changed();
-      var to = dotEl.getBoundingClientRect(), x = from.left - to.left, y = from.top - to.top;
-      if (still || Math.hypot(x, y) < 2) { dotEl.style.transition = ''; return; }
-      setTf(x, y); goHome(x, y, 650, Math.min(120, 40 + Math.hypot(x, y) * .25));
-    });
-
-    onPlain.push(function (v) { stopPhys(); dotEl.style.transform = ''; if (v || started) dotEl.style.visibility = ''; nameEl.style.fontSize = ''; if (!v && store.get('name')) setName(store.get('name')); });
-    render(); changed();
+    onPlain.push(function (v) { stopPhys(); dotEl.style.transform = ''; if (v || started) dotEl.style.visibility = ''; });
+    render();
     // for tests
-    window.NLR = { throwDot: function (vx, vy) { launch(0, 0, vx, vy); }, setName: setName };
+    window.NLR = { throwDot: function (vx, vy) { launch(0, 0, vx, vy); } };
   }
 })();

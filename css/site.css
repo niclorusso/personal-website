@@ -37,8 +37,7 @@ body{margin:0;background:var(--n-bg);color:var(--n-ink);font-family:"Bricolage G
 .n-in{position:relative;z-index:3}
 .n-top .n-nav{display:flex;justify-content:space-between;align-items:center;gap:16px;padding:13px 0 8px}
 .n-top .n-links{display:flex;gap:8px;white-space:nowrap}
-.n-name{margin:0;line-height:.8;white-space:nowrap;font-size:clamp(50px,7.6vw,112px);padding-bottom:.04em;cursor:text}
-.n-nameedit{all:unset;display:block;width:calc(100% - 150px);line-height:.8;padding-bottom:.04em;font-size:clamp(50px,7.6vw,112px);caret-color:var(--n-B);box-shadow:0 3px 0 var(--n-onA)}
+.n-name{margin:0;line-height:.8;white-space:nowrap;font-size:clamp(50px,7.6vw,112px);padding-bottom:.04em}
 @keyframes n-spin{to{transform:rotate(360deg)}}
 .n-page{padding:0 var(--n-pad)}
 .n-bar{display:flex;align-items:center;gap:16px;padding:11px 130px 11px 0;flex-wrap:wrap}
@@ -47,8 +46,6 @@ body{margin:0;background:var(--n-bg);color:var(--n-ink);font-family:"Bricolage G
 .n-chips button b{font-weight:400;opacity:.6;margin-left:6px}
 .n-chips button:hover,.n-chips button.n-on{background:var(--n-ink);color:var(--n-bg)}
 .n-bar>span{color:var(--n-soft)}
-#n-reset{all:unset;cursor:pointer;color:var(--n-ink);border-bottom:1.5px solid var(--n-ink)}
-#n-reset[hidden]{display:none}
 /* one list, newest first, read left to right: new posts enter at the top left and the rest moves on */
 .n-list{display:grid;grid-auto-flow:column;grid-template-columns:repeat(var(--n-cols),minmax(0,1fr));grid-template-rows:repeat(var(--n-rows),var(--n-rh));grid-auto-rows:var(--n-rh);gap:0 clamp(22px,2.8vw,44px);border-bottom:1.5px solid var(--n-ink)}
 .n-row{display:grid;grid-template-columns:auto 1fr auto;gap:13px;align-items:center;padding:0 10px;margin:0 -10px;border-top:1.5px solid var(--n-ink);min-height:0;transition:background .18s,color .18s;user-select:none;-webkit-user-drag:none;--n-p:#e4dfd3;--n-a:#0d0d0c}
@@ -66,9 +63,6 @@ body{margin:0;background:var(--n-bg);color:var(--n-ink);font-family:"Bricolage G
 .n-row:hover .n-mono{color:var(--n-a)}
 .n-row:hover .n-arr{opacity:1;transform:none}
 .n-row:hover .n-tile{transform:scale(1.12)}
-.n-row.n-drag{position:relative;z-index:20;background:var(--n-p);color:var(--n-a);box-shadow:0 22px 34px -16px #000a;transition:none;pointer-events:none}
-.n-row.n-drag .n-mono{color:var(--n-a)}
-.n-row.n-over{box-shadow:inset 0 5px 0 var(--n-A)}
 .n-fly{position:fixed;z-index:50;transition:all .5s cubic-bezier(.6,0,.2,1);pointer-events:none}
 .n-foot{display:flex;justify-content:space-between;padding:12px 0 16px}
 
@@ -144,7 +138,7 @@ body{margin:0;background:var(--n-bg);color:var(--n-ink);font-family:"Bricolage G
 /* ---------- plain version: no colour, no figures, nothing moves ---------- */
 .n-plain .n-po{display:inline}
 .n-plain .n-top{background:var(--n-bg);color:var(--n-ink);padding-bottom:6px;max-width:760px;margin:0 auto}
-.n-plain .n-grain::after,.n-plain .n-hint,.n-plain .n-tile,.n-plain .n-arr,.n-plain #n-reset,.n-plain .n-progress{display:none}
+.n-plain .n-grain::after,.n-plain .n-hint,.n-plain .n-tile,.n-plain .n-arr,.n-plain .n-progress{display:none}
 .n-plain .n-name{font-size:30px;line-height:1.1;cursor:auto;font-weight:700;font-stretch:100%;letter-spacing:-.01em}
 .n-plain .n-dot{background:currentColor;pointer-events:none;transform:none!important;visibility:visible!important}
 .n-plain .n-page{max-width:760px;margin:0 auto}
@@ -171,7 +165,7 @@ body{margin:0;background:var(--n-bg);color:var(--n-ink);font-family:"Bricolage G
 
 @media(max-width:1100px){:root{--n-rh:64px;--n-cols:2}}
 @media(max-width:760px){
-  .n-name{font-size:14vw}.n-nameedit{font-size:14vw;width:100%}:root{--n-cols:1}.n-list{grid-auto-flow:row;grid-template-rows:none}.n-list .n-arr{display:none}
+  .n-name{font-size:14vw}:root{--n-cols:1}.n-list{grid-auto-flow:row;grid-template-rows:none}.n-list .n-arr{display:none}
   .n-bar{padding-right:100px}.n-hint{display:none}.n-top .n-nav{justify-content:flex-end}
   .n-article{font-size:18px}.n-about{grid-template-columns:1fr}.n-about aside{display:none}
   .n-about section>div,.n-about .language-item{grid-template-columns:1fr}.n-about section>div>.date{grid-row:auto;grid-column:1;padding:0 0 4px}.n-about section>div>*{grid-column:1}
@@ -247,3 +241,5 @@ body{margin:0;background:var(--n-bg);color:var(--n-ink);font-family:"Bricolage G
 /* the plain version has its own narrow column: the wide-screen side margins must not be added to it */
 .n-plain .n-top,.n-plain .n-page{padding-left:var(--n-pad);padding-right:var(--n-pad)}
 .n-plain .n-band,.n-plain .n-end{padding-left:clamp(16px,3.2vw,48px);padding-right:clamp(16px,3.2vw,48px)}
+/* the header of the home page lines up with the list: the name starts where the rows start, the links end where they end */
+:root:not(.n-plain) .n-top{padding-left:max(var(--n-pad),calc((100vw - 880px)/2));padding-right:max(var(--n-pad),calc((100vw - 880px)/2))}
