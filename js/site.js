@@ -28,7 +28,7 @@
     var cs = getComputedStyle(host), fs = parseFloat(cs.fontSize), c = document.createElement('canvas').getContext('2d');
     c.font = cs.fontWeight + ' 200px ' + cs.fontFamily;
     var hi = c.measureText('i').actualBoundingBoxAscent / 200, lo = c.measureText('ı').actualBoundingBoxAscent / 200;
-    var d = Math.max(.12, (hi - lo) * .92) * fs, cy = (hi - (hi - lo) * .4) * fs, b = $('.n-dot', host);
+    var d = Math.max(9, Math.max(.12, (hi - lo) * .92) * fs), cy = (hi - (hi - lo) * .4) * fs, b = $('.n-dot', host);
     b.style.width = b.style.height = d + 'px';
     b.style.left = (host.offsetWidth - (parseFloat(cs.letterSpacing) || 0)) / 2 - d / 2 + 'px';
     b.style.top = $('.n-bl', host).offsetTop - cy - d / 2 + 'px';

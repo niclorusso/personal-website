@@ -20,6 +20,9 @@
     '.nlr-dot{all:unset;cursor:pointer;pointer-events:auto;position:absolute;border-radius:50%;background:#ffe600;box-shadow:var(--nlr-ring,none);transition:transform .25s cubic-bezier(.3,1.8,.4,1)}' +
     '.nlr-dot:hover{transform:scale(1.5)}.nlr-dot:active{transform:scale(.8)}.nlr-dot:focus-visible{outline:2px solid currentColor;outline-offset:4px}' +
     '.nlr-dot::after{content:"";position:absolute;inset:-16px}' +
+    /* inside the dot: a pupil that turns towards the pointer, and on the edge an arc for the worlds already seen */
+    '.nlr-p{position:absolute;left:50%;top:50%;width:34%;height:34%;margin:-17% 0 0 -17%;border-radius:50%;background:#0d0d0c;pointer-events:none;display:block}' +
+    '.nlr-eye::before{content:"";position:absolute;inset:0;border-radius:50%;pointer-events:none;background:conic-gradient(#0d0d0c calc(var(--nlr-seen,0)*1%),transparent 0);-webkit-mask:radial-gradient(circle closest-side,transparent 0 78%,#000 82%);mask:radial-gradient(circle closest-side,transparent 0 78%,#000 82%)}' +
     '#nlr-w{position:fixed;right:12px;bottom:12px;z-index:9999;padding:9px 13px;border-radius:999px;background:#0d0d0c;color:#f4f2ec;font:500 11px/1 "JetBrains Mono",ui-monospace,monospace;letter-spacing:.06em;text-transform:uppercase;text-decoration:none;box-shadow:0 6px 18px -8px #000a}' +
     '#nlr-w:hover{background:#f4f2ec;color:#0d0d0c}' +
     '#nlr-wipe{position:fixed;inset:0;z-index:10000;pointer-events:none;transition:clip-path .45s cubic-bezier(.5,0,.2,1)}';
@@ -29,7 +32,7 @@
     var cs = getComputedStyle(ii), fs = parseFloat(cs.fontSize), c = document.createElement('canvas').getContext('2d');
     c.font = cs.fontWeight + ' 200px ' + cs.fontFamily;
     var hi = c.measureText('i').actualBoundingBoxAscent / 200, lo = c.measureText('ı').actualBoundingBoxAscent / 200;
-    var d = Math.max(8, Math.max(.12, (hi - lo) * .92) * fs), cy = (hi - (hi - lo) * .4) * fs, b = ii.querySelector('.nlr-dot');
+    var d = Math.max(9, Math.max(.12, (hi - lo) * .92) * fs), cy = (hi - (hi - lo) * .4) * fs, b = ii.querySelector('.nlr-dot');
     b.style.width = b.style.height = d + 'px';
     b.style.left = (ii.offsetWidth - (parseFloat(cs.letterSpacing) || 0)) / 2 - d / 2 + 'px';
     b.style.top = ii.querySelector('.nlr-bl').offsetTop - cy - d / 2 + 'px';
@@ -51,8 +54,28 @@
       el.querySelector('.nlr-dot').addEventListener('click', go);
     });
     [].forEach.call(document.querySelectorAll('.nlr-ii'), place);
+    eyes();
     [].forEach.call(document.querySelectorAll('[data-nlr-dot]:not([data-nlr-done])'), function (el) { el.setAttribute('data-nlr-done', '1'); el.style.cursor = 'pointer'; el.addEventListener('click', go); });
   }
+  // every door dot is an eye (except those marked data-nlr-plain, such as a lamp)
+  var EYES = [], ptr = null, still = matchMedia('(prefers-reduced-motion: reduce)').matches;
+  function eyes() {
+    [].forEach.call(document.querySelectorAll('.nlr-dot:not(.nlr-eye), [data-nlr-dot]:not(.nlr-eye):not([data-nlr-plain])'), function (el) {
+      el.classList.add('nlr-eye'); if (getComputedStyle(el).position === 'static') el.style.position = 'relative';
+      var p = document.createElement('i'); p.className = 'nlr-p'; el.appendChild(p); EYES.push({ d: el, i: p, x: 0, y: 0 });
+    });
+  }
+  function aim(e) { ptr = [e.clientX, e.clientY]; }
+  addEventListener('pointermove', aim, { passive: true }); addEventListener('pointerdown', aim, { passive: true });
+  if (!still) setInterval(function () {
+    if (!ptr) return;
+    EYES.forEach(function (o) {
+      var r = o.d.getBoundingClientRect(); if (!r.width) return;
+      var dx = ptr[0] - (r.left + r.width / 2), dy = ptr[1] - (r.top + r.height / 2), dist = Math.hypot(dx, dy) || 1, k = Math.min(1, dist / 140) * o.d.offsetWidth * .15;
+      o.x += (dx / dist * k - o.x) * .12; o.y += (dy / dist * k - o.y) * .12; o.i.style.transform = 'translate(' + o.x.toFixed(2) + 'px,' + o.y.toFixed(2) + 'px)';
+    });
+  }, 33);
+  try { var sn2 = JSON.parse(localStorage.getItem('nlr-seen') || '[]'); document.documentElement.style.setProperty('--nlr-seen', (ALL.filter(function (w) { return sn2.indexOf(w) >= 0; }).length / ALL.length * 100).toFixed(1)); } catch (e) {}
   window.nlrDress = dress; window.nlrGo = travel; dress();
   if (document.fonts && document.fonts.ready) document.fonts.ready.then(dress);
   addEventListener('resize', dress);
