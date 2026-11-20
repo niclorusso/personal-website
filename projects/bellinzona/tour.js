@@ -2,7 +2,7 @@
 // It is started from the welcome sheet, from ⋯ "Giro guidato", or by ?giro in the address. Nothing has to be done: each stop
 // moves the map or opens the real panel, puts a ring around it and says in two lines what it is; Avanti goes on, × ends it.
 // It drives the page from outside (the toolbar's own buttons, window.__explore, window.__panel) and changes none of its logic.
-import { t } from './i18n.js?v=20261121a';
+import { t } from './i18n.js?v=20261121b';
 
 const $ = id => document.getElementById(id);
 const Z = 7;                                              // world.json's native zoom
@@ -49,6 +49,12 @@ function css() {
 #tour-box .row { display: flex; align-items: center; justify-content: space-between; gap: 10px; margin-top: 12px; }
 #tour-box .n { font-size: 12px; color: #ffffff99; font-variant-numeric: tabular-nums; }
 #tour-box .b { display: flex; gap: 8px; }
+#tour-box .l { display: flex; align-items: center; gap: 12px; }
+#tour-box .skip { border: 0; background: none; color: #ffffffcc; font: inherit; font-size: 13px; padding: 6px 2px; cursor: pointer; text-decoration: underline; text-underline-offset: 3px; }
+#tour-box .skip:hover { color: #fff; }
+#tour-box .skip[hidden] { display: none; }
+#tour-box .n, #tour-box .skip, #tour-box .b button { white-space: nowrap; }
+@media (max-width: 420px) { #tour-box .row { gap: 6px; } #tour-box .l { gap: 9px; } #tour-box .b { gap: 6px; } #tour-box .b button { padding: 7px 9px; font-size: 13px; } #tour-box .skip { font-size: 12.5px; } }
 #tour-box .b button { border: 1px solid #ffffff40; background: none; color: #fff; border-radius: 8px; padding: 7px 12px; font: inherit; cursor: pointer; }
 #tour-box .b button.go { background: #f0b84a; border-color: #f0b84a; color: #1b1d22; font-weight: 600; }
 #tour-box .b button:disabled { opacity: .35; cursor: default; }
@@ -65,7 +71,7 @@ function draw() {
   box.querySelector('p').textContent = t('tour.' + s.k + '.text');
   box.querySelector('.n').textContent = last ? '' : t('tour.of', { n: at + 1, k: STOPS.length - 1 });
   const [prev, next] = box.querySelectorAll('.b button');
-  prev.disabled = at === 0; next.textContent = last ? t('tour.done') : t('tour.next');
+  prev.disabled = at === 0; next.textContent = last ? t('tour.done') : t('tour.next'); box.querySelector('.skip').hidden = last;
 }
 function track() {                                        // the ring follows its target (panels open, the page is resized); the box keeps clear of it
   if (!on) return;
@@ -102,9 +108,10 @@ export function startTour() {
   const row = document.createElement('div'); row.className = 'row';
   const n = document.createElement('span'); n.className = 'n';
   const b = document.createElement('div'); b.className = 'b';
+  const skip = document.createElement('button'); skip.type = 'button'; skip.className = 'skip'; skip.textContent = t('tour.skip'); skip.setAttribute('aria-label', t('tour.close')); skip.onclick = end;
   const prev = document.createElement('button'); prev.type = 'button'; prev.textContent = t('tour.prev'); prev.onclick = () => show(at - 1);
   const next = document.createElement('button'); next.type = 'button'; next.className = 'go'; next.onclick = () => (at < STOPS.length - 1 ? show(at + 1) : end());
-  b.append(prev, next); row.append(n, b);
+  b.append(prev, next); const left = document.createElement('div'); left.className = 'l'; left.append(n, skip); row.append(left, b);
   box.append(x, document.createElement('h3'), document.createElement('p'), row);
   // a press inside the box must not count as "a press elsewhere" for the page (which would close the panel being shown)
   for (const ev of ['pointerdown', 'mousedown', 'touchstart', 'click']) box.addEventListener(ev, e => e.stopPropagation());

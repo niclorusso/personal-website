@@ -157,7 +157,7 @@ const CSS = `
 }
 `;
 
-import { t, tc, lang, locale, speechLang, num, hm as zhm, dt, date, LANGS, NAMES, switchLang, textReady } from './i18n.js?v=20261121a';
+import { t, tc, lang, locale, speechLang, num, hm as zhm, dt, date, LANGS, NAMES, switchLang, textReady } from './i18n.js?v=20261121b';
 
 // the kinds of the map's own names (world.json labels), in the search results
 const KIND_IT = { city: t('kind.city'), town: t('kind.city'), village: t('kind.village'), suburb: t('kind.suburb'), quarter: t('kind.suburb'), neighbourhood: t('kind.suburb'),
@@ -207,7 +207,7 @@ export async function initExplore({ world, view, map, clamp, draw, halt, toScree
   document.head.appendChild(el('style')).textContent = CSS;
   const phone = () => matchMedia('(max-width: 640px)').matches;
   let geoP = null, geoM = null;                                      // geo.js, loaded on first use
-  const geo = () => geoP || (geoP = import('./geo.js?v=20261121a').then(m => { geoM = m; return new m.Geo(world, lang); }));
+  const geo = () => geoP || (geoP = import('./geo.js?v=20261121b').then(m => { geoM = m; return new m.Geo(world, lang); }));
   const embed = new URLSearchParams(location.search).has('incorpora');   // inside someone else's page (index.html hides the rest)
 
   // ---------- markers ----------
@@ -253,7 +253,7 @@ export async function initExplore({ world, view, map, clamp, draw, halt, toScree
   function wakeMob() {                                   // nothing is asked of those services before the list is opened
     if (document.body.classList.contains('era')) return;
     if (mob) mob.wake();
-    else if (!mobP) mobP = import('./mobility.js?v=20261121a').then(M => { mob = M.initMobility({ geo, layer, toScreen, active: mobLayer, onChange: mobChanged }); mob.wake(); }).catch(() => { /* no such layers */ });
+    else if (!mobP) mobP = import('./mobility.js?v=20261121b').then(M => { mob = M.initMobility({ geo, layer, toScreen, active: mobLayer, onChange: mobChanged }); mob.wake(); }).catch(() => { /* no such layers */ });
   }
   function mobChanged() {                                // live data in, changed or gone (stale, failed, time machine)
     if (mobLayer() && !mob.has(mobLayer())) { cat = ''; drawChips(); }   // the layer has nothing current: back to the places
@@ -1098,7 +1098,7 @@ export async function initExplore({ world, view, map, clamp, draw, halt, toScree
     // German nouns keep their capital after the colon
     if (c) b(t('hello.walk', { min: Math.round(c.walk / 5) * 5 }), t('hello.walk.title', { title: c.title, sub: lang === 'de' ? c.sub : c.sub.charAt(0).toLowerCase() + c.sub.slice(1) }), () => { setMode('routes'); pickRoute(c); });
     if (!document.body.classList.contains('era')) b(t('hello.now'), t('hello.now.title'), () => { setMode(''); openEvents(); });
-    b(t('tour.start'), t('tour.start.title'), () => { setMode(''); import('./tour.js?v=20261121a').then(m => m.startTour()); });   // the guided tour of everything there is
+    b(t('tour.start'), t('tour.start.title'), () => { setMode(''); import('./tour.js?v=20261121b').then(m => m.startTour()); });   // the guided tour of everything there is
     b(t('hello.explore'), t('hello.explore.title'), () => setMode(''));
     routesBox.appendChild(acts);
     // the language, once, here: four small chips (later in ⋯ 🌐); the welcome comes back in the language chosen

@@ -26,7 +26,7 @@
 // ASSUMED, because no source gives a plan to scale: the size of every structure, where exactly it stands inside its
 // square, how many people are there, how long the parades last.
 
-import { t } from './i18n.js?v=20261121a';
+import { t } from './i18n.js?v=20261121b';
 
 const DAY = 86400000;
 const VIVID = ['#e23a3a', '#f2c21a', '#2f9e5b', '#2d6fd6', '#b04ad0', '#f07f2e', '#19b5b0', '#f25fa0'];

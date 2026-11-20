@@ -40,18 +40,18 @@
   const L = window.__lang.lang, json1 = (u, priority) => fetch(u, { priority }).then(r => (r.ok ? r.json() : null)).catch(() => null), json = (u, p) => json1(u, p).then(d => d || json1(u, p));   // once more if it fails
   window.__pre = { world: get((v ? `views/${v}/` : '') + 'world.json'), places: get('places.json') };
   for (const p of Object.values(window.__pre)) p.catch(() => {});
-  window.__pre.ui = json(`i18n/ui.${L}.json?v=20261121a`, 'high');                  // interface strings (i18n.js): the first picture waits for them
+  window.__pre.ui = json(`i18n/ui.${L}.json?v=20261121b`, 'high');                  // interface strings (i18n.js): the first picture waits for them
   // the places' and itineraries' texts: asked for once world.json is in, so as not to take bandwidth from the first picture (the
   // place markers wait for places.json, which comes later anyway)
-  if (L !== 'it') window.__pre.text = window.__pre.world.catch(() => null).then(() => json(`i18n/${L}.json?v=20261121a`, 'low'));
+  if (L !== 'it') window.__pre.text = window.__pre.world.catch(() => null).then(() => json(`i18n/${L}.json?v=20261121b`, 'low'));
   // the masks that give the tiles the season's colours (season.js): the first sharp picture waits for them
   if (!/[?&]epoca=/.test(q)) for (const f of ['treemask.png', 'hmap.png']) { const l = document.createElement('link'); l.rel = 'preload'; l.as = 'image'; l.href = (v ? `views/${v}/` : '') + f; l.fetchPriority = 'low'; document.head.appendChild(l); }
 }
 </script>
-<link rel="modulepreload" href="explore.js?v=20261121a">
-<link rel="modulepreload" href="sky.js?v=20261121a">
-<link rel="modulepreload" href="season.js?v=20261121a">
-<link rel="modulepreload" href="i18n.js?v=20261121a">
+<link rel="modulepreload" href="explore.js?v=20261121b">
+<link rel="modulepreload" href="sky.js?v=20261121b">
+<link rel="modulepreload" href="season.js?v=20261121b">
+<link rel="modulepreload" href="i18n.js?v=20261121b">
 <style>
   html, body { margin: 0; height: 100%; background: #1a1f16; overflow: hidden; overscroll-behavior: none;
     font-family: ui-sans-serif, system-ui, sans-serif; -webkit-tap-highlight-color: transparent; }
@@ -228,7 +228,7 @@
   window.__panel = k => { const on = $(k).hidden; for (const j in P) show(j, j === k && on); return on; };   // toggles one, closes the others; true when it opened
   $('info').addEventListener('click', () => window.__panel('about'));
   // the guided tour (tour.js): from ⋯, or straight away with ?giro in the address (once the places are in)
-  const tour = () => { none(); import('./tour.js?v=20261121a').then(m => m.startTour()); };
+  const tour = () => { none(); import('./tour.js?v=20261121b').then(m => m.startTour()); };
   $('tour').addEventListener('click', tour);
   if (new URLSearchParams(location.search).has('giro')) { let n = 0; const wait = () => { if (window.__explore) setTimeout(tour, 600); else if (n++ < 80) setTimeout(wait, 250); }; wait(); }
   $('more').addEventListener('click', () => window.__panel('xmenu'));
@@ -262,12 +262,12 @@
   }).finally(() => document.documentElement.classList.remove('i18n-wait')); }
 </script>
 <script type="module">
-import { initExplore } from './explore.js?v=20261121a';
-import { Sky } from './sky.js?v=20261121a';
-import { Season, seasonFor } from './season.js?v=20261121a';
-import { t, tu, lang, num, int, dt, date, switchLang, linkLang } from './i18n.js?v=20261121a';
+import { initExplore } from './explore.js?v=20261121b';
+import { Sky } from './sky.js?v=20261121b';
+import { Season, seasonFor } from './season.js?v=20261121b';
+import { t, tu, lang, num, int, dt, date, switchLang, linkLang } from './i18n.js?v=20261121b';
 // the simulation (life.js, extras.js) and its data come after the first picture: see loadLife()
-const LIFE = './life.js?v=20261121a', EXTRAS = './extras.js?v=20261121a';
+const LIFE = './life.js?v=20261121b', EXTRAS = './extras.js?v=20261121b';
 (async () => {
   // ?vista=<heading> shows the city from another side (web/views/<heading>/, rendered by 03_render.py with VIEW_HEADING)
   const vista = (/[?&]vista=(\d+)/.exec(location.search) || [])[1] || '';

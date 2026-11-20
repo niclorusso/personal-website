@@ -500,5 +500,6 @@
  "tour.more.title": "And more",
  "tour.more.text": "A photo of the moment, the sounds of the town, the link to what you are looking at, the four languages and how to report a mistake.",
  "tour.end.title": "Your turn",
- "tour.end.text": "Drag, zoom, tap. The tour can be taken again from the ⋯ menu."
+ "tour.end.text": "Drag, zoom, tap. The tour can be taken again from the ⋯ menu.",
+ "tour.skip": "Close"
 }

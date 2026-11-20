@@ -3,7 +3,7 @@
 // light map (deep blue ambient + additive street-lamp pools), so lit streets keep their painted colours.
 // Lamp positions come from roads.json (loaded lazily, the first time lamps are needed).
 
-import { t, locale } from './i18n.js?v=20261121a';
+import { t, locale } from './i18n.js?v=20261121b';
 
 const LAT = 46.19, LON = 9.02, TZ = 'Europe/Zurich';
 const KEY = 'bellinzona.sky.mode';
