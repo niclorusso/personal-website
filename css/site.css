@@ -258,3 +258,6 @@ body{margin:0;background:var(--n-bg);color:var(--n-ink);font-family:"Bricolage G
 @media(max-width:520px){.n-band .n-nav{gap:10px}.n-band .n-wm{font-size:21px}.n-band .n-links{gap:11px;font-size:10px;letter-spacing:.04em}}
 @media(max-width:360px){.n-band .n-wm{font-size:19px}.n-band .n-links{gap:9px;font-size:9.5px;letter-spacing:.02em}}
 @media(max-width:420px){.n-band .n-links.n-long a[href*="cv"]{display:none}}
+/* formulas on their own line: the box may scroll sideways on a phone, so it clips; it needs room above and below or it cuts the symbols */
+.n-article mjx-container[display="true"],.n-article .MathJax[display="true"]{padding:.55em 2px!important;overflow-x:auto;overflow-y:hidden;line-height:normal}
+.n-article mjx-container[display="true"]>mjx-math{padding:.1em 0}
