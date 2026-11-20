@@ -20,7 +20,7 @@ body{margin:0;background:var(--n-bg);color:var(--n-ink);font-family:"Bricolage G
 .n-grain{position:relative}
 .n-grain::after{content:"";position:absolute;inset:0;pointer-events:none;mix-blend-mode:multiply;opacity:.55;z-index:2;
   background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='220' height='220'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.9' numOctaves='2' stitchTiles='stitch'/%3E%3CfeColorMatrix values='0 0 0 0 .5 0 0 0 0 .5 0 0 0 0 .5 0 0 0 .55 0'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E")}
-.n-nav a,.n-row,.n-stamp,.n-end a,.n-foot a,.n-more .n-mono a,.n-about aside a{color:inherit;text-decoration:none}
+.n-nav a,.n-row,.n-end a,.n-foot a,.n-more .n-mono a,.n-about aside a{color:inherit;text-decoration:none}
 .n-nav a:hover,.n-foot a:hover,#n-plain:hover{text-decoration:underline;text-underline-offset:4px}
 #n-plain{all:unset;cursor:pointer}
 .n-po{display:none}
@@ -39,12 +39,6 @@ body{margin:0;background:var(--n-bg);color:var(--n-ink);font-family:"Bricolage G
 .n-top .n-links{display:flex;gap:8px;white-space:nowrap}
 .n-name{margin:0;line-height:.8;white-space:nowrap;font-size:clamp(50px,7.6vw,112px);padding-bottom:.04em;cursor:text}
 .n-nameedit{all:unset;display:block;width:calc(100% - 150px);line-height:.8;padding-bottom:.04em;font-size:clamp(50px,7.6vw,112px);caret-color:var(--n-B);box-shadow:0 3px 0 var(--n-onA)}
-.n-stamp{position:absolute;right:var(--n-pad);bottom:-46px;width:116px;height:116px;border-radius:50%;background:var(--n-B);color:var(--n-onB);z-index:4;display:grid;place-items:center;touch-action:none;transition:transform .3s cubic-bezier(.3,1.5,.4,1);box-shadow:0 10px 20px -12px #0008}
-.n-stamp svg{position:absolute;inset:0;width:100%;height:100%}
-.n-stamp text{font-family:"JetBrains Mono",monospace;font-size:10.4px;letter-spacing:.16em;fill:currentColor;text-transform:uppercase}
-.n-stamp b{font-family:"Bricolage Grotesque",sans-serif;font-weight:800;font-size:34px;line-height:1;position:relative}
-.n-stamp:hover{transform:scale(1.08) rotate(-6deg)}
-.n-stamp:hover svg{animation:n-spin 9s linear infinite}
 @keyframes n-spin{to{transform:rotate(360deg)}}
 .n-page{padding:0 var(--n-pad)}
 .n-bar{display:flex;align-items:center;gap:16px;padding:11px 130px 11px 0;flex-wrap:wrap}
@@ -103,7 +97,6 @@ body{margin:0;background:var(--n-bg);color:var(--n-ink);font-family:"Bricolage G
 .n-article.post-content{max-width:700px}
 .n-article.post-content p{margin:0 0 1.15em;text-align:left;hyphens:manual;line-height:1.62;font-size:1em;color:inherit}
 .n-article.post-content li{line-height:1.55;font-size:1em;margin-bottom:.45em}
-.n-article.post-content>p:first-of-type{font-size:1.14em;line-height:1.5}
 .n-article.post-content h2{font-family:"Bricolage Grotesque",sans-serif;font-weight:800;font-stretch:80%;font-size:clamp(28px,3.2vw,40px);line-height:.98;letter-spacing:-.03em;margin:2.2em 0 .7em;padding:14px 0 0;border-top:4px solid var(--n-ink);border-bottom:0;color:var(--n-ink);scroll-margin-top:24px;display:block}
 .n-article.post-content h3{font-family:"Bricolage Grotesque",sans-serif;font-weight:700;font-size:24px;line-height:1.1;letter-spacing:-.02em;margin:1.8em 0 .5em;color:var(--n-ink)}
 .n-article.post-content h4,.n-article.post-content h5{font-family:"Bricolage Grotesque",sans-serif}
@@ -151,7 +144,7 @@ body{margin:0;background:var(--n-bg);color:var(--n-ink);font-family:"Bricolage G
 /* ---------- plain version: no colour, no figures, nothing moves ---------- */
 .n-plain .n-po{display:inline}
 .n-plain .n-top{background:var(--n-bg);color:var(--n-ink);padding-bottom:6px;max-width:760px;margin:0 auto}
-.n-plain .n-grain::after,.n-plain .n-hint,.n-plain .n-stamp,.n-plain .n-tile,.n-plain .n-arr,.n-plain #n-reset,.n-plain .n-progress{display:none}
+.n-plain .n-grain::after,.n-plain .n-hint,.n-plain .n-tile,.n-plain .n-arr,.n-plain #n-reset,.n-plain .n-progress{display:none}
 .n-plain .n-name{font-size:30px;line-height:1.1;cursor:auto;font-weight:700;font-stretch:100%;letter-spacing:-.01em}
 .n-plain .n-dot{background:currentColor;pointer-events:none;transform:none!important;visibility:visible!important}
 .n-plain .n-page{max-width:760px;margin:0 auto}
@@ -179,12 +172,12 @@ body{margin:0;background:var(--n-bg);color:var(--n-ink);font-family:"Bricolage G
 @media(max-width:1100px){:root{--n-rh:64px;--n-cols:2}}
 @media(max-width:760px){
   .n-name{font-size:14vw}.n-nameedit{font-size:14vw;width:100%}:root{--n-cols:1}.n-list{grid-auto-flow:row;grid-template-rows:none}.n-list .n-arr{display:none}
-  .n-stamp{width:88px;height:88px;bottom:-40px}.n-stamp b{font-size:26px}.n-stamp text{font-size:13px}.n-bar{padding-right:100px}.n-hint{display:none}.n-top .n-nav{justify-content:flex-end}
+  .n-bar{padding-right:100px}.n-hint{display:none}.n-top .n-nav{justify-content:flex-end}
   .n-article{font-size:18px}.n-about{grid-template-columns:1fr}.n-about aside{display:none}
   .n-about section>div,.n-about .language-item{grid-template-columns:1fr}.n-about section>div>.date{grid-row:auto;grid-column:1;padding:0 0 4px}.n-about section>div>*{grid-column:1}
   .n-band .n-links{gap:14px}.n-wm{font-size:24px}.n-more .n-arr{display:none}.n-meta .n-tile,.n-more .n-tile{width:76px}}
-@media(prefers-reduced-motion:reduce){html{scroll-behavior:auto}.n-tile,.n-row,.n-dot,.n-stamp,.n-band,.n-end{transition:none}.n-stamp:hover svg{animation:none}}
-@media print{.n-stamp,.n-progress,.n-toc,.n-more,.n-links,.no-print{display:none!important}.n-band,.n-end,.n-top{background:none!important;color:#000!important}.n-grain::after{display:none}}
+@media(prefers-reduced-motion:reduce){html{scroll-behavior:auto}.n-tile,.n-row,.n-dot,.n-band,.n-end{transition:none}}
+@media print{.n-progress,.n-toc,.n-more,.n-links,.no-print{display:none!important}.n-band,.n-end,.n-top{background:none!important;color:#000!important}.n-grain::after{display:none}}
 /* headings inside the boxes of older posts are not section headings */
 .n-article.post-content .riddle-box h2,.n-article.post-content .voting-box h2,.n-article.post-content .playground h2{border-top:0;padding-top:0;margin:0 0 .6em;font-size:24px;letter-spacing:-.02em;color:var(--n-ink)}
 .n-article.post-content .riddle-box,.n-article.post-content .voting-box,.n-article.post-content .playground{border-left:4px solid var(--n-link);border-radius:0;padding:22px 24px}
@@ -239,7 +232,6 @@ body{margin:0;background:var(--n-bg);color:var(--n-ink);font-family:"Bricolage G
 :root{--n-side:max(var(--n-pad),calc((100vw - 1320px)/2));--n-side2:max(clamp(16px,3.2vw,48px),calc((100vw - 1320px)/2))}
 .n-top{padding-left:var(--n-side);padding-right:var(--n-side)}
 .n-page{padding-left:var(--n-side);padding-right:var(--n-side)}
-.n-stamp{right:var(--n-side)}
 .n-band,.n-end{padding-left:var(--n-side2);padding-right:var(--n-side2)}
 /* ---- home: one list in the middle of the page, read from top to bottom (it replaced the three columns) */
 :root{--n-cols:1!important}

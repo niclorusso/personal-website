@@ -1,7 +1,7 @@
 /**
  * Behaviour of the public pages.
  * - the dot of the "i" in the name changes the two colours of the site, at random (on every page)
- * - home: one list of posts and projects; rows and the About stamp can be dragged, the dot can be thrown,
+ * - home: one list of posts and projects; rows can be dragged, the dot can be thrown,
  *   the name can be rewritten. All of it stays in the visitor's browser (localStorage keys "nlr-*").
  * - "Plain version" turns colour, figures and motion off.
  * Everything is inside one function so that no name leaks into the scripts of the posts.
@@ -137,7 +137,7 @@
 
   // =====================================================================================
   function home() {
-    var top_ = $('.n-top'), nameEl = $('.n-name'), II = $('.n-ii', nameEl), dotEl = $('.n-dot', nameEl), stamp = $('.n-stamp'), resetB = $('#n-reset'), chips = $('#n-chips');
+    var top_ = $('.n-top'), nameEl = $('.n-name'), II = $('.n-ii', nameEl), dotEl = $('.n-dot', nameEl), resetB = $('#n-reset'), chips = $('#n-chips');
     var cat = main.getAttribute('data-cat') === 'projects' ? 'projects' : 'posts', dragged = false, thrown = false, phys = null, busy = false;
     // the list as written by the server; the rows are kept and only moved around
     var ITEMS = $$('.n-row', main).map(function (a) { return { el: a, t: $('h3', a).textContent, d: a.getAttribute('data-date') || '', meta: $('.n-mono', a) }; });
@@ -149,7 +149,7 @@
     if (ord) ITEMS.sort(function (x, y) { return ord.indexOf(x.t) - ord.indexOf(y.t); });
     var projEl = $('.n-projects', main), PROJ = $$('.n-proj', main);
     PROJ.forEach(function (el, i) { plate($('.n-tile', el), i, el).t = 3; });
-    function changed() { resetB.hidden = !(store.get('order') || store.get('stamp') || store.get('name')); }
+    function changed() { resetB.hidden = !(store.get('order') || store.get('name')); }
 
     var list = $('.n-list', main);
     ITEMS.forEach(function (it, i) {
@@ -255,15 +255,6 @@
     var started = false, start = function () { if (started) return; started = true; bounce(); };
     (document.fonts && document.fonts.ready ? document.fonts.ready : Promise.resolve()).then(function () { setTimeout(start, 900); }); setTimeout(start, 2500);
 
-    // ---- the stamp can be moved; a plain click still opens About
-    var sp = store.get('stamp'), stampMoved = false; if (sp) stamp.style.translate = sp[0] + 'px ' + sp[1] + 'px'; stamp.draggable = false;
-    stamp.addEventListener('pointerdown', function (e) {
-      if (e.button) return; var b = store.get('stamp') || [0, 0], sx = e.clientX, sy = e.clientY, active = false, x = b[0], y = b[1];
-      function mv(ev) { var dx = ev.clientX - sx, dy = ev.clientY - sy; if (!active && Math.hypot(dx, dy) < 6) return; active = true; x = b[0] + dx; y = b[1] + dy; stamp.style.translate = x + 'px ' + y + 'px'; }
-      function up() { removeEventListener('pointermove', mv); if (!active) return; stampMoved = true; setTimeout(function () { stampMoved = false; }, 80); store.set('stamp', [x, y]); changed(); }
-      addEventListener('pointermove', mv); addEventListener('pointerup', up, { once: true });
-    });
-    stamp.addEventListener('click', function (e) { if (stampMoved) e.preventDefault(); });
 
     // ---- the name can be rewritten (double-click). The dot goes on its first i, or after the name if there is none
     var NAME = 'Nicola Lo Russo';
@@ -292,8 +283,8 @@
     // ---- everything goes back in place without reloading; the dot travels home from wherever it is at that moment
     resetB.addEventListener('click', function () {
       stopPhys(); var from = dotEl.getBoundingClientRect();
-      ['order', 'stamp', 'name'].forEach(store.del);
-      ITEMS.sort(byDate); cat = main.getAttribute('data-cat') === 'projects' ? 'projects' : 'posts'; stamp.style.translate = ''; dotEl.style.transition = 'none'; dotEl.style.transform = '';
+      ['order', 'stamp', 'name'].forEach(store.del); // 'stamp' is a key of an older version
+      ITEMS.sort(byDate); cat = main.getAttribute('data-cat') === 'projects' ? 'projects' : 'posts'; dotEl.style.transition = 'none'; dotEl.style.transform = '';
       setName(NAME); K = 0; band(0); render(); changed();
       var to = dotEl.getBoundingClientRect(), x = from.left - to.left, y = from.top - to.top;
       if (still || Math.hypot(x, y) < 2) { dotEl.style.transition = ''; return; }
