@@ -2,7 +2,7 @@
 // It is started from the welcome sheet, from ⋯ "Giro guidato", or by ?giro in the address. Nothing has to be done: each stop
 // moves the map or opens the real panel, puts a ring around it and says in two lines what it is; Avanti goes on, × ends it.
 // It drives the page from outside (the toolbar's own buttons, window.__explore, window.__panel) and changes none of its logic.
-import { t } from './i18n.js?v=20261121b';
+import { t } from './i18n.js?v=20261121c';
 
 const $ = id => document.getElementById(id);
 const Z = 7;                                              // world.json's native zoom

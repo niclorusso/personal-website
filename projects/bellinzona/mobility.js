@@ -15,8 +15,8 @@
 //     geo()      -> Promise<Geo> (geo.js), for the positions: the same conversion as the address pins
 //     layer      the element of the place markers, toScreen(x, y) -> [sx, sy], active() -> the layer shown ('bici', 'ricarica' or '')
 //     onChange() called when what can be shown changes (data in, data gone, time machine)
-import { source, info, MIN } from './livedata.js?v=20261121b';
-import { t, hm as zhm } from './i18n.js?v=20261121b';
+import { source, info, MIN } from './livedata.js?v=20261121c';
+import { t, hm as zhm } from './i18n.js?v=20261121c';
 
 const SM = 'https://api.sharedmobility.ch/v1/sharedmobility/';
 const AREA = '&Geometry=9.0131,46.1898&Tolerance=6500&geometryFormat=esrijson';   // circle around world.json `content` (6.44 km to its corners)
