@@ -1,7 +1,7 @@
 // Animated layer drawn over the tiles: cars and buses on the road graph, trains on the rails,
 // swallows above the roofs. Everything lives in ENU metres and is projected with the map's enu2px matrix.
-import { source, info, MIN } from './livedata.js?v=20261118j';
-import { t as say } from './i18n.js?v=20261118j';   // (t is a train in this file)
+import { source, info, MIN } from './livedata.js?v=20261121a';
+import { t as say } from './i18n.js?v=20261121a';   // (t is a train in this file)
 
 const DENSITY = [3.2, 2.4, 1.8, 1.3, 0.42, 0.07];          // vehicles per unit length, by road class
 const SPEED = [26, 12.5, 11, 10, 7.5, 4.5];                 // m/s

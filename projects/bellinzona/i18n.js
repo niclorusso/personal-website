@@ -19,7 +19,7 @@ const LOCALE = { it: 'it-CH', de: 'de-CH', fr: 'fr-CH', en: 'en-GB' };
 // numbers: it-CH writes 4.5 in Intl's data, while this map has always written 4,5 (as the Canton does): Italian numbers keep the comma
 const NUMLOC = { it: 'it-IT', de: 'de-CH', fr: 'fr-CH', en: 'en-GB' };
 const SPEECH = { it: 'it-IT', de: 'de-DE', fr: 'fr-FR', en: 'en-GB' };
-const V = '20261118j', KEY = 'bz-lingua';
+const V = '20261121a', KEY = 'bz-lingua';
 
 const pick = s => { s = String(s || '').toLowerCase().slice(0, 2); return LANGS.includes(s) ? s : ''; };
 function detect() {                                       // the same rule as index.html's <head>, for a page without it

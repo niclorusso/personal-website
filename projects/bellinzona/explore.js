@@ -157,7 +157,7 @@ const CSS = `
 }
 `;
 
-import { t, tc, lang, locale, speechLang, num, hm as zhm, dt, date, LANGS, NAMES, switchLang, textReady } from './i18n.js?v=20261118j';
+import { t, tc, lang, locale, speechLang, num, hm as zhm, dt, date, LANGS, NAMES, switchLang, textReady } from './i18n.js?v=20261121a';
 
 // the kinds of the map's own names (world.json labels), in the search results
 const KIND_IT = { city: t('kind.city'), town: t('kind.city'), village: t('kind.village'), suburb: t('kind.suburb'), quarter: t('kind.suburb'), neighbourhood: t('kind.suburb'),
@@ -207,7 +207,7 @@ export async function initExplore({ world, view, map, clamp, draw, halt, toScree
   document.head.appendChild(el('style')).textContent = CSS;
   const phone = () => matchMedia('(max-width: 640px)').matches;
   let geoP = null, geoM = null;                                      // geo.js, loaded on first use
-  const geo = () => geoP || (geoP = import('./geo.js?v=20261118j').then(m => { geoM = m; return new m.Geo(world, lang); }));
+  const geo = () => geoP || (geoP = import('./geo.js?v=20261121a').then(m => { geoM = m; return new m.Geo(world, lang); }));
   const embed = new URLSearchParams(location.search).has('incorpora');   // inside someone else's page (index.html hides the rest)
 
   // ---------- markers ----------
@@ -253,7 +253,7 @@ export async function initExplore({ world, view, map, clamp, draw, halt, toScree
   function wakeMob() {                                   // nothing is asked of those services before the list is opened
     if (document.body.classList.contains('era')) return;
     if (mob) mob.wake();
-    else if (!mobP) mobP = import('./mobility.js?v=20261118j').then(M => { mob = M.initMobility({ geo, layer, toScreen, active: mobLayer, onChange: mobChanged }); mob.wake(); }).catch(() => { /* no such layers */ });
+    else if (!mobP) mobP = import('./mobility.js?v=20261121a').then(M => { mob = M.initMobility({ geo, layer, toScreen, active: mobLayer, onChange: mobChanged }); mob.wake(); }).catch(() => { /* no such layers */ });
   }
   function mobChanged() {                                // live data in, changed or gone (stale, failed, time machine)
     if (mobLayer() && !mob.has(mobLayer())) { cat = ''; drawChips(); }   // the layer has nothing current: back to the places
@@ -1098,6 +1098,7 @@ export async function initExplore({ world, view, map, clamp, draw, halt, toScree
     // German nouns keep their capital after the colon
     if (c) b(t('hello.walk', { min: Math.round(c.walk / 5) * 5 }), t('hello.walk.title', { title: c.title, sub: lang === 'de' ? c.sub : c.sub.charAt(0).toLowerCase() + c.sub.slice(1) }), () => { setMode('routes'); pickRoute(c); });
     if (!document.body.classList.contains('era')) b(t('hello.now'), t('hello.now.title'), () => { setMode(''); openEvents(); });
+    b(t('tour.start'), t('tour.start.title'), () => { setMode(''); import('./tour.js?v=20261121a').then(m => m.startTour()); });   // the guided tour of everything there is
     b(t('hello.explore'), t('hello.explore.title'), () => setMode(''));
     routesBox.appendChild(acts);
     // the language, once, here: four small chips (later in ⋯ 🌐); the welcome comes back in the language chosen
@@ -1297,7 +1298,7 @@ export async function initExplore({ world, view, map, clamp, draw, halt, toScree
   // the welcome: on the first visit, and only when the map opens on its own. A link (a place, an itinerary, an event, a moment,
   // an era, another side, a view in the hash) or the map inside another page opens straight on what it was sent for
   const q0 = new URLSearchParams(location.search);
-  const linked = VIEW0 || embed || deep.luogo || deep.itinerario || deep.mio || ['evento', 'vista', 'epoca', 'quando', 'tappa'].some(k => q0.has(k));
+  const linked = VIEW0 || embed || deep.luogo || deep.itinerario || deep.mio || ['evento', 'vista', 'epoca', 'quando', 'tappa', 'giro'].some(k => q0.has(k));
   try {                                                                  // any visit counts: the next one is a repeat (and who saw the old info panel is no newcomer)
     const seen = localStorage.getItem('bz-welcome') || localStorage.getItem('bz-about');
     localStorage.setItem('bz-welcome', '1');
