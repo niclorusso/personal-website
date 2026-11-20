@@ -1,0 +1,93 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Nicola Lo Russo</title>
+<meta name="robots" content="noindex">
+<link rel="icon" href="../images/nico.png" type="image/png">
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500;600&display=swap">
+<style>
+/* Preview 43: a maze drawn like a plan. The yellow dot is moved through it; the posts are at the dead ends, and the way out leads to another version of the site. */
+:root{--bg:#0d2a6b;--line:#e9eefc;--dot:#ffe600}
+*{box-sizing:border-box}html,body{margin:0;height:100%}
+body{background:var(--bg);color:var(--line);font-family:"IBM Plex Mono",ui-monospace,monospace;overflow:hidden}
+header{position:fixed;left:0;right:0;top:0;padding:12px clamp(14px,2.6vw,36px);z-index:3;pointer-events:none}
+header [data-nlr-name]{pointer-events:auto;font-family:"IBM Plex Mono",monospace;font-weight:600;font-stretch:normal;letter-spacing:-.04em;font-size:clamp(22px,2.6vw,32px);line-height:1}
+canvas{position:fixed;inset:0;width:100%;height:100%;display:block;cursor:pointer;touch-action:none}
+#hud{position:fixed;left:0;right:0;bottom:0;padding:12px clamp(14px,2.6vw,36px) 16px;z-index:3;pointer-events:none;min-height:78px}
+#hud a{pointer-events:auto;color:inherit;text-decoration:none;display:none}
+#hud.on a{display:inline-block}
+#hud h2{margin:0 0 4px;font-weight:600;font-size:clamp(17px,2.2vw,28px);line-height:1.1;letter-spacing:-.03em;max-width:26em}
+#hud span{font-size:11px;letter-spacing:.1em;text-transform:uppercase;opacity:.7}
+@media(max-width:699px){#hud{padding-bottom:58px}}
+#hud em{font-style:normal;color:var(--bg);background:var(--dot);padding:3px 8px;margin-left:10px;font-size:11px;letter-spacing:.1em;text-transform:uppercase}
+</style>
+</head>
+<body>
+<header><span data-nlr-name data-nlr-own>Nicola Lo Russo</span></header>
+<canvas id="c"></canvas>
+<div id="hud"><a id="hl" href="#"><h2 id="ht"></h2><span id="hd"></span><em>Read</em></a></div>
+<script src="posts-data.js"></script>
+<script src="figures.js"></script>
+<script>
+(function(){
+  var cv=document.getElementById('c'),c=cv.getContext('2d'),hud=document.getElementById('hud'),ht=document.getElementById('ht'),hd=document.getElementById('hd'),hl=document.getElementById('hl');
+  var W,H,dpr,COLS=0,ROWS=0,S,OX,OY,TS,walls,posts,pos,path=[],trail=[],prog=0,exit,tiles=[],shown=-1,left=false,dirty=true;
+  var still=matchMedia('(prefers-reduced-motion: reduce)').matches;
+  function idx(x,y){return y*COLS+x}
+  // the size of the plan follows the window; the maze itself is drawn again only when the number of cells changes
+  function layout(){
+    dpr=Math.min(devicePixelRatio||1,2);W=innerWidth;H=innerHeight;cv.width=W*dpr;cv.height=H*dpr;
+    var ph=W<700,top=ph?52:58,bot=ph?146:96,aw=W-28,ah=Math.max(120,H-top-bot),cols=ph?(W<420?7:8):Math.max(14,Math.min(24,Math.round(aw/62)));S=Math.floor(aw/cols);var rows=Math.max(4,Math.floor(ah/S));
+    if(cols*rows<POSTS.length+8){rows=Math.max(3,Math.min(rows,Math.floor(ah/30)));cols=Math.max(cols,Math.ceil((POSTS.length+8)/rows))}
+    S=Math.min(Math.floor(aw/cols),Math.floor(ah/rows));OX=Math.round((W-cols*S)/2);OY=top+Math.round((ah-rows*S)/2);TS=ph?.72:.62;
+    if(cols!==COLS||rows!==ROWS){COLS=cols;ROWS=rows;carve()}
+    tiles=POSTS.map(function(p,i){var t=document.createElement('canvas'),z=Math.round(S*TS*dpr);t.width=z;t.height=Math.round(z*.75);var g=t.getContext('2d'),vw=170,k=z/vw,m=10;g.fillStyle='#e9eefc';g.fillRect(0,0,t.width,t.height);g.setTransform(k,0,0,k,0,0);g.translate(m,m*.75);g.lineWidth=2.6;g.fillStyle=g.strokeStyle='#0d2a6b';(F[FIG[p.id]]||F.line)(g,vw-2*m,t.height/k-1.5*m,i*2.3+3,'#0d2a6b','#d8322a');return t});
+    dirty=true;
+  }
+  function carve(){
+    // walls[i] = [right open, bottom open]; carved with a depth-first walk
+    walls=[];for(var i=0;i<COLS*ROWS;i++)walls.push([0,0]);var seen=new Uint8Array(COLS*ROWS),st=[[0,0]];seen[0]=1;
+    while(st.length){var cur=st[st.length-1],x=cur[0],y=cur[1],n=[[1,0],[-1,0],[0,1],[0,-1]].filter(function(d){var a=x+d[0],b=y+d[1];return a>=0&&b>=0&&a<COLS&&b<ROWS&&!seen[idx(a,b)]});
+      if(!n.length){st.pop();continue}var d=n[Math.floor(Math.random()*n.length)],a=x+d[0],b=y+d[1];if(d[0]===1)walls[idx(x,y)][0]=1;if(d[0]===-1)walls[idx(a,b)][0]=1;if(d[1]===1)walls[idx(x,y)][1]=1;if(d[1]===-1)walls[idx(a,b)][1]=1;seen[idx(a,b)]=1;st.push([a,b])}
+    exit=[COLS-1,ROWS-1];pos=[0,0];path=[];trail=[[0,0]];prog=0;
+    // the posts go to the dead ends first, then to other cells
+    var dead=[],other=[];for(var y=0;y<ROWS;y++)for(var x=0;x<COLS;x++){if((x===0&&y===0)||(x===exit[0]&&y===exit[1]))continue;(open(x,y).length===1?dead:other).push([x,y])}
+    function sh(a){for(var i=a.length-1;i>0;i--){var j=Math.floor(Math.random()*(i+1)),t=a[i];a[i]=a[j];a[j]=t}return a}
+    var cells=sh(dead).concat(sh(other)).slice(0,POSTS.length);posts={};cells.forEach(function(q,i){posts[idx(q[0],q[1])]=i});
+    shown=-1;hud.classList.remove('on');left=false;
+  }
+  function open(x,y){var o=[];if(x<COLS-1&&walls[idx(x,y)][0])o.push([x+1,y]);if(x>0&&walls[idx(x-1,y)][0])o.push([x-1,y]);if(y<ROWS-1&&walls[idx(x,y)][1])o.push([x,y+1]);if(y>0&&walls[idx(x,y-1)][1])o.push([x,y-1]);return o}
+  function route(to){var from=path.length?path[path.length-1]:pos,prev={},q=[from],k0=idx(from[0],from[1]);prev[k0]=-1;while(q.length){var cur=q.shift();if(cur[0]===to[0]&&cur[1]===to[1])break;open(cur[0],cur[1]).forEach(function(n){var k=idx(n[0],n[1]);if(prev[k]===undefined){prev[k]=cur;q.push(n)}})}
+    var out=[],cur=to;while(cur!==-1&&cur&&!(cur[0]===from[0]&&cur[1]===from[1])){out.unshift(cur);cur=prev[idx(cur[0],cur[1])]}return out}
+  function here(){return path.length?undefined:posts[idx(pos[0],pos[1])]}
+  function arrive(){var k=posts[idx(pos[0],pos[1])];if(k!==undefined){shown=k;var p=POSTS[k];ht.textContent=p.t;hd.textContent=new Date(p.d+'T12:00').toLocaleDateString('en-GB',{day:'numeric',month:'long',year:'numeric'});hl.href='../posts/'+p.id+'.html';hud.classList.add('on')}
+    if(pos[0]===exit[0]&&pos[1]===exit[1]&&!left){left=true;if(window.nlrGo){var f=document.createElement('i');f.style.cssText='position:fixed;width:10px;height:10px;border-radius:50%;background:#ffe600;left:'+(OX+(pos[0]+.5)*S-5)+'px;top:'+(OY+(pos[1]+.5)*S-5)+'px';document.body.appendChild(f);nlrGo(f)}else setTimeout(function(){COLS=0;layout()},900)}}
+  function key(dx,dy){var from=path.length?path[path.length-1]:pos,t=[from[0]+dx,from[1]+dy];if(open(from[0],from[1]).some(function(n){return n[0]===t[0]&&n[1]===t[1]}))path.push(t)}
+  addEventListener('keydown',function(e){if(e.metaKey||e.ctrlKey||e.altKey)return;var k={ArrowLeft:[-1,0],ArrowRight:[1,0],ArrowUp:[0,-1],ArrowDown:[0,1],a:[-1,0],d:[1,0],w:[0,-1],s:[0,1]}[e.key];if(k){e.preventDefault();if(path.length<2)key(k[0],k[1])}
+    else if(e.key==='Enter'&&e.target===document.body&&here()!==undefined)location.href=hl.href});
+  // a click on a cell walks there; a click on the post where the dot already stands opens it
+  cv.addEventListener('pointerdown',function(e){var x=Math.floor((e.clientX-OX)/S),y=Math.floor((e.clientY-OY)/S);if(x<0||y<0||x>=COLS||y>=ROWS)return;
+    if(!path.length&&x===pos[0]&&y===pos[1]){if(here()!==undefined)location.href=hl.href;return}path=path.slice(0,1);path=path.concat(route([x,y]))});
+  function draw(){c.setTransform(dpr,0,0,dpr,0,0);c.clearRect(0,0,W,H);
+    c.strokeStyle='rgba(233,238,252,.07)';c.lineWidth=1;c.beginPath();for(var x=0;x<=COLS;x++){c.moveTo(OX+x*S+.5,OY);c.lineTo(OX+x*S+.5,OY+ROWS*S)}for(var y=0;y<=ROWS;y++){c.moveTo(OX,OY+y*S+.5);c.lineTo(OX+COLS*S,OY+y*S+.5)}c.stroke();
+    var fx=pos[0],fy=pos[1];if(path.length){fx+=(path[0][0]-pos[0])*prog;fy+=(path[0][1]-pos[1])*prog}
+    c.strokeStyle='rgba(255,230,0,.38)';c.lineWidth=Math.max(2,S*.09);c.lineJoin=c.lineCap='round';c.beginPath();trail.forEach(function(t,i){var X=OX+(t[0]+.5)*S,Y=OY+(t[1]+.5)*S;i?c.lineTo(X,Y):c.moveTo(X,Y)});c.lineTo(OX+(fx+.5)*S,OY+(fy+.5)*S);c.stroke();
+    for(var k in posts){var x=k%COLS,y=(k-x)/COLS,t=tiles[posts[k]],w=Math.round(S*TS),h=Math.round(w*.75),tx=Math.round(OX+(x+.5)*S-w/2),ty=Math.round(OY+(y+.5)*S-h/2);c.drawImage(t,tx,ty,w,h);if(posts[k]===shown){c.strokeStyle='#ffe600';c.lineWidth=2;c.strokeRect(tx-3,ty-3,w+6,h+6)}}
+    // the walls; the way out is the cell at the bottom right, open on the outer side
+    var x1=OX+COLS*S,y1=OY+ROWS*S;c.strokeStyle='#e9eefc';c.lineWidth=1.6;c.lineCap='square';c.beginPath();c.moveTo(x1,y1-S);c.lineTo(x1,OY);c.lineTo(OX,OY);c.lineTo(OX,y1);c.lineTo(x1,y1);
+    for(var y=0;y<ROWS;y++)for(var x=0;x<COLS;x++){var wl=walls[idx(x,y)];if(!wl[0]&&x<COLS-1){c.moveTo(OX+(x+1)*S,OY+y*S);c.lineTo(OX+(x+1)*S,OY+(y+1)*S)}if(!wl[1]&&y<ROWS-1){c.moveTo(OX+x*S,OY+(y+1)*S);c.lineTo(OX+(x+1)*S,OY+(y+1)*S)}}c.stroke();
+    var rd=Math.max(5,S*.17);c.strokeStyle='#ffe600';c.lineWidth=2;c.beginPath();c.arc(x1-S/2,y1-S/2,rd-1,0,7);c.stroke();
+    c.fillStyle='#ffe600';c.beginPath();c.arc(OX+(fx+.5)*S,OY+(fy+.5)*S,rd,0,7);c.fill()}
+  layout();var rt;addEventListener('resize',function(){clearTimeout(rt);rt=setTimeout(layout,150)});
+  var last=performance.now();(function frame(now){now=now||last;var dt=Math.min(.05,(now-last)/1000);last=now;
+    if(path.length){dirty=true;prog+=still?path.length:dt*(path.length>4?16:9);while(prog>=1&&path.length){prog-=1;pos=path.shift();var tl=trail.length;if(tl>1&&trail[tl-2][0]===pos[0]&&trail[tl-2][1]===pos[1])trail.pop();else trail.push(pos);if(!path.length){prog=0;arrive()}}}
+    if(dirty){dirty=false;draw()}requestAnimationFrame(frame)})();
+  window.__maze=function(){return {moving:path.length>0,walls:walls,postMap:posts,shown:shown,pos:pos,exit:exit,cols:COLS,rows:ROWS,ox:OX,oy:OY,s:S,posts:Object.keys(posts).length,first:Object.keys(posts)[0]}};
+})();
+</script>
+<script src="world.js"></script>
+</body>
+</html>

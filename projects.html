@@ -3,113 +3,123 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta name="description" content="Platforms and interactive pages built on open data by Nicola Lo Russo.">
+    <meta name="description" content="Nicola Lo Russo, AI engineer at ETH Zurich. Posts and projects on probability, language models and Swiss politics in data.">
     <meta name="author" content="Nicola Lo Russo">
-    
-        
-    <title>Projects - Nicola Lo Russo</title>
-    
-        
-    <!-- External Stylesheets -->
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
-    
-    <!-- Internal Stylesheets -->
-    <link rel="stylesheet" href="css/simple-grid.css">
-    <link rel="stylesheet" href="css/style.css">
-                <link rel="stylesheet" href="css/index-style.css">
-            <link rel="stylesheet" href="css/footer-style.css">
-            <link rel="stylesheet" href="css/header-style.css">
-        
-    <!-- JavaScript -->
+        <link rel="canonical" href="https://nicolalorusso.ch/projects.html">
+        <title>Projects - Nicola Lo Russo</title>
+    <meta property="og:type" content="website">
+    <meta property="og:site_name" content="Nicola Lo Russo">
+    <meta property="og:title" content="Nicola Lo Russo">
+    <meta property="og:description" content="Nicola Lo Russo, AI engineer at ETH Zurich. Posts and projects on probability, language models and Swiss politics in data.">
+    <meta property="og:url" content="https://nicolalorusso.ch/projects.html">
+    <meta name="twitter:card" content="summary">
+    <meta name="twitter:title" content="Nicola Lo Russo">
+    <meta name="twitter:description" content="Nicola Lo Russo, AI engineer at ETH Zurich. Posts and projects on probability, language models and Swiss politics in data.">
+    <link rel="alternate" type="application/rss+xml" title="Nicola Lo Russo" href="https://nicolalorusso.ch/rss.xml">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wdth,wght@12..96,75..100,300..800&family=Source+Serif+4:ital,opsz,wght@0,8..60,400..700;1,8..60,400..700&family=JetBrains+Mono:wght@400;500&display=swap">
+        <link rel="stylesheet" href="css/site.css">
+    <script>try{if(localStorage.getItem('nlr-plain')==='1')document.documentElement.classList.add('n-plain')}catch(e){}</script>
     <script src="js/email_decrypt.js"></script>
-            
-    <!-- Favicon -->
-    <link rel="icon" href="images/nico.png" type="image/png">
+        <link rel="icon" href="images/nico.png" type="image/png">
 </head>
 <body>
 
-<link rel="stylesheet" href="projects/projects.css">
-<header>
-    <div>
-        <div style="text-align: center;">
-            <h1><a href="index.html" style="text-decoration: none; color: inherit;">Nicola Lo Russo</a></h1>
-                                        <p class="site-tagline">Personal website</p>
-                        <p class="no-print"></p>
-            <div class="header-icons">
-                <a id="email-link" onClick="writeEmail()" style="cursor: pointer;">
-                    <i class="fas fa-envelope"></i>
-                    <i class="icon-text">nic.lorusso [at] icloud.com</i>
-                </a>
-                <a href="https://www.linkedin.com/in/nicola-lo-russo-7a4849127/" target="_blank" rel="noopener noreferrer">
-                    <i class="fab fa-linkedin"></i>
-                    <i class="icon-text">Nicola Lo Russo</i>
-                </a>
-            </div>
-        </div>
+<header class="n-top n-grain">
+    <div class="n-in">
+        <nav class="n-nav n-mono">
+            <span class="n-po">Personal website</span><span class="n-hint">Personal metawebsite</span>
+            <div class="n-links"><a href="#" onclick="writeEmail();return false">Email</a><span>&middot;</span><a href="https://www.linkedin.com/in/nicola-lo-russo-7a4849127/" target="_blank" rel="noopener noreferrer">LinkedIn</a><span class="n-po">&middot;</span><a class="n-po" href="cv.html">About</a><span>&middot;</span><button id="n-plain" type="button"></button></div>
+        </nav>
+        <h1 class="n-name n-d" aria-label="Nicola Lo Russo">N<span class="n-ii">&#305;<span class="n-bl"></span><button class="n-dot" type="button" aria-label="Another version of this site"></button></span>cola Lo Russo</h1>
     </div>
-    <nav class="minimal-menu">
-        <div class="menu-item">
-            <a href="index.html">
-                <span >Home</span>
-            </a>
-        </div>
-        <div class="menu-item">
-            <a href="/projects.html">
-                <span style="border-bottom: 2px solid var(--color-accent)">Projects</span>
-            </a>
-        </div>
-        <div class="menu-item">
-            <a href="cv.html">
-                <span >About Me</span>
-            </a>
-        </div>
-        
-        
-            </nav>
+    <a class="n-stamp" href="cv.html" aria-label="About me">
+        <svg viewBox="0 0 100 100" aria-hidden="true"><defs><path id="n-ring" d="M50 50m-38 0a38 38 0 1 1 76 0a38 38 0 1 1-76 0"/></defs><text><textPath href="#n-ring" textLength="236" lengthAdjust="spacing">About me &middot; About me &middot; About me &middot; </textPath></text></svg>
+        <b>&rarr;</b>
+    </a>
 </header>
 
+<div class="n-page">
+    <div class="n-bar n-mono"><div class="n-chips" id="n-chips"></div><button id="n-reset" type="button" hidden>&#8634; Put everything back</button></div>
+    <main id="n-main" data-cat="projects">
+        <div class="n-list" hidden>
+<a class="n-row" href="posts/ai-parliament.html" data-cat="posts" data-date="2026-11-12"><div class="n-tile n-grain" data-fig="parliament"><canvas></canvas></div><div><h3 class="n-d">What the Swiss parliament asks about AI</h3><span class="n-mono">12 Nov 2026</span></div><span class="n-arr">&rarr;</span></a>
+    <a class="n-row" href="posts/bellinzona-real-time.html" data-cat="posts" data-date="2026-11-11"><div class="n-tile n-grain" data-fig="map"><canvas></canvas></div><div><h3 class="n-d">A live map of my hometown</h3><span class="n-mono">11 Nov 2026</span></div><span class="n-arr">&rarr;</span></a>
+    <a class="n-row" href="posts/ecoplus-teleticino-2026.html" data-cat="posts" data-date="2026-10-08"><div class="n-tile n-grain" data-fig="tv"><canvas></canvas></div><div><h3 class="n-d">I was on TV</h3><span class="n-mono">8 Oct 2026</span></div><span class="n-arr">&rarr;</span></a>
+    <a class="n-row" href="posts/tedxbellinzona-2026.html" data-cat="posts" data-date="2026-10-01"><div class="n-tile n-grain" data-fig="stage"><canvas></canvas></div><div><h3 class="n-d">My opening at TEDxBellinzona 2026</h3><span class="n-mono">1 Oct 2026</span></div><span class="n-arr">&rarr;</span></a>
+    <a class="n-row" href="posts/hacking-democracy-talk.html" data-cat="posts" data-date="2026-09-08"><div class="n-tile n-grain" data-fig="wave"><canvas></canvas></div><div><h3 class="n-d">My talk at Hacking Democracy, ETH Zurich</h3><span class="n-mono">8 Sep 2026</span></div><span class="n-arr">&rarr;</span></a>
+    <a class="n-row" href="posts/llm-inference-optimizations-by-example.html" data-cat="posts" data-date="2026-03-22"><div class="n-tile n-grain" data-fig="stream"><canvas></canvas></div><div><h3 class="n-d">LLM inference optimization</h3><span class="n-mono">22 Mar 2026</span></div><span class="n-arr">&rarr;</span></a>
+    <a class="n-row" href="posts/how-llms-work.html" data-cat="posts" data-date="2026-03-06"><div class="n-tile n-grain" data-fig="llm"><canvas></canvas></div><div><h3 class="n-d">Transformers 101 (basics of chatGPT)</h3><span class="n-mono">6 Mar 2026</span></div><span class="n-arr">&rarr;</span></a>
+    <a class="n-row" href="posts/entropy-randomness.html" data-cat="posts" data-date="2026-02-11"><div class="n-tile n-grain" data-fig="entropy"><canvas></canvas></div><div><h3 class="n-d">Entropy vs Randomness</h3><span class="n-mono">11 Feb 2026</span></div><span class="n-arr">&rarr;</span></a>
+    <a class="n-row" href="posts/swissdata.html" data-cat="posts" data-date="2026-02-06"><div class="n-tile n-grain" data-fig="line"><canvas></canvas></div><div><h3 class="n-d">SwissData is now online</h3><span class="n-mono">6 Feb 2026</span></div><span class="n-arr">&rarr;</span></a>
+    <a class="n-row" href="posts/eulens.html" data-cat="posts" data-date="2026-01-30"><div class="n-tile n-grain" data-fig="votes"><canvas></canvas></div><div><h3 class="n-d">Introducing EU Lens</h3><span class="n-mono">30 Jan 2026</span></div><span class="n-arr">&rarr;</span></a>
+    <a class="n-row" href="posts/flat-search.html" data-cat="posts" data-date="2026-01-20"><div class="n-tile n-grain" data-fig="flat"><canvas></canvas></div><div><h3 class="n-d">How to search for a flat (mathematically)</h3><span class="n-mono">20 Jan 2026</span></div><span class="n-arr">&rarr;</span></a>
+    <a class="n-row" href="posts/monte-carlo.html" data-cat="posts" data-date="2026-01-16"><div class="n-tile n-grain" data-fig="montecarlo"><canvas></canvas></div><div><h3 class="n-d">How to price options with Monte Carlo methods</h3><span class="n-mono">16 Jan 2026</span></div><span class="n-arr">&rarr;</span></a>
+    <a class="n-row" href="posts/clinamen-algorithm.html" data-cat="posts" data-date="2026-01-10"><div class="n-tile n-grain" data-fig="swerve"><canvas></canvas></div><div><h3 class="n-d">Sampling from the long tail: Oulipian constraints for language models</h3><span class="n-mono">10 Jan 2026</span></div><span class="n-arr">&rarr;</span></a>
+    <a class="n-row" href="posts/literature-turing-test.html" data-cat="posts" data-date="2026-01-09"><div class="n-tile n-grain" data-fig="turing"><canvas></canvas></div><div><h3 class="n-d">Literature Turing test</h3><span class="n-mono">9 Jan 2026</span></div><span class="n-arr">&rarr;</span></a>
+    <a class="n-row" href="posts/books-2025.html" data-cat="posts" data-date="2025-12-26"><div class="n-tile n-grain" data-fig="books"><canvas></canvas></div><div><h3 class="n-d">My 2025 in books</h3><span class="n-mono">26 Dec 2025</span></div><span class="n-arr">&rarr;</span></a>
+    <a class="n-row" href="posts/voting-systems.html" data-cat="posts" data-date="2025-03-31"><div class="n-tile n-grain" data-fig="voting"><canvas></canvas></div><div><h3 class="n-d">Intro to voting theory: chapter 1</h3><span class="n-mono">31 Mar 2025</span></div><span class="n-arr">&rarr;</span></a>
+    <a class="n-row" href="posts/risk-asteroid.html" data-cat="posts" data-date="2025-02-19"><div class="n-tile n-grain" data-fig="asteroid"><canvas></canvas></div><div><h3 class="n-d">Of risks and asteroids: analyzing the impact probability of 2024 YR4</h3><span class="n-mono">19 Feb 2025</span></div><span class="n-arr">&rarr;</span></a>
+    <a class="n-row" href="posts/bayes-theorem.html" data-cat="posts" data-date="2024-11-19"><div class="n-tile n-grain" data-fig="bayes"><canvas></canvas></div><div><h3 class="n-d">About Bayes&#039; theorem, disease testing, and the prosecutor&#039;s fallacy</h3><span class="n-mono">19 Nov 2024</span></div><span class="n-arr">&rarr;</span></a>
+    <a class="n-row" href="posts/unfair-coin.html" data-cat="posts" data-date="2024-11-03"><div class="n-tile n-grain" data-fig="coin"><canvas></canvas></div><div><h3 class="n-d">The unfair coin</h3><span class="n-mono">3 Nov 2024</span></div><span class="n-arr">&rarr;</span></a>
+    <a class="n-row" href="posts/watson-riddle.html" data-cat="posts" data-date="2024-10-28"><div class="n-tile n-grain" data-fig="logic"><canvas></canvas></div><div><h3 class="n-d">A logic puzzle</h3><span class="n-mono">28 Oct 2024</span></div><span class="n-arr">&rarr;</span></a>
+            </div>
+        <div class="n-projects">
+            <article class="n-proj">
+                <a class="n-tile n-grain" data-fig="parliament" href="projects/ai-parliament/index.html" tabindex="-1" aria-hidden="true"><canvas></canvas></a>
+                <div>
+                    <h3 class="n-d"><a href="projects/ai-parliament/index.html">AI in the Swiss Parliament</a></h3>
+                    <p>What members of the Swiss parliament ask about artificial intelligence, who asks, and what the Federal Council answers.</p>
+                    <span class="n-mono"><a href="projects/ai-parliament/index.html">Open the project &rarr;</a><a href="posts/ai-parliament.html">Read the post &rarr;</a></span>
+                </div>
+            </article>
+            <article class="n-proj">
+                <a class="n-tile n-grain" data-fig="map" href="projects/bellinzona/index.html" tabindex="-1" aria-hidden="true"><canvas></canvas></a>
+                <div>
+                    <h3 class="n-d"><a href="projects/bellinzona/index.html">My hometown in real time</a></h3>
+                    <p>An illustrated map of Bellinzona that moves with the real town: trains and buses on their timetables, the real weather and river, the Saturday market and traffic lights.</p>
+                    <span class="n-mono"><a href="projects/bellinzona/index.html">Open the project &rarr;</a><a href="posts/bellinzona-real-time.html">Read the post &rarr;</a></span>
+                </div>
+            </article>
+            <article class="n-proj">
+                <a class="n-tile n-grain" data-fig="line" href="projects/ticino-50/index.html" tabindex="-1" aria-hidden="true"><canvas></canvas></a>
+                <div>
+                    <h3 class="n-d"><a href="projects/ticino-50/index.html">Ticino over fifty years</a></h3>
+                    <p>Five things that changed since the 1970s, and 65 indicators to compare any year with today.</p>
+                    <span class="n-mono"><a href="projects/ticino-50/index.html">Open the project &rarr;</a></span>
+                </div>
+            </article>
+            <article class="n-proj">
+                <a class="n-tile n-grain" data-fig="flat" href="https://spending.swissdata-platform.ch" target="_blank" rel="noopener noreferrer" tabindex="-1" aria-hidden="true"><canvas></canvas></a>
+                <div>
+                    <h3 class="n-d"><a href="https://spending.swissdata-platform.ch" target="_blank" rel="noopener noreferrer">SwissData Spending</a></h3>
+                    <p>Swiss public spending in one place: the Confederation, procurement, cantons and municipalities, with the source under every chart.</p>
+                    <span class="n-mono"><a href="https://spending.swissdata-platform.ch" target="_blank" rel="noopener noreferrer">Open the project &nearr;</a></span>
+                </div>
+            </article>
+            <article class="n-proj">
+                <a class="n-tile n-grain" data-fig="line" href="https://swissdata-platform.ch" target="_blank" rel="noopener noreferrer" tabindex="-1" aria-hidden="true"><canvas></canvas></a>
+                <div>
+                    <h3 class="n-d"><a href="https://swissdata-platform.ch" target="_blank" rel="noopener noreferrer">SwissData</a></h3>
+                    <p>Official Swiss statistics made interactive, with visualizations and a quiz.</p>
+                    <span class="n-mono"><a href="https://swissdata-platform.ch" target="_blank" rel="noopener noreferrer">Open the project &nearr;</a><a href="posts/swissdata.html">Read the post &rarr;</a></span>
+                </div>
+            </article>
+            <article class="n-proj">
+                <a class="n-tile n-grain" data-fig="votes" href="https://eulens.eu" target="_blank" rel="noopener noreferrer" tabindex="-1" aria-hidden="true"><canvas></canvas></a>
+                <div>
+                    <h3 class="n-d"><a href="https://eulens.eu" target="_blank" rel="noopener noreferrer">EU Lens</a></h3>
+                    <p>Explore European Parliament voting data, MEP profiles and AI-generated bill summaries.</p>
+                    <span class="n-mono"><a href="https://eulens.eu" target="_blank" rel="noopener noreferrer">Open the project &nearr;</a><a href="posts/eulens.html">Read the post &rarr;</a></span>
+                </div>
+            </article>
+        </div>
+    </main>
+    <footer class="n-foot n-mono"><span>&copy; 2026 Nicola Lo Russo</span><a href="https://nicolalorusso.ch/rss.xml">RSS</a></footer>
+</div>
 
-<main class="container project">
-    <p class="lede" style="margin-top: 2rem;">Platforms and interactive pages built on open data.</p>
-    <div class="cards">
-        <a class="card" href="https://eulens.eu" target="_blank" rel="noopener noreferrer">
-            <span class="kicker">European Parliament · Platform</span>
-            <h3>EU Lens <span class="ext" aria-label="opens another site">&nearr;</span></h3>
-            <p>Explore European Parliament voting data, MEP profiles and AI-generated bill summaries.</p>
-        </a>
-        <a class="card" href="projects/ai-parliament/index.html">
-            <span class="kicker">Politics · Open data</span>
-            <h3>AI in the Swiss Parliament</h3>
-            <p>What members of the Swiss parliament ask about artificial intelligence, who asks, and what the Federal Council answers.</p>
-        </a>
-        <a class="card" href="https://spending.swissdata-platform.ch" target="_blank" rel="noopener noreferrer">
-            <span class="kicker">Switzerland · Public money</span>
-            <h3>SwissData Spending <span class="ext" aria-label="opens another site">&nearr;</span></h3>
-            <p>Swiss public spending in one place: the Confederation, procurement, cantons and municipalities, with the source under every chart.</p>
-        </a>
-        <a class="card" href="projects/ticino-50/index.html">
-            <span class="kicker">Ticino · Historical data</span>
-            <h3>Ticino over fifty years</h3>
-            <p>Five things that changed since the 1970s, and 65 indicators to compare any year with today.</p>
-        </a>
-        <!-- local-only:start (not published: see generate_static.php) -->
-        <a class="card" href="projects/bellinzona/index.html">
-            <span class="kicker">Bellinzona · Open data · Live</span>
-            <h3>My hometown in real time</h3>
-            <p>An illustrated map of Bellinzona that moves with the real town: trains and buses on their timetables, the real weather and river, the Saturday market and traffic lights.</p>
-        </a>
-        <!-- local-only:end -->
-        <a class="card" href="https://swissdata-platform.ch" target="_blank" rel="noopener noreferrer">
-            <span class="kicker">Switzerland · Platform</span>
-            <h3>SwissData <span class="ext" aria-label="opens another site">&nearr;</span></h3>
-            <p>Official Swiss statistics made interactive, with visualizations and a quiz.</p>
-        </a>
-    </div>
-</main>
-
-<footer>
-    <p>© 2026 Nicola Lo Russo</p>
-</footer>
-
+<script src="js/figures.js"></script>
+<script src="js/site.js"></script>
 </body>
 </html>

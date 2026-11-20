@@ -1,0 +1,85 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Nicola Lo Russo</title>
+<meta name="robots" content="noindex">
+<link rel="icon" href="../images/nico.png" type="image/png">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&family=Geist+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+:root{--bg:#08080b;--fg:#f4f1e8;--soft:#8c8a86;--hot:#ff6a3d}
+*{box-sizing:border-box}
+html{background:var(--bg)}
+body{margin:0;color:var(--fg);font-family:"Instrument Serif",Georgia,serif;font-size:20px;line-height:1.3}
+a{color:inherit;text-decoration:none}
+.mono{font-family:"Geist Mono",ui-monospace,monospace;font-size:11.5px;letter-spacing:.08em;text-transform:uppercase}
+nav{position:fixed;z-index:5;left:0;right:0;top:0;display:flex;justify-content:space-between;padding:20px 26px;mix-blend-mode:difference}
+nav .links{display:flex;gap:22px}nav button{all:unset;cursor:pointer}
+.stage{position:fixed;inset:0;perspective:900px;perspective-origin:50% 46%;overflow:hidden;
+  background:radial-gradient(60% 55% at 50% 46%,#191a24 0,var(--bg) 70%)}
+.it{position:absolute;left:50%;top:46%;width:min(74vw,900px);margin-left:calc(min(74vw,900px)/-2);transform-origin:center;will-change:transform,opacity;pointer-events:none;text-align:center}
+.it.near{pointer-events:auto}
+.it h2{margin:10px 0 12px;font-weight:400;font-size:clamp(40px,7.2vw,112px);line-height:.94;letter-spacing:-.025em;text-wrap:balance}
+.it.near h2:hover{font-style:italic;color:var(--hot)}
+.it p{margin:0 auto;max-width:30em;font-size:21px;line-height:1.35;color:#d8d5cc}
+.it .mono{color:var(--soft)}
+.yr{position:absolute;left:50%;top:46%;font-size:46vw;line-height:1;color:transparent;-webkit-text-stroke:2px #f4f1e826;transform-origin:center;will-change:transform,opacity;pointer-events:none;white-space:nowrap;margin:-23vw 0 0 -50vw;width:100vw;text-align:center}
+.rail{position:fixed;z-index:5;right:18px;top:50%;transform:translateY(-50%);display:flex;flex-direction:column;gap:7px}
+.rail button{all:unset;cursor:pointer;width:22px;height:2px;background:#f4f1e84d;transition:width .2s,background .2s;align-self:flex-end}
+.rail button.on{width:38px;background:var(--hot)}
+.hint{position:fixed;z-index:5;left:0;right:0;bottom:22px;text-align:center;color:var(--soft);transition:opacity .4s}
+.over{position:fixed;inset:0;z-index:8;background:var(--bg);overflow:auto;padding:80px clamp(18px,8vw,120px) 60px;display:none}
+.over.on{display:block}
+.over a{display:grid;grid-template-columns:130px 1fr;gap:16px;align-items:baseline;padding:13px 0;border-bottom:1px solid #f4f1e822;font-size:28px;line-height:1.15}
+.over a:hover{color:var(--hot);font-style:italic}
+.over .mono{color:var(--soft)}
+#space{pointer-events:none}
+@media(max-width:700px){.it p{font-size:17px}.rail{right:8px}.over a{grid-template-columns:1fr;gap:2px;font-size:23px}}
+</style>
+</head>
+<body>
+<nav class="mono"><span data-nlr-name data-nlr-own style="font:400 30px/1 'Instrument Serif',serif;text-transform:none;letter-spacing:-.01em">Nicola Lo Russo</span><div class="links"><button id="idx">Index</button><a href="../projects.html">Projects</a><a href="../cv.html">About</a></div></nav>
+<div class="stage" id="stage"></div>
+<div class="rail" id="rail"></div>
+<div class="hint mono" id="hint">&darr;</div>
+<div class="over" id="over"></div>
+<div id="space"></div>
+
+<script src="posts-data.js"></script>
+<script>
+// The archive is laid out in depth: scrolling moves forward through it, newest first. "Index" shows the same posts as a plain list.
+const D=1000,stage=document.getElementById('stage'),rail=document.getElementById('rail'),items=[],fd=(d,o)=>new Date(d+'T12:00').toLocaleDateString('en-GB',o);
+const add=(html,cls,z,x,y)=>{const e=document.createElement(cls==='yr'?'div':'a');e.className=cls;e.innerHTML=html;stage.appendChild(e);const o={e,z,x,y,yr:cls==='yr'};items.push(o);return o};
+add(`<h2>Nicola Lo Russo</h2>`,'it',0,0,0);
+let yr='';const posts=[];
+POSTS.forEach((p,i)=>{const z=(i+1)*D,y=p.d.slice(0,4);
+  const o=add(`<span class="mono">${String(POSTS.length-i).padStart(2,'0')} · ${fd(p.d,{day:'numeric',month:'long',year:'numeric'})}</span><h2>${p.t}</h2>${p.s?`<p>${p.s}</p>`:''}`,'it',z,(i%2?1:-1)*(8+i%3*4),(i%3-1)*5);
+  o.e.href='../posts/'+p.id+'.html';posts.push(o);
+  const b=document.createElement('button');b.title=p.t;b.onclick=()=>scrollTo({top:z,behavior:'smooth'});rail.appendChild(b)});
+document.getElementById('space').style.height=(POSTS.length*D+innerHeight)+'px';
+let cam=0,target=0;const still=matchMedia('(prefers-reduced-motion: reduce)').matches;
+function frame(){
+  target=scrollY;cam+=(target-cam)*(still?1:.12);let near=-1,nd=1e9;
+  for(const o of items){const dz=cam-o.z; // negative = still ahead
+    const vis=dz>-D*1.05&&dz<D*.55;o.e.style.visibility=vis?'visible':'hidden';if(!vis)continue;
+    const far=Math.min(1,Math.max(0,(dz+D)/(D*.7))),pass=dz>0?Math.max(0,1-dz/(D*.5)):1,a=far*pass*(o.yr?.9:1);
+    const k=Math.max(0,-dz/D); // how many steps ahead
+    o.e.style.opacity=a.toFixed(3);
+    o.e.style.transform=`translate3d(${o.x*(1+k*.6)}vw,${o.y*(1+k*.6)}vh,${dz}px)`;
+    o.e.style.filter=!o.yr&&k>.6?`blur(${Math.min(6,(k-.6)*9).toFixed(1)}px)`:'none';
+    o.e.classList.toggle('near',Math.abs(dz)<D*.3);
+    if(!o.yr&&Math.abs(dz)<nd){nd=Math.abs(dz);near=posts.indexOf(o)}}
+  [...rail.children].forEach((b,i)=>b.classList.toggle('on',i===near));
+  document.getElementById('hint').style.opacity=cam<60?1:0;
+  requestAnimationFrame(frame);
+}
+requestAnimationFrame(frame);
+const over=document.getElementById('over');
+over.innerHTML=POSTS.map(p=>`<a href="../posts/${p.id}.html"><span class="mono">${fd(p.d,{day:'2-digit',month:'short',year:'numeric'})}</span><span>${p.t}</span></a>`).join('');
+document.getElementById('idx').onclick=e=>{const on=over.classList.toggle('on');e.target.textContent=on?'Close':'Index';document.body.style.overflow=on?'hidden':''};
+</script>
+<script src="world.js"></script>
+</body>
+</html>

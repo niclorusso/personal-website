@@ -1,0 +1,111 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Nicola Lo Russo</title>
+<meta name="robots" content="noindex">
+<link rel="icon" href="../images/nico.png" type="image/png">
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Fredoka:wght@500;700&family=JetBrains+Mono:wght@500&display=swap">
+<style>
+/* Preview 42: a claw machine. The posts are capsules in a pile; the claw often lets them slip. The one that comes out is the post to read. */
+:root{--bg:#ffd3e2;--cab:#11b5a4;--dark:#0b4f49;--ink:#231a2c;--cream:#fff8ea}
+*{box-sizing:border-box}html,body{margin:0;height:100%}
+body{background:var(--bg);color:var(--ink);font-family:"Fredoka",system-ui,sans-serif;display:flex;flex-direction:column;align-items:center;justify-content:safe center;padding:10px 10px 58px;overflow-x:hidden;min-height:100%;height:auto}
+/* the machine and the card under it fit the height of the window together */
+#rig{width:min(560px,100%);width:min(100%,clamp(280px,calc((100dvh - 388px)*1.237 + 28px),720px));display:flex;flex-direction:column;gap:30px}
+#cab{background:var(--cab);border-radius:26px 26px 14px 14px;padding:14px 14px 0;box-shadow:0 10px 0 var(--dark),0 30px 40px -18px #0006}
+#sign{text-align:center;padding:2px 0 12px;color:var(--cream);container-type:inline-size;white-space:nowrap}
+#sign [data-nlr-name]{font-family:"Fredoka",sans-serif;font-weight:700;font-stretch:normal;letter-spacing:-.01em;font-size:clamp(22px,7vw,46px);font-size:clamp(22px,9cqw,46px);line-height:1}
+#glass{position:relative;background:linear-gradient(#e9fbff,#c9f1f4);border-radius:12px;overflow:hidden;box-shadow:inset 0 0 0 5px var(--dark);touch-action:none;cursor:pointer}
+#glass canvas{display:block;width:100%;height:auto}
+#base{display:flex;align-items:center;justify-content:space-between;gap:12px;padding:12px 4px 14px;color:var(--cream)}
+#chute{width:92px;height:44px;border-radius:8px;background:var(--dark);box-shadow:inset 0 6px 0 #0004}
+#base span{font:500 12px/1 "JetBrains Mono",monospace;letter-spacing:.1em}
+#go{all:unset;cursor:pointer;flex:none;width:58px;height:58px;border-radius:50%;background:#ff4f6d;box-shadow:0 6px 0 #b3203c;transition:transform .08s,box-shadow .08s}
+#go:focus-visible{outline:3px solid var(--cream);outline-offset:3px}
+#go:active,#go.dn{transform:translateY(5px);box-shadow:0 1px 0 #b3203c}
+#prize{display:grid;grid-template-columns:1fr auto;align-items:center;gap:6px 16px;min-height:116px;background:var(--cream);border-radius:18px;padding:14px 20px;text-decoration:none;color:var(--ink);box-shadow:0 7px 0 var(--ink);visibility:hidden;opacity:0;transform:translateY(-22px) scale(.94);transition:transform .4s cubic-bezier(.3,1.5,.5,1),opacity .2s,visibility 0s .2s}
+#prize.out{visibility:visible;opacity:1;transform:none;transition:transform .4s cubic-bezier(.3,1.5,.5,1),opacity .2s}
+#prize:focus-visible{outline:3px solid var(--ink);outline-offset:3px}
+#prize h2{margin:0 0 7px;font-weight:700;font-size:clamp(15px,5vw,18px);font-size:clamp(15px,max(5vw,min(2.4vw,24px)),max(18px,min(2.4vw,24px)));line-height:1.08;text-wrap:balance}
+#prize span{font:500 11px/1 "JetBrains Mono",monospace;letter-spacing:.1em;text-transform:uppercase;opacity:.65}
+#prize em{font-style:normal;font-weight:700;color:#e0284a;white-space:nowrap}
+#sign .nlr-dot::after{inset:-16px}
+.sr{position:absolute;left:-9999px}.sr a:focus{position:fixed;left:12px;top:12px;z-index:9;background:var(--cream);color:var(--ink);padding:8px 12px;border-radius:10px;font-weight:700}
+@media (prefers-reduced-motion:reduce){#prize,#prize.out{transition:none}}
+</style>
+</head>
+<body>
+<div id="rig">
+<div id="cab">
+  <div id="sign"><span data-nlr-name data-nlr-own>Nicola Lo Russo</span></div>
+  <div id="glass"><canvas id="c" width="532" height="430"></canvas></div>
+  <div id="base"><div id="chute"></div><span id="left"></span><button id="go" type="button" aria-label="Drop the claw"></button></div>
+</div>
+<a id="prize" href="#"><div><h2 id="pt"></h2><span id="pd"></span></div><em>Read &rarr;</em></a>
+</div>
+<nav class="sr" id="sr" aria-label="Posts"></nav>
+<script src="posts-data.js"></script>
+<script>
+(function(){
+  var cv=document.getElementById('c'),c=cv.getContext('2d'),glass=document.getElementById('glass'),goB=document.getElementById('go'),prize=document.getElementById('prize'),pt=document.getElementById('pt'),pd=document.getElementById('pd'),leftEl=document.getElementById('left');
+  var W=532,H=430,R=27,TOP=46,CH=74,K=1; // CH: width of the chute opening on the left
+  var still=matchMedia('(prefers-reduced-motion: reduce)'),want=false,fails=0;
+  // the drawing is as sharp as the size at which the machine is shown
+  function size(){var w=Math.round(cv.clientWidth*Math.min(devicePixelRatio||1,2))||W;if(cv.width!==w){cv.width=w;cv.height=Math.round(w*H/W)}K=cv.width/W}
+  size();addEventListener('resize',size);
+  POSTS.forEach(function(p){var a=document.createElement('a');a.href='../posts/'+p.id+'.html';a.textContent=p.t;document.getElementById('sr').appendChild(a)});
+  var COL=['#ff4f6d','#3b6cff','#19c58a','#ff9d2e','#a46bff','#ffffff'];
+  var balls=POSTS.map(function(p,i){return {p:p,i:i,x:CH+R+10+Math.random()*(W-CH-2*R-20),y:H-R-Math.random()*150,vx:0,vy:0,col:COL[i%COL.length],held:false,gone:false}});
+  var claw={x:W*.6,tx:W*.6,y:TOP,open:1,state:'idle',ball:null,t:0,slip:0};
+  function day(d){d=d.split('-');return +d[2]+' '+['January','February','March','April','May','June','July','August','September','October','November','December'][d[1]-1]+' '+d[0]} // written out: the browser's own month names are not the same everywhere
+  function label(){leftEl.textContent=String(balls.filter(function(b){return !b.gone}).length).padStart(2,'0')+' LEFT'}
+  function phys(dt){
+    for(var i=0;i<balls.length;i++){var b=balls[i];if(b.held||b.gone)continue;b.vy+=1500*dt;b.vx*=.995;b.x+=b.vx*dt;b.y+=b.vy*dt}
+    for(var it=0;it<4;it++){for(var i=0;i<balls.length;i++){var b=balls[i];if(b.held||b.gone)continue;
+        if(b.y>H-R){b.y=H-R;b.vy*=-.2;b.vx*=.9}var minX=(b.y>H-150&&!b.fall)?CH+R:R;if(b.fall)minX=R;if(b.x<minX){b.x=minX;b.vx=Math.abs(b.vx)*.3}if(b.x>W-R){b.x=W-R;b.vx=-Math.abs(b.vx)*.3}
+        if(b.fall&&b.x>CH-R){b.x=CH-R;b.vx=0}
+        for(var j=i+1;j<balls.length;j++){var q=balls[j];if(q.held||q.gone||b.fall||q.fall)continue;var dx=q.x-b.x,dy=q.y-b.y,d=Math.hypot(dx,dy)||.01;if(d<2*R){var o=(2*R-d)/2,nx=dx/d,ny=dy/d;b.x-=nx*o;b.y-=ny*o;q.x+=nx*o;q.y+=ny*o;
+            var rv=(q.vx-b.vx)*nx+(q.vy-b.vy)*ny;if(rv<0){b.vx+=nx*rv*.5;b.vy+=ny*rv*.5;q.vx-=nx*rv*.5;q.vy-=ny*rv*.5}}}}}
+  }
+  function drop(){if(claw.state!=='idle')return;prize.classList.remove('out');
+    if(still.matches){ // without the animation: the capsule under the claw comes out at once
+      var hit=null;balls.forEach(function(b){if(!b.gone&&(!hit||Math.abs(b.x-claw.tx)<Math.abs(hit.x-claw.tx)-R*.5||Math.abs(b.x-claw.tx)<Math.abs(hit.x-claw.tx)+R*.5&&b.y<hit.y))hit=b});claw.x=claw.tx;if(hit){hit.gone=true;win(hit)}return}
+    claw.state='down';goB.classList.add('dn');setTimeout(function(){goB.classList.remove('dn')},160)}
+  function step(dt){
+    var s=claw.state;claw.t+=dt;
+    if(s==='idle'){claw.x+=(claw.tx-claw.x)*Math.min(1,dt*9);claw.open+=(1-claw.open)*Math.min(1,dt*8);if(want&&(still.matches||Math.abs(claw.tx-claw.x)<3)){want=false;drop()}}
+    else if(s==='down'){claw.y+=330*dt;var hit=null;for(var i=0;i<balls.length;i++){var b=balls[i];if(b.gone||b.fall)continue;if(Math.abs(b.x-claw.x)<R*1.25&&claw.y+30>=b.y-R*.55){if(!hit||b.y<hit.y)hit=b}}
+      if(hit||claw.y>H-60){claw.state='grab';claw.t=0;claw.ball=hit}}
+    else if(s==='grab'){claw.open+=(0-claw.open)*Math.min(1,dt*10);if(claw.t>.35){var b=claw.ball;if(b){var off=Math.abs(b.x-claw.x)/R;b.held=true;claw.slip=fails<2&&Math.random()<Math.min(.7,.18+off*.45)?TOP+60+Math.random()*Math.max(0,b.y-TOP-110):-1}claw.state='up'}}
+    else if(s==='up'){claw.y-=260*dt;var b=claw.ball;if(b&&b.held){b.x+=(claw.x-b.x)*.3;b.y=claw.y+44;if(claw.slip>0&&claw.y<claw.slip){b.held=false;b.vx=(Math.random()-.5)*120;b.vy=0;claw.ball=null;claw.open=.6;fails++}}
+      if(claw.y<=TOP){claw.y=TOP;claw.state=claw.ball?'carry':'idle'}}
+    else if(s==='carry'){claw.x-=250*dt;var b=claw.ball;b.x=claw.x;b.y=claw.y+44;if(claw.x<=CH/2+4){claw.x=CH/2+4;claw.state='release';claw.t=0;b.held=false;b.fall=true;b.vx=0;b.vy=0}}
+    else if(s==='release'){claw.open+=(1-claw.open)*Math.min(1,dt*10);var b=claw.ball;if(b&&b.y>H-R-2||claw.t>1.6){if(b){b.gone=true;win(b)}claw.ball=null;claw.state='idle';claw.tx=W*.6}}
+  }
+  function win(b){fails=0;label();pt.textContent=b.p.t;pd.textContent=day(b.p.d);prize.href='../posts/'+b.p.id+'.html';prize.classList.add('out');
+    if(!balls.some(function(q){return !q.gone})){balls.forEach(function(q,i){q.gone=false;q.fall=false;q.x=CH+R+10+Math.random()*(W-CH-2*R-20);q.y=-R-i*30;q.vy=0});label()}}
+  function ball(b){c.save();c.translate(b.x,b.y);c.beginPath();c.arc(0,0,R,0,7);c.fillStyle='#ffffffcc';c.fill();c.beginPath();c.arc(0,0,R,Math.PI,0);c.fillStyle=b.col;c.fill();c.lineWidth=2.5;c.strokeStyle='#231a2c';c.beginPath();c.arc(0,0,R,0,7);c.stroke();c.beginPath();c.moveTo(-R,0);c.lineTo(R,0);c.stroke();
+    c.fillStyle='#231a2c';c.font='700 15px Fredoka,sans-serif';c.textAlign='center';c.textBaseline='middle';c.fillText(String(POSTS.length-b.i).padStart(2,'0'),0,R*.5);c.fillStyle='#ffffff99';c.beginPath();c.arc(-R*.4,-R*.5,R*.16,0,7);c.fill();c.restore()}
+  function draw(){c.setTransform(K,0,0,K,0,0);c.clearRect(0,0,W,H);
+    c.fillStyle='#0b4f49';c.fillRect(0,H-150,CH+2,150);c.fillStyle='#e9fbff';c.fillRect(0,H-150,CH-4,150);c.fillStyle='#0b4f4922';c.fillRect(0,H-150,CH-4,150); // the chute
+    c.fillStyle='#0b4f49';c.fillRect(0,22,W,7);
+    balls.forEach(function(b){if(!b.gone&&!b.held)ball(b)});
+    c.strokeStyle='#231a2c';c.lineWidth=3;c.beginPath();c.moveTo(claw.x,26);c.lineTo(claw.x,claw.y);c.stroke();c.fillStyle='#231a2c';c.fillRect(claw.x-14,18,28,12);
+    if(claw.ball&&claw.ball.held)ball(claw.ball);
+    c.save();c.translate(claw.x,claw.y);c.fillStyle='#8a8f9c';c.strokeStyle='#231a2c';c.lineWidth=2.5;c.beginPath();c.roundRect(-13,-6,26,16,5);c.fill();c.stroke();
+    [-1,1].forEach(function(sd){c.save();c.translate(sd*9,8);c.rotate(sd*(-.12-claw.open*.55));c.beginPath();c.moveTo(0,0);c.quadraticCurveTo(sd*26,22,sd*8,58);c.lineWidth=7;c.strokeStyle='#231a2c';c.lineCap='round';c.stroke();c.lineWidth=3;c.strokeStyle='#c9ced8';c.stroke();c.restore()});c.restore()}
+  function setX(e){var r=cv.getBoundingClientRect();claw.tx=Math.max(CH+R,Math.min(W-R,(e.clientX-r.left)/r.width*W))}
+  // a mouse click drops the claw where it is; a finger moves it and the claw drops when the finger is lifted and the claw has arrived
+  glass.addEventListener('pointermove',setX);glass.addEventListener('pointerdown',function(e){setX(e);if(e.pointerType==='mouse')want=true});
+  glass.addEventListener('pointerup',function(e){if(e.pointerType!=='mouse'){setX(e);want=true}});
+  goB.addEventListener('click',function(){want=false;drop()});addEventListener('keydown',function(e){if(e.key==='ArrowLeft')claw.tx=Math.max(CH+R,claw.tx-26);if(e.key==='ArrowRight')claw.tx=Math.min(W-R,claw.tx+26);if(e.key==='ArrowDown'||e.key===' '&&e.target!==goB){e.preventDefault();drop()}});
+  label();if(still.matches)for(var n=0;n<400;n++)phys(.008);var last=performance.now();(function frame(now){now=now||last;var dt=Math.min(.03,(now-last)/1000);last=now;phys(dt/2);phys(dt/2);step(dt);draw();requestAnimationFrame(frame)})();
+  window.__claw=claw;window.__balls=balls;window.__drop=drop;
+})();
+</script>
+<script src="world.js"></script>
+</body>
+</html>

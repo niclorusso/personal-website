@@ -1,0 +1,89 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Nicola Lo Russo</title>
+<meta name="robots" content="noindex">
+<link rel="icon" href="../images/nico.png" type="image/png">
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans:wght@400;600;700&family=IBM+Plex+Mono:wght@400;500&display=swap">
+<style>
+/* Preview 40: the posts are behind a pile of the dialogs that every website shows. Here each one says the truth. */
+:root{--desk:#0f7b7b;--grey:#c3c3c3;--ink:#111;--navy:#0a246a}
+*{box-sizing:border-box}html,body{margin:0;min-height:100%}
+body{background:var(--desk);color:var(--ink);font-family:"IBM Plex Sans",system-ui,sans-serif}
+header{position:relative;z-index:70;padding:14px clamp(14px,3vw,40px);color:#fff;pointer-events:none}
+header .nlr-dot::after{inset:-15px}
+header [data-nlr-name]{font-family:"IBM Plex Sans",sans-serif;font-weight:700;font-stretch:normal;letter-spacing:-.03em;font-size:clamp(34px,6vw,84px);line-height:1}
+#list{margin:6px clamp(14px,3vw,40px) 80px;background:#fff;border:2px solid;border-color:#fff #555 #555 #fff;box-shadow:inset 0 0 0 2px var(--grey);padding:6px;max-width:900px}
+#list a{display:grid;grid-template-columns:auto 1fr auto;gap:12px;align-items:center;padding:7px 8px;color:var(--ink);text-decoration:none;font-size:16px}
+#list a:hover{background:var(--navy);color:#fff}
+#list canvas{display:block;width:44px;height:33px;background:var(--grey)}
+#list span{font:400 12px "IBM Plex Mono",monospace;opacity:.7;white-space:nowrap}
+@media (max-width:520px){#list a{grid-template-columns:auto 1fr;gap:2px 12px;padding:9px 8px}#list canvas{grid-row:1/3}#list b{align-self:end;line-height:1.25}#list span{grid-column:2;align-self:start}}
+#veil{position:fixed;inset:0;z-index:50;background:#0f7b7bcc;backdrop-filter:blur(3px);-webkit-backdrop-filter:blur(3px)}
+.dlg{position:fixed;z-index:55;width:min(380px,calc(100vw - 60px));background:var(--grey);border:2px solid;border-color:#fff #444 #444 #fff;box-shadow:2px 2px 0 #000;transition:transform .2s}
+.dlg button:focus-visible{outline:1px dotted var(--ink);outline-offset:-5px}
+.dlg .tb{background:linear-gradient(90deg,var(--navy),#3a6ea5);color:#fff;font-weight:600;font-size:13px;padding:5px 6px 5px 9px;display:flex;justify-content:space-between;align-items:center}
+.dlg .tb span{white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.dlg .tb button{position:relative;flex:none;width:22px;height:20px;padding:0;font-size:16px;line-height:1}
+.dlg .tb button::after{content:"";position:absolute;inset:-9px -8px -9px -12px}
+.dlg .bd{padding:16px 16px 14px;font-size:15px;line-height:1.4}
+.dlg .bt{display:flex;gap:8px;justify-content:flex-end;padding:0 12px 12px;flex-wrap:wrap}
+.dlg button{font:600 13px "IBM Plex Sans",sans-serif;background:var(--grey);border:2px solid;border-color:#fff #444 #444 #fff;padding:5px 16px;cursor:pointer;color:var(--ink);display:grid;place-items:center}
+.dlg button:active{border-color:#444 #fff #fff #444}
+.dlg .stars{font-size:26px;letter-spacing:4px;cursor:pointer;user-select:none;color:#888}.dlg .stars b{font-weight:400}.dlg .stars b.on{color:#e0a800}
+</style>
+</head>
+<body>
+<header><span data-nlr-name data-nlr-own>Nicola Lo Russo</span></header>
+<div id="list"></div>
+<div id="veil"></div>
+<script src="posts-data.js"></script>
+<script src="figures.js"></script>
+<script>
+(function(){
+  function fig(cv,name,t,ink,hot,lw){var d=Math.min(devicePixelRatio||1,2),w=cv.clientWidth,h=cv.clientHeight;if(!w)return;if(cv.width!==Math.round(w*d)){cv.width=Math.round(w*d);cv.height=Math.round(h*d)}
+    var c=cv.getContext("2d"),vw=170,k=w/vw,m=12;c.setTransform(d*k,0,0,d*k,0,0);c.clearRect(0,0,vw,h/k);c.translate(m,m*.75);c.lineWidth=lw||1.4;c.fillStyle=c.strokeStyle=ink;(F[name]||F.line)(c,vw-2*m,h/k-1.5*m,t,ink,hot)}
+  var list=document.getElementById('list'),veil=document.getElementById('veil');
+  POSTS.forEach(function(p,i){var a=document.createElement('a');a.href='../posts/'+p.id+'.html';a.innerHTML='<canvas></canvas><b></b><span></span>';a.querySelector('b').textContent=p.t;a.querySelector('span').textContent=new Date(p.d+'T12:00').toLocaleDateString('en-GB',{day:'2-digit',month:'short',year:'numeric'});list.appendChild(a);fig(a.querySelector('canvas'),FIG[p.id],i*2.3+3,'#111','#0a246a',2.4)});
+  var D=[
+    ['Cookies','This site uses no cookies. There is nothing to accept.',['OK']],
+    ['Newsletter','There is no newsletter. You will not get 10% off your first order.',['Fine']],
+    ['Notifications','nicolalorusso.ch would like to send you notifications. It would not, actually.',['Block','Block']],
+    ['Security check','Are you a robot? Both are welcome here.',['I am','I am not']],
+    ['Your opinion matters','<div class="stars"><b>&#9733;</b><b>&#9733;</b><b>&#9733;</b><b>&#9733;</b><b>&#9733;</b></div>The stars are not connected to anything.',['Send']],
+    ['Get the app','There is no app. This is a website.',['Continue in the browser']],
+    ['Before you go','You have not gone anywhere. The posts are right behind this window.',['Read']]
+  ];
+  var done=false;try{done=sessionStorage.getItem('nlr-pop')==='1'}catch(e){}
+  function finish(){veil.remove();list.inert=false;removeEventListener('resize',place);try{sessionStorage.setItem('nlr-pop','1')}catch(e){}}
+  if(done){finish();return}
+  list.inert=true;var open=[];
+  // the dialogs step down and to the right; the steps shrink until the whole pile is inside the window, under the name
+  function place(){if(!open.length)return;var W=innerWidth,H=innerHeight,n=D.length-1,w=open[0].offsetWidth,top=document.querySelector('header').getBoundingClientRect().bottom+6,sx,sy,x0,y0,hmax;
+    function fit(Hb,right){sx=Math.max(0,Math.min(26,((right||W-8)-8-w)/n));x0=Math.max(8,Math.min((W-w-n*sx)/2,(right||W)-w-n*sx));
+      sy=30;open.forEach(function(o){if(o.k)sy=Math.min(sy,(Hb-top-o.offsetHeight)/o.k)});sy=Math.max(0,sy);hmax=0;open.forEach(function(o){hmax=Math.max(hmax,o.k*sy+o.offsetHeight)});
+      y0=Math.max(top,Math.min(H*.22,Hb-hmax));if(y0+hmax>Hb+4)y0=Math.max(6,Hb+4-hmax)}
+    // no dialog may end under the link in the bottom right corner: the pile moves left of it or, on a narrow window, stays above it
+    function under(){return open.some(function(o){return x0+o.k*sx+w>W-172&&y0+o.k*sy+o.offsetHeight>H-54})}
+    fit(H-10);if(under()){if(W-180-w>=n*10)fit(H-10,W-172);else fit(H-56)}
+    open.forEach(function(o){o.style.left=x0+o.k*sx+'px';o.style.top=y0+o.k*sy+'px';o.style.transform=''})}
+  function front(){var o=open[0];if(o){var bs=o.querySelectorAll('.bt button');bs[bs.length-1].focus({preventScroll:true})}}
+  D.forEach(function(d,i){var w=document.createElement('div');w.className='dlg';w.setAttribute('role','dialog');w.setAttribute('aria-label',d[0]);w.innerHTML='<div class="tb"><span></span><button type="button" aria-label="Close">&times;</button></div><div class="bd">'+d[1]+'</div><div class="bt"></div>';
+    w.querySelector('.tb span').textContent=d[0];w.k=D.length-1-i;w.style.zIndex=55+D.length-i; // the first of the list is on top
+    function close(){w.remove();open.splice(open.indexOf(w),1);if(open.length)front();else{finish();list.querySelector('a').focus({preventScroll:true})}}w.close=close;
+    d[2].forEach(function(t){var b=document.createElement('button');b.type='button';b.textContent=t;b.addEventListener('click',close);w.querySelector('.bt').appendChild(b)});
+    var x=w.querySelector('.tb button'),ran=false;x.addEventListener('click',close);
+    // the newsletter dialog moves away from the mouse once, as they do
+    if(i===1)x.addEventListener('pointerenter',function(e){if(ran||e.pointerType!=='mouse'||matchMedia('(prefers-reduced-motion: reduce)').matches)return;ran=true;var l=parseFloat(w.style.left),room=innerWidth-8-l-w.offsetWidth,dx=l>150&&l>room?-150:Math.min(150,room);if(Math.abs(dx)>40)w.style.transform='translate('+dx+'px,'+(parseFloat(w.style.top)>50?-40:0)+'px)'});
+    [].forEach.call(w.querySelectorAll('.stars b'),function(s,n,all){s.addEventListener('click',function(){[].forEach.call(all,function(q,m){q.classList.toggle('on',m<=n)})})});
+    document.body.insertBefore(w,document.body.querySelector('script'));open.push(w)});
+  place();front();addEventListener('resize',place);if(document.fonts&&document.fonts.ready)document.fonts.ready.then(place);
+  addEventListener('keydown',function(e){if(e.key==='Escape'&&open.length)open[0].close()});
+})();
+</script>
+<script src="world.js"></script>
+</body>
+</html>

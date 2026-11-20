@@ -1,0 +1,78 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Nicola Lo Russo</title>
+<meta name="robots" content="noindex">
+<link rel="icon" href="../images/nico.png" type="image/png">
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wdth,wght@12..96,75..100,300..800&family=JetBrains+Mono:wght@400;500&display=swap">
+<style>
+/* Preview 34: every post is under a layer of ink. Rub it off with the pointer (or tap) to see what is there. */
+:root{--A:#0b3fd0;--B:#ffe600;--bg:#f4f2ec;--ink:#0d0d0c}
+*{box-sizing:border-box}html,body{margin:0}
+body{background:var(--bg);color:var(--ink);font-family:"Bricolage Grotesque",system-ui,sans-serif}
+.mono{font:500 11px/1.3 "JetBrains Mono",ui-monospace,monospace;letter-spacing:.08em;text-transform:uppercase}
+.d{font-weight:800;font-stretch:75%;letter-spacing:-.02em}
+header{background:var(--A);color:#f4efe4;padding:14px clamp(16px,2.6vw,40px) 16px;display:flex;align-items:flex-end;justify-content:space-between;gap:20px;flex-wrap:wrap}
+header h1{margin:0;font-size:clamp(40px,7vw,104px);line-height:.85}
+header .side{display:flex;flex-direction:column;align-items:flex-end;gap:8px;text-align:right}
+header b{color:var(--B);font-weight:500}
+#all{all:unset;cursor:pointer;border:1.5px solid currentColor;border-radius:999px;padding:7px 12px}@media(hover:hover){#all:hover{background:#f4efe4;color:var(--A)}}#all:active{background:#f4efe4;color:var(--A)}#all:focus-visible{outline:2px solid var(--B);outline-offset:3px}
+#list{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:14px clamp(14px,2vw,28px);max-width:1320px;margin:0 auto;padding:22px clamp(16px,2.6vw,40px) 70px}
+.row{position:relative;-webkit-user-select:none;user-select:none;-webkit-user-drag:none;-webkit-tap-highlight-color:transparent;display:grid;grid-template-columns:auto 1fr;gap:16px;align-items:center;padding:12px;background:var(--p);color:var(--a);text-decoration:none;min-height:104px}
+.row canvas.f{display:block;width:106px;height:80px}
+.row h3{margin:0 0 5px;font-size:clamp(19px,1.9vw,27px);line-height:.98}
+.row .mono{opacity:.75}
+.row canvas.cover{position:absolute;inset:0;width:100%;height:100%;cursor:crosshair;transition:opacity .5s;touch-action:pan-y}
+.row.open canvas.cover{opacity:0;pointer-events:none}
+.row:focus-visible{outline:3px solid var(--A);outline-offset:3px}
+@media(max-width:800px){#list{grid-template-columns:1fr}.row canvas.f{width:80px;height:60px}header{padding-top:12px;gap:12px}header .side{flex-direction:row;align-items:center;justify-content:space-between;width:100%}}
+</style>
+</head>
+<body>
+<header>
+  <h1 class="d" data-nlr-name>Nicola Lo Russo</h1>
+  <div class="side mono"><span id="count"></span><button id="all" type="button">Uncover all</button></div>
+</header>
+<main id="list"></main>
+<script src="posts-data.js"></script>
+<script src="figures.js"></script>
+<script>
+(function(){
+  function fig(cv,name,t,ink,hot,lw){var d=Math.min(devicePixelRatio||1,2),w=cv.clientWidth,h=cv.clientHeight;if(!w)return;if(cv.width!==Math.round(w*d)){cv.width=Math.round(w*d);cv.height=Math.round(h*d)}
+    var c=cv.getContext("2d"),vw=170,k=w/vw,m=12;c.setTransform(d*k,0,0,d*k,0,0);c.clearRect(0,0,vw,h/k);c.translate(m,m*.75);c.lineWidth=lw||1.4;c.fillStyle=c.strokeStyle=ink;(F[name]||F.line)(c,vw-2*m,h/k-1.5*m,t,ink,hot)}
+  var list=document.getElementById('list'),count=document.getElementById('count'),rows=[],opened=0;
+  var TONES=[['#0b3fd0','#f4efe4','#ffe600'],['#111111','#f4efe4','#ffe600'],['#e4dfd3','#0d0d0c','#0b3fd0'],['#ffe600','#0d0d0c','#ef4a23']],GX=14,GY=5;
+  function label(){count.textContent='Uncovered '+opened+' of '+POSTS.length}
+  function cover(o){var cv=o.cover,d=Math.min(devicePixelRatio||1,2),w=cv.clientWidth,h=cv.clientHeight;if(o.cw===w&&o.chh===h)return;o.cw=w;o.chh=h;cv.width=Math.round(w*d);cv.height=Math.round(h*d);var c=cv.getContext('2d');c.setTransform(d,0,0,d,0,0);
+    c.fillStyle='#0d0d0c';c.fillRect(0,0,w,h);c.fillStyle='#ffffff14';for(var i=0;i<w*h/90;i++)c.fillRect(Math.random()*w,Math.random()*h,1.2,1.2);
+    c.fillStyle='#f4efe455';c.font='500 11px "JetBrains Mono",monospace';c.textBaseline='middle';c.fillText(String(o.n).padStart(2,'0'),14,h/2);o.cells=[];o.hit=0}
+  function open(o){if(o.open)return;o.open=true;o.el.classList.add('open');opened++;label()}
+  function rub(o,e){if(o.open)return;var r=o.cover.getBoundingClientRect(),x=e.clientX-r.left,y=e.clientY-r.top,c=o.cover.getContext('2d'),R=30;
+    c.globalCompositeOperation='destination-out';c.beginPath();if(o.lx!=null&&Math.hypot(x-o.lx,y-o.ly)<140){c.lineWidth=R*2;c.lineCap='round';c.moveTo(o.lx,o.ly);c.lineTo(x,y);c.stroke()}else{c.arc(x,y,R,0,7);c.fill()}c.globalCompositeOperation='source-over';o.lx=x;o.ly=y;
+    for(var gx=0;gx<GX;gx++)for(var gy=0;gy<GY;gy++){var px=(gx+.5)*r.width/GX,py=(gy+.5)*r.height/GY,id=gy*GX+gx;if(!o.cells[id]&&Math.hypot(px-x,py-y)<R+6){o.cells[id]=1;o.hit++}}
+    if(o.hit>GX*GY*.5)open(o)}
+  POSTS.forEach(function(p,i){var a=document.createElement('a'),T=TONES[i%TONES.length],d=new Date(p.d+'T12:00');a.className='row';a.href='../posts/'+p.id+'.html';a.style.setProperty('--p',T[0]);a.style.setProperty('--a',T[1]);
+    a.innerHTML='<canvas class="f"></canvas><div><h3 class="d"></h3><span class="mono"></span></div><canvas class="cover"></canvas>';a.querySelector('h3').textContent=p.t;a.querySelector('.mono').textContent=d.toLocaleDateString('en-GB',{day:'numeric',month:'short',year:'numeric'});list.appendChild(a);
+    var o={el:a,f:a.querySelector('.f'),cover:a.querySelector('.cover'),name:FIG[p.id],T:T,t:i*2.3+3,n:POSTS.length-i,hover:false};rows.push(o);
+    a.draggable=false;
+    o.cover.addEventListener('pointermove',function(e){if(e.pointerType==='mouse'||o.down)rub(o,e)});o.cover.addEventListener('pointerleave',function(){o.lx=null});
+    o.cover.addEventListener('pointerdown',function(e){o.lx=null;o.down=true;rub(o,e)});
+    addEventListener('pointerup',function(){o.down=false});addEventListener('pointercancel',function(){o.down=false});
+    // a press that starts on the ink never opens the post: with the mouse it only rubs, with a finger a tap uncovers the row
+    a.addEventListener('pointerdown',function(e){o.ink=e.target===o.cover;o.touch=e.pointerType!=='mouse'},true);
+    a.addEventListener('click',function(e){if(e.detail&&o.ink){e.preventDefault();if(o.touch)open(o)}o.ink=false});
+    a.addEventListener('focus',function(){if(a.matches(':focus-visible'))open(o)});
+    a.addEventListener('pointerenter',function(){o.hover=true});a.addEventListener('pointerleave',function(){o.hover=false})});
+  function paint(){rows.forEach(function(o){fig(o.f,o.name,o.t,o.T[1],o.T[2]);if(!o.open)cover(o)})}
+  document.getElementById('all').addEventListener('click',function(){rows.forEach(open)});
+  if(matchMedia('(prefers-reduced-motion: reduce)').matches)rows.forEach(open);
+  label();paint();var rt;addEventListener('resize',function(){clearTimeout(rt);rt=setTimeout(paint,150)});
+  var last=performance.now();(function frame(now){now=now||last;var dt=Math.min(.05,(now-last)/1000);last=now;rows.forEach(function(o){if(o.hover&&o.open){o.t+=dt*1.5;fig(o.f,o.name,o.t,o.T[1],o.T[2])}});requestAnimationFrame(frame)})();
+})();
+</script>
+<script src="world.js"></script>
+</body>
+</html>

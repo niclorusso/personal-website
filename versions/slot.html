@@ -1,0 +1,80 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Nicola Lo Russo</title>
+<meta name="robots" content="noindex">
+<link rel="icon" href="../images/nico.png" type="image/png">
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Limelight&family=Bungee&family=JetBrains+Mono:wght@500&display=swap">
+<style>
+/* Preview 33: a slot machine. Pull the lever, the reels stop on one post and a ticket comes out. */
+:root{--red:#a30f1e;--deep:#5c0710;--gold:#ffc83a;--cream:#fff4d6;--ink:#1a0508}
+*{box-sizing:border-box}html,body{margin:0;min-height:100%}
+body{background:radial-gradient(ellipse at 50% 30%,#c4172a 0,var(--red) 45%,var(--deep) 100%);color:var(--cream);font-family:"Bungee",system-ui,sans-serif;min-height:100vh;display:flex;flex-direction:column;align-items:center;justify-content:center;padding:18px 12px 70px;overflow-x:hidden}
+#machine{width:min(760px,100%);display:grid;grid-template-columns:1fr auto;--gap:clamp(8px,2vw,22px);gap:0 var(--gap);align-items:center}
+#sign{grid-column:1;position:relative;background:var(--ink);border:5px solid var(--gold);border-radius:18px 18px 0 0;padding:clamp(16px,3vw,28px) 12px clamp(12px,2.4vw,22px);text-align:center;box-shadow:0 0 34px #ffc83a55}
+#sign [data-nlr-name]{font-family:"Limelight",serif;font-weight:400;font-size:clamp(26px,6.6vw,62px);line-height:1;color:var(--gold);letter-spacing:0;text-shadow:0 0 14px #ffc83a88}
+.bulbs{position:absolute;inset:5px;pointer-events:none;border-radius:12px;background:radial-gradient(circle,var(--cream) 0 3px,transparent 3.6px) 0 0/22px 100% repeat-x,radial-gradient(circle,var(--cream) 0 3px,transparent 3.6px) 0 100%/22px 100% repeat-x;-webkit-mask:linear-gradient(#000 0 11px,transparent 11px calc(100% - 11px),#000 calc(100% - 11px));mask:linear-gradient(#000 0 11px,transparent 11px calc(100% - 11px),#000 calc(100% - 11px));animation:blink 1s steps(2) infinite}
+@keyframes blink{50%{opacity:.35}}
+#body{grid-column:1;background:linear-gradient(#ffd45e,#e0a21a);border:5px solid var(--gold);border-top:0;padding:clamp(10px,2vw,18px);box-shadow:inset 0 -14px 0 #0002}
+#reels{display:flex;gap:clamp(6px,1.2vw,12px);background:var(--ink);padding:clamp(6px,1.2vw,12px);border-radius:8px;box-shadow:inset 0 0 0 3px #0008}
+.reel{flex:1;aspect-ratio:4/3;overflow:hidden;background:var(--cream);border-radius:4px;box-shadow:inset 0 10px 14px -8px #000a,inset 0 -10px 14px -8px #000a}
+.reel canvas{display:block;width:100%;height:100%}
+.reel.spin canvas{filter:blur(1.5px);animation:roll .12s linear infinite}
+@keyframes roll{from{transform:translateY(-16%)}to{transform:translateY(16%)}}
+#meter{display:flex;justify-content:space-between;margin-top:10px;color:var(--ink);font-size:clamp(11px,1.8vw,15px)}
+#meter b{background:var(--ink);color:#ff5a3c;font:500 clamp(12px,1.9vw,16px)/1 "JetBrains Mono",monospace;padding:5px 8px;border-radius:3px;letter-spacing:.12em}
+#slotout{grid-column:1;height:14px;background:var(--ink);border:5px solid var(--gold);border-top:0;border-radius:0 0 14px 14px;position:relative;z-index:2}
+#sign .nlr-dot::after{inset:-16px}
+#lever{all:unset;cursor:pointer;-webkit-tap-highlight-color:transparent;grid-column:2;grid-row:1/3;align-self:center;width:clamp(44px,6vw,54px);height:clamp(150px,30vw,270px);position:relative}
+#lever i{position:absolute;left:50%;bottom:0;width:9px;height:100%;margin-left:-4.5px;background:linear-gradient(90deg,#999,#eee,#888);border-radius:5px;transform-origin:50% 100%;transition:transform .28s cubic-bezier(.4,1.6,.5,1)}
+#lever b{position:absolute;left:0;top:-10%;width:100%;aspect-ratio:1;border-radius:50%;background:radial-gradient(circle at 35% 30%,#ff8a7a,#d81b2c 55%,#7d0a15);box-shadow:0 6px 10px #0006;transition:transform .28s cubic-bezier(.4,1.6,.5,1)}
+#lever.down i{transform:scaleY(.3)}#lever.down b{transform:translateY(230%)}
+#lever::before{content:"";position:absolute;right:50%;bottom:1px;width:calc(50% + var(--gap));height:8px;background:var(--ink)}
+#lever::after{content:"";position:absolute;left:50%;bottom:-8px;width:26px;height:26px;margin-left:-13px;border-radius:50%;background:radial-gradient(circle at 35% 30%,#ffe9a6,#e0a21a 60%,#9a6a08);box-shadow:0 0 0 3px var(--ink)}
+@media(hover:hover){#lever:hover b{filter:brightness(1.15)}}
+#lever:focus-visible{outline:3px solid var(--cream);outline-offset:8px;border-radius:8px}
+#ticket{grid-column:1;justify-self:center;width:min(360px,86%);margin-top:-6px;background:var(--cream);color:var(--ink);text-decoration:none;padding:20px 18px 16px;font-family:"JetBrains Mono",monospace;font-weight:500;text-align:center;transform-origin:50% 0;transform:scaleY(0);visibility:hidden;transition:transform .5s cubic-bezier(.3,1.3,.5,1),visibility 0s .5s;-webkit-mask:radial-gradient(circle at 6px 100%,transparent 5px,#000 5.5px) -6px 0/12px 100%;mask:radial-gradient(circle at 6px 100%,transparent 5px,#000 5.5px) -6px 0/12px 100%;padding-bottom:26px}
+#ticket.out{transform:scaleY(1);visibility:visible;transition-delay:0s}
+#ticket:focus-visible{outline:3px solid var(--gold);outline-offset:3px}
+#ticket h2{margin:0 0 8px;font:400 clamp(17px,2.6vw,22px)/1.1 "Bungee",sans-serif}
+#ticket span{display:block;font-size:11px;letter-spacing:.1em;text-transform:uppercase;opacity:.7}
+#ticket em{display:inline-block;margin-top:12px;font-style:normal;font-size:11px;letter-spacing:.1em;text-transform:uppercase;border-bottom:2px solid currentColor}
+#ticket:hover{background:#fff}
+@media(max-width:560px){#ticket{width:92%}}
+@media(prefers-reduced-motion:reduce){.bulbs{animation:none}#lever i,#lever b,#ticket,#ticket.out{transition:none}}
+</style>
+</head>
+<body>
+<div id="machine">
+  <div id="sign"><div class="bulbs"></div><span data-nlr-name data-nlr-own>Nicola Lo Russo</span></div>
+  <button id="lever" type="button" aria-label="Pull the lever"><i></i><b></b></button>
+  <div id="body"><div id="reels"><div class="reel"><canvas></canvas></div><div class="reel"><canvas></canvas></div><div class="reel"><canvas></canvas></div></div>
+    <div id="meter"><span>Pulls <b id="pulls">000</b></span><span>Posts <b id="left"></b></span></div></div>
+  <div id="slotout"></div>
+  <a id="ticket"><h2 id="tt"></h2><span id="td"></span><em>Read</em></a>
+</div>
+<script src="posts-data.js"></script>
+<script src="figures.js"></script>
+<script>
+(function(){
+  function fig(cv,name,t,ink,hot,lw){var d=Math.min(devicePixelRatio||1,2),w=cv.clientWidth,h=cv.clientHeight;if(!w)return;if(cv.width!==Math.round(w*d)){cv.width=Math.round(w*d);cv.height=Math.round(h*d)}
+    var c=cv.getContext("2d"),vw=170,k=w/vw,m=12;c.setTransform(d*k,0,0,d*k,0,0);c.clearRect(0,0,vw,h/k);c.translate(m,m*.75);c.lineWidth=lw||1.4;c.fillStyle=c.strokeStyle=ink;(F[name]||F.line)(c,vw-2*m,h/k-1.5*m,t,ink,hot)}
+  var reels=[].slice.call(document.querySelectorAll('.reel')),lever=document.getElementById('lever'),ticket=document.getElementById('ticket'),tt=document.getElementById('tt'),td=document.getElementById('td'),pullsEl=document.getElementById('pulls'),leftEl=document.getElementById('left');
+  var busy=false,pulls=0,seen=[],cur=[0,1,2];
+  function draw(i,k,t){fig(reels[i].querySelector('canvas'),FIG[POSTS[k].id],t,'#1a0508','#d81b2c',1.8)}
+  function meter(){pullsEl.textContent=String(pulls).padStart(3,'0');leftEl.textContent=String(POSTS.length-seen.length).padStart(3,'0')}
+  function pull(){if(busy)return;busy=true;pulls++;lever.classList.add('down');setTimeout(function(){lever.classList.remove('down')},300);ticket.classList.remove('out');
+    if(seen.length>=POSTS.length)seen=[];var k;do{k=Math.floor(Math.random()*POSTS.length)}while(seen.indexOf(k)>=0);seen.push(k);meter();
+    var still=matchMedia('(prefers-reduced-motion: reduce)').matches,t0=Date.now(),stop=still?[0,0,0]:[900,1450,2000];reels.forEach(function(r){if(!still)r.classList.add('spin')});
+    var iv=setInterval(function(){var el=Date.now()-t0,done=true;reels.forEach(function(r,i){if(el<stop[i]){done=false;cur[i]=(cur[i]+1+i)%POSTS.length;draw(i,cur[i],3+cur[i])}else if(r.classList.contains('spin')||cur[i]!==k||still){r.classList.remove('spin');cur[i]=k;draw(i,k,3+k*2.3)}});
+      if(done){clearInterval(iv);var p=POSTS[k];tt.textContent=p.t;td.textContent=parseInt(p.d.slice(8,10),10)+' '+['January','February','March','April','May','June','July','August','September','October','November','December'][parseInt(p.d.slice(5,7),10)-1]+' '+p.d.slice(0,4);ticket.href='../posts/'+p.id+'.html';ticket.classList.add('out');busy=false}},70)}
+  lever.addEventListener('click',pull);addEventListener('keydown',function(e){if(e.key===' '&&!(e.target.closest&&e.target.closest('button,a,input'))){e.preventDefault();pull()}});
+  meter();reels.forEach(function(_,i){draw(i,cur[i],3+i*2.3)});addEventListener('resize',function(){reels.forEach(function(_,i){draw(i,cur[i],3+cur[i]*2.3)})});
+})();
+</script>
+<script src="world.js"></script>
+</body>
+</html>

@@ -1,0 +1,39 @@
+// One small live figure per post. f(c,w,h,t,ink,hot): t in seconds, drawn from scratch each frame.
+const R=s=>()=>((s=Math.imul(s^s>>>15,2246822507)^Math.imul(s^s>>>13,3266489909),(s^=s>>>16)>>>0)/4294967296);
+const rnd=(i,k=1)=>{const x=Math.sin(i*127.1+k*311.7)*43758.5453;return x-Math.floor(x)};
+const dot=(c,x,y,r)=>{c.beginPath();c.arc(x,y,r,0,7);c.fill()};
+const F={
+ montecarlo(c,w,h,t,ink,hot){const s=Math.min(w,h)*.86,x0=(w-s)/2,y0=(h-s)/2,n=Math.floor(t*60)%900+20;let k=0;
+  c.strokeStyle=ink;c.strokeRect(x0,y0,s,s);c.beginPath();c.arc(x0,y0+s,s,-Math.PI/2,0);c.stroke();
+  for(let i=0;i<n;i++){const x=rnd(i,1),y=rnd(i,2),in_=x*x+y*y<1;k+=in_;c.fillStyle=in_?hot:ink;dot(c,x0+x*s,y0+s-y*s,1.6)}
+  c.fillStyle=ink;c.font='500 12px "JetBrains Mono"';c.fillText('π ≈ '+(4*k/n).toFixed(3),x0+6,y0+16)},
+ entropy(c,w,h,t,ink,hot){const n=16,m=12,cw=w/n,chh=h/m;for(let i=0;i<n;i++)for(let j=0;j<m;j++){const p=i/(n-1)*.5,on=rnd(i*31+j+Math.floor(t*3+rnd(i,j)*9)*7,3)<p?1:0;c.fillStyle=on?(i>n*.7?hot:ink):'transparent';c.fillRect(i*cw+1.5,j*chh+1.5,cw-3,chh-3)}},
+ coin(c,w,h,t,ink,hot){const n=10,m=6,r=Math.min(w/n,h/m)*.36;for(let i=0;i<n;i++)for(let j=0;j<m;j++){const id=i+j*n,ph=t*2+rnd(id,5)*6,sx=Math.abs(Math.cos(ph)),rig=id===37;c.fillStyle=rig?hot:ink;c.beginPath();c.ellipse((i+.5)*w/n,(j+.5)*h/m,r*(rig?1:sx)+.6,r,0,0,7);(rig||Math.cos(ph)>0)?c.fill():(c.strokeStyle=ink,c.stroke())}},
+ bayes(c,w,h,t,ink,hot){const n=20,m=14,k=Math.floor(t*40)%(n*m+60);for(let i=0;i<n*m;i++){const x=(i%n+.5)*w/n,y=(Math.floor(i/n)+.5)*h/m,sick=rnd(i,7)<.02,pos=sick||rnd(i,8)<.07;c.fillStyle=sick?hot:ink;dot(c,x,y,sick?3.4:1.5);if(pos&&i<k){c.strokeStyle=sick?hot:ink;c.beginPath();c.arc(x,y,6,0,7);c.stroke()}}},
+ voting(c,w,h,t,ink,hot){const sets=[[.9,.6,.45],[.5,.92,.6],[.55,.5,.95]],a=Math.floor(t/1.6)%3,b=(a+1)%3,u=Math.min(1,(t/1.6%1)*2.2),e=u*u*(3-2*u);
+  for(let i=0;i<3;i++){const v=sets[a][i]+(sets[b][i]-sets[a][i])*e,bw=w*.2,x=w*.14+i*w*.27;c.fillStyle=v>.85?hot:ink;c.fillRect(x,h*.92-v*h*.8,bw,v*h*.8)}
+  c.strokeStyle=ink;c.beginPath();c.moveTo(0,h*.92);c.lineTo(w,h*.92);c.stroke()},
+ asteroid(c,w,h,t,ink,hot){const X=w/2,Y=h/2,r=Math.min(w,h)*.26;c.strokeStyle=ink;c.beginPath();c.arc(X,Y,r,0,7);c.stroke();c.setLineDash([3,4]);c.beginPath();c.ellipse(X+r*.75,Y,r*1.75,r*.95,0,0,7);c.stroke();c.setLineDash([]);
+  c.fillStyle=ink;dot(c,X,Y,5);dot(c,X+Math.cos(t)*r,Y+Math.sin(t)*r,4);const a=t*.42+2;c.fillStyle=hot;dot(c,X+r*.75+Math.cos(a)*r*1.75,Y+Math.sin(a)*r*.95,3.5)},
+ llm(c,w,h,t,ink,hot){const n=7,step=Math.floor(t/1.1),u=Math.min(1,(t/1.1%1)*3);let v=[],mx=0,mi=0;for(let i=0;i<n;i++){v[i]=Math.pow(rnd(i+step*13,9),3);if(v[i]>mx){mx=v[i];mi=i}}
+  for(let i=0;i<n;i++){const bh=h/n;c.fillStyle=i===mi?hot:ink;c.fillRect(w*.3,i*bh+4,v[i]/mx*w*.66*u,bh-8);c.fillStyle=ink;c.fillRect(w*.02,i*bh+bh/2-2,w*(.1+rnd(i+step,4)*.14),4)}},
+ stream(c,w,h,t,ink,hot){const n=14,m=5;for(let j=0;j<m;j++){const sp=.5+rnd(j,2)*.9,k=(t*sp*6+rnd(j,3)*n)%(n+4);for(let i=0;i<n;i++){if(i>k)continue;c.fillStyle=i<3?ink:(i>k-1?hot:ink);c.globalAlpha=i<3?1:.35+.65*(i/k);c.fillRect(i*w/n+2,j*h/m+h/m*.25,w/n-4,h/m*.5)}}c.globalAlpha=1},
+ parliament(c,w,h,t,ink,hot){const rows=6,k=Math.floor(t*14);let id=0;for(let r=0;r<rows;r++){const rad=h*.3+r*h*.105,n=10+r*4;for(let i=0;i<n;i++){const a=Math.PI+i/(n-1)*Math.PI,on=rnd(id,6)<((k%140)/140)*.5;c.fillStyle=on?hot:ink;dot(c,w/2+Math.cos(a)*rad,h*.95+Math.sin(a)*rad,on?3.6:2.6);id++}}},
+ map(c,w,h,t,ink,hot){c.strokeStyle=ink;c.lineWidth=1;const P=[[.02,.8,.3,.55,.62,.6,.98,.2],[.1,.05,.35,.5,.5,.72,.7,.98],[.02,.3,.4,.35,.7,.3,.98,.62]];
+  P.forEach((p,j)=>{c.beginPath();c.moveTo(p[0]*w,p[1]*h);c.bezierCurveTo(p[2]*w,p[3]*h,p[4]*w,p[5]*h,p[6]*w,p[7]*h);c.stroke();
+   const u=(t*.13*(1+j*.3)+j*.37)%1,q=1-u,x=q*q*q*p[0]+3*q*q*u*p[2]+3*q*u*u*p[4]+u*u*u*p[6],y=q*q*q*p[1]+3*q*q*u*p[3]+3*q*u*u*p[5]+u*u*u*p[7];c.fillStyle=hot;dot(c,x*w,y*h,4.5)});
+  c.fillStyle=ink;[[.35,.5],[.62,.6],[.5,.72]].forEach(([x,y])=>c.fillRect(x*w-4,y*h-4,8,8))},
+ flat(c,w,h,t,ink,hot){const n=24,k=Math.floor(t*5)%(n+8),cut=Math.round(n*.37);let best=0,pick=-1;for(let i=0;i<n;i++){const v=.2+rnd(i,11)*.75;if(i<cut)best=Math.max(best,v);else if(pick<0&&v>best)pick=i;
+   if(i<=k){c.fillStyle=i===pick?hot:ink;c.globalAlpha=i<cut?.3:1;c.fillRect(i*w/n+1.5,h*.94-v*h*.86,w/n-3,v*h*.86)}}c.globalAlpha=1;c.strokeStyle=ink;c.setLineDash([4,4]);c.beginPath();c.moveTo(cut*w/n,0);c.lineTo(cut*w/n,h);c.stroke();c.setLineDash([])},
+ line(c,w,h,t,ink,hot){const n=60,k=(t*22)%(n+25);[0,1,2].forEach(j=>{c.strokeStyle=j?ink:hot;c.lineWidth=j?1:2;c.beginPath();for(let i=0;i<Math.min(n,k);i++){const y=h*(.75-j*.2)-i/n*h*.3*(j?.6:1.3)+Math.sin(i*.4+j*2)*h*.05+rnd(i,j+20)*h*.05;i?c.lineTo(i*w/n,y):c.moveTo(0,y)}c.stroke()});c.lineWidth=1},
+ votes(c,w,h,t,ink,hot){const n=18,m=10,ph=Math.floor(t/1.4);for(let i=0;i<n*m;i++){const x=(i%n+.5)*w/n,y=(Math.floor(i/n)+.5)*h/m,v=rnd(i+ph*500,14);if(v<.56){c.fillStyle=ink;dot(c,x,y,3.4)}else if(v<.9){c.strokeStyle=ink;c.beginPath();c.arc(x,y,3.2,0,7);c.stroke()}else{c.fillStyle=hot;c.fillRect(x-3,y-3,6,6)}}},
+ books(c,w,h,t,ink,hot){const n=36;let x=0;const hi=Math.floor(t*4)%n;for(let i=0;i<n;i++){const bw=w/n*(.6+rnd(i,15)*.8),bh=h*(.5+rnd(i,16)*.42);if(x+bw>w)break;c.fillStyle=i===hi?hot:ink;i%3===1&&i!==hi?(c.strokeStyle=ink,c.strokeRect(x+.5,h*.96-bh,bw-2,bh)):c.fillRect(x,h*.96-bh-(i===hi?8:0),bw-1.5,bh);x+=bw}},
+ swerve(c,w,h,t,ink,hot){const n=22,m=7,k=Math.floor(t*9);for(let j=0;j<m;j++)for(let i=0;i<n;i++){const id=j*n+i,sw=id%9===8,on=id<=k%(n*m+20);if(!on)continue;c.fillStyle=sw?hot:ink;const y=(j+.5)*h/m+(sw?-h/m*.3*Math.abs(Math.sin(t*2+id)):0);c.fillRect(i*w/n+1.5,y-2.5,w/n*(.4+rnd(id,17)*.5),5)}},
+ turing(c,w,h,t,ink,hot){const side=Math.floor(t/1.5)%2;[0,1].forEach(s=>{const x0=s?w*.54:w*.04,cw=w*.42;c.strokeStyle=s===side?hot:ink;c.lineWidth=s===side?2:1;c.strokeRect(x0,h*.08,cw,h*.84);c.lineWidth=1;c.fillStyle=ink;for(let i=0;i<8;i++)c.fillRect(x0+10,h*.17+i*h*.09,(cw-20)*(.45+rnd(i+s*40,18)*.55),3)})},
+ logic(c,w,h,t,ink,hot){const n=5,s=Math.min(w,h)*.84/n,x0=(w-s*n)/2,y0=(h-s*n)/2,k=Math.floor(t*3)%(n*n+6);c.strokeStyle=ink;for(let i=0;i<n*n;i++){const x=x0+i%n*s,y=y0+Math.floor(i/n)*s;c.strokeRect(x,y,s,s);if(i<k){const v=rnd(i,19);if(v<.2){c.fillStyle=hot;dot(c,x+s/2,y+s/2,s*.22)}else if(v<.75){c.beginPath();c.moveTo(x+s*.3,y+s*.3);c.lineTo(x+s*.7,y+s*.7);c.moveTo(x+s*.7,y+s*.3);c.lineTo(x+s*.3,y+s*.7);c.stroke()}}}},
+ wave(c,w,h,t,ink,hot){const n=64;for(let i=0;i<n;i++){const a=Math.abs(Math.sin(i*.35+t*3)*Math.sin(i*.11-t*1.3))*(.25+rnd(i+Math.floor(t*8),21)*.75),bh=a*h*.8+2;c.fillStyle=Math.abs(i-(t*12%n))<1.5?hot:ink;c.fillRect(i*w/n+1,h/2-bh/2,w/n-2,bh)}},
+ stage(c,w,h,t,ink,hot){c.fillStyle=hot;dot(c,w/2,h*.56,Math.min(w,h)*.36);c.fillStyle=ink;const x=w/2+Math.sin(t*.9)*w*.08;dot(c,x,h*.47,7);c.fillRect(x-6,h*.52,12,h*.24);c.fillRect(0,h*.92,w,1.5)},
+ tv(c,w,h,t,ink,hot){c.strokeStyle=ink;c.lineWidth=1.5;c.strokeRect(w*.1,h*.08,w*.8,h*.76);c.lineWidth=1;const m=18;for(let j=0;j<m;j++){const y=h*.12+j*h*.68/m,o=(j+Math.floor(t*10))%m;c.fillStyle=o===0?hot:ink;c.globalAlpha=o===0?1:.2+rnd(j+Math.floor(t*6),22)*.5;c.fillRect(w*.14,y,w*.72,h*.68/m-3)}c.globalAlpha=1;c.fillStyle=ink;c.fillRect(w*.38,h*.9,w*.24,3)}
+};
+const FIG=Object.assign({'ai-parliament':'parliament','bellinzona-real-time':'map','ecoplus-teleticino-2026':'tv','tedxbellinzona-2026':'stage','hacking-democracy-talk':'wave','llm-inference-optimizations-by-example':'stream','how-llms-work':'llm','entropy-randomness':'entropy','swissdata':'line','eulens':'votes','flat-search':'flat','monte-carlo':'montecarlo','clinamen-algorithm':'swerve','literature-turing-test':'turing','books-2025':'books','voting-systems':'voting','risk-asteroid':'asteroid','bayes-theorem':'bayes','unfair-coin':'coin','watson-riddle':'logic'},window.FIGS||{});
+

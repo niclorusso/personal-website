@@ -1,0 +1,96 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Nicola Lo Russo</title>
+<meta name="robots" content="noindex">
+<link rel="icon" href="../images/nico.png" type="image/png">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,300..900;1,9..144,300..900&family=Inter+Tight:wght@400;500;600&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+:root{--paper:#f6f2ea;--ink:#12110f;--soft:#6d6a62;--spot:#2330e8;--rule:#12110f22}
+*{box-sizing:border-box}
+body{margin:0;background:var(--paper);color:var(--ink);font-family:"Inter Tight",system-ui,sans-serif;font-size:17px;line-height:1.45}
+a{color:inherit;text-decoration:none}
+.mono{font-family:"JetBrains Mono",monospace;font-size:11px;letter-spacing:.07em;text-transform:uppercase}
+.serif{font-family:Fraunces,Georgia,serif}
+.page{max-width:1400px;margin:0 auto;padding:0 clamp(16px,3vw,44px)}
+.strip{display:flex;justify-content:space-between;padding:14px 0;border-bottom:1px solid var(--ink)}
+.strip .links{display:flex;gap:20px}
+.plate{font-family:Fraunces,serif;font-weight:900;font-variation-settings:"opsz" 144;letter-spacing:-.055em;line-height:.78;white-space:nowrap;overflow:hidden;padding:.06em 0 .1em;margin:0;font-size:12vw}
+.issue{display:grid;grid-template-columns:auto 1fr auto;gap:24px;align-items:baseline;padding:10px 0;border-top:4px solid var(--ink);border-bottom:1px solid var(--ink)}
+.issue .serif{font-style:italic;font-size:19px}
+.cover{display:grid;grid-template-columns:7fr 5fr;gap:clamp(24px,3.4vw,52px);padding:clamp(22px,3vw,40px) 0 70px}
+.panel{position:relative;background:var(--spot);color:var(--paper);aspect-ratio:16/10;padding:18px;display:flex;flex-direction:column}
+.panel canvas{flex:1;min-height:0;width:100%;display:block;margin-top:8px}
+.panel .mono{display:flex;justify-content:space-between}
+.story h2{font-family:Fraunces,serif;font-weight:400;font-variation-settings:"opsz" 144;font-size:clamp(34px,4.3vw,64px);line-height:.98;letter-spacing:-.035em;margin:24px 0 14px;max-width:13em}
+.story p{font-family:Fraunces,serif;font-size:21px;line-height:1.4;max-width:30em;margin:0 0 16px}
+.story .go{border-bottom:1.5px solid var(--spot);color:var(--spot);padding-bottom:2px}
+.who{font-size:17px;line-height:1.45;color:var(--ink);margin:0 0 26px;padding-bottom:22px;border-bottom:1px solid var(--ink)}
+.toc h4{margin:0 0 4px;font-weight:400}
+.item{display:grid;grid-template-columns:72px 1fr auto;gap:14px;align-items:center;padding:11px 0;border-bottom:1px solid var(--rule)}
+.item canvas{width:72px;height:54px;display:block}
+.item h3{margin:0;font-family:Fraunces,serif;font-weight:500;font-size:20px;line-height:1.14;letter-spacing:-.015em;font-variation-settings:"opsz" 30}
+.item .mono{color:var(--soft)}
+.item .pg{font-family:Fraunces,serif;font-style:italic;font-size:22px;color:var(--soft)}
+.item:hover h3{color:var(--spot);font-style:italic}.item:hover .pg{color:var(--spot)}
+.back{border-top:4px solid var(--ink);padding:12px 0 80px}
+.back .cols{columns:3;column-gap:clamp(24px,3.4vw,52px);margin-top:10px}
+.back .item{break-inside:avoid}
+footer{display:flex;justify-content:space-between;padding:18px 0;border-top:1px solid var(--ink);color:var(--soft)}
+@media(max-width:980px){.cover{grid-template-columns:1fr}.back .cols{columns:2}}
+@media(max-width:620px){.back .cols{columns:1}.issue{grid-template-columns:1fr;gap:2px}.strip .links{gap:12px}}
+</style>
+</head>
+<body>
+<div class="page">
+  <div class="strip mono"><span>Personal website</span><div class="links"><a href="../index.html">Writing</a><a href="../projects.html">Projects</a><a href="../cv.html">About</a></div></div>
+  <h1 class="plate" id="plate" style="--nlr-ring:0 0 0 1.5px #111"><span style="display:inline-block" data-nlr-name data-nlr-own>Nicola Lo Russo</span></h1>
+  <div class="issue"><span class="mono" id="no">N° 20</span><span class="serif"></span><span class="mono" id="when"></span></div>
+
+  <section class="cover">
+    <a class="story" id="story" href="#">
+      <div class="panel"><div class="mono"><span>Cover story</span><span id="cfig"></span></div><canvas id="cover"></canvas></div>
+      <h2 id="ct"></h2><p id="cs"></p><span class="go mono">Read the post →</span>
+    </a>
+    <div class="toc">
+      <h4 class="mono">In this issue</h4>
+      <div id="toc"></div>
+    </div>
+  </section>
+
+  <section class="back"><div class="mono">Earlier</div><div class="cols" id="back"></div></section>
+  <footer class="mono"><span>© 2026 Nicola Lo Russo</span><a href="../rss.xml">RSS</a></footer>
+</div>
+
+<script src="posts-data.js"></script>
+<script src="figures.js"></script>
+<script>
+const N=POSTS.length,lead=POSTS[0],plates=[],fd=(d,o)=>new Date(d+'T12:00').toLocaleDateString('en-GB',o);
+document.getElementById('no').textContent='N° '+N;document.getElementById('when').textContent=fd(lead.d,{month:'long',year:'numeric'});
+document.getElementById('ct').textContent=lead.t;document.getElementById('cs').textContent=lead.s;document.getElementById('story').href='../posts/'+lead.id+'.html';
+document.getElementById('cfig').textContent='Fig. '+N;
+plates.push({cv:document.getElementById('cover'),f:F[FIG[lead.id]]||F.line,ink:'#f6f2ea',hot:'#ff9ec4',t:0,vw:420,sp:.7});
+POSTS.slice(1).forEach((p,k)=>{const i=k+1,a=document.createElement('a');a.className='item';a.href='../posts/'+p.id+'.html';
+  a.innerHTML=`<canvas></canvas><div><h3>${p.t}</h3><span class="mono">${fd(p.d,{day:'numeric',month:'short',year:'numeric'})}</span></div><span class="pg">${String(N-i).padStart(2,'0')}</span>`;
+  document.getElementById(i<=6?'toc':'back').appendChild(a);
+  const pl={cv:a.querySelector('canvas'),f:F[FIG[p.id]]||F.line,ink:'#12110f',hot:'#2330e8',t:i*2.1,vw:150,sp:.35,el:a};
+  a.addEventListener('pointerenter',()=>pl.sp=1.6);a.addEventListener('pointerleave',()=>pl.sp=.35);plates.push(pl)});
+// nameplate: one line, exactly as wide as the page
+const plate=document.getElementById('plate');
+function fit(){plate.style.fontSize='100px';const w=plate.firstElementChild.getBoundingClientRect().width;plate.style.fontSize=(100*plate.clientWidth/w*.985)+'px'}
+addEventListener('resize',fit);fit();if(document.fonts){document.fonts.load('900 100px Fraunces','Nicola').then(fit);document.fonts.ready.then(fit)}setTimeout(fit,1200);
+const still=matchMedia('(prefers-reduced-motion: reduce)').matches;let last=performance.now();
+function frame(now){const dt=Math.min(.05,(now-last)/1000);last=now;
+  for(const p of plates){const r=p.cv.getBoundingClientRect();if(!r.width||r.bottom<0||r.top>innerHeight)continue;p.t+=still?0:dt*p.sp;
+    const d=Math.min(devicePixelRatio||1,2);if(p.cv.width!==Math.round(r.width*d)||p.cv.height!==Math.round(r.height*d)){p.cv.width=Math.round(r.width*d);p.cv.height=Math.round(r.height*d)}
+    const c=p.cv.getContext('2d'),k=r.width/p.vw;c.setTransform(d*k,0,0,d*k,0,0);c.clearRect(0,0,p.vw,r.height/k);c.lineWidth=1.2;c.fillStyle=c.strokeStyle=p.ink;
+    p.f(c,p.vw,r.height/k,p.t,p.ink,p.hot)}
+  requestAnimationFrame(frame)}
+requestAnimationFrame(frame);
+</script>
+<script src="world.js"></script>
+</body>
+</html>

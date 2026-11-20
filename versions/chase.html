@@ -1,0 +1,107 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Nicola Lo Russo</title>
+<meta name="robots" content="noindex">
+<link rel="icon" href="../images/nico.png" type="image/png">
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wdth,wght@12..96,75..100,300..800&family=JetBrains+Mono:wght@400;500&display=swap">
+<style>
+/* Preview 28: the posts do not want to be read. They run from the pointer, get tired, and can be caught. */
+:root{--bg:#f4f2ec;--ink:#0d0d0c;--A:#0b3fd0;--B:#ffe600}
+*{box-sizing:border-box}html,body{margin:0;height:100%}
+body{background:var(--bg);color:var(--ink);font-family:"Bricolage Grotesque",system-ui,sans-serif;overflow-x:hidden}
+.mono{font:500 11px/1.3 "JetBrains Mono",ui-monospace,monospace;letter-spacing:.08em;text-transform:uppercase}
+header{position:relative;z-index:5;background:var(--A);color:#f4efe4;padding:14px clamp(16px,2.6vw,40px) 16px;display:flex;align-items:flex-end;justify-content:space-between;gap:20px;flex-wrap:wrap}
+header h1{margin:0;font-weight:800;font-stretch:75%;font-size:clamp(40px,7vw,104px);line-height:.85;letter-spacing:-.022em}
+header .side{display:flex;flex-direction:column;align-items:flex-end;gap:8px;text-align:right}
+header b{color:var(--B);font-weight:500}
+button{all:unset;cursor:pointer;border:1.5px solid currentColor;border-radius:999px;padding:7px 12px}
+@media(hover:hover){button:hover{background:#f4efe4;color:var(--A)}}
+button:focus-visible{outline:2px solid var(--B);outline-offset:3px}
+header .nlr-dot::after{inset:-16px} /* a finger-sized target around the dot */
+#stage{position:relative;height:calc(100vh - var(--hh,130px));min-height:520px;overflow:hidden}
+.card{position:absolute;left:0;top:0;width:214px;display:grid;grid-template-columns:auto 1fr;gap:10px;align-items:center;padding:8px 10px 8px 8px;background:var(--p);color:var(--a);text-decoration:none;will-change:transform;box-shadow:0 10px 18px -12px #0008;user-select:none;-webkit-user-drag:none}
+.card canvas{display:block;width:60px;height:45px}
+.card h3{margin:0 0 3px;font-weight:800;font-stretch:75%;font-size:15px;line-height:1;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden;text-wrap:balance}
+.card .mono{font-size:9px;opacity:.75;white-space:nowrap}
+.card.tired{outline:2.5px solid var(--B);outline-offset:2px}
+.card.tired .mono::after{content:" · tired"}
+.card.caught{opacity:.55}
+.card:focus-visible{outline:3px solid var(--A);outline-offset:3px;z-index:2}
+.card.caught .mono::after{content:" · read"}
+#stage.calm{height:auto;min-height:0;overflow:visible;display:grid;grid-template-columns:repeat(auto-fill,minmax(250px,1fr));gap:10px;padding:18px clamp(16px,2.6vw,40px) 64px}
+#stage.calm .card{position:static;width:auto;transform:none!important;box-shadow:none}
+#stage.calm .card.caught{opacity:1}
+@media(max-width:700px){.card{width:168px;gap:8px;padding:6px 8px 6px 6px}.card canvas{width:44px;height:33px}.card h3{font-size:13px}#stage{height:150vh}
+  header{padding-top:16px;gap:14px}header h1{font-size:min(14vw,64px)}header .side{flex-direction:row;align-items:center;justify-content:space-between;width:100%}button{padding:10px 14px}
+  .card .mono::after{content:none!important}} /* no room for the word on a small card: the outline and the fading say it */
+</style>
+</head>
+<body>
+<header>
+  <h1 data-nlr-name>Nicola Lo Russo</h1>
+  <div class="side mono"><span id="count"></span><button id="give" type="button">Line them up</button></div>
+</header>
+<main id="stage"></main>
+<script src="posts-data.js"></script>
+<script src="figures.js"></script>
+<script>
+(function(){
+  var stage=document.getElementById('stage'),head=document.querySelector('header'),count=document.getElementById('count'),give=document.getElementById('give');
+  var TONES=[['#0b3fd0','#f4efe4','#ffe600'],['#111111','#f4efe4','#ffe600'],['#e4dfd3','#0d0d0c','#0b3fd0'],['#ffe600','#0d0d0c','#ef4a23']];
+  var caught=[];try{caught=JSON.parse(sessionStorage.getItem('nlr-caught')||'[]')}catch(e){}
+  var still=matchMedia('(prefers-reduced-motion: reduce)').matches,calm=still,W=0,H=0,px=-999,py=-999,ptime=0;
+  var cards=[];
+  // the stage is as tall as the window, or taller when the cards need more room (a phone)
+  function size(){var hh=head.offsetHeight;document.documentElement.style.setProperty('--hh',hh+'px');
+    if(calm){stage.style.height='';return}
+    cards.forEach(function(o){o.w=o.el.offsetWidth;o.h=o.el.offsetHeight});W=stage.clientWidth;
+    var c=cards[0],need=c?POSTS.length*(c.w+16)*(c.h+16)*1.8/W:0;H=Math.round(Math.max(innerHeight-hh,need,420));stage.style.height=H+'px'}
+  function fig(cv,name,t,ink,hot){var d=Math.min(devicePixelRatio||1,2),w=cv.clientWidth,h=cv.clientHeight;if(!w)return;if(cv.width!==Math.round(w*d)){cv.width=Math.round(w*d);cv.height=Math.round(h*d)}
+    var c=cv.getContext('2d'),vw=170,k=w/vw,m=12;c.setTransform(d*k,0,0,d*k,0,0);c.clearRect(0,0,vw,h/k);c.translate(m,m*.75);c.lineWidth=1.6;c.fillStyle=c.strokeStyle=ink;(F[name]||F.line)(c,vw-2*m,h/k-1.5*m,t,ink,hot)}
+  POSTS.forEach(function(p,i){
+    var a=document.createElement('a'),T=TONES[i%TONES.length],d=new Date(p.d+'T12:00');a.className='card';a.href='../posts/'+p.id+'.html';a.draggable=false;a.style.setProperty('--p',T[0]);a.style.setProperty('--a',T[1]);
+    a.innerHTML='<canvas></canvas><div><h3></h3><span class="mono"></span></div>';a.querySelector('h3').textContent=p.t;a.querySelector('.mono').textContent=d.toLocaleDateString('en-GB',{day:'numeric',month:'short',year:'numeric'});
+    stage.appendChild(a);
+    var o={el:a,cv:a.querySelector('canvas'),f:FIG[p.id],T:T,id:p.id,x:0,y:0,vx:(Math.random()-.5)*60,vy:(Math.random()-.5)*60,st:1,t:i*2.3+3,w:214,h:62,done:caught.indexOf(p.id)>=0};
+    if(o.done)a.classList.add('caught');
+    a.addEventListener('click',function(){if(!o.done){o.done=true;a.classList.add('caught');a.classList.remove('tired');caught.push(p.id);label();try{sessionStorage.setItem('nlr-caught',JSON.stringify(caught))}catch(e){}}});
+    cards.push(o)});
+  function label(){count.textContent='Caught '+caught.length+' of '+POSTS.length}
+  function draw(){cards.forEach(function(o){fig(o.cv,o.f,o.t,o.T[1],o.T[2])})}
+  // at the start each card gets a free cell of a grid, so that none covers another
+  function scatter(){var c=cards[0],cols=Math.max(1,Math.floor((W-8)/(c.w+12))),rows=Math.max(1,Math.floor((H-8)/(c.h+12))),cw=(W-8)/cols,ch=(H-8)/rows,cells=[];
+    for(var k=0;k<cols*rows;k++)cells.push(k);cells.sort(function(){return Math.random()-.5});
+    cards.forEach(function(o,i){var k=cells[i%cells.length];o.x=4+(k%cols)*cw+Math.random()*Math.max(0,cw-o.w);o.y=4+Math.floor(k/cols)*ch+Math.random()*Math.max(0,ch-o.h);o.vx=(Math.random()-.5)*60;o.vy=(Math.random()-.5)*60;o.st=1})}
+  function setCalm(v){calm=v;stage.classList.toggle('calm',v);give.textContent=v?'Let them go':'Line them up';cards.forEach(function(o){o.el.style.transform=''});size();if(!v)scatter();draw()}
+  give.addEventListener('click',function(){setCalm(!calm)});
+  stage.addEventListener('pointermove',function(e){var r=stage.getBoundingClientRect();px=e.clientX-r.left;py=e.clientY-r.top;ptime=Date.now()});
+  stage.addEventListener('pointerdown',function(e){var r=stage.getBoundingClientRect();px=e.clientX-r.left;py=e.clientY-r.top;ptime=Date.now()});
+  stage.addEventListener('pointerleave',function(){px=py=-999});
+  addEventListener('resize',function(){size();draw()});
+  label();if(calm)setCalm(true);else{size();scatter();draw()}
+  if(document.fonts&&document.fonts.ready)document.fonts.ready.then(function(){size();draw()});
+  var last=performance.now(),R0=210;
+  function frame(now){var dt=Math.min(.04,(now-last)/1000);last=now;
+    if(!calm){var live=Date.now()-ptime<2500,pl=W-176,pt=innerHeight-58-(head.offsetHeight-scrollY);
+      for(var i=0;i<cards.length;i++){var o=cards[i],cx=o.x+o.w/2,cy=o.y+o.h/2,dx=cx-px,dy=cy-py,d=Math.hypot(dx,dy)||1,near=live&&d<R0&&!o.done;
+        if(near){var f=(1-d/R0)*2600*(.15+o.st);o.vx+=dx/d*f*dt;o.vy+=dy/d*f*dt;o.st=Math.max(0,o.st-dt*.42);o.t+=dt*2;fig(o.cv,o.f,o.t,o.T[1],o.T[2])}else o.st=Math.min(1,o.st+dt*.1);
+        for(var j=i+1;j<cards.length;j++){var q=cards[j],ex=cx-(q.x+q.w/2),ey=cy-(q.y+q.h/2),ox=(o.w+q.w)/2-Math.abs(ex),oy=(o.h+q.h)/2-Math.abs(ey);
+          if(ox>-6&&oy>-6){if(ox<oy){var sx=(ex<0?-1:1)*(ox+6)*90*dt;o.vx+=sx;q.vx-=sx}else{var sy=(ey<0?-1:1)*(oy+6)*90*dt;o.vy+=sy;q.vy-=sy}}}
+        if(o.x+o.w>pl&&o.y+o.h>pt&&o.y<pt+60){if(o.x+o.w-pl<o.y+o.h-pt)o.vx-=500*dt;else o.vy-=500*dt} // keep clear of the pill in the corner
+        var max=o.done?40:70+640*o.st,sp=Math.hypot(o.vx,o.vy);if(sp>max){o.vx*=max/sp;o.vy*=max/sp}
+        var drag=near?1:Math.pow(.25,dt);o.vx=o.vx*drag+(Math.random()-.5)*26*dt;o.vy=o.vy*drag+(Math.random()-.5)*26*dt;
+        o.x+=o.vx*dt;o.y+=o.vy*dt;
+        if(o.x<4){o.x=4;o.vx=Math.abs(o.vx)*.8}if(o.x>W-o.w-4){o.x=W-o.w-4;o.vx=-Math.abs(o.vx)*.8}if(o.y<4){o.y=4;o.vy=Math.abs(o.vy)*.8}if(o.y>H-o.h-4){o.y=H-o.h-4;o.vy=-Math.abs(o.vy)*.8}
+        o.el.classList.toggle('tired',o.st<.12&&!o.done);
+        o.el.style.transform='translate('+o.x.toFixed(1)+'px,'+o.y.toFixed(1)+'px) rotate('+(o.vx*.012).toFixed(2)+'deg)'}}
+    requestAnimationFrame(frame)}
+  requestAnimationFrame(frame);
+})();
+</script>
+<script src="world.js"></script>
+</body>
+</html>

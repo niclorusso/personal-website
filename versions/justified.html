@@ -1,0 +1,83 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Nicola Lo Russo</title>
+<meta name="robots" content="noindex">
+<link rel="icon" href="../images/nico.png" type="image/png">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Inter+Tight:wght@400;500;700;800&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+:root{--bg:#f7f6f1;--ink:#0c0c0c;--hot:#ff3b14}
+*{box-sizing:border-box}
+body{margin:0;background:var(--bg);color:var(--ink);font-family:"Inter Tight",system-ui,sans-serif;font-size:19px;line-height:1.45}
+a{color:inherit;text-decoration:none}
+.mono{font-family:"JetBrains Mono",monospace;font-size:11px;letter-spacing:.07em;text-transform:uppercase}
+.page{padding:0 clamp(16px,2.6vw,40px)}
+nav{display:flex;justify-content:space-between;align-items:center;padding:14px 0}
+nav .links{display:flex;gap:22px}
+.fit{display:block;font-weight:800;text-transform:uppercase;letter-spacing:-.045em;line-height:.8;white-space:nowrap;overflow:hidden}
+.fit span{display:block;letter-spacing:-.045em;padding:.035em 0 .05em}
+.name{border-top:2px solid var(--ink);border-bottom:2px solid var(--ink);padding:14px 0 10px}
+.intro{display:grid;grid-template-columns:1fr 1fr;gap:30px;padding:26px 0 90px}
+.lede{margin:0;font-size:22px;line-height:1.36;max-width:26em;font-weight:500}
+.intro .mono{text-align:right;line-height:1.7}
+.row{display:block;padding:10px 0 30px;border-top:1px solid var(--ink);transition:opacity .25s,color .2s}
+.row .lab{display:flex;justify-content:space-between;padding-bottom:12px}
+@media(hover:hover){#rows:hover .row{opacity:.2}#rows:hover .row:hover{opacity:1;color:var(--hot)}}
+.float{position:fixed;left:0;top:0;width:250px;pointer-events:none;z-index:9;opacity:0;transition:opacity .2s;will-change:transform}
+.float.on{opacity:1}
+.float canvas{display:block;width:250px;height:188px;background:var(--ink)}
+.float p{margin:0;padding:10px 12px 12px;background:var(--ink);color:var(--bg);font-size:13.5px;line-height:1.35;font-weight:500}
+.float p:empty{display:none}
+footer{display:flex;justify-content:space-between;padding:20px 0;border-top:2px solid var(--ink)}
+@media(max-width:700px){.intro{grid-template-columns:1fr;padding-bottom:60px}.intro .mono{text-align:left}.float{display:none}}
+</style>
+</head>
+<body>
+<div class="page">
+  <nav class="mono"><span data-nlr-name data-nlr-own style="font:800 clamp(17px,2.2vw,24px)/1 'Inter Tight',sans-serif;letter-spacing:-.03em;text-transform:none;--nlr-ring:0 0 0 1.5px #0c0c0c">Nicola Lo Russo</span><div class="links"><a href="../index.html">Writing</a><a href="../projects.html">Projects</a><a href="../cv.html">About</a></div></nav>
+  <div class="name"><div class="fit" data-t="Nicola Lo Russo" data-lines="1"></div></div>
+  <div style="height:clamp(40px,7vw,90px)"></div>
+  <section id="rows"></section>
+  <footer class="mono"><span>© 2026 Nicola Lo Russo</span><a href="../rss.xml">RSS</a></footer>
+</div>
+<div class="float" id="float"><canvas id="cv" width="500" height="376"></canvas><p id="fp"></p></div>
+
+<script src="posts-data.js"></script>
+<script src="figures.js"></script>
+<script>
+const rows=document.getElementById('rows');let hover=-1;
+POSTS.forEach((p,i)=>{const a=document.createElement('a');a.className='row';a.href='../posts/'+p.id+'.html';
+  a.innerHTML=`<div class="lab mono"><span>${String(POSTS.length-i).padStart(2,'0')}</span><span>${new Date(p.d+'T12:00').toLocaleDateString('en-GB',{day:'numeric',month:'long',year:'numeric'})}</span></div><div class="fit" data-t="${p.t.replace(/"/g,'&quot;')}"></div>`;
+  a.addEventListener('pointerenter',()=>{hover=i;document.getElementById('fp').textContent=p.s||'';fl.classList.add('on')});
+  a.addEventListener('pointerleave',()=>{hover=-1;fl.classList.remove('on')});rows.appendChild(a)});
+
+// Fit: break each title into as few lines as possible, then scale every line to the exact width of the page.
+const probe=document.createElement('span');probe.style.cssText='position:absolute;left:-99999px;top:0;visibility:hidden;white-space:nowrap;font:800 100px "Inter Tight";letter-spacing:-.045em;text-transform:uppercase';document.body.appendChild(probe);
+const width=s=>{probe.textContent=s;return probe.getBoundingClientRect().width};
+function split(words,L){ // L lines of similar length
+  const total=words.join(' ').length,out=[];let cur=[],len=0;
+  words.forEach((w,k)=>{const left=L-out.length;if(cur.length&&left>1&&len+w.length/2>total/L*(out.length+1)-out.join(' ').length){out.push(cur.join(' '));cur=[];len=out.join(' ').length+1}cur.push(w);len+=w.length+1});
+  out.push(cur.join(' '));return out}
+function fit(){
+  const min=innerWidth<700?26:34;
+  document.querySelectorAll('.fit').forEach(el=>{
+    const W=el.clientWidth,words=el.dataset.t.split(' '),max=el.dataset.lines?1:Math.min(5,words.length);let lines,sizes;
+    for(let L=1;L<=max;L++){lines=split(words,L);sizes=lines.map(l=>100*W/width(l));if(Math.min(...sizes)>=min)break}
+    el.innerHTML=lines.map((l,k)=>`<span style="font-size:${(sizes[k]*.995).toFixed(2)}px">${l}</span>`).join('')})}
+addEventListener('resize',fit);fit();if(document.fonts){document.fonts.load('800 100px "Inter Tight"','NICOLA').then(fit);document.fonts.ready.then(fit)}setTimeout(fit,1200);
+
+// The figure of the post follows the pointer.
+const fl=document.getElementById('float'),cv=document.getElementById('cv'),c=cv.getContext('2d');let mx=0,my=0,fx=0,fy=0,t=0,last=performance.now();
+addEventListener('pointermove',e=>{mx=e.clientX;my=e.clientY});
+function frame(now){const dt=Math.min(.05,(now-last)/1000);last=now;t+=dt;
+  const tx=Math.min(mx+26,innerWidth-270),ty=Math.min(my+26,innerHeight-300);fx+=(tx-fx)*.16;fy+=(ty-fy)*.16;fl.style.transform=`translate(${fx}px,${fy}px)`;
+  if(hover>=0){c.setTransform(2,0,0,2,0,0);c.clearRect(0,0,250,188);c.save();c.translate(14,12);c.lineWidth=1.2;c.fillStyle=c.strokeStyle='#f7f6f1';(F[FIG[POSTS[hover].id]]||F.line)(c,222,164,t+hover*3,'#f7f6f1','#ff3b14');c.restore()}
+  requestAnimationFrame(frame)}
+requestAnimationFrame(frame);
+</script>
+<script src="world.js"></script>
+</body>
+</html>

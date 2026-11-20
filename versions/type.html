@@ -1,0 +1,132 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Nicola Lo Russo</title>
+<meta name="robots" content="noindex">
+<link rel="icon" href="../images/nico.png" type="image/png">
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wdth,wght@12..96,75..100,300..800&family=JetBrains+Mono:wght@400;500&display=swap">
+<style>
+/* Preview 41: only the name, very large. Its letters are made of the titles of the posts, written very small.
+   Near the pointer the letters come apart and the titles grow until they can be read and opened. */
+:root{--paper:#f4f2ec;--ink:#0d0d0c;--dot:#ffe600}
+*{box-sizing:border-box}html,body{margin:0;height:100%}
+body{background:var(--paper);color:var(--ink);font-family:"Bricolage Grotesque",system-ui,sans-serif;overflow:hidden}
+canvas{position:fixed;inset:0;width:100%;height:100%;display:block;cursor:crosshair;touch-action:none;-webkit-tap-highlight-color:transparent;user-select:none;-webkit-user-select:none}
+#dot{all:unset;position:fixed;left:0;top:0;border-radius:50%;background:var(--dot);box-shadow:0 0 0 1.5px var(--ink);cursor:pointer;z-index:3;transition:scale .25s cubic-bezier(.3,1.8,.4,1)}
+#dot:hover{scale:1.3}#dot:focus-visible{outline:2px solid var(--ink);outline-offset:4px}
+#dot::after{content:"";position:absolute;inset:var(--pad,-7px);border-radius:50%}
+#hud{position:fixed;left:0;right:0;bottom:0;padding:16px clamp(16px,3vw,44px) 20px;z-index:4;pointer-events:none;display:flex;align-items:flex-end;gap:18px;min-height:90px}
+#hud a{pointer-events:auto;max-width:100%;color:inherit;text-decoration:none;display:block}
+#hud h2{margin:0 0 5px;font-weight:800;font-stretch:75%;font-size:clamp(24px,3.4vw,46px);line-height:.95;letter-spacing:-.02em;max-width:18em}
+#hud span{font:500 11px/1.3 "JetBrains Mono",monospace;letter-spacing:.1em;text-transform:uppercase;opacity:.65}
+#hud a:hover h2,#hud.kb h2{text-decoration:underline;text-decoration-thickness:3px;text-underline-offset:5px}
+.sr{position:absolute;left:-9999px}
+@media (max-width:700px){#hud{padding-bottom:54px}}
+</style>
+</head>
+<body>
+<canvas id="c"></canvas>
+<button id="dot" data-nlr-dot type="button" aria-label="Another version of this site"></button>
+<div id="hud"><a id="hl" href="#"><h2 id="ht"></h2><span id="hd"></span></a></div>
+<nav class="sr" id="sr" aria-label="Posts"></nav>
+<script src="posts-data.js"></script>
+<script>
+(function(){
+  var cv=document.getElementById('c'),ctx=cv.getContext('2d'),dotEl=document.getElementById('dot'),hud=document.getElementById('hud'),ht=document.getElementById('ht'),hd=document.getElementById('hd'),hl=document.getElementById('hl'),sr=document.getElementById('sr');
+  var W=0,H=0,dpr=1,base=document.createElement('canvas'),words=[],px=-999,py=-999,sel=-1,R=170,TF=8,hot=-1,plate=null,hole=null,touch=false,dirty=true;
+  var FAM='"Bricolage Grotesque",system-ui,sans-serif',still=matchMedia('(prefers-reduced-motion: reduce)');
+  // one moving label for each post: it grows out of the letters when the pointer is near
+  var items=POSTS.map(function(){return {a:0,h:0,x:0,y:0,s:1,ta:0,th:0,tx:0,ty:0,fs:12,lh:13,ls:[],w:0}});
+  POSTS.forEach(function(p,i){var a=document.createElement('a');a.href='../posts/'+p.id+'.html';a.textContent=p.t;a.addEventListener('focus',function(){pick(i);hud.classList.add('kb')});a.addEventListener('blur',function(){hud.classList.remove('kb')});sr.appendChild(a)});
+  function layout(){
+    dpr=Math.min(devicePixelRatio||1,2);W=innerWidth;H=innerHeight;cv.width=W*dpr;cv.height=H*dpr;base.width=W*dpr;base.height=H*dpr;
+    var lines=W>H*1.25?['Nicola','Lo Russo']:['Nicola','Lo','Russo'],m=document.createElement('canvas');m.width=W*dpr;m.height=H*dpr;var g=m.getContext('2d');g.setTransform(dpr,0,0,dpr,0,0);
+    // the size at which the widest line fills the page
+    var fs=300;g.font='800 condensed '+fs+'px '+FAM;var wmax=Math.max.apply(null,lines.map(function(l){return g.measureText(l.replace('i','ı')).width}));
+    fs=Math.min(fs*(W*.9)/wmax,(H-150)/(lines.length*.82));g.font='800 condensed '+fs+'px '+FAM;g.textBaseline='alphabetic';g.fillStyle='#000';
+    var lh=fs*.8,y0=(H-70-lines.length*lh)/2+lh*.92,x0=W*.045;
+    lines.forEach(function(l,i){g.fillText(l.replace('i','ı'),x0,y0+i*lh)});
+    // the dot of the i, from the metrics of the font
+    var hi=g.measureText('i').actualBoundingBoxAscent,lo=g.measureText('ı').actualBoundingBoxAscent,d=Math.max(fs*.12,(hi-lo)*.92),cx=x0+g.measureText('N').width+g.measureText('ı').width/2,cy=y0-(hi-(hi-lo)*.4);
+    dotEl.style.width=dotEl.style.height=d+'px';dotEl.style.left=(cx-d/2)+'px';dotEl.style.top=(cy-d/2)+'px';dotEl.style.setProperty('--pad',-Math.max(4,(46-d)/2)+'px');
+    var hm=document.createElement('canvas');hm.width=W;hm.height=H;var hg=hm.getContext('2d',{willReadFrequently:true});hg.drawImage(m,0,0,W,H);
+    var data=hg.getImageData(0,0,W,H).data;function on(x,y){x|=0;y|=0;return x>=0&&y>=0&&x<W&&y<H&&data[(y*W+x)*4+3]>128}
+    // rows of very small titles, kept only inside the letters
+    TF=Math.max(6,Math.min(8.5,fs/40));var b=base.getContext('2d');b.setTransform(dpr,0,0,dpr,0,0);b.clearRect(0,0,W,H);b.font='800 '+TF+'px '+FAM;b.textBaseline='middle';b.fillStyle='#0d0d0c';words=[];
+    var k=0,rh=TF*.98,ws=POSTS.map(function(p){return [b.measureText(p.t+' · ').width,b.measureText(p.t).width]});
+    for(var y=rh/2;y<H;y+=rh){var x=-((y*7)%90);while(x<W){var i=k%POSTS.length,w=ws[i][0],tw=ws[i][1],any=false,r0=-1;
+        // every stretch of the title that falls inside a letter can be picked
+        for(var q=x;q<=x+tw+4;q+=4){var o=q<=x+tw&&on(q,y);if(o&&r0<0)r0=q;if(!o&&r0>=0){any=true;if(q-4-r0>=8)words.push({x:(r0+q-4)/2,y:y,i:i});r0=-1}}
+        if(any)b.fillText(POSTS[i].t+' · ',x,y);x+=w;k++}}
+    b.globalCompositeOperation='destination-in';b.setTransform(1,0,0,1,0,0);b.drawImage(m,0,0);
+    // a light tint of the letters under the text, so that the name reads from far away
+    b.globalCompositeOperation='destination-over';b.globalAlpha=.16;b.drawImage(m,0,0);b.globalAlpha=1;b.globalCompositeOperation='source-over';
+    R=Math.max(110,Math.min(190,W*.16));
+  }
+  function day(d){d=d.split('-');return +d[2]+' '+['January','February','March','April','May','June','July','August','September','October','November','December'][d[1]-1]+' '+d[0]} // written out: the browser's own month names are not the same everywhere
+  function pick(i){if(i===sel||i<0)return;sel=i;var p=POSTS[i];ht.textContent=p.t;hd.textContent=day(p.d);hl.href='../posts/'+p.id+'.html'}
+  function fit(t,fs,maxW){ // the title on as few lines as it needs, of similar length
+    ctx.font='700 condensed '+fs+'px '+FAM;var full=ctx.measureText(t).width,n=Math.ceil(full/maxW),out;
+    function go(lim){var ls=[],cur='';t.split(' ').forEach(function(w){var s=cur?cur+' '+w:w;if(cur&&ctx.measureText(s).width>lim){ls.push(cur);cur=w}else cur=s});ls.push(cur);return ls}
+    out=go(maxW);if(n>1){var bal=go(Math.min(maxW,full/n*1.12));if(bal.length<=out.length)out=bal}
+    return {ls:out,w:Math.max.apply(null,out.map(function(l){return ctx.measureText(l).width}))}
+  }
+  // where every label should be: the nearest title large on yellow, up to three more above and three below, none on top of another
+  function aim(){
+    var near={},list=[],i;items.forEach(function(it){it.ta=0;it.th=0});hot=-1;plate=null;
+    if(px<-900){hole=null;return}
+    for(i=0;i<words.length;i++){var w=words[i],d=Math.hypot(w.x-px,w.y-py);if(d<R&&(!near[w.i]||d<near[w.i].d))near[w.i]={d:d,w:w}}
+    for(i in near)list.push(near[i]);list.sort(function(a,b){return a.d-b.d});
+    if(!list.length){hole={x:px,y:py,rx:R,ry:R};cv.style.cursor='crosshair';return}
+    hot=list[0].w.i;pick(hot);cv.style.cursor='pointer';
+    var fsH=Math.max(20,Math.min(34,R*.18)),maxW=Math.min(W-44,560),gap=fsH*.34,up=[],dn=[],set=[];
+    list.slice(1).forEach(function(n){var s=n.w.y<list[0].w.y?up:dn;if(s.length<3)s.push(n)});
+    function put(n,fs,y0,dir,a,h){var it=items[n.w.i],L=fit(POSTS[n.w.i].t,fs,maxW),lh=fs*1.1,bh=L.ls.length*lh+(h?fs*.36:0);
+      if(it.a<.02){it.x=n.w.x;it.y=n.w.y;it.s=TF/fs}else if(it.fs!==fs)it.s*=it.fs/fs;
+      it.fs=fs;it.lh=lh;it.ls=L.ls;it.w=L.w;it.bh=bh;it.ta=a;it.th=h;it.ty=y0+dir*bh/2;set.push(it);return bh}
+    var hh=put(list[0],fsH,0,0,1,1),y=-hh/2-gap;
+    up.forEach(function(n,k){y-=put(n,Math.max(11,fsH*[.56,.47,.41][k]),y,-1,[.82,.62,.48][k],0)+gap*.55});var top=y;
+    y=hh/2+gap;dn.forEach(function(n,k){y+=put(n,Math.max(11,fsH*[.56,.47,.41][k]),y,1,[.82,.62,.48][k],0)+gap*.55});var bot=y;
+    var wmax=0,wn=0;set.forEach(function(it){wmax=Math.max(wmax,it.w);if(!it.th)wn=Math.max(wn,it.w)});
+    // under a finger the labels sit above it; nothing leaves the page
+    var cy=py-(touch?hh/2+44:0),cx=Math.max(wmax/2+18,Math.min(W-wmax/2-18,px));cy=Math.max(10-top,Math.min(H-10-bot,cy));
+    set.forEach(function(it){it.tx=cx;it.ty+=cy});
+    var hi=items[hot];plate={x:cx-hi.w/2-9,y:cy-hh/2,w:hi.w+18,h:hh};
+    hole={x:cx,y:cy+(top+bot)/2,rx:R,ry:Math.max(R*.8,(bot-top)/2+30)};
+  }
+  var hr={rx:170,ry:170};
+  function draw(k){
+    ctx.setTransform(1,0,0,1,0,0);ctx.clearRect(0,0,cv.width,cv.height);ctx.drawImage(base,0,0);ctx.setTransform(dpr,0,0,dpr,0,0);
+    var moving=false;function ease(o,p,t,eps){var d=t-o[p];if(Math.abs(d)<eps)o[p]=t;else{o[p]+=d*k;moving=true}}
+    if(hole){ease(hr,'rx',hole.rx,.5);ease(hr,'ry',hole.ry,.5);ctx.save();ctx.translate(hole.x,hole.y);ctx.scale(hr.rx/100,hr.ry/100);
+      var g=ctx.createRadialGradient(0,0,0,0,0,100);g.addColorStop(0,'rgba(0,0,0,1)');g.addColorStop(.5,'rgba(0,0,0,1)');g.addColorStop(1,'rgba(0,0,0,0)');ctx.globalCompositeOperation='destination-out';ctx.fillStyle=g;ctx.fillRect(-100,-100,200,200);ctx.restore()}
+    // the letters also give way under every label, so that no label lies on the small text
+    ctx.save();ctx.globalCompositeOperation='destination-out';ctx.shadowColor='#000';ctx.shadowBlur=14*dpr;ctx.fillStyle='#000';
+    items.forEach(function(it){if(it.a<.05)return;ctx.globalAlpha=Math.min(1,it.a*2.2);var w=(it.w+26)*it.s,h=(it.bh+8)*it.s;ctx.fillRect(it.x-w/2,it.y-h/2,w,h);ctx.fillRect(it.x-w/2,it.y-h/2,w,h)});ctx.restore();
+    ctx.textBaseline='middle';ctx.textAlign='center';
+    function one(it){ease(it,'a',it.ta,.01);ease(it,'h',it.th,.01);if(it.a<.01&&!it.ta)return;ease(it,'x',it.tx,.3);ease(it,'y',it.ty,.3);ease(it,'s',1,.004);
+      ctx.save();ctx.translate(it.x,it.y);ctx.scale(it.s,it.s);ctx.font='700 condensed '+it.fs+'px '+FAM;
+      if(it.h>.01){ctx.globalAlpha=it.h*Math.min(1,it.a*1.5);ctx.fillStyle='#ffe600';ctx.fillRect(-it.w/2-9,-it.bh/2,it.w+18,it.bh)}
+      ctx.globalAlpha=it.a;ctx.fillStyle='#0d0d0c';var n=it.ls.length;for(var j=0;j<n;j++)ctx.fillText(it.ls[j],0,(j-(n-1)/2)*it.lh+it.fs*.04);ctx.restore()}
+    items.forEach(function(it,i){if(i!==hot)one(it)});if(hot>=0)one(items[hot]);
+    ctx.textAlign='left';return moving
+  }
+  function at(e){px=e.clientX;py=e.clientY;aim();dirty=true}
+  function open(i){location.href='../posts/'+POSTS[i].id+'.html'}
+  var dn=null;
+  cv.addEventListener('pointermove',function(e){touch=e.pointerType!=='mouse';if(touch&&dn&&dn.on&&Math.hypot(e.clientX-dn.x,e.clientY-dn.y)<10)return;if(dn)dn.on=false;at(e)});
+  // a mouse click opens the yellow title; a finger picks it first and opens it with a tap on the yellow
+  cv.addEventListener('pointerdown',function(e){touch=e.pointerType!=='mouse';dn={x:e.clientX,y:e.clientY,on:touch&&plate&&e.clientX>plate.x-8&&e.clientX<plate.x+plate.w+8&&e.clientY>plate.y-8&&e.clientY<plate.y+plate.h+8};if(!dn.on)at(e)});
+  cv.addEventListener('pointerup',function(e){if(!dn)return;var tap=Math.hypot(e.clientX-dn.x,e.clientY-dn.y)<10,on=dn.on;dn=null;if(tap&&hot>=0&&(on||e.pointerType==='mouse'))open(hot)});
+  cv.addEventListener('pointercancel',function(){dn=null});
+  function go(){layout();aim();items.forEach(function(it){if(it.ta){it.x=it.tx;it.y=it.ty;it.s=1}});dirty=true}
+  go();var rt;addEventListener('resize',function(){clearTimeout(rt);rt=setTimeout(go,120)});if(document.fonts){document.fonts.load('800 100px "Bricolage Grotesque"','Nicola').then(go);document.fonts.ready.then(go)}
+  pick(0);var last=0;(function frame(now){now=now||0;var dt=Math.min(.05,(now-last)/1000)||.016;last=now;if(dirty){dirty=draw(still.matches?1:1-Math.exp(-dt*15))}requestAnimationFrame(frame)})();
+})();
+</script>
+<script src="world.js"></script>
+</body>
+</html>

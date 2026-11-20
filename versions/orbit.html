@@ -1,0 +1,68 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Nicola Lo Russo</title>
+<meta name="robots" content="noindex">
+<link rel="icon" href="../images/nico.png" type="image/png">
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;700&family=JetBrains+Mono:wght@400;500&display=swap">
+<style>
+/* Preview 39: everything turns around the dot of the i. The newest posts are on the closest orbits. */
+:root{--bg:#07080d;--ink:#f1efe7;--sun:#ffe600}
+*{box-sizing:border-box}html,body{margin:0;height:100%}
+body{background:radial-gradient(ellipse at 50% 45%,#141a33 0,var(--bg) 70%);color:var(--ink);font-family:"Space Grotesk",system-ui,sans-serif;overflow:hidden}
+#sky{position:fixed;inset:0}
+#name{position:absolute;left:50%;top:45%;transform:translateY(-50%);z-index:20;white-space:nowrap;pointer-events:none}
+#name [data-nlr-name]{font-family:"Space Grotesk",sans-serif;font-weight:700;font-stretch:normal;letter-spacing:-.04em;font-size:clamp(22px,7.2vw,112px);line-height:1}
+#name .nlr-dot{box-shadow:0 0 30px 6px #ffe60088}
+.ring{position:absolute;border:1px solid #f1efe722;border-radius:50%;pointer-events:none;z-index:1}
+.pl{position:absolute;left:0;top:0;display:block;width:var(--w);will-change:transform;text-decoration:none;color:inherit}
+.pl canvas{display:block;width:100%;aspect-ratio:4/3;background:var(--p);border-radius:50%}
+.pl{outline:0;-webkit-tap-highlight-color:transparent}
+.pl:hover canvas,.pl.sel canvas,.pl:focus-visible canvas{outline:2px solid var(--sun);outline-offset:3px}
+#hud{position:fixed;left:0;right:0;bottom:0;padding:16px clamp(16px,3vw,44px) 20px;z-index:40;pointer-events:none;min-height:96px}
+#hud h2{margin:0 0 6px;font-weight:700;font-size:clamp(22px,3.2vw,44px);letter-spacing:-.03em;line-height:1;max-width:18em}
+#hud span,#hud a{font:500 11px/1.3 "JetBrains Mono",monospace;letter-spacing:.1em;text-transform:uppercase}
+#hud a{pointer-events:auto;color:var(--bg);background:var(--sun);padding:8px 12px;border-radius:99px;text-decoration:none;margin-left:12px;display:none}
+#hud.touch a{display:inline-block}
+@media(max-width:700px){#name .nlr-dot::after{inset:-16px}#hud{padding-bottom:14px}}
+</style>
+</head>
+<body>
+<div id="sky"><div id="name"><span data-nlr-name data-nlr-own>Nicola Lo Russo</span></div></div>
+<div id="hud"><h2 id="ht"></h2><span id="hd"></span><a id="hl" href="#">Read</a></div>
+<script src="posts-data.js"></script>
+<script src="figures.js"></script>
+<script>
+(function(){
+  function fig(cv,name,t,ink,hot,lw){var d=Math.min(devicePixelRatio||1,2),w=cv.clientWidth,h=cv.clientHeight;if(!w)return;if(cv.width!==Math.round(w*d)){cv.width=Math.round(w*d);cv.height=Math.round(h*d)}
+    var c=cv.getContext("2d"),vw=170,k=w/vw,m=12;c.setTransform(d*k,0,0,d*k,0,0);c.clearRect(0,0,vw,h/k);c.translate(m,m*.75);c.lineWidth=lw||1.4;c.fillStyle=c.strokeStyle=ink;(F[name]||F.line)(c,vw-2*m,h/k-1.5*m,t,ink,hot)}
+  var sky=document.getElementById('sky'),hud=document.getElementById('hud'),ht=document.getElementById('ht'),hd=document.getElementById('hd'),hl=document.getElementById('hl');
+  var TONES=[['#f1efe7','#07080d','#e63323'],['#2b4bff','#f1efe7','#ffd21f'],['#ffd21f','#07080d','#e63323'],['#e63323','#f1efe7','#ffd21f']],PER=[3,5,5,7],rings=[],pls=[],paused=false,cx=0,cy=0,RX=[],K=.42,T=0,nm=document.getElementById('name');
+  var idx=0;PER.forEach(function(n,r){var el=document.createElement('div');el.className='ring';sky.appendChild(el);rings.push(el);
+    for(var j=0;j<n&&idx<POSTS.length;j++,idx++){(function(p,i){var a=document.createElement('a'),tone=TONES[i%TONES.length];a.className='pl';a.href='../posts/'+p.id+'.html';a.style.setProperty('--p',tone[0]);a.innerHTML='<canvas></canvas>';a.setAttribute('aria-label',p.t);sky.appendChild(a);
+      var o={el:a,cv:a.firstChild,p:p,ring:r,a0:j/n*Math.PI*2+r*.9,tone:tone,t:i*2.3+3,hover:false};pls.push(o);
+      function show(){ht.textContent=p.t;hd.textContent=new Date(p.d+'T12:00').toLocaleDateString('en-GB',{day:'numeric',month:innerWidth<700?'short':'long',year:'numeric'});hl.href=a.href;pls.forEach(function(q){q.el.classList.toggle('sel',q===o)})}
+      a.addEventListener('pointerenter',function(e){if(e.pointerType==='mouse'){o.hover=true;paused=true;show()}});a.addEventListener('pointerleave',function(){o.hover=false;paused=false});
+      a.addEventListener('focus',function(){if(a.matches(':focus-visible')){paused=true;show()}});a.addEventListener('blur',function(){if(!o.hover)paused=false});
+      a.addEventListener('click',function(e){if(e.detail&&o.touch){hud.classList.add('touch');if(!a.classList.contains('sel'))e.preventDefault();show()}});
+      a.addEventListener('pointerdown',function(e){o.touch=e.pointerType!=='mouse'})})(POSTS[idx],idx)}});
+  // the dot of the i is the centre of the window and of the orbits; on a tall screen the orbits are rounder, so that every planet stays inside it
+  function size(){var W=innerWidth,H=innerHeight,d=document.querySelector('.nlr-dot'),small=W<700,base=Math.max(40,Math.min(72,W*.04)),stp=small?2:base*.1;cx=W/2;cy=H*.4;
+    if(d){nm.style.left='0px';var r=d.getBoundingClientRect();nm.style.left=(W/2-(r.left+r.width/2-nm.getBoundingClientRect().left)).toFixed(1)+'px';r=d.getBoundingClientRect();cy=r.top+r.height/2}
+    var m=Math.min(W/2-(base+3*stp)*.58-4,H*1.05);K=Math.max(.2,Math.min(1.25,H*.36/m,(Math.min(cy,H-cy)-base*.55)/m));RX=(small?[.34,.56,.78,1]:[.3,.52,.76,1]).map(function(k){return m*k});
+    rings.forEach(function(el,i){var rx=RX[i],ry=rx*K;el.style.width=2*rx+'px';el.style.height=2*ry+'px';el.style.left=cx-rx+'px';el.style.top=cy-ry+'px'});
+    pls.forEach(function(o){o.w=Math.round(base+o.ring*stp);o.el.style.setProperty('--w',o.w+'px');fig(o.cv,FIG[o.p.id],o.t,o.tone[1],o.tone[2],2.2)})}
+  size();addEventListener('resize',size);addEventListener('DOMContentLoaded',size);addEventListener('load',size);setTimeout(size,400);if(document.fonts&&document.fonts.ready)document.fonts.ready.then(function(){setTimeout(size,60)});
+  var still=matchMedia('(prefers-reduced-motion: reduce)').matches,last=performance.now();
+  (function frame(now){now=now||last;var dt=Math.min(.05,(now-last)/1000);last=now;if(!paused&&!still)T+=dt;
+    pls.forEach(function(o){var rx=RX[o.ring],ry=rx*K,a=o.a0+T*(.34/(1+o.ring*.75)),s=Math.sin(a),w=o.w,sc=.78+.3*(s+1)/2;
+      o.el.style.transform='translate('+(cx+Math.cos(a)*rx-w/2).toFixed(1)+'px,'+(cy+s*ry-w*.375).toFixed(1)+'px) scale('+sc.toFixed(3)+')';o.el.style.zIndex=s>0?30:10;o.el.style.opacity=s>0||o.hover||o.el.classList.contains('sel')?1:.72;
+      if(o.hover){o.t+=dt*1.5;fig(o.cv,FIG[o.p.id],o.t,o.tone[1],o.tone[2],2.2)}});requestAnimationFrame(frame)})();
+})();
+</script>
+<script src="world.js"></script>
+</body>
+</html>
