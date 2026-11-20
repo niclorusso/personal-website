@@ -6,7 +6,7 @@
     <description>Personal website and blog</description>
     <language>en-us</language>
     <atom:link href="https://nicolalorusso.ch/rss.php" rel="self" type="application/rss+xml"/>
-    <lastBuildDate>Fri, 20 Nov 2026 16:14:24 +0000</lastBuildDate>
+    <lastBuildDate>Fri, 20 Nov 2026 16:21:22 +0000</lastBuildDate>
     <item>
       <title>Introducing SwissData Parliament</title>
       <link>https://nicolalorusso.ch/posts/swissdata-parliament.html</link>
@@ -140,14 +140,6 @@
       <author>nic.lorusso@icloud.com (Nicola Lo Russo)</author>
     </item>
     <item>
-      <title>Of risks and asteroids: analyzing the impact probability of 2024 YR4</title>
-      <link>https://nicolalorusso.ch/posts/risk-asteroid.html</link>
-      <guid isPermaLink="true">https://nicolalorusso.ch/posts/risk-asteroid.html</guid>
-      <pubDate>Wed, 19 Feb 2025 00:00:00 +0000</pubDate>
-      <description>Analyzing the impact probability of asteroid YR4 in 2032 and what it really means.</description>
-      <author>nic.lorusso@icloud.com (Nicola Lo Russo)</author>
-    </item>
-    <item>
       <title>About Bayes&#039; theorem, disease testing, and the prosecutor&#039;s fallacy</title>
       <link>https://nicolalorusso.ch/posts/bayes-theorem.html</link>
       <guid isPermaLink="true">https://nicolalorusso.ch/posts/bayes-theorem.html</guid>
@@ -161,6 +153,14 @@
       <guid isPermaLink="true">https://nicolalorusso.ch/posts/unfair-coin.html</guid>
       <pubDate>Sun, 03 Nov 2024 00:00:00 +0000</pubDate>
       <description>You are given 1000 coins: 999 are fair and 1 is rigged...</description>
+      <author>nic.lorusso@icloud.com (Nicola Lo Russo)</author>
+    </item>
+    <item>
+      <title>A logic puzzle</title>
+      <link>https://nicolalorusso.ch/posts/watson-riddle.html</link>
+      <guid isPermaLink="true">https://nicolalorusso.ch/posts/watson-riddle.html</guid>
+      <pubDate>Mon, 28 Oct 2024 00:00:00 +0000</pubDate>
+      <description>A solution to a logic puzzle published by Oxford University Press in October 2024.</description>
       <author>nic.lorusso@icloud.com (Nicola Lo Russo)</author>
     </item>
   </channel>
