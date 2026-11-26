@@ -35,26 +35,53 @@
   // chosen here before and not this browser's own: the address says it, so that what is shared from it keeps the language
   if (!url && saved && saved !== auto) try { const u = new URL(location.href); u.searchParams.set('lingua', saved); history.replaceState(history.state, '', u.pathname + u.search.replace(/%2C/gi, ',') + u.hash); } catch { /* sandboxed frame */ }
 }
+{ // which layout (the <style> below): a phone is a narrow screen, or a low and wide one, a phone on its side. Inside another page
+  // (?incorpora=1) a low frame is a phone on its side only under a finger, or where it is no wider than a phone: a frame 480 px
+  // high in a page read with a mouse is not a phone. The scripts ask window.__mq; the <style> below writes the plain queries out
+  // and is fitted to these at once (fit)
+  const embed = new URLSearchParams(location.search).has('incorpora'), L = '(max-height: 500px) and (min-width: 560px) and (max-width: 1000px) and (orientation: landscape)';
+  const low = embed ? `${L} and (pointer: coarse), ${L.replace('1000px', '640px')}` : L;
+  window.__mq = {
+    phone: `(max-width: 640px), ${embed ? L + ' and (pointer: coarse)' : L}`,
+    low,
+    wide: '(min-width: 641px) and (min-height: 501px), (min-width: 1001px)' + (embed ? ', (min-width: 641px) and (pointer: fine), (min-width: 641px) and (pointer: none)' : ''),   // not a phone
+    coarse: '(pointer: coarse) and (min-width: 641px) and (min-height: 501px), (pointer: coarse) and (min-width: 1001px)',            // a tablet: the wide layout under a finger
+    fit(sheet) {                                             // a style sheet written with the plain queries, for this page
+      if (embed) for (const r of sheet.cssRules) if (r.media) {
+        const q = [...r.media], n = q.flatMap(m => /orientation:\s*landscape/.test(m) ? [m + ' and (pointer: coarse)', m.replace(/max-width:\s*1000px/, 'max-width: 640px')]
+          : /min-width:\s*641px/.test(m) && /min-height:\s*501px/.test(m) && !/pointer/.test(m) ? [m, '(min-width: 641px) and (pointer: fine)', '(min-width: 641px) and (pointer: none)'] : [m]);
+        if (n.length !== q.length) r.media.mediaText = n.join(', ');
+      }
+    },
+  };
+}
 { // what the first picture needs is asked for at once, before the scripts have arrived; ?epoca: no live data until the era is known
   const q = location.search, v = (/[?&]vista=(\d+)/.exec(q) || [])[1], get = u => fetch(u, { cache: 'no-cache', priority: 'high' });
   const L = window.__lang.lang, json1 = (u, priority) => fetch(u, { priority }).then(r => (r.ok ? r.json() : null)).catch(() => null), json = (u, p) => json1(u, p).then(d => d || json1(u, p));   // once more if it fails
   window.__pre = { world: get((v ? `views/${v}/` : '') + 'world.json'), places: get('places.json') };
   for (const p of Object.values(window.__pre)) p.catch(() => {});
-  window.__pre.ui = json(`i18n/ui.${L}.json?v=20261121d`, 'high');                  // interface strings (i18n.js): the first picture waits for them
+  window.__pre.ui = json(`i18n/ui.${L}.json?v=20261126e`, 'high');                  // interface strings (i18n.js): the first picture waits for them
   // the places' and itineraries' texts: asked for once world.json is in, so as not to take bandwidth from the first picture (the
   // place markers wait for places.json, which comes later anyway)
-  if (L !== 'it') window.__pre.text = window.__pre.world.catch(() => null).then(() => json(`i18n/${L}.json?v=20261121d`, 'low'));
+  if (L !== 'it') window.__pre.text = window.__pre.world.catch(() => null).then(() => json(`i18n/${L}.json?v=20261126e`, 'low'));
   // the masks that give the tiles the season's colours (season.js): the first sharp picture waits for them
   if (!/[?&]epoca=/.test(q)) for (const f of ['treemask.png', 'hmap.png']) { const l = document.createElement('link'); l.rel = 'preload'; l.as = 'image'; l.href = (v ? `views/${v}/` : '') + f; l.fetchPriority = 'low'; document.head.appendChild(l); }
 }
 </script>
-<link rel="modulepreload" href="explore.js?v=20261121d">
-<link rel="modulepreload" href="sky.js?v=20261121d">
-<link rel="modulepreload" href="season.js?v=20261121d">
-<link rel="modulepreload" href="i18n.js?v=20261121d">
-<style>
+<link rel="modulepreload" href="explore.js?v=20261126e">
+<link rel="modulepreload" href="sky.js?v=20261126e">
+<link rel="modulepreload" href="season.js?v=20261126e">
+<link rel="modulepreload" href="i18n.js?v=20261126e">
+<style id="css">
   html, body { margin: 0; height: 100%; background: #1a1f16; overflow: hidden; overscroll-behavior: none;
     font-family: ui-sans-serif, system-ui, sans-serif; -webkit-tap-highlight-color: transparent; }
+  /* A phone is a narrow screen, or a low and wide one (a phone on its side: only then, not a low upright window): (max-width: 640px), (max-height: 500px) and (min-width: 560px) and (max-width: 1000px) and (orientation: landscape),
+     written out in every rule for it here; the other files take it from window.__mq (the script in <head>), which also fits the
+     rules here to the map inside another page, where a low frame is a phone only under a finger or no wider than 640 px. There the
+     sections are in a bar at the bottom (#tabs), every control is at least 44 px and every word of the interface at least 14 px.
+     --tabs: the height of that bar, 0 where there is none; --low: the room the home indicator takes where no bar covers it;
+     --foot: the room the light switch and the sources take at the foot of the map, where they are on it (sky.js) */
+  body { --tabs: 0px; --low: env(safe-area-inset-bottom, 0px); --foot: 64px; }
   #map { position: fixed; inset: 0; touch-action: none; cursor: grab; user-select: none; -webkit-user-select: none; }
   #map.drag { cursor: grabbing; }
   canvas { position: absolute; inset: 0; width: 100%; height: 100%; display: block; }
@@ -82,17 +109,29 @@
   #board i, #board em, #board u, #board s { font-style: normal; text-decoration: none; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
   #board em { font-weight: 700; color: #ffd54a; } #board s { opacity: .75; } #board small { display: block; margin-top: 5px; opacity: .6; font-size: 10px; }
   #board .bx { position: absolute; top: -9px; right: -9px; width: 24px; height: 24px; padding: 0; border: 0; border-radius: 50%; background: #fff; color: #222; font-size: 16px; line-height: 1; cursor: pointer; box-shadow: 0 1px 5px #0008; }
-  @media (max-width: 640px) { #board { display: none; } }
-  #wx { position: fixed; left: 18px; bottom: calc(82px + env(safe-area-inset-bottom, 0px)); color: #fff; font-size: 11.5px; opacity: .85; text-shadow: 0 1px 4px #000a; pointer-events: none; max-width: 70vw; }
-  /* "Adesso a Bellinzona" (extras.js): the status line opens the live values, only while the map shows now */
-  #wx.tap { pointer-events: auto; cursor: pointer; padding: 6px 8px; margin: -6px -8px; border-radius: 8px; text-decoration: underline dotted #ffffff80; text-underline-offset: 3px; }
-  #wx.tap::after { content: '\00a0›'; opacity: .75; } #wx.tap:hover, #wx.tap[aria-expanded="true"] { opacity: 1; background: #1b1d2299; } #wx.tap:focus-visible { outline: 2px solid #ffffffb3; opacity: 1; }
-  #adesso { position: fixed; left: 16px; bottom: 120px; z-index: 27; width: min(340px, calc(100vw - 32px)); max-height: min(70vh, calc(100vh - 140px)); overflow: auto; box-sizing: border-box; background: #10233ff2; color: #fff; border-radius: 10px; padding: 10px 13px 9px; font-size: 13px; line-height: 1.35; box-shadow: 0 3px 14px #0007; }
+  @media (max-width: 640px), (max-height: 500px) and (min-width: 560px) and (max-width: 1000px) and (orientation: landscape) { #board { display: none; } }
+  /* the status: the hour the map shows (data-now), then the season, the weather and what is on. While the map shows now it is a
+     button with a green dot, and opens "Adesso a Bellinzona" (extras.js) */
+  #wx { position: fixed; left: 16px; bottom: calc(82px + env(safe-area-inset-bottom, 0px)); box-sizing: border-box; height: 44px; max-width: min(520px, calc(100vw - 32px)); padding: 0 14px; border-radius: 22px;
+    background: #1b1d22eb; color: #fff; font-size: 14px; line-height: 44px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; box-shadow: 0 2px 10px #0006; pointer-events: none; }
+  #wx::before { content: attr(data-now); margin-right: 9px; font-weight: 650; font-variant-numeric: tabular-nums; }
+  #wx:not([data-now])::before, #wx[data-now=""]::before { content: none; } #wx:not([data-now]):empty, #wx[data-now=""]:empty { display: none; }
+  #wx.tap { pointer-events: auto; cursor: pointer; } #wx.tap::before { padding-left: 15px; background: radial-gradient(circle at 4px 50%, #43c06f 4px, transparent 4.5px); }
+  #wx.tap::after { content: '\00a0›'; opacity: .75; } #wx.tap:hover, #wx.tap[aria-expanded="true"] { background: #1b1d22; } #wx.tap:focus-visible { outline: 2px solid #ffffffb3; outline-offset: 2px; }
+  #adesso { position: fixed; left: 16px; bottom: 120px; z-index: 27; width: min(340px, calc(100vw - 32px)); max-height: min(70vh, calc(100vh - 294px)); overflow: auto; box-sizing: border-box; background: #10233ff2; color: #fff; border-radius: 10px; padding: 10px 13px 9px; font-size: 13px; line-height: 1.35; box-shadow: 0 3px 14px #0007; }
   #adesso[hidden] { display: none; } #adesso h2 { margin: 0 26px 4px 0; font-size: 15px; } #adesso h3 { margin: 9px 0 2px; font-size: 10.5px; font-weight: 600; letter-spacing: .08em; text-transform: uppercase; opacity: .6; }
   #adesso .ar { display: grid; grid-template-columns: 8.2em 1fr; column-gap: 10px; padding: 4px 0; border-top: 1px solid #ffffff1c; } #adesso .al { grid-row: 1 / span 2; font-size: 11.5px; line-height: 1.5; opacity: .72; } #adesso .av { grid-column: 2; font-variant-numeric: tabular-nums; }
   #adesso .as { grid-column: 2; font-size: 10.5px; color: #ffffffa0; } #adesso a.as { text-decoration: underline; text-decoration-color: #ffffff55; } #adesso .an { margin: 9px 0 0; font-size: 11px; opacity: .7; line-height: 1.4; }
+  /* the next departures (time, line, to, delay and platform) and what is on today */
+  #adesso .ad { display: grid; grid-template-columns: 3.1em 3.3em 1fr auto; column-gap: 8px; padding: 4px 0; border-top: 1px solid #ffffff1c; font-variant-numeric: tabular-nums; }
+  #adesso .ad span, #adesso .ad b { white-space: nowrap; overflow: hidden; text-overflow: ellipsis; } #adesso .aln { color: #ffd54a; } #adesso .ap { color: #ffffffc0; }
+  #adesso .ad.off .at, #adesso .ad.off .aln, #adesso .ad.off .ato { text-decoration: line-through; opacity: .55; }
+  #adesso .ap .late { color: #ffa04a; } #adesso .ap .no { color: #ff8a7a; } #adesso .ap .new { background: #ffd54a; color: #10233f; border-radius: 3px; padding: 0 3px; }
+  #adesso small.as { display: block; margin: 3px 0 0; }
+  #adesso .ae { display: flex; justify-content: space-between; align-items: center; gap: 10px; width: 100%; min-height: 32px; padding: 4px 0; border: 0; border-top: 1px solid #ffffff1c; background: none; color: #fff; font: inherit; text-align: left; cursor: pointer; }
+  #adesso .ae:hover span { text-decoration: underline; } #adesso .ae small { flex: none; opacity: .75; font-variant-numeric: tabular-nums; } #adesso .ae:focus-visible { outline: 2px solid #ffffffb3; }
   #adesso .ax { position: absolute; top: 7px; right: 8px; width: 28px; height: 28px; padding: 0; border: 0; border-radius: 50%; background: #ffffff1f; color: #fff; font-size: 17px; line-height: 1; cursor: pointer; }
-  @media (max-width: 640px) { #adesso { left: 0; right: 0; bottom: 0 !important; width: auto; max-height: 62vh; border-radius: 14px 14px 0 0; padding: 12px 16px calc(12px + env(safe-area-inset-bottom, 0px)); } }
+  @media (max-width: 640px), (max-height: 500px) and (min-width: 560px) and (max-width: 1000px) and (orientation: landscape) { #adesso { left: 0; right: 0; bottom: var(--tabs) !important; width: auto; max-height: 62vh; max-height: 62dvh; border-radius: 14px 14px 0 0; padding: 12px 16px calc(12px + var(--low)); z-index: 22; } }
   body.era #adesso { display: none !important; } body.era #wx.tap { pointer-events: none; text-decoration: none; } body.era #wx.tap::after { content: none; }
   /* the toolbar: one bar left of the zoom, with words; the rest is in the ⋯ menu */
   #tools { position: fixed; right: 62px; top: calc(14px + env(safe-area-inset-top, 0px)); z-index: 24; display: flex; height: 38px; border-radius: 8px; overflow: hidden; background: #ffffffe6; box-shadow: 0 2px 10px #0006; }
@@ -106,11 +145,12 @@
   #xmenu[hidden] { display: none; }
   #xmenu > button { display: block; width: 100%; padding: 9px; border: 0; border-radius: 6px; background: none; color: #fff; font: 14px ui-sans-serif, system-ui, sans-serif; text-align: left; cursor: pointer; }
   #xmenu > button:hover, #xmenu > button:focus-visible { background: #ffffff1f; outline: none; }
-  #xluce { margin: 4px 0 0; padding: 8px 9px 6px; border-top: 1px solid #ffffff24; font-size: 12.5px; color: #ffffffb3; }
-  #xmenu #sky { position: static; margin: 6px 0 0; opacity: 1; background: #ffffff14; box-shadow: none; -webkit-backdrop-filter: none; backdrop-filter: none; }
-  #xmenu #sky button { flex: 1; padding: 0 6px; }
-  body.era #xluce { display: none; }
-  @media (max-width: 640px) {
+  /* on a phone the menu also holds the languages, all four in sight, and the light of the day (sky.js puts its switch in #xluce) */
+  #xluce, #langl { display: none; margin: 4px 0 0; padding: 8px 9px 6px; border-top: 1px solid #ffffff24; font-size: 14px; color: #ffffffb3; }
+  #xmenu #sky { position: static; margin: 6px 0 0; opacity: 1; background: #ffffff14; box-shadow: none; -webkit-backdrop-filter: none; backdrop-filter: none; border-radius: 25px; font-size: 14px; }
+  #xmenu #sky { flex-wrap: wrap; } #xmenu #sky button { flex: 1 1 auto; min-width: 44px; height: 44px; padding: 0 8px; border-radius: 22px; }
+  #xluce { container-type: inline-size; } @container (max-width: 315px) { #xmenu #sky { display: grid; grid-template-columns: 1fr 1fr; } }   /* where the four words may not fit in a row (320 px, Italian and German): two and two */
+  @media (max-width: 640px), (max-height: 500px) and (min-width: 560px) and (max-width: 1000px) and (orientation: landscape) {
     #tools > button { padding: 0 7px; gap: 3px; font-size: 12px; } #tools i { font-size: 13px; } #more { padding: 0 10px !important; }
     #tools .l { display: none; } #tools .s { display: inline; } #tmb.away i { display: none; }   /* the chosen moment, short, without the clock */
   }
@@ -119,7 +159,7 @@
   #eranote { position: fixed; left: 50%; transform: translateX(-50%); top: calc(14px + env(safe-area-inset-top, 0px)); z-index: 20; max-width: min(560px, calc(100vw - 720px)); background: #2a1d10ee; color: #f6e9d2; border-radius: 10px; padding: 8px 14px; font-size: 12.5px; line-height: 1.4; box-shadow: 0 3px 14px #0007; }
   body.era #sky, body.era #walk-go, body.era #walk-hint { display: none !important; }
   @media (max-width: 1060px) { #eranote { top: calc(160px + env(safe-area-inset-top, 0px)); left: auto; right: 16px; transform: none; max-width: min(420px, calc(100vw - 32px)); } }   /* under the toolbar when the top row is full */
-  @media (max-width: 640px) { #eranote { top: calc(160px + env(safe-area-inset-top, 0px)); left: 16px; right: 16px; transform: none; max-width: none; font-size: 12px; } }
+  @media (max-width: 640px), (max-height: 500px) and (min-width: 560px) and (max-width: 1000px) and (orientation: landscape) { #eranote { top: calc(160px + env(safe-area-inset-top, 0px)); left: 16px; right: 16px; transform: none; max-width: none; font-size: 12px; } }
   #eranote b { font-size: 15px; } #eranote[hidden] { display: none; } #tm input[type=range] { width: 100%; } #tm input[type=date] { font: inherit; padding: 3px 6px; border-radius: 6px; border: 0; }
   body.era #b3d { display: none; } body.era .v3d { display: none; }
   #evp { position: fixed; right: 62px; top: calc(60px + env(safe-area-inset-top, 0px)); z-index: 25; width: min(290px, calc(100vw - 78px)); max-height: calc(100vh - 150px); overflow: auto; background: #10233ff2; color: #fff; border-radius: 10px; padding: 10px 12px; font-size: 13px; box-shadow: 0 3px 14px #0007; display: grid; gap: 6px; }
@@ -136,12 +176,12 @@
     line-height: 1.4; padding: 3px 8px calc(3px + env(safe-area-inset-bottom, 0px)); border-top-left-radius: 6px; }
   #fonti { display: none; }
   /* on phones the sources fold into a small button; the whole attribution is one tap away */
-  @media (max-width: 640px) {
+  @media (max-width: 640px), (max-height: 500px) and (min-width: 560px) and (max-width: 1000px) and (orientation: landscape) {
     #credits { right: 8px; bottom: calc(8px + env(safe-area-inset-bottom, 0px)); max-width: calc(100vw - 16px); box-sizing: border-box; padding: 0; border-radius: 13px; z-index: 5; background: #fffffff2; }
     #fonti { display: block; margin-left: auto; height: 26px; padding: 0 10px; border: 0; background: none; color: #333; font: 600 11.5px ui-sans-serif, system-ui, sans-serif; cursor: pointer; }
     #credtxt { display: block; padding: 8px 12px 0; font-size: 11.5px; } #credtxt[hidden] { display: none; }
   }
-  @media (min-width: 641px) { #credtxt[hidden] { display: inline; } }
+  @media (min-width: 641px) and (min-height: 501px), (min-width: 1001px) { #credtxt[hidden] { display: inline; } }
   #about { position: fixed; right: 62px; top: calc(60px + env(safe-area-inset-top, 0px)); z-index: 26; max-width: min(330px, calc(100vw - 78px)); background: #10233ff2; color: #fff; border-radius: 10px; padding: 10px 13px; font-size: 13px; line-height: 1.45; box-shadow: 0 3px 14px #0007; }
   #about[hidden] { display: none; } #about p { margin: 0 0 6px; } #about p:last-child { margin: 0; opacity: .8; font-size: 12px; }
   #about #org { font-size: 12px; } #about code { display: block; margin: 4px 0; padding: 5px 7px; border-radius: 5px; background: #0007; font: 10.5px/1.35 ui-monospace, monospace; word-break: break-all; user-select: all; -webkit-user-select: all; }
@@ -150,15 +190,77 @@
   /* ?incorpora=1: inside an organiser's page, only the map, the search, Eventi / Quando and the zoom */
   #full { display: none; } body.embed #title, body.embed #more, body.embed #xmenu, body.embed #about, body.embed #b3d { display: none !important; }
   body.embed #full { display: block; position: fixed; left: 16px; top: calc(18px + env(safe-area-inset-top, 0px)); z-index: 8; padding: 5px 11px; border-radius: 14px; background: #1b1d22e0; color: #fff; font: 600 12.5px ui-sans-serif, system-ui, sans-serif; text-decoration: none; box-shadow: 0 2px 10px #0006; }
-  #full .s { display: none; } @media (max-width: 640px) { body.embed #full { font-size: 12px; padding: 5px 9px; } #full .l { display: none; } #full .s { display: inline; } }
-  @media (max-width: 640px) { #title h1 { font-size: 14px; line-height: 1.2; white-space: nowrap; } #title .tr, #stats { display: none; } }   /* one short line; hidden where the toolbar needs the room */
+  #full .s { display: none; } @media (max-width: 640px), (max-height: 500px) and (min-width: 560px) and (max-width: 1000px) and (orientation: landscape) { body.embed #full { font-size: 12px; padding: 5px 9px; } #full .l { display: none; } #full .s { display: inline; } }
+  @media (max-width: 640px), (max-height: 500px) and (min-width: 560px) and (max-width: 1000px) and (orientation: landscape) { #title h1 { font-size: 14px; line-height: 1.2; white-space: nowrap; } #title .tr, #stats { display: none; } }   /* one short line; hidden where the toolbar needs the room */
   /* another language: the Italian words in this page wait for their translation (i18n.js); castle and town names for the places' own */
   html.i18n-wait #title, html.i18n-wait #tools, html.i18n-wait #credits, html.i18n-wait #full { visibility: hidden; }
   html.i18n-lb #labels .lb.castle, html.i18n-lb #labels .lb.town { visibility: hidden; }
   #langs { display: flex; gap: 4px; padding: 0 9px 6px 30px; } #langs[hidden] { display: none; }
   #langs button { flex: 1; height: 30px; border: 1px solid #ffffff2e; border-radius: 15px; background: #ffffff14; color: #fff; font: 600 12.5px ui-sans-serif, system-ui, sans-serif; cursor: pointer; }
   #langs button:hover { background: #ffffff26; } #langs button[aria-current="true"] { background: #f0b84a; color: #1b1b1b; border-color: #f0b84a; }
+
+  /* ---------- phones ---------- */
+  #tabs { display: none; }
+  @media (max-width: 640px), (max-height: 500px) and (min-width: 560px) and (max-width: 1000px) and (orientation: landscape) {
+    /* the bar of sections; the map inside another page (embed) keeps its few buttons and has none */
+    body:not(.embed) { --tabs: calc(59px + env(safe-area-inset-bottom, 0px)); --low: 0px; }   /* 58 px of buttons and the line above them */
+    body:not(.embed) #tabs { position: fixed; left: 0; right: 0; bottom: 0; z-index: 23; display: flex; box-sizing: border-box;
+      padding: 0 calc(4px + env(safe-area-inset-right, 0px)) env(safe-area-inset-bottom, 0px) calc(4px + env(safe-area-inset-left, 0px)); background: #1b1d22f7; border-top: 1px solid #ffffff24; box-shadow: 0 -2px 12px #0006; }
+    #tabs button { flex: 1 1 auto; min-width: min(44px, 19vw); overflow: hidden; height: 58px; padding: 0 3px;   /* as wide as its word needs (Rundgänge, Maintenant on a 360 px screen), the room left shared out; narrower than the words (a page zoomed to 200 %), they are cut short */
+      border: 0; background: none; color: #ffffffc4; font: 500 14px/1.2 ui-sans-serif, system-ui, sans-serif; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 3px; cursor: pointer; }
+    #tabs button i { font-style: normal; font-size: 20px; line-height: 22px; } #tabs button span { max-width: 100%; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+    #tabs button.on { color: #f0b84a; font-weight: 650; } #tabs button.set span { text-decoration: underline; text-underline-offset: 4px; text-decoration-color: #f0b84a; }   /* set: a filter is on */
+    #tabs button:focus-visible { outline: 2px solid #fff; outline-offset: -4px; }
+    body:not(.embed) #evb, body:not(.embed) #more { display: none; }       /* Eventi and ⋯ are in the bar; Quando and 3D stay at the top */
+    /* 44 px to press, 14 px to read */
+    .lb, .lb.castle { font-size: 14px; } #tip, #tip small { font-size: 14px; }
+    #tools { right: 16px; height: 44px; } #tools > button { height: 44px; min-width: 44px; justify-content: center; padding: 0 10px; font-size: 14px; } #tools i { font-size: 15px; }
+    #zoom { top: calc(66px + env(safe-area-inset-top, 0px)); } #zoom button { width: 44px; height: 44px; }
+    #tm { right: 16px; top: calc(66px + env(safe-area-inset-top, 0px)); width: 270px; max-height: calc(100vh - var(--tabs) - 82px); max-height: calc(100dvh - var(--tabs) - 82px); overflow: auto; box-sizing: border-box; font-size: 15px; }
+    #tm select, #tm input[type=date], #tm button { height: 44px; box-sizing: border-box; font-size: 16px; } #tm input[type=range] { height: 44px; margin: 0; }
+    #eranote { top: calc(168px + env(safe-area-inset-top, 0px)); font-size: 14px; } body.embed #eranote { top: calc(215px + env(safe-area-inset-top, 0px)); }
+    #evp { font-size: 15px; } #evp p, #evp small { font-size: 14px; } #evp button { min-height: 48px; } #evp .evr .cp { width: 44px; }
+    #xmenu > button { min-height: 48px; font-size: 16px; }
+    #lang { display: none !important; } #langl, body:not(.era) #xluce { display: block; } #langl { padding-bottom: 8px; }
+    #langs, #langs[hidden] { display: flex; padding: 0 9px 8px; } #langs button { height: 44px; border-radius: 22px; font-size: 14px; }
+    #about { font-size: 14px; } #about p:last-child, #about #org { font-size: 14px; } #about code { font-size: 14px; } #about #org button { min-height: 44px; padding: 0 14px; }
+    #credits { bottom: calc(var(--tabs) + var(--low) + 8px); border-radius: 22px; background: #fff; } #fonti { height: 44px; padding: 0 14px; font-size: 14px; } #credtxt { font-size: 12px; }
+    body:not(.embed) #wx { bottom: calc(var(--tabs) + 8px); max-width: calc(100vw - 116px); }   /* clear of the sources button */
+    body.ex-sheet:not(.embed) #credits { visibility: hidden; }             /* a card or a list is up to the bar: nothing shows through it; the sources are then the last line of that card or list (explore.js) */
+    #adesso { font-size: 15px; } #adesso h2 { margin-right: 40px; font-size: 17px; } #adesso h3, #adesso .al, #adesso .an { font-size: 14px; } #adesso .as { font-size: 12px; }
+    #adesso .ax { top: 2px; right: 4px; width: 44px; height: 44px; background: none; font-size: 22px; } #adesso .ae { min-height: 44px; } #adesso .ae small { font-size: 14px; }
+    body.embed #full { display: flex; align-items: center; min-height: 44px; box-sizing: border-box; padding: 0 12px; border-radius: 22px; font-size: 14px; }
+    /* Eventi, Altro and "Che cos'è questa mappa" come up from the bar, as the cards do */
+    body:not(.embed) #evp, body:not(.embed) #xmenu, body:not(.embed) #about { top: auto; left: 8px; right: 8px; bottom: calc(var(--tabs) + 8px); width: auto; max-width: none; max-height: calc(100vh - var(--tabs) - 84px); max-height: calc(100dvh - var(--tabs) - 84px); overflow: auto; box-sizing: border-box; z-index: 22; }
+    /* inside another page there is no bar: what opens stands between the buttons at the top (down to 207 px) and the light switch
+       and the sources at the foot of the frame (--foot), never over them; so do the cards and lists of explore.js */
+    body.embed #adesso, body.embed #evp, body.embed #tm { top: auto; left: 8px; right: 8px; bottom: calc(var(--foot) + 8px) !important; width: auto; max-width: none; max-height: calc(100vh - var(--foot) - 223px); max-height: calc(100dvh - var(--foot) - 223px); overflow: auto; box-sizing: border-box; border-radius: 14px; z-index: 22; }
+  }
+  /* a phone on its side: what opens is a column at the right, between the toolbar and the bar, and leaves the search and the status at the left */
+  @media (max-height: 500px) and (min-width: 560px) and (max-width: 1000px) and (orientation: landscape) {
+    #adesso, body:not(.embed) #evp, body:not(.embed) #xmenu, body:not(.embed) #about { left: auto; right: calc(68px + env(safe-area-inset-right, 0px)); bottom: calc(var(--tabs) + var(--low) + 8px) !important; width: min(380px, calc(100vw - 100px - min(280px, 40vw)));
+      max-height: calc(100vh - var(--tabs) - var(--low) - 82px); max-height: calc(100dvh - var(--tabs) - var(--low) - 82px); border-radius: 12px; }
+    #adesso { padding-bottom: 12px; }
+    #wx, body:not(.embed) #wx { max-width: min(280px, 40vw); left: calc(16px + env(safe-area-inset-left, 0px)); }
+    #title, body.embed #full { left: calc(16px + env(safe-area-inset-left, 0px)); } #tools, #zoom, #tm { right: calc(16px + env(safe-area-inset-right, 0px)); }   /* clear of the notch */
+    body:not(.embed) #credits { right: auto; left: calc(24px + min(280px, 40vw) + env(safe-area-inset-left, 0px)); max-width: calc(100vw - 108px - min(280px, 40vw)); } body.ex-sheet:not(.embed) #credits { visibility: visible; }   /* the sources beside the status, clear of the column */
+    /* inside another page: the same column, from under the toolbar to above the light switch and the sources (--foot) */
+    body.embed #adesso, body.embed #evp, body.embed #tm { left: auto; right: calc(68px + env(safe-area-inset-right, 0px)); width: min(380px, calc(100vw - 100px - min(280px, 40vw))); max-height: calc(100vh - var(--foot) - 82px); max-height: calc(100dvh - var(--foot) - 82px); border-radius: 12px; }
+  }
+  html.i18n-wait #tabs { visibility: hidden; }
+  #evp:focus, #xmenu:focus, #about:focus { outline: none; }
+  /* a tablet: the wide layout, with 44 px to the finger */
+  @media (pointer: coarse) and (min-width: 641px) and (min-height: 501px), (pointer: coarse) and (min-width: 1001px) {
+    #tools { right: 68px; height: 44px; } #tools > button { height: 44px; padding: 0 13px; } #zoom button { width: 44px; height: 44px; }
+    #xmenu, #tm, #evp, #about { right: 68px; top: calc(66px + env(safe-area-inset-top, 0px)); } #board { top: calc(124px + env(safe-area-inset-top, 0px)); }   /* its × clear of the zoom's − */
+    #board .bx { top: -19px; right: -16px; width: 44px; height: 44px; background: radial-gradient(circle, #fff 12px, transparent 12.5px); box-shadow: none; }
+    #xmenu > button { min-height: 44px; } #langs button { height: 44px; border-radius: 22px; } #evp button { min-height: 44px; } #evp .evr .cp { width: 44px; } #about #org button { min-height: 44px; padding: 0 14px; }
+    #tm select, #tm input[type=date], #tm button { height: 44px; box-sizing: border-box; } #tm input[type=range] { height: 44px; margin: 0; }
+    #adesso .ax { top: 2px; right: 4px; width: 44px; height: 44px; background: none; font-size: 20px; } #adesso h2 { margin-right: 40px; } #adesso .ae { min-height: 44px; }
+    #adesso { max-height: min(70vh, calc(100vh - 304px)); }   /* under the buttons, which are 10 px lower here (explore.js) */
+  }
 </style>
+<script>window.__mq.fit(document.getElementById('css').sheet);</script>
 </head>
 <body>
 <div id="map"><div id="pv" aria-hidden="true"></div><canvas id="c"></canvas><div id="labels"></div></div>
@@ -189,8 +291,8 @@
 }
 </script>
 <div id="title"><h1><span data-t="title.name">Bellinzona</span><span class="tr" data-t="title.tail"> in tempo reale</span></h1><p id="stats"></p></div>
-<div id="about" hidden><p data-t="about.p1">Bellinzona in miniatura: edifici, strade e alberi veri, ricostruiti dai rilievi di swisstopo e da OpenStreetMap, dipinti con l'IA.</p><p data-th="about.p2"><b>Reali:</b> ora, luce, meteo e fiume. <b>Da orario ufficiale:</b> treni e bus. <b>Simulati:</b> auto e persone.</p><p data-th="about.p3"><b>In tempo reale</b>, quando la mappa mostra l'ora attuale: ritardi, cambi di binario e treni soppressi alla stazione e ritardi dei bus che ne partono (transport.opendata.ch); meteo e vento (MeteoSvizzera); portata, livello e pericolo di piene del Ticino (UFAM); pericolo d'incendi di bosco, pollini, bici condivise e colonnine di ricarica libere. Tocca la riga del meteo in basso: «Adesso a Bellinzona» mostra tutti i valori con le loro fonti.</p><p data-t="about.p4">I punti gialli e la ricerca aprono le schede dei luoghi (orari, prezzi, bus vicini); «Cosa vedere» filtra i luoghi, «Itinerari» propone percorsi a piedi (o compone il tuo) e «Vicino a me» mostra i luoghi vicini a te.</p><p data-t="about.p5">Gli indirizzi nella ricerca li trova il servizio di ricerca di swisstopo, che riceve solo il testo digitato.</p><p id="org"><span data-th="about.org"><b>Per chi organizza:</b> in «Eventi» 🔗 copia il link di un evento, che apre la mappa al giorno e nel posto giusti. Per mettere la mappa nel tuo sito (aggiungi <i>&amp;evento=…</i> all'indirizzo per aprirla su un evento):</span><code id="orgc"></code><button id="orgb" type="button" data-t="about.copy">Copia il codice</button></p><p id="aboutdrag" data-t="about.dragpast">Trascina e zooma; 🕓 cambia giorno e ora o torna nel passato.</p></div>
-<a id="full" target="_blank" rel="noopener" href="./"><span class="l" data-t="embed.full">Apri la mappa completa</span><span class="s" data-t="embed.full.s">Mappa completa</span> ↗</a>
+<div id="about" role="dialog" aria-label="Che cos'è questa mappa" data-t-aria="menu.info.title" hidden><p data-t="about.p1">Bellinzona in miniatura: edifici, strade e alberi veri, ricostruiti dai rilievi di swisstopo e da OpenStreetMap, dipinti con l'IA.</p><p data-th="about.p2"><b>Reali:</b> ora, luce, meteo e fiume. <b>Da orario ufficiale:</b> treni e bus. <b>Simulati:</b> auto e persone.</p><p data-th="about.p3"><b>In tempo reale</b>, quando la mappa mostra l'ora attuale: ritardi, cambi di binario e treni soppressi alla stazione e ritardi dei bus che ne partono (transport.opendata.ch); meteo e vento (MeteoSvizzera); portata, livello e pericolo di piene del Ticino (UFAM); pericolo d'incendi di bosco, pollini, bici condivise e colonnine di ricarica libere. Tocca la riga del meteo in basso: «Adesso a Bellinzona» mostra tutti i valori con le loro fonti.</p><p data-t="about.p4">I punti gialli e la ricerca aprono le schede dei luoghi (orari, prezzi, bus vicini); «Cosa vedere» filtra i luoghi, «Itinerari» propone percorsi a piedi (o compone il tuo) e «Vicino a me» mostra i luoghi vicini a te.</p><p data-t="about.p5">Gli indirizzi nella ricerca li trova il servizio di ricerca di swisstopo, che riceve solo il testo digitato.</p><p id="org"><span data-th="about.org"><b>Per chi organizza:</b> in «Eventi» 🔗 copia il link di un evento, che apre la mappa al giorno e nel posto giusti. Per mettere la mappa nel tuo sito (aggiungi <i>&amp;evento=…</i> all'indirizzo per aprirla su un evento):</span><code id="orgc"></code><button id="orgb" type="button" data-t="about.copy">Copia il codice</button></p><p id="aboutdrag" data-t="about.dragpast">Trascina e zooma; 🕓 cambia giorno e ora o torna nel passato.</p></div>
+<a id="full" target="_blank" rel="noopener" href="./"><span class="l" data-t="embed.full">Apri la mappa completa</span><span class="s" data-t="embed.full.s">Mappa completa</span>&nbsp;↗</a>
 <div id="zoom"><button id="zin" aria-label="Ingrandisci" data-t-aria="zoom.in">+</button><button id="zout" aria-label="Riduci" data-t-aria="zoom.out">−</button></div>
 <div id="board" hidden></div>
 <div id="tip" hidden></div>
@@ -203,7 +305,7 @@
   <button id="b3d" type="button" title="Vista 3D: vola o cammina sul rilievo vero" data-t-title="bar.3d.title">3D</button>
   <button id="more" type="button" aria-label="Altro" aria-expanded="false" aria-controls="xmenu" title="Altro: informazioni, foto, suono" data-t-aria="bar.more" data-t-title="bar.more.title">⋯</button>
 </div>
-<div id="xmenu" hidden>
+<div id="xmenu" role="group" aria-label="Altro" data-t-aria="bar.more" hidden>
   <button id="info" type="button" aria-expanded="false" aria-controls="about" title="Che cos'è questa mappa" data-t-title="menu.info.title" data-t="menu.info">ℹ️ Che cos'è questa mappa</button>
   <button id="tour" type="button" title="Tutto quello che c'è sulla mappa, in due minuti" data-t-title="tour.start.title" data-t="menu.tour">👀 Giro guidato</button>
   <button id="share" type="button" title="Il link di quello che stai guardando" data-t-title="menu.share.title" data-t="menu.share">🔗 Condividi questa vista</button>
@@ -211,10 +313,19 @@
   <button id="snd" type="button" aria-pressed="false" title="Suoni: campane, stazione, mercato, pioggia, fiume" data-t-title="menu.snd.title" data-t="menu.snd.off">🔇 Suono: spento</button>
   <button id="bug" type="button" title="Scrivi all'autore: il messaggio contiene già il punto della mappa che stai guardando" data-t-title="menu.bug.title" data-t="menu.bug">✏️ Segnala un errore</button>
   <button id="lang" type="button" aria-expanded="false" aria-controls="langs"><span data-t="menu.lang">🌐 Lingua: Italiano</span> <span aria-hidden="true">▸</span></button>
+  <div id="langl" data-t="menu.lang.group">Lingua</div>
   <div id="langs" role="group" aria-label="Lingua" data-t-aria="menu.lang.group" hidden><button type="button" data-l="it" lang="it" aria-label="Italiano">IT</button><button type="button" data-l="de" lang="de" aria-label="Deutsch">DE</button><button type="button" data-l="fr" lang="fr" aria-label="Français">FR</button><button type="button" data-l="en" lang="en" aria-label="English">EN</button></div>
+  <div id="xluce"><span data-t="sky.aria">Ora del giorno</span></div>
 </div>
 <div id="tm" hidden><b data-t="tm.title">Macchina del tempo</b><select id="tme"><option value="" data-t="tm.today">Oggi</option></select><input type="date" id="tmd"><input type="range" id="tmh" min="0" max="1439" step="1"><span id="tml"></span><button id="tmn" data-t="tm.now">Adesso</button></div>
-<div id="evp" hidden></div>
+<div id="evp" role="dialog" aria-label="Eventi" data-t-aria="bar.eventi" hidden></div>
+<nav id="tabs" aria-label="Sezioni" data-t-aria="tab.aria">
+  <button type="button" data-k="adesso" aria-pressed="false"><i aria-hidden="true">🌤️</i><span data-t="tab.now">Adesso</span></button>
+  <button type="button" data-k="places" aria-pressed="false"><i aria-hidden="true">🏰</i><span data-t="tab.places">Luoghi</span></button>
+  <button type="button" data-k="routes" aria-pressed="false"><i aria-hidden="true">🧭</i><span data-t="bar.routes">Itinerari</span></button>
+  <button type="button" data-k="evp" aria-pressed="false"><i aria-hidden="true">🎉</i><span data-t="bar.eventi">Eventi</span></button>
+  <button type="button" data-k="xmenu" aria-pressed="false"><i aria-hidden="true">⋯</i><span data-t="bar.more">Altro</span></button>
+</nav>
 <footer id="credits"><span id="credtxt" hidden></span><button id="fonti" type="button" aria-expanded="false" aria-controls="credtxt" data-t="credits.fonti">© Fonti</button></footer>
 <script>
 { // the toolbar's panels (time machine, events, info, ⋯, the sources on phones): one open at a time; Escape or a press anywhere else closes them
@@ -226,9 +337,21 @@
   for (const b of $('langs').children) b.setAttribute('aria-current', b.dataset.l === window.__lang.lang);
   const none = () => { for (const k in P) if (!$(k).hidden) show(k, false); };
   window.__panel = k => { const on = $(k).hidden; for (const j in P) show(j, j === k && on); return on; };   // toggles one, closes the others; true when it opened
+  // a phone's bar of sections says which of these is open ("Che cos'è questa mappa" was opened from Altro); who presses is in the main script
+  const TAB = { adesso: 'adesso', evp: 'evp', xmenu: 'xmenu', about: 'xmenu' };
+  const was = {};                                            // where there is a bar, the focus goes into what its entry opens and comes back to the entry when that closes
+  const mark = () => {
+    const bar = $('tabs').offsetHeight > 0, a = document.activeElement;
+    for (const b of $('tabs').children) { const ps = Object.keys(TAB).filter(p => TAB[p] === b.dataset.k); if (!ps.length) continue; const on = ps.some(p => !$(p).hidden); b.classList.toggle('on', on); b.setAttribute('aria-pressed', on); }
+    for (const p in TAB) { const e = $(p), on = !e.hidden, tb = $('tabs').querySelector('[data-k="' + TAB[p] + '"]');
+      if (bar && on && !was[p] && (a === document.body || $('tabs').contains(a) || $('xmenu').contains(a))) { e.tabIndex = -1; e.focus({ preventScroll: true }); }
+      else if (bar && !on && was[p] && (document.activeElement === document.body || e.contains(document.activeElement)) && !Object.keys(TAB).some(q => !$(q).hidden)) tb.focus({ preventScroll: true });
+      was[p] = on; }
+  };
+  { const mo = new MutationObserver(mark); for (const p in TAB) mo.observe($(p), { attributes: true, attributeFilter: ['hidden'] }); }
   $('info').addEventListener('click', () => window.__panel('about'));
   // the guided tour (tour.js): from ⋯, or straight away with ?giro in the address (once the places are in)
-  const tour = () => { none(); import('./tour.js?v=20261121d').then(m => m.startTour()); };
+  const tour = () => { none(); import('./tour.js?v=20261126e').then(m => m.startTour()); };
   $('tour').addEventListener('click', tour);
   if (new URLSearchParams(location.search).has('giro')) { let n = 0; const wait = () => { if (window.__explore) setTimeout(tour, 600); else if (n++ < 80) setTimeout(wait, 250); }; wait(); }
   $('more').addEventListener('click', () => window.__panel('xmenu'));
@@ -236,7 +359,8 @@
   $('shot').addEventListener('click', none);
   $('bug').addEventListener('click', none);
   $('share').addEventListener('click', none);
-  addEventListener('pointerdown', e => { if (!e.target.closest('#tools, #xmenu, #tm, #evp, #about, #adesso, #wx, #credits')) none(); }, true);
+  // not the guided tour's own box: on a phone its Avanti closed the panel being shown, the box moved and the press landed elsewhere
+  addEventListener('pointerdown', e => { if (!e.target.closest('#tools, #xmenu, #tm, #evp, #about, #adesso, #wx, #credits, #tabs, #tour-box')) none(); }, true);
   addEventListener('keydown', e => { if (e.key === 'Escape') none(); });   // the first visit gets a welcome sheet from explore.js instead
   // ?incorpora=1: the map inside an organiser's page; its link opens the whole map where the frame is
   if (new URLSearchParams(location.search).has('incorpora')) document.body.classList.add('embed');
@@ -262,12 +386,12 @@
   }).finally(() => document.documentElement.classList.remove('i18n-wait')); }
 </script>
 <script type="module">
-import { initExplore } from './explore.js?v=20261121d';
-import { Sky } from './sky.js?v=20261121d';
-import { Season, seasonFor } from './season.js?v=20261121d';
-import { t, tu, lang, num, int, dt, date, switchLang, linkLang } from './i18n.js?v=20261121d';
+import { initExplore } from './explore.js?v=20261126e';
+import { Sky } from './sky.js?v=20261126e';
+import { Season, seasonFor } from './season.js?v=20261126e';
+import { t, tu, lang, num, int, dt, date, switchLang, linkLang } from './i18n.js?v=20261126e';
 // the simulation (life.js, extras.js) and its data come after the first picture: see loadLife()
-const LIFE = './life.js?v=20261121d', EXTRAS = './extras.js?v=20261121d';
+const LIFE = './life.js?v=20261126e', EXTRAS = './extras.js?v=20261126e';
 (async () => {
   // ?vista=<heading> shows the city from another side (web/views/<heading>/, rendered by 03_render.py with VIEW_HEADING)
   const vista = (/[?&]vista=(\d+)/.exec(location.search) || [])[1] || '';
@@ -287,6 +411,7 @@ const LIFE = './life.js?v=20261121d', EXTRAS = './extras.js?v=20261121d';
   const [cx0, cy0, cx1, cy1] = world.content;
   // ?quando=2027-02-07T14:30 looks at another moment; ?stagione= ?meteo= ?mercato ?rabadan ?partita ?scuola=entrata|uscita ?sostare force one thing
   const params = new URLSearchParams(location.search);
+  const PH = matchMedia(window.__mq.phone);   // a phone, upright or on its side (as in the styles)
   let X = params.get('quando') ? await import(EXTRAS) : null;    // extras.js (zurichMs, Extras): at once only for a moment to read
   let shiftMs = X && Number.isFinite(X.zurichMs(params.get('quando'))) ? X.zurichMs(params.get('quando')) - Date.now() : 0;
   window.__now = () => Date.now() + shiftMs;             // the moment the map shows (time machine included), for the place cards
@@ -517,8 +642,8 @@ const LIFE = './life.js?v=20261121d', EXTRAS = './extras.js?v=20261121d';
         if (xd.market && xd.market.length) life.marketZone = xd.market;
         if (xd.crowds && xd.crowds.stall) life.stallGrid = xd.crowds.stall;   // where a stall shows in the painting (23_crowds.py)
         extras = window.__extras = new X.Extras({ world, life, sky, data: xd, matches: mt, params, view: () => view, requestDraw: draw });
-        const wxEl = document.getElementById('wx'), skyEl = document.getElementById('sky'); setInterval(() => { wxEl.textContent = era ? era.caption : extras.status(seasonName);
-          const r = skyEl && skyEl.getBoundingClientRect(); wxEl.style.bottom = r && r.height ? Math.max(82, innerHeight - r.top + 8) + 'px' : ''; }, 1000);   // stay above the sky buttons, which rise over the credits on phones
+        const wxEl = document.getElementById('wx'), skyEl = document.getElementById('sky'); setInterval(() => { const s = era ? era.caption : extras.status(seasonName); if (wxEl.textContent !== s) wxEl.textContent = s;
+          const r = skyEl && skyEl.parentNode === document.body && skyEl.getBoundingClientRect(); wxEl.style.bottom = r && r.height ? Math.max(82, innerHeight - r.top + 8) + 'px' : ''; }, 1000);   // stay above the sky buttons (in the map's corner, not where they are in the Altro menu), which rise over the credits on phones
         initMoment();
         const sb = document.getElementById('snd'); sb.onclick = () => { const on = sb.getAttribute('aria-pressed') !== 'true'; sb.setAttribute('aria-pressed', on); sb.textContent = t(on ? 'menu.snd.on' : 'menu.snd.off'); on ? extras.soundOn() : extras.soundOff(); };
       }).catch(() => {});
@@ -529,7 +654,21 @@ const LIFE = './life.js?v=20261121d', EXTRAS = './extras.js?v=20261121d';
   let want = '';
   for (const [b, p] of [['evb', 'evp'], ['tmb', 'tm']]) document.getElementById(b).onclick = () => { want = want === p ? '' : p; document.getElementById(b).setAttribute('aria-expanded', !!want); loadLife(); };
   document.getElementById('more').addEventListener('click', () => loadLife());
-  addEventListener('pointerdown', e => { if (want && !e.target.closest('#tools')) { document.getElementById(want === 'evp' ? 'evb' : 'tmb').setAttribute('aria-expanded', false); want = ''; } }, true);   // changed one's mind
+  // a phone's bar of sections (#tabs). Adesso and Eventi are about today: they first leave the past, Adesso also another moment,
+  // and Adesso opens as soon as the live data are in. Luoghi and Itinerari are explore.js's
+  { const $ = id => document.getElementById(id), tab = k => document.querySelector('#tabs [data-k="' + k + '"]'), today = () => { if (era) { $('tme').value = ''; setEra(''); } };
+    window.__toNow = () => { today(); if (shiftMs) setMoment(0); };     // back to the present: the guided tour starts there (tour.js)
+    let nowT = 0;
+    tab('adesso').onclick = () => {
+      const wx = $('wx'), pn = $('adesso'); clearTimeout(nowT);
+      if (!pn.hidden) { wx.click(); return; }
+      loadLife(); window.__toNow();
+      let n = 0; const go = () => { if (!pn.hidden) return; wx.click(); if (pn.hidden && n++ < 40) nowT = setTimeout(go, 250); }; go();
+    };
+    addEventListener('pointerdown', () => clearTimeout(nowT), true);   // pressed something else meanwhile
+    tab('evp').onclick = () => { today(); $('evb').click(); };
+    tab('xmenu').onclick = () => { if (!$('about').hidden) window.__panel('about'); else $('more').click(); }; }
+  addEventListener('pointerdown', e => { if (want && !e.target.closest('#tools, #tabs')) { document.getElementById(want === 'evp' ? 'evb' : 'tmb').setAttribute('aria-expanded', false); want = ''; } }, true);   // changed one's mind
   // ---- time machine, snapshot, live rows for the place cards ----
   async function setMoment(shift) {
     shiftMs = shift;
@@ -582,6 +721,8 @@ const LIFE = './life.js?v=20261121d', EXTRAS = './extras.js?v=20261121d';
   // the moment shown, as the parts of a Zurich date
   const parts = () => { const p = new Intl.DateTimeFormat('en-CA', { timeZone: 'Europe/Zurich', year: 'numeric', month: '2-digit', day: '2-digit', hour: '2-digit', minute: '2-digit', hourCycle: 'h23' }).formatToParts(new Date(Date.now() + shiftMs)); const g = k => p.find(x => x.type === k).value; return { date: `${g('year')}-${g('month')}-${g('day')}`, min: +g('hour') * 60 + +g('minute') }; };
   const hm = m => String(Math.floor(m / 60)).padStart(2, '0') + ':' + String(m % 60).padStart(2, '0');
+  // the status button begins with the hour the map shows (the time machine's too; none for the past)
+  { const wx = document.getElementById('wx'), put = () => { const s = era || eraWait ? '' : hm(parts().min); if (wx.dataset.now !== s) wx.dataset.now = s; }; put(); setInterval(put, 1000); }
   document.getElementById('b3d').onclick = () => { location.href = `3d.html?x=${Math.round(view.x)}&y=${Math.round(view.y)}&lingua=${lang}`; };   // the 3D view is in Italian for now: it gets the language for later
   document.getElementById('bug').onclick = () => {        // an e-mail to the author with the view's link; the address is put together here so that it is not harvested from the page
     const to = ['nic.lorusso', 'icloud.com'].join(String.fromCharCode(64));
@@ -639,7 +780,7 @@ const LIFE = './life.js?v=20261121d', EXTRAS = './extras.js?v=20261121d';
         const day = dt(ms, { weekday: 'short', day: 'numeric', month: 'short', year: 'numeric', ...(ev.day ? {} : { hour: '2-digit', minute: '2-digit' }) });
         b.append(ev.label); const sm = document.createElement('small'); sm.textContent = day; b.append(sm);
         if (evOn === ev.id) b.className = 'on';
-        b.onclick = () => { if (matchMedia('(max-width: 640px)').matches) { evp.hidden = true; evb.setAttribute('aria-expanded', false); }   // on a phone the list would hide the place
+        b.onclick = () => { if (PH.matches) { evp.hidden = true; evb.setAttribute('aria-expanded', false); }   // on a phone the list would hide the place
           goEvent(ev); };
         const cp = document.createElement('button'); cp.className = 'cp'; cp.type = 'button'; cp.textContent = '🔗'; cp.title = t('ev.copy.title'); cp.setAttribute('aria-label', t('ev.copy.aria', { label: ev.label }));
         cp.onclick = () => { const u = evLink(ev); if (window.__explore) window.__explore.copy(u); else window.prompt(t('prompt.link'), u); };
@@ -648,6 +789,8 @@ const LIFE = './life.js?v=20261121d', EXTRAS = './extras.js?v=20261121d';
       const n = document.createElement('button'); n.className = 'now'; n.textContent = t('ev.back'); n.onclick = () => { evOn = null; setMoment(0).then(() => { sync(); fillEvents(); }); }; evp.append(n);
     };
     evb.onclick = () => { if (window.__panel('evp')) fillEvents(); };
+    // "Adesso a Bellinzona" lists what is on today (extras.js): a press there is this event picked here
+    window.__event = id => { const ev = extras.events().find(e => e.id === id); if (!ev) return; if (PH.matches && !document.getElementById('adesso').hidden) window.__panel('adesso'); goEvent(ev); };
     { const id = params.get('evento');                       // ?evento=<id>: as if picked in the list (the one in progress, when it is on now)
       if (id && !era) { const all = extras.events(), k = id.replace(/-ora$/, ''), ev = all.find(e => e.id === k + '-ora') || all.find(e => e.id === k); if (ev) goEvent(ev, true); } }
     // what a place card can say about right now

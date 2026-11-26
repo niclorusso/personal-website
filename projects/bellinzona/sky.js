@@ -3,7 +3,7 @@
 // light map (deep blue ambient + additive street-lamp pools), so lit streets keep their painted colours.
 // Lamp positions come from roads.json (loaded lazily, the first time lamps are needed).
 
-import { t, locale } from './i18n.js?v=20261121d';
+import { t, locale } from './i18n.js?v=20261126e';
 
 const LAT = 46.19, LON = 9.02, TZ = 'Europe/Zurich';
 const KEY = 'bellinzona.sky.mode';
@@ -64,6 +64,8 @@ const CSS = `
 #sky button[aria-pressed="true"] { background: #ffffff26; color: #fff; }
 #sky button:focus-visible { outline: 2px solid #ffffff99; outline-offset: -2px; }
 @media (max-width: 360px) { #sky { left: 8px; } #sky button { padding: 0 8px; } }
+@media ${window.__mq.phone} { #sky { border-radius: 25px; font-size: 14px; } #sky button { min-width: 44px; height: 44px; border-radius: 22px; } }   /* phones: 44 px to press, 14 px to read */
+@media ${window.__mq.coarse} { #sky { border-radius: 25px; } #sky button { min-width: 44px; height: 44px; border-radius: 22px; } }   /* a tablet: 44 px too */
 `;
 
 export class Sky {
@@ -130,12 +132,19 @@ export class Sky {
       el.appendChild(b);
     }
     this.hint();
-    document.body.appendChild(el);
+    // on a phone the switch is in the Altro menu, under its name (index.html: #xluce); elsewhere, and where the page has no such
+    // menu (the map inside another page, the 3D view), in the corner of the map
+    const mq = matchMedia(window.__mq.phone), box = document.getElementById('xluce');
+    const home = () => { const to = box && mq.matches && !document.body.classList.contains('embed') ? box : document.body; if (el.parentNode !== to) to.appendChild(el); };
     const place = () => {                                  // sit above the credits strip when it reaches the left edge (phones)
-      const cr = document.getElementById('credits'), r = cr && cr.getBoundingClientRect();
-      el.style.bottom = r && r.height && r.left < 24 + el.offsetWidth ? (r.height + 10) + 'px' : '';
+      home();
+      const cr = document.getElementById('credits'), r = cr && cr.getBoundingClientRect(), mine = el.parentNode === document.body;
+      el.style.bottom = mine && r && r.height && r.left < 24 + el.offsetWidth ? (r.height + 10) + 'px' : '';
+      // the room this switch and the sources take at the foot of the map: lists, and inside another page all that opens, stay above it (index.html: --foot)
+      const top = Math.min(r && r.height ? r.top : innerHeight, mine && el.offsetHeight ? el.getBoundingClientRect().top : innerHeight);
+      document.body.style.setProperty('--foot', Math.max(0, Math.ceil(innerHeight - top)) + 'px');
     };
-    place(); window.addEventListener('resize', place); setTimeout(place, 600);
+    place(); window.addEventListener('resize', place); mq.addEventListener('change', place); setTimeout(place, 600);
   }
 
   // street lamps along visible roads, bucketed in a grid of world-pixel cells; plus a small glow map for far zooms

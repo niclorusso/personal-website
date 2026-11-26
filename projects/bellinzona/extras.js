@@ -4,10 +4,10 @@
 // 2020 (Ticino, Bellinzona) and 2068 (Riazzino), FOEN forest-fire warnings, OpenStreetMap geometry, the calendar. Everything else
 // (how many people, exact school hours, cabin timetable, parade timing) is a stated assumption, kept in one place below.
 
-import { festState, festDates, festBuild, fireworks } from './fest.js?v=20261121d';
-import { source, info, infoRows, MIN, HOUR } from './livedata.js?v=20261121d';
-import { sunPosition } from './sky.js?v=20261121d';
-import { t, lang, num as nf } from './i18n.js?v=20261121d';
+import { festState, festDates, festBuild, fireworks } from './fest.js?v=20261126e';
+import { source, info, infoRows, MIN, HOUR } from './livedata.js?v=20261126e';
+import { sunPosition } from './sky.js?v=20261126e';
+import { t, lang, date, num as nf } from './i18n.js?v=20261126e';
 
 const ASSUME = {
   school: { in1: [7.83, 8.33], out1: [11.58, 11.95], in2: [13.25, 13.58], out2: [15.75, 16.2] },   // typical Ticino timetable; Wednesday afternoon free
@@ -250,7 +250,8 @@ function foehnOn() {
 // the 9 m pole is ASSUMED, and that this is the flag flown on it is the owner's word. [e, n, h, pole] in metres from the map's origin.
 const FLAGS = [[94.9, 194.3, 31.2, 9]];                    // only where a flagpole is mapped: Castelgrande (the owner's choice, 17 Nov 2026)
 
-// ---- the "Adesso a Bellinzona" panel: the rows of livedata.js, opened from the status line, only while the map shows now ----
+// ---- the "Adesso a Bellinzona" panel, opened from the status button, only while the map shows now: the next departures from
+// the station (a phone has no board on the map), what is on today, the rows of livedata.js, and what is real and what is not ----
 const GROUPS = ['meteo', 'acqua', 'aria', 'trasporti'].map(g => [g, t('grp.' + g)]);
 function adesso(extras) {
   const wx = document.getElementById('wx'), pn = document.getElementById('adesso');
@@ -258,16 +259,45 @@ function adesso(extras) {
   pn.dataset.on = '1';
   const mk = (tag, cls, txt) => { const e = document.createElement(tag); if (cls) e.className = cls; if (txt != null) e.textContent = txt; return e; };
   const can = () => !document.body.classList.contains('era') && extras.live() && typeof window.__panel === 'function';
-  const phone = () => matchMedia('(max-width: 640px)').matches;
+  const phone = () => matchMedia(window.__mq.phone).matches;   // upright or on its side (index.html)
   wx.setAttribute('aria-controls', 'adesso'); wx.setAttribute('aria-expanded', 'false'); wx.setAttribute('aria-label', t('adesso.aria'));
   let sig = '';
   const place = () => { if (phone()) { pn.style.bottom = ''; return; } const r = wx.getBoundingClientRect(); pn.style.bottom = Math.round(innerHeight - r.top + 8) + 'px'; };
+  const hm = m => String(Math.floor(m / 60) % 24).padStart(2, '0') + ':' + String(m % 60).padStart(2, '0');
   const fill = () => {
-    const rows = infoRows(), s = JSON.stringify(rows);
+    const life = extras.life, rows = infoRows(), live = !!(life.rtLive && life.rtLive());
+    const dep = life.tt && life.departures ? life.departures(5, true) : [];
+    const day = new Intl.DateTimeFormat('en-CA', { timeZone: 'Europe/Zurich' }).format(new Date()), evs = extras.events().filter(e => String(e.when).slice(0, 10) === day && !e.past);
+    const s = JSON.stringify([rows, dep, live, evs]);
     if (s === sig) return; sig = s;
+    const top = pn.scrollTop, had = pn.contains(document.activeElement) && document.activeElement.dataset.ev;
     pn.textContent = '';
     const x = mk('button', 'ax', '×'); x.type = 'button'; x.setAttribute('aria-label', t('close')); x.onclick = () => { if (!pn.hidden) window.__panel('adesso'); wx.focus(); };
     pn.append(x, mk('h2', null, t('adesso.title')));
+    if (dep.length) {                                        // as the board on the map: late in orange, a cancelled train struck through, and where the times come from
+      const sec = mk('section'); sec.append(mk('h3', null, t('board.title')));
+      for (const d of dep) {
+        const r = d.rt || {}, row = mk('div', 'ad' + (r.off ? ' off' : '')), end = mk('span', 'ap');
+        if (r.off) end.append(mk('b', 'no', t('board.off')));
+        else { if (r.late) end.append(mk('b', 'late', '+' + r.late + '′'), ' '); if (r.plat || d[3]) end.append(mk(r.plat ? 'b' : 'span', r.plat ? 'new' : null, t('board.plat', { p: r.plat || d[3] }))); }
+        row.append(mk('span', 'at', hm(d[0])), mk('b', 'aln', d[1]), mk('span', 'ato', d[2]), end);
+        sec.append(row);
+      }
+      const tt = life.tt;
+      sec.append(mk('small', 'as', live ? t('board.live') : t('board.tt', { date: date(tt.date), source: lang === 'it' ? tt.source : String(tt.source).replace('orario pubblico svizzero', t('board.ttsrc')) })));
+      pn.append(sec);
+    }
+    if (evs.length) {                                        // what is on today: a press is the same as picking it in Eventi
+      const sec = mk('section'); sec.append(mk('h3', null, t('adesso.today')));
+      for (const e of evs) {
+        const b = mk('button', 'ae'); b.type = 'button'; b.dataset.ev = e.id; b.append(mk('span', null, e.label));
+        const tm = e.on ? (e.hours ? e.hours.join('–') : '') : e.day ? '' : e.when.slice(11, 16);   // in progress (its name says so): its own hours where they are known, never the present minute
+        if (tm) b.append(mk('small', null, tm));
+        b.onclick = () => { if (typeof window.__event === 'function') window.__event(e.id); };
+        sec.append(b);
+      }
+      pn.append(sec);
+    }
     const known = GROUPS.map(g => g[0]), groups = [...GROUPS];
     for (const r of rows) { const g = (r.group || '').toLowerCase(); if (g && !known.includes(g)) { known.push(g); groups.push([g, g[0].toUpperCase() + g.slice(1)]); } }
     groups.push(['', t('grp.altro')]);
@@ -284,6 +314,10 @@ function adesso(extras) {
     }
     const names = [...new Set(rows.map(r => r.source && r.source.split(/[·,]/)[0].trim()).filter(Boolean))];
     pn.append(mk('p', 'an', (rows.length ? t('adesso.from', { names: names.join(', ') }) : t('adesso.none')) + ' ' + t('adesso.rule')));
+    // real, from the timetable, simulated (the page's own words, with their <b>); of what is real, the weather and the river only when their service has answered
+    const real = ['time', 'light', ...(rows.some(r => r.group === 'meteo') ? ['wx'] : []), ...(rows.some(r => r.group === 'acqua') ? ['river'] : [])].map(k => t('legend.' + k)).join(', ');
+    const leg = mk('p', 'an'); leg.innerHTML = [t('legend.real', { list: real }), t('legend.tt'), t('legend.sim')].join(' '); pn.append(leg);
+    pn.scrollTop = top; if (had) { const b = pn.querySelector('[data-ev="' + had + '"]'); if (b) b.focus({ preventScroll: true }); }
   };
   const open = () => { if (!can()) return; if (window.__panel('adesso')) { sig = ''; fill(); place(); } };
   wx.addEventListener('click', open);
@@ -507,7 +541,7 @@ export class Extras {
       if (!on[id] || i < 0) continue;
       const e = out[i], keep = e.when.slice(0, 10) !== c.key || (id === 'agosto' && e.when > now);   // the fireworks keep their own line until they start
       if (!keep) out.splice(i, 1);
-      out.push({ ...e, id: keep ? id + '-ora' : id, label: t('ev.now', { label: NOW[id] || e.label }), when: now });
+      out.push({ ...e, id: keep ? id + '-ora' : id, label: t('ev.now', { label: NOW[id] || e.label }), when: now, on: true, ...(id === 'mercato' ? { hours: ['07:30', '13:00'] } : {}) });   // hours: only where this file knows them (the market's, above)
     }
     return out.sort((a, b) => (a.past ? 1 : 0) - (b.past ? 1 : 0) || a.when.localeCompare(b.when));   // an edition already held (no next date announced) goes last
   }
@@ -1114,14 +1148,19 @@ export class Extras {
     ctx.restore();
   }
 
-  status(season) {
-    this.seasonName = season;
-    const s = this.state || {}, out = [t('season.' + season)];
-    const live = this.live();
+  // the measured temperature and "dry", "rain" or "snow", as words: for the status button and the welcome
+  brief() {
+    const s = this.state || {}, live = this.live(), out = [];
     if (live && this.wx && this.wx.temp !== null) out.push(f1(this.wx.temp) + ' °C');
     // dry only when the rain gauge says so; nothing while the first answer is on its way
     const wt = !s.w ? null : s.w.kind !== 'sereno' ? t('wx.' + s.w.kind) : !live ? t('wx.notlive') : !this.wx ? null : this.wx.rain !== null ? t('wx.asciutto') : null;
     if (wt) out.push(wt);
+    return out;
+  }
+  status(season) {
+    this.seasonName = season;
+    const s = this.state || {}, out = [t('season.' + season), ...this.brief()];
+    const live = this.live();
     if (live && this.hydro && this.hydro.flow !== null) out.push(t('status.ticino', { q: Math.round(this.hydro.flow) }));
     const wd = live && this.wind;                           // wind only when it is worth a word: 25 km/h on average, or gusts of 50
     if (live && this.foehn()) out.push(t('status.foehn')); else if (wd && wd.gust >= 50) out.push(t('status.gust', { v: f0(wd.gust) })); else if (wd && wd.kmh >= 25) out.push(t('status.wind', { v: f0(wd.kmh) }));

@@ -66,23 +66,42 @@
     "url": "https://fortezzabellinzona.ch/scoprire-castel-grande/"
    },
    "visit": {
-    "text": "Aperto tutto l'anno: fino al 18 marzo 2027 tutti i giorni 10:30-16:00 (ultimo ingresso 15:30), in estate 10:00-18:00; adulti CHF 15, ridotto CHF 8.",
+    "text": "Aperto tutto l'anno: fino al 18 marzo 2027 tutti i giorni 10:30-16:00 (ultimo ingresso 15:30), dal 19 marzo al 7 novembre 2027 10:00-18:00 (ultimo ingresso 17:30); adulti CHF 15, ridotto CHF 8.",
     "rows": [
      {
-      "from": "03-28",
-      "to": "11-08",
+      "from": "2026-03-28",
+      "to": "2026-11-08",
       "days": "mon-sun",
       "open": "10:00",
       "close": "18:00",
-      "shut": false
+      "shut": false,
+      "last": "17:30"
      },
      {
-      "from": "11-09",
-      "to": "03-18",
+      "from": "2026-11-09",
+      "to": "2027-03-18",
       "days": "mon-sun",
       "open": "10:30",
       "close": "16:00",
+      "shut": false,
+      "last": "15:30"
+     },
+     {
+      "from": "2026-12-25",
+      "to": "2026-12-25",
+      "days": null,
+      "open": null,
+      "close": null,
       "shut": false
+     },
+     {
+      "from": "2027-03-19",
+      "to": "2027-11-07",
+      "days": "mon-sun",
+      "open": "10:00",
+      "close": "18:00",
+      "shut": false,
+      "last": "17:30"
      }
     ],
     "prices": [
@@ -108,7 +127,11 @@
      "label": "Fortezza di Bellinzona",
      "url": "https://fortezzabellinzona.ch/visitare/"
     },
-    "checked": "2026-11-13",
+    "checked": "2026-11-26",
+    "valid": [
+     "2026-03-28",
+     "2027-11-07"
+    ],
     "extra": "Fortezza Pass per i tre castelli: adulti CHF 28, ridotto CHF 18; in vendita solo in stagione (prossima: 19.3–7.11.2027)."
    }
   },
@@ -174,23 +197,35 @@
     "url": "https://fortezzabellinzona.ch/scoprire-montebello/"
    },
    "visit": {
-    "text": "Castello e museo chiusi fino al 18 marzo 2027 (restano visitabili le corti); in stagione tutti i giorni 10:00-18:00, adulti CHF 10.",
+    "text": "Fino al 18 marzo 2027 castello e museo chiusi: si accede solo alle corti interne ed esterne, tutti i giorni 10:30-16:00 (ultimo ingresso 15:30). Dal 19 marzo al 7 novembre 2027 tutti i giorni 10:00-18:00 (ultimo ingresso 17:30); adulti CHF 10.",
     "rows": [
      {
-      "from": "03-28",
-      "to": "11-08",
+      "from": "2026-03-28",
+      "to": "2026-11-08",
       "days": "mon-sun",
       "open": "10:00",
       "close": "18:00",
-      "shut": false
+      "shut": false,
+      "last": "17:30"
      },
      {
-      "from": "11-09",
-      "to": "03-18",
-      "days": null,
-      "open": null,
-      "close": null,
-      "shut": true
+      "from": "2026-11-09",
+      "to": "2027-03-18",
+      "days": "mon-sun",
+      "open": "10:30",
+      "close": "16:00",
+      "shut": false,
+      "last": "15:30",
+      "part": "corti"
+     },
+     {
+      "from": "2027-03-19",
+      "to": "2027-11-07",
+      "days": "mon-sun",
+      "open": "10:00",
+      "close": "18:00",
+      "shut": false,
+      "last": "17:30"
      }
     ],
     "prices": [
@@ -216,7 +251,11 @@
      "label": "Fortezza di Bellinzona",
      "url": "https://fortezzabellinzona.ch/visitare/"
     },
-    "checked": "2026-11-13",
+    "checked": "2026-11-26",
+    "valid": [
+     "2026-03-28",
+     "2027-11-07"
+    ],
     "extra": "Fortezza Pass per i tre castelli: adulti CHF 28, ridotto CHF 18; in vendita solo in stagione (prossima: 19.3–7.11.2027)."
    }
   },
@@ -280,23 +319,33 @@
     "url": "https://fortezzabellinzona.ch/scoprire-sasso-corbaro/"
    },
    "visit": {
-    "text": "Castello e mostre chiusi fino al 18 marzo 2027 (restano visitabili le corti); in stagione tutti i giorni 10:00-18:00, adulti CHF 15.",
+    "text": "Fino al 18 marzo 2027 castello e mostre chiusi: alle corti interne ed esterne si accede solo negli orari dell'Osteria (martedì-sabato 10:00-24:00, domenica 10:00-18:00, lunedì chiuso). Dal 19 marzo al 7 novembre 2027 tutti i giorni 10:00-18:00 (ultimo ingresso 17:30); adulti CHF 15.",
     "rows": [
      {
-      "from": "03-28",
-      "to": "11-08",
+      "from": "2026-03-28",
+      "to": "2026-11-08",
       "days": "mon-sun",
       "open": "10:00",
       "close": "18:00",
-      "shut": false
+      "shut": false,
+      "last": "17:30"
      },
      {
-      "from": "11-09",
-      "to": "03-18",
+      "from": "2026-11-09",
+      "to": "2027-03-18",
       "days": null,
       "open": null,
       "close": null,
-      "shut": true
+      "shut": false
+     },
+     {
+      "from": "2027-03-19",
+      "to": "2027-11-07",
+      "days": "mon-sun",
+      "open": "10:00",
+      "close": "18:00",
+      "shut": false,
+      "last": "17:30"
      }
     ],
     "prices": [
@@ -322,7 +371,11 @@
      "label": "Fortezza di Bellinzona",
      "url": "https://fortezzabellinzona.ch/visitare/"
     },
-    "checked": "2026-11-13",
+    "checked": "2026-11-26",
+    "valid": [
+     "2026-03-28",
+     "2027-11-07"
+    ],
     "extra": "Fortezza Pass per i tre castelli: adulti CHF 28, ridotto CHF 18; in vendita solo in stagione (prossima: 19.3–7.11.2027)."
    }
   },
@@ -814,6 +867,19 @@
      "url": "https://www.bellinzona.ch/municipio"
     },
     "retrieved": "2026-11-13"
+   },
+   "finanze": {
+    "year": 2024,
+    "spese": 189710806,
+    "ricavi": 189117287,
+    "pop": 45305,
+    "per_ab": 4187,
+    "page": {
+     "it": "https://spending.swissdata-platform.ch/comuni/5002/",
+     "en": "https://spending.swissdata-platform.ch/en/comuni/5002/"
+    },
+    "source": "Amministrazione federale delle finanze, statistica finanziaria",
+    "read_on": "2026-11-26"
    }
   },
   {
@@ -988,17 +1054,41 @@
       "shut": false
      },
      {
-      "from": "12-27",
-      "to": "12-30",
+      "from": "2026-11-01",
+      "to": "2026-11-01",
+      "days": "festivi",
+      "open": "10:00",
+      "close": "18:00",
+      "shut": false
+     },
+     {
+      "from": "2026-12-08",
+      "to": "2026-12-08",
+      "days": "festivi",
+      "open": "10:00",
+      "close": "18:00",
+      "shut": false
+     },
+     {
+      "from": "2026-12-27",
+      "to": "2026-12-30",
       "days": "mon-sun",
       "open": "10:00",
       "close": "18:00",
       "shut": false
      },
      {
-      "from": "01-03",
-      "to": "01-10",
+      "from": "2027-01-03",
+      "to": "2027-01-10",
       "days": "mon-sun",
+      "open": "10:00",
+      "close": "18:00",
+      "shut": false
+     },
+     {
+      "from": "2027-01-03",
+      "to": "2027-01-10",
+      "days": "festivi",
       "open": "10:00",
       "close": "18:00",
       "shut": false
@@ -1036,7 +1126,12 @@
      "label": "Museo Villa dei Cedri",
      "url": "https://www.museovilladeicedri.ch/Orari-e-tariffe-28875800"
     },
-    "checked": "2026-11-13"
+    "checked": "2026-11-26",
+    "valid": [
+     "2026-11-13",
+     "2027-01-10"
+    ],
+    "extra": "Aperture speciali: 8 dicembre 2026 10:00-18:00; dal 27 al 30 dicembre 2026 e dal 3 al 10 gennaio 2027 tutti i giorni 10:00-18:00. Chiuso 24, 25, 26 e 31 dicembre 2026, 1 e 2 gennaio 2027."
    }
   },
   {
@@ -1427,7 +1522,11 @@
      "label": "Ente autonomo Carasc",
      "url": "https://www.carasc.ch/"
     },
-    "checked": "2026-11-13"
+    "checked": "2026-11-26",
+    "valid": [
+     "2026-11-13",
+     "2027-03-31"
+    ]
    }
   },
   {
@@ -2319,11 +2418,11 @@
    "x": 561.0,
    "y": -217.5,
    "visit": {
-    "text": "InfoPoint Bellinzona, Piazza Collegiata 12: in inverno lun-ven 09:00-18:00, sabato 09:00-16:00, domenica e festivi 10:00-16:00; tel. +41 91 825 21 31.",
+    "text": "InfoPoint Bellinzona, Piazza Collegiata 12: in inverno (novembre-aprile) lun-ven 09:00-18:00, sabato 09:00-16:00, domenica e festivi 10:00-16:00; tel. +41 91 825 21 31.",
     "rows": [
      {
       "from": "11-01",
-      "to": "03-31",
+      "to": "04-30",
       "days": "mon-fri",
       "open": "09:00",
       "close": "18:00",
@@ -2331,7 +2430,7 @@
      },
      {
       "from": "11-01",
-      "to": "03-31",
+      "to": "04-30",
       "days": "sat",
       "open": "09:00",
       "close": "16:00",
@@ -2339,14 +2438,14 @@
      },
      {
       "from": "11-01",
-      "to": "03-31",
+      "to": "04-30",
       "days": "sun",
       "open": "10:00",
       "close": "16:00",
       "shut": false
      },
      {
-      "from": "04-01",
+      "from": "05-01",
       "to": "10-31",
       "days": "mon-fri",
       "open": "09:00",
@@ -2354,7 +2453,7 @@
       "shut": false
      },
      {
-      "from": "04-01",
+      "from": "05-01",
       "to": "10-31",
       "days": "sat",
       "open": "09:00",
@@ -2362,9 +2461,17 @@
       "shut": false
      },
      {
-      "from": "04-01",
+      "from": "05-01",
       "to": "10-31",
       "days": "sun",
+      "open": "10:00",
+      "close": "16:00",
+      "shut": false
+     },
+     {
+      "from": "01-01",
+      "to": "12-31",
+      "days": "festivi",
       "open": "10:00",
       "close": "16:00",
       "shut": false
@@ -2376,7 +2483,11 @@
      "label": "Bellinzona e Valli Turismo",
      "url": "https://www.bellinzonaevalli.ch/en/infopoint.html"
     },
-    "checked": "2026-11-13"
+    "checked": "2026-11-26",
+    "valid": [
+     "2026-11-13",
+     "2027-04-30"
+    ]
    }
   },
   {
@@ -2434,7 +2545,31 @@
      {
       "from": "01-01",
       "to": "12-31",
-      "days": "mon-sun",
+      "days": "mon-tue",
+      "open": "06:30",
+      "close": "21:30",
+      "shut": false
+     },
+     {
+      "from": "01-01",
+      "to": "12-31",
+      "days": "wed",
+      "open": "06:30",
+      "close": "08:00",
+      "shut": false
+     },
+     {
+      "from": "01-01",
+      "to": "12-31",
+      "days": "wed",
+      "open": "10:00",
+      "close": "21:30",
+      "shut": false
+     },
+     {
+      "from": "01-01",
+      "to": "12-31",
+      "days": "thu-sun",
       "open": "06:30",
       "close": "21:30",
       "shut": false
@@ -2463,7 +2598,12 @@
      "label": "Funivia Monte Carasso - Mornera",
      "url": "https://www.mornera.ch/funivia/"
     },
-    "checked": "2026-11-13"
+    "checked": "2026-11-26",
+    "valid": [
+     "2026-11-14",
+     "2026-12-31"
+    ],
+    "exc": true
    }
   },
   {

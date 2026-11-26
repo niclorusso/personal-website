@@ -15,6 +15,8 @@
 //     clamp()   viewer's view clamp, draw() viewer's redraw request, halt() stops the viewer's own zoom and glide
 //     toScreen  (worldX, worldY) -> [screenX, screenY] in CSS px
 
+// a phone, upright (narrow) or on its side (low), not a phone (wide), a tablet (coarse): window.__mq of index.html, which explains its layout
+const { phone: PHONE, low: LOW, wide: WIDE, coarse: COARSE } = window.__mq;
 const CSS = `
 #ex-markers { position: absolute; inset: 0; pointer-events: none; overflow: hidden; }
 .ex-mk { position: absolute; left: 0; top: 0; width: 0; height: 0; will-change: transform; }
@@ -47,7 +49,7 @@ const CSS = `
 #ex-search input { box-sizing: border-box; width: 100%; height: 36px; margin: 0; padding: 0 30px 0 34px; border-radius: 8px;
   border: 1px solid #ffffff24; background: #1b1d22d9; color: #fff; font: inherit; font-size: 16px; outline: none;
   -webkit-appearance: none; appearance: none; box-shadow: 0 2px 10px #0006; backdrop-filter: blur(6px); -webkit-backdrop-filter: blur(6px); }
-@media (min-width: 641px) { #ex-search input { font-size: 14px; } }
+@media ${WIDE} { #ex-search input { font-size: 14px; } }
 #ex-search input::placeholder { color: #ffffff8c; }
 #ex-search input:focus { border-color: #f0b84ab3; background: #1b1d22f2; }
 #ex-search input::-webkit-search-cancel-button { display: none; }
@@ -69,11 +71,14 @@ const CSS = `
 #ex-card { position: fixed; left: 16px; top: calc(160px + env(safe-area-inset-top, 0px)); width: min(320px, calc(100vw - 32px));
   box-sizing: border-box; z-index: 7; padding: 14px 16px 13px; border-radius: 10px; background: #1b1d22f2; color: #fff;
   border: 1px solid #ffffff1f; box-shadow: 0 8px 30px #000a; backdrop-filter: blur(8px); -webkit-backdrop-filter: blur(8px);
-  max-height: calc(100vh - 240px); overflow-y: auto; display: none; }
-#ex-card.open { display: block; }
+  max-height: calc(100vh - 294px); overflow-y: auto; display: none; }
+#ex-card.open { display: block; }   /* its height: down to the status button (index.html: #wx), which stays in sight under it */
 #ex-card .k { font-size: 11px; text-transform: uppercase; letter-spacing: .1em; color: #f0b84a; margin: 0 28px 4px 0; }
 #ex-card h2 { margin: 0 24px 0 0; font-size: 17px; font-weight: 650; line-height: 1.25; }
 #ex-card .when { margin: 3px 0 0; font-size: 12px; color: #ffffffa6; }
+#ex-card .ex-open { position: relative; display: inline-flex; align-items: center; height: 32px; margin: 8px 0 0; padding: 0 12px; border: 0; border-radius: 16px; color: #fff; font: 650 14px ui-sans-serif, system-ui, sans-serif; cursor: pointer; }
+#ex-card .ex-open::after { content: ''; position: absolute; inset: -6px 0; }   /* 44 px to the finger */
+#ex-card .ex-open.yes { background: #1e7b45; } #ex-card .ex-open.no { background: #b3302a; } #ex-card .ex-open:focus-visible { outline: 2px solid #fff; outline-offset: 2px; }
 #ex-card .d { margin: 9px 0 10px; font-size: 13.5px; line-height: 1.5; color: #ffffffe6; }
 #ex-card .live { margin: 0 0 7px; padding: 6px 8px; font-size: 12.5px; line-height: 1.4; color: #fff; background: #ffffff14; border-radius: 6px; }
 #ex-card .off { margin: 0 0 8px; padding: 6px 8px; background: #ffffff14; border-radius: 6px; font-size: 12.5px; line-height: 1.4; }
@@ -88,14 +93,15 @@ const CSS = `
 #ex-bar > button.on { background: #f0b84a; color: #1b1b1b; border-color: #f0b84a; }
 #ex-bar > button:focus-visible { outline: 2px solid #fff; outline-offset: -4px; }
 #ex-menu { position: fixed; left: 16px; top: calc(155px + env(safe-area-inset-top, 0px)); z-index: 9; width: min(320px, calc(100vw - 78px)); box-sizing: border-box; padding: 4px; border-radius: 8px;
-  background: #1b1d22f2; border: 1px solid #ffffff1f; box-shadow: 0 6px 24px #0009; display: none; }
+  background: #1b1d22f2; border: 1px solid #ffffff1f; box-shadow: 0 6px 24px #0009; display: none;
+  max-height: max(160px, calc(100vh - 163px - var(--foot))); overflow-y: auto; }   /* a low window: it scrolls, down to the light switch and the sources (index.html: --foot) */
 #ex-menu.open { display: block; }
 #ex-menu button { display: flex; width: 100%; align-items: baseline; gap: 6px; padding: 8px 8px; border: 0; border-radius: 5px; background: none; color: #fff; font: 14px ui-sans-serif, system-ui, sans-serif; text-align: left; cursor: pointer; }
 #ex-menu button:hover, #ex-menu button:focus-visible { background: #ffffff1f; outline: none; }
 #ex-menu button.on { color: #f0b84a; font-weight: 600; }
 #ex-menu button small { color: #ffffff8c; font-size: 12.5px; font-weight: 400; }
 #ex-menu hr { border: 0; border-top: 1px solid #ffffff24; margin: 4px 6px; }
-#ex-routes { position: fixed; left: 16px; top: calc(160px + env(safe-area-inset-top, 0px)); z-index: 7; width: min(320px, calc(100vw - 32px)); box-sizing: border-box; max-height: calc(100vh - 240px); overflow-y: auto; background: #1b1d22f2; color: #fff; border: 1px solid #ffffff1f; border-radius: 10px; padding: 10px 12px; font-size: 13px; line-height: 1.4; box-shadow: 0 6px 24px #0009; display: none; }
+#ex-routes { position: fixed; left: 16px; top: calc(160px + env(safe-area-inset-top, 0px)); z-index: 7; width: min(320px, calc(100vw - 32px)); box-sizing: border-box; max-height: calc(100vh - 294px); overflow-y: auto; background: #1b1d22f2; color: #fff; border: 1px solid #ffffff1f; border-radius: 10px; padding: 10px 12px; font-size: 13px; line-height: 1.4; box-shadow: 0 6px 24px #0009; display: none; }
 #ex-routes.open { display: block; }
 #ex-routes h3 { margin: 0 30px 2px 0; font-size: 15px; } #ex-routes p { margin: 0 0 8px; color: #ffffffb3; font-size: 12px; }
 #ex-routes p.st { color: #fff; font-size: 12.5px; }
@@ -111,7 +117,9 @@ const CSS = `
 .ex-mk.stop span { top: 14px; }
 #ex-card .vis { margin: 0 0 8px; padding: 7px 9px; background: #ffffff14; border-radius: 6px; font-size: 12.5px; line-height: 1.4; }
 #ex-card .vis p { margin: 3px 0 0; } #ex-card .vis small { display: block; margin-top: 4px; color: #ffffff99; font-size: 11px; } #ex-card .vis small a { font-size: 11px; }
-#ex-card .vis b { display: inline-block; padding: 1px 8px; border-radius: 10px; font-weight: 650; font-size: 12px; } #ex-card .vis b.yes { background: #2f9e5b; } #ex-card .vis b.no { background: #b3302a; }
+#ex-card .vis b { display: inline-block; padding: 1px 8px; border-radius: 10px; font-weight: 650; font-size: 12px; } #ex-card .vis b.yes { background: #1e7b45; } #ex-card .vis b.no { background: #b3302a; }
+#ex-card .fin { margin: 8px 0; padding: 7px 9px; background: #ffffff14; border-radius: 6px; font-size: 12.5px; line-height: 1.4; }
+#ex-card .fin b { font-weight: 650; } #ex-card .fin p { margin: 3px 0 0; } #ex-card .fin small { display: block; margin-top: 4px; color: #ffffff99; font-size: 11px; } #ex-card .fin a { display: inline-block; margin-top: 5px; }
 #ex-card a { font-size: 12px; color: #ffffffb3; text-decoration: underline; text-underline-offset: 2px; }
 #ex-card a:hover { color: #fff; }
 #ex-card a.tel { font-size: inherit; color: inherit; }
@@ -148,16 +156,81 @@ const CSS = `
 #ex-card .tl-b p { margin: 2px 0 0; } #ex-card .tl small { display: block; margin-top: 4px; color: #ffffff99; font-size: 11px; } #ex-card .tl small a { font-size: 11px; }
 #ex-routes .ex-lang { align-items: center; gap: 5px; margin-top: 9px; } #ex-routes .ex-lang span { font-size: 14px; margin-right: 1px; }
 #ex-routes .ex-lang button { height: 26px; padding: 0 9px; font-size: 12px; }
-@media (max-width: 640px) {
-  #ex-card { left: 8px; right: 8px; top: auto; bottom: 64px; width: auto; max-height: 45vh; }
-  #ex-routes { left: 8px; right: 8px; top: auto; bottom: 64px; width: auto; max-height: 38vh; box-sizing: border-box; }
-  #ex-bar { width: min(320px, calc(100vw - 32px)); }   /* under the zoom buttons: the whole width */
+.ex-cr { display: none; margin: 12px 0 0; padding-top: 8px; border-top: 1px solid #ffffff1f; font-size: 12px; line-height: 1.4; color: #ffffff99; }   /* the map's sources, where a sheet covers their button */
+#ex-routes p.ex-cr { margin: 12px 0 0; font-size: 12px; color: #ffffff99; } #ex-routes:focus { outline: none; }
+/* the welcome: what this is, the hour and the weather of now, one first thing to do */
+#ex-routes.hello { padding: 14px 16px; } #ex-routes.hello h3 { margin: 0 40px 4px 0; font-size: 18px; } #ex-routes.hello p { margin: 0 0 8px; font-size: 14px; line-height: 1.4; color: #ffffffe0; }
+#ex-routes.hello p.ex-now { margin: 0 0 12px; color: #fff; font-weight: 600; font-variant-numeric: tabular-nums; }
+#ex-routes p.ex-now::before { content: ''; display: inline-block; width: 8px; height: 8px; margin: 0 7px 1px 0; border-radius: 50%; background: #43c06f; }
+.ex-first { display: grid; gap: 8px; } .ex-first button { height: 48px; border-radius: 10px; font: 600 16px ui-sans-serif, system-ui, sans-serif; cursor: pointer; }
+.ex-first .ex-go { border: 0; background: #f0b84a; color: #1b1d22; } .ex-first .ex-self { height: 44px; border: 1px solid #ffffff4d; background: none; color: #fff; font-weight: 500; font-size: 15px; }
+.ex-first button:focus-visible { outline: 2px solid #fff; outline-offset: 2px; }
+@media ${PHONE} {
+  /* the sheets: a share of the height, and never over the search and "Vicino a me" (dvh: on iOS Safari 100vh is taller than what is in sight) */
+  #ex-card { left: 8px; right: 8px; top: auto; bottom: 64px; width: auto; max-height: min(45vh, calc(100vh - var(--tabs) - 176px)); max-height: min(45dvh, calc(100dvh - var(--tabs) - 176px)); }
+  #ex-routes { left: 8px; right: 8px; top: auto; bottom: 64px; width: auto; max-height: min(38vh, calc(100vh - var(--tabs) - 176px)); max-height: min(38dvh, calc(100dvh - var(--tabs) - 176px)); box-sizing: border-box; }
+  #ex-routes.hello { max-height: min(72vh, calc(100vh - var(--tabs) - 176px)); max-height: min(72dvh, calc(100dvh - var(--tabs) - 176px)); }
+  body:not(.embed) .ex-cr { display: block; }
+  /* the search beside the zoom buttons. With the bar of sections (index.html: #tabs) only "Vicino a me" stays under it; the map
+     inside another page (embed) has no such bar and keeps the three buttons, under the zoom buttons: the whole width */
+  #ex-search { width: min(420px, calc(100vw - 84px)); } #ex-search input { height: 44px; } #ex-search svg { top: 15px; } #ex-clear { right: 0; top: 0; width: 44px; height: 44px; }
+  #ex-results li { font-size: 15px; } #ex-results li:not(.hd) { box-sizing: border-box; min-height: 44px; align-items: center; } #ex-results li small, #ex-results li.none, #ex-results li.hd { font-size: 14px; }
+  #ex-bar { top: calc(163px + env(safe-area-inset-top, 0px)); width: min(420px, calc(100vw - 32px)); } #ex-bar > button { height: 44px; font-size: 14px; }
+  body:not(.embed) #ex-bar { top: calc(116px + env(safe-area-inset-top, 0px)); display: block; width: auto; } body:not(.embed) #ex-bar > button:nth-child(-n+2) { display: none; }
+  body:not(.embed) #ex-bar > button { flex-direction: row; gap: 6px; padding: 0 14px; border-radius: 22px; }
+  #ex-menu { top: calc(212px + env(safe-area-inset-top, 0px)); width: min(420px, calc(100vw - 32px)); } #ex-menu button { min-height: 44px; align-items: center; font-size: 15px; } #ex-menu button small { font-size: 14px; }
+  body:not(.embed) #ex-menu { top: auto; left: 8px; right: 8px; bottom: calc(var(--tabs) + 8px); width: auto; max-height: calc(100vh - var(--tabs) - 84px); max-height: calc(100dvh - var(--tabs) - 84px); overflow: auto; z-index: 22; }
+  /* 44 px to press, 14 px to read (the sources of a text may stay at 12) */
+  .ex-mk span, .ex-pin span { font-size: 14px; }
+  #ex-card .ex-acts a, .ex-acts button { height: 44px; padding: 0 15px; border-radius: 22px; font-size: 14px; }
+  #ex-card .x, #ex-routes .x { right: 2px; top: 2px; width: 44px; height: 44px; }
+  #ex-card h2 { margin-right: 36px; } #ex-card .k { margin-right: 40px; font-size: 14px; letter-spacing: .06em; } #ex-card .when { font-size: 14px; } #ex-card .d { font-size: 15px; }
+  #ex-card .vis, #ex-card .live, #ex-card .off, #ex-card .off small, #ex-card .vis b, #ex-card .tl-b, #ex-card .tl-h, #ex-card .fin { font-size: 14px; }
+  #ex-card .off summary { padding: 11px 0; } #ex-card .tl-y button { height: 44px; min-width: 44px; border-radius: 22px; font-size: 14px; }
+  #ex-card .vis small, #ex-card .vis small a, #ex-card .tl small, #ex-card .tl small a, #ex-card .fin small { font-size: 12px; }
+  #ex-card .fin a { margin: 0; padding: 12px 0 6px; font-size: 14px; }   /* 44 px to the finger */
+  .ex-stops .ex-tappa, .ex-stops .ex-next { font-size: 14px; } .ex-stops .ex-tappa { margin-right: 40px; } .ex-step button { height: 44px; border-radius: 22px; font-size: 14px; }
+  #ex-routes { font-size: 14px; } #ex-routes h3 { margin-right: 40px; font-size: 17px; } #ex-routes p, #ex-routes p.st, #ex-routes button.r small, #ex-routes li small, #ex-routes li .mi, #ex-routes li .warn, #ex-routes .row { font-size: 14px; }
+  #ex-routes li { box-sizing: border-box; min-height: 44px; padding: 10px 2px; } #ex-routes li i { width: 24px; height: 24px; font-size: 14px; line-height: 24px; } #ex-routes .back { min-height: 44px; padding-right: 12px; } #ex-routes button.r { min-height: 44px; }
+  #ex-routes .mc button { width: 44px; height: 44px; font-size: 16px; } #ex-routes select { height: 44px; font-size: 16px; }
+  #ex-routes .ex-lang button { height: 44px; min-width: 48px; justify-content: center; padding: 0; font-size: 14px; }
+  #ex-toast { padding: 10px 18px; border-radius: 22px; font-size: 15px; }
   body.ex-under #ex-card, body.ex-under #ex-routes, body.ex-typing #ex-card, body.ex-typing #ex-routes, body.ex-menu #ex-card, body.ex-menu #ex-routes { display: none !important; }   /* one panel at a time */
-  body.ex-sheet #sky, body.ex-sheet #wx { visibility: hidden; }   /* under a bottom sheet: not showing through it */
+  body.ex-sheet #wx { visibility: hidden; }   /* under a bottom sheet: not showing through it */
+  /* inside another page: between the buttons at the top and the light switch and the sources at the foot of the frame (index.html: --foot) */
+  body.embed #ex-card, body.embed #ex-routes { bottom: calc(var(--foot) + 8px); max-height: calc(100vh - var(--foot) - 223px); max-height: calc(100dvh - var(--foot) - 223px); }
+  body.embed #ex-menu { max-height: calc(100vh - var(--foot) - 220px); max-height: calc(100dvh - var(--foot) - 220px); overflow: auto; }
+}
+/* a phone on its side: the card, the lists and the welcome are a column at the right, between the toolbar and the bar of sections */
+@media ${LOW} {
+  #ex-search { width: min(280px, 40vw); } #ex-search, #ex-bar, body:not(.embed) #ex-bar { left: calc(16px + env(safe-area-inset-left, 0px)); }   /* clear of the notch */
+  body:not(.embed) .ex-cr { display: none; }                                  /* the sources button stays in sight here */
+  #ex-card, #ex-routes, #ex-routes.hello, body:not(.embed) #ex-menu { left: auto; right: calc(68px + env(safe-area-inset-right, 0px)); width: min(380px, calc(100vw - 100px - min(280px, 40vw))); max-height: calc(100vh - var(--tabs) - var(--low) - 82px); max-height: calc(100dvh - var(--tabs) - var(--low) - 82px); }
+  body.ex-sheet #wx { visibility: visible; }
+  /* inside another page: the three buttons in two rows under the search; the list in the column too; the column above the light switch and the sources */
+  body.embed #ex-bar { top: calc(116px + env(safe-area-inset-top, 0px)); width: min(280px, 40vw); grid-template-columns: 1fr 1fr; } body.embed #ex-bar > button:first-child { grid-column: 1 / -1; }
+  body.embed #ex-card, body.embed #ex-routes, body.embed #ex-menu { max-height: calc(100vh - var(--foot) - 82px); max-height: calc(100dvh - var(--foot) - 82px); }
+  body.embed #ex-menu { top: auto; left: auto; right: calc(68px + env(safe-area-inset-right, 0px)); bottom: calc(var(--foot) + 8px); width: min(380px, calc(100vw - 100px - min(280px, 40vw))); }
+}
+/* a small upright phone (320 x 568): the welcome closer, its two small buttons on one line that scrolls */
+@media (max-width: 640px) and (max-height: 620px), (max-width: 340px) {
+  #ex-routes.hello { padding: 10px 12px; } #ex-routes.hello h3 { font-size: 16px; margin-bottom: 2px; } #ex-routes.hello p { margin-bottom: 6px; line-height: 1.3; } #ex-routes.hello p.ex-now { margin-bottom: 8px; }
+  #ex-routes.hello .ex-first { gap: 6px; } #ex-routes.hello .ex-first .ex-go { height: 44px; } #ex-routes.hello .ex-acts { flex-wrap: nowrap; overflow-x: auto; margin-top: 6px; scrollbar-width: none; } #ex-routes.hello .ex-acts > * { flex: none; }
+}
+/* a tablet: the wide layout, with 44 px to the finger */
+@media ${COARSE} {
+  #ex-search input { height: 44px; } #ex-search svg { top: 15px; } #ex-clear { right: 0; top: 0; width: 44px; height: 44px; } #ex-results li:not(.hd) { box-sizing: border-box; min-height: 44px; align-items: center; }
+  #ex-bar { top: calc(118px + env(safe-area-inset-top, 0px)); } #ex-bar > button { height: 44px; } #ex-menu { top: calc(167px + env(safe-area-inset-top, 0px)); max-height: max(160px, calc(100vh - 175px - var(--foot))); } #ex-menu button { min-height: 44px; align-items: center; }
+  #ex-card, #ex-routes { top: calc(170px + env(safe-area-inset-top, 0px)); max-height: calc(100vh - 304px); }
+  #ex-card .ex-acts a, .ex-acts button { height: 44px; padding: 0 15px; border-radius: 22px; } #ex-card .x, #ex-routes .x { right: 2px; top: 2px; width: 44px; height: 44px; } #ex-card h2, #ex-routes h3 { margin-right: 40px; }
+  #ex-card .off summary { padding: 11px 0; } #ex-card .tl-y button { height: 44px; min-width: 44px; border-radius: 22px; } .ex-step button { height: 44px; border-radius: 22px; }
+  #ex-routes li { box-sizing: border-box; min-height: 44px; padding: 10px 2px; } #ex-routes .back { min-height: 44px; padding-right: 12px; } #ex-routes button.r { min-height: 44px; }
+  #ex-routes .mc button { width: 44px; height: 44px; } #ex-routes select { height: 44px; } #ex-routes .ex-lang button { height: 44px; min-width: 48px; justify-content: center; padding: 0; }
 }
 `;
 
-import { t, tc, lang, locale, speechLang, num, hm as zhm, dt, date, LANGS, NAMES, switchLang, textReady } from './i18n.js?v=20261121d';
+import { easter } from './fest.js?v=20261126e';
+import { t, tc, lang, locale, speechLang, num, hm as zhm, dt, date, LANGS, NAMES, switchLang, textReady } from './i18n.js?v=20261126e';
 
 // the kinds of the map's own names (world.json labels), in the search results
 const KIND_IT = { city: t('kind.city'), town: t('kind.city'), village: t('kind.village'), suburb: t('kind.suburb'), quarter: t('kind.suburb'), neighbourhood: t('kind.suburb'),
@@ -205,9 +278,9 @@ export async function initExplore({ world, view, map, clamp, draw, halt, toScree
   } catch { /* search still works on labels alone */ }
 
   document.head.appendChild(el('style')).textContent = CSS;
-  const phone = () => matchMedia('(max-width: 640px)').matches;
+  const phone = () => matchMedia(PHONE).matches, upright = () => phone() && !matchMedia(LOW).matches;   // upright: the sheets come up from the bottom
   let geoP = null, geoM = null;                                      // geo.js, loaded on first use
-  const geo = () => geoP || (geoP = import('./geo.js?v=20261121d').then(m => { geoM = m; return new m.Geo(world, lang); }));
+  const geo = () => geoP || (geoP = import('./geo.js?v=20261126e').then(m => { geoM = m; return new m.Geo(world, lang); }));
   const embed = new URLSearchParams(location.search).has('incorpora');   // inside someone else's page (index.html hides the rest)
 
   // ---------- markers ----------
@@ -253,7 +326,7 @@ export async function initExplore({ world, view, map, clamp, draw, halt, toScree
   function wakeMob() {                                   // nothing is asked of those services before the list is opened
     if (document.body.classList.contains('era')) return;
     if (mob) mob.wake();
-    else if (!mobP) mobP = import('./mobility.js?v=20261121d').then(M => { mob = M.initMobility({ geo, layer, toScreen, active: mobLayer, onChange: mobChanged }); mob.wake(); }).catch(() => { /* no such layers */ });
+    else if (!mobP) mobP = import('./mobility.js?v=20261126e').then(M => { mob = M.initMobility({ geo, layer, toScreen, active: mobLayer, onChange: mobChanged }); mob.wake(); }).catch(() => { /* no such layers */ });
   }
   function mobChanged() {                                // live data in, changed or gone (stale, failed, time machine)
     if (mobLayer() && !mob.has(mobLayer())) { cat = ''; drawChips(); }   // the layer has nothing current: back to the places
@@ -367,32 +440,76 @@ export async function initExplore({ world, view, map, clamp, draw, halt, toScree
   // ---------- card ----------
   const card = el('aside', { id: 'ex-card', role: 'dialog', 'aria-live': 'polite' });
   document.body.appendChild(card);
-  const credits = document.getElementById('credits');
-  function placeCard() {                                    // on phones the card and the itineraries are bottom sheets above the credits
-    card.style.bottom = phone() && credits ? (credits.offsetHeight + 8) + 'px' : '';
+  const credits = document.getElementById('credits'), tabs = document.getElementById('tabs');
+  const credLine = () => { const c = document.getElementById('credtxt'), s = c ? c.textContent.trim() : ''; return s ? el('p', { class: 'ex-cr' }, s) : ''; };   // the map's sources: a phone's sheet covers their button
+  function placeCard() {                                    // on phones the card and the itineraries are bottom sheets above the bar of sections (or the credits, where there is no bar; inside another page the styles keep them above the light switch too)
+    const low = tabs && tabs.offsetHeight ? tabs : credits;
+    card.style.bottom = phone() && low && !embed ? (low.offsetHeight + 8) + 'px' : '';
     if (typeof routesBox !== 'undefined') routesBox.style.bottom = card.style.bottom;
   }
   const nowMs = () => window.__now ? window.__now() : Date.now();    // the moment the map shows: the time machine moves it
-  // Is the place open at this moment in Bellinzona (or at `at`, ms)? Only when the published hours allow a plain answer; otherwise null.
+  // Is the place open at this moment in Bellinzona (or at `at`, ms)? Only when the published hours allow a plain answer; otherwise null,
+  // and nothing is said. It is the first thing under a place's name, so it must never say other than the text of the hours:
+  // - no answer where that text names an exception the rows do not carry; `exc`: the rows carry them (the Mornera cableway stops on
+  //   Wednesdays 08:00-10:00: two Wednesday rows);
+  // - on a public holiday of Ticino, the rows whose days are "festivi", where the operator gives them (they replace the weekday's);
+  //   without such a row no answer, unless the hours are the same every day and the text says nothing of holidays;
+  // - no answer for a period that a row names with neither hours nor a closure (Castelgrande on 25 December);
+  // - no answer for hours that run past midnight, which the rows cannot be told from a mistake;
+  // - no answer on a day the operator's page has not given hours for: a row with a year ("2027-03-19") holds on its dates, one
+  //   without ("03-19") only within the place's `valid` days (those its page gave the hours for when it was read): hours that
+  //   were not read again never say "open" in a later year.
+  // A row's `part` is what is open when it is not the whole place (Montebello's courtyards in winter): the badge names it.
+  const EXCEPT = /\bferm[ao]\b|\btranne\b|\beccett|\bsalvo\b|\besclus/i, HOLS = ['01-01', '01-06', '03-19', '05-01', '06-29', '08-01', '08-15', '11-01', '12-08', '12-25', '12-26'];
+  const holiday = (y, md) => {                               // the fixed ones, and Easter, Easter Monday, Ascension, Whit Monday, Corpus Christi
+    if (HOLS.includes(md)) return true;
+    const [em, ed] = easter(y), d = Math.round((Date.UTC(y, +md.slice(0, 2) - 1, +md.slice(3)) - Date.UTC(y, em - 1, ed)) / 864e5);
+    return [0, 1, 39, 50, 60].includes(d);
+  };
+  // The last entry: where the row carries it (`last`), the badge gives it ("ultimo ingresso 15:30") and, after it, says that no one is
+  // let in any more. Where only the text names one ("ultimo ingresso 15:30"), nothing is said from that hour to the closing, and
+  // where the text gives no hour of it for this closing time, in the last 90 minutes: when in doubt, nothing.
+  const LAST = '(?:ultim[oa] (?:ingresso|entrata)|letzte[rn]? Einlass|dernière entrée|last (?:entry|admission))';
+  const toMin = s => +s.slice(0, 2) * 60 + +s.slice(3, 5);
+  function lastEntry(v, close) {                                        // "ultimo ingresso 15:30" in the published text, when it goes with this closing time
+    for (const m of ((v.text || '') + ' ' + (v.extra || '')).matchAll(new RegExp(LAST + '\\D{0,12}(\\d{1,2})[:.](\\d{2})', 'gi'))) {
+      const t = m[1].padStart(2, '0') + ':' + m[2], d = toMin(close) - toMin(t);
+      if (d > 0 && d <= 90) return t;
+    }
+    return '';
+  }
+  const sfx = part => part ? '.' + part : '';                            // the labels of a part: "open.until.corti"
   function openNow(v, at) {
-    if (!v.rows || !v.rows.length) return null;
+    const st = hoursAt(v, at);
+    if (st && st.open && st.last) return st.hm > st.last ? { ...st, open: false, label: t('open.last.past' + sfx(st.part), { le: st.last }) } : { ...st, label: t('open.until.last' + sfx(st.part), { t: st.until, le: st.last }) };
+    if (!st || !st.open || !new RegExp(LAST, 'i').test((v.text || '') + ' ' + (v.extra || ''))) return st;
+    const le = lastEntry(v, st.until);
+    return toMin(st.hm) >= (le ? toMin(le) : toMin(st.until) - 90) ? null : st;
+  }
+  function hoursAt(v, at) {                                 // what the rows say; the last entry is only handed on (`last`)
+    if (!v.rows || !v.rows.length || (!v.exc && EXCEPT.test(v.text || ''))) return null;
     const pt = new Intl.DateTimeFormat('en-GB', { timeZone: 'Europe/Zurich', weekday: 'short', year: 'numeric', month: '2-digit', day: '2-digit', hour: '2-digit', minute: '2-digit', hourCycle: 'h23' }).formatToParts(new Date(at ?? nowMs()));
     const g = k => pt.find(x => x.type === k).value, md = g('month') + '-' + g('day'), ymd = g('year') + '-' + md, hm = g('hour') + ':' + g('minute');
     const wd = ['sun', 'mon', 'tue', 'wed', 'thu', 'fri', 'sat'].indexOf(g('weekday').toLowerCase());
     if ((v.shut || []).some(s => ymd >= s[0] && ymd <= s[1])) return { open: false, label: t('open.shutdays') };
-    const inSeason = r => r.from <= r.to ? md >= r.from && md <= r.to : md >= r.from || md <= r.to;
+    const inSeason = r => r.from.length > 5 ? ymd >= r.from && ymd <= r.to                                // with its year: on its dates only
+      : !!v.valid && ymd >= v.valid[0] && ymd <= v.valid[1] && (r.from <= r.to ? md >= r.from && md <= r.to : md >= r.from || md <= r.to);
     const D = ['sun', 'mon', 'tue', 'wed', 'thu', 'fri', 'sat'];
     const onDay = d => { if (!d) return false; const [a, b] = d.split('-'), i = D.indexOf(a), j = D.indexOf(b || a); return i <= j ? wd >= i && wd <= j : wd >= i || wd <= j; };
     const season = v.rows.filter(inSeason);
     if (!season.length) return null;
     if (season.some(r => r.shut)) return { open: false, label: t('open.shutseason') };
-    const today = season.filter(r => r.open && onDay(r.days));
+    if (season.some(r => !r.open)) return null;                                                     // a day named, its hours not
+    if (season.some(r => r.open && !(r.close > r.open))) return null;
+    const hol = holiday(+g('year'), md), fest = season.filter(r => r.days === 'festivi');
+    if (hol && !fest.length && (/festiv/i.test(v.text || '') || season.some(r => r.days !== 'mon-sun'))) return null;
+    const today = hol && fest.length ? fest : season.filter(r => r.open && r.days !== 'festivi' && onDay(r.days));
     if (!today.length) return season.some(r => r.open) ? { open: false, label: t('open.today') } : null;
-    const r = today.find(x => hm >= x.open && hm < x.close);
-    if (r) return { open: true, label: t('open.until', { t: r.close }), until: r.close };
-    const later = today.find(x => hm < x.open);
+    const now = today.filter(x => hm >= x.open && hm < x.close).sort((a, b) => a.close.localeCompare(b.close));
+    if (now.length) { const r = now[now.length - 1], until = r.close; return { open: true, label: t('open.until' + sfx(r.part), { t: until }), until, last: r.last || '', part: r.part || '', hm }; }   // rows may overlap (a week of longer hours): the last to close
+    const nx = today.filter(x => hm < x.open).sort((a, b) => a.open.localeCompare(b.open))[0], later = nx && nx.open;              // and the first to open
     // now: "closed now"; on arrival (warnAt): "closed when you get there"
-    return { open: false, label: later ? t('open.opens', { t: later.open }) : t('open.closed'), arrive: later ? t('warn.opens', { t: later.open }) : t('warn.closed') };
+    return { open: false, label: later ? t('open.opens' + sfx(nx.part), { t: later }) : t('open.closed'), arrive: later ? t('warn.opens' + sfx(nx.part), { t: later }) : t('warn.closed') };
   }
 
   // walking distance from the visitor to a place: on the network when known, otherwise as the crow flies
@@ -443,6 +560,8 @@ export async function initExplore({ world, view, map, clamp, draw, halt, toScree
     if (p.type) card.appendChild(el('p', { class: 'k' }, pt(p, 'type')));
     card.appendChild(el('h2', {}, name));
     if (p.period) card.appendChild(el('p', { class: 'when' }, pt(p, 'period')));
+    const st = p.visit ? openNow(p.visit) : null;             // open or closed, said at once (nothing where the hours give no plain answer); a press goes down to the hours and the prices
+    if (st) { const b = el('button', { type: 'button', class: 'ex-open ' + (st.open ? 'yes' : 'no') }, st.label + ' ›'); b.onclick = () => { const v = card.querySelector('.vis'); if (v) card.scrollTo({ top: v.offsetTop - 12, behavior: matchMedia('(prefers-reduced-motion: reduce)').matches ? 'auto' : 'smooth' }); }; card.appendChild(b); }
     const acts = el('div', { class: 'ex-acts' });
     if (p.lat != null) acts.appendChild(el('a', { href: dirUrl(p), target: '_blank', rel: 'noopener' }, t('card.dir')));
     acts.appendChild(el('a', { class: 'v3d', href: '3d.html?p=' + encodeURIComponent(p.id) + '&lingua=' + lang, ...(embed ? { target: '_blank', rel: 'noopener' } : {}) }, t('card.3d')));   // the 3D view is in Italian for now: it gets the language for later
@@ -459,7 +578,7 @@ export async function initExplore({ world, view, map, clamp, draw, halt, toScree
     if (p.desc) card.appendChild(rich('p', 'd', pt(p, 'desc')));
     if (Array.isArray(p.timeline) && p.timeline.length) card.appendChild(storyBox(p));
     if (p.visit) {                                            // opening hours and prices as published, with the date they were checked
-      const v = p.visit, box = el('div', { class: 'vis' }), st = openNow(v);
+      const v = p.visit, box = el('div', { class: 'vis' });
       if (st) box.appendChild(el('b', { class: st.open ? 'yes' : 'no' }, st.label));
       box.appendChild(rich('p', '', tc(`place.${p.id}.visit.text`, v.text)));
       if (v.prices.length) box.appendChild(el('p', {}, v.prices.map((x, i) => { const label = tc(`place.${p.id}.visit.price.${i}`, x[0]); return x[1] === 0 ? t('price.free', { label }) : t('price.chf', { label, p: num(x[1], Number.isInteger(x[1]) ? 0 : 2) }); }).join(' · ')));
@@ -480,10 +599,23 @@ export async function initExplore({ world, view, map, clamp, draw, halt, toScree
       card.appendChild(el('a', { href: o.source.url, target: '_blank', rel: 'noopener' }, t('off.source', { label: o.source.label, date: date(o.retrieved) })));
       card.appendChild(el('br', {}));
     }
+    if (p.finanze) {                                          // Palazzo Civico: the City's accounts as SwissData Spesa pubblica shows them, with their source and year
+      const f = p.finanze, y = f.year, box = el('div', { class: 'fin' });
+      const sw = (v, d) => new Intl.NumberFormat('de-CH', { minimumFractionDigits: d, maximumFractionDigits: d }).format(v).replace(/'/g, '’');   // the Swiss form, as that site writes it (4’187)
+      const mio = v => t('fin.mio', { n: sw(v / 1e6, v >= 1e8 ? 0 : 1) });
+      box.appendChild(el('b', {}, t('fin.title', { y })));
+      box.appendChild(el('p', {}, t('fin.spese', { y, v: mio(f.spese) }) + (f.per_ab ? ' · ' + t('fin.perab', { v: sw(f.per_ab, 0) }) : '')));
+      box.appendChild(el('p', {}, t('fin.ricavi', { y, v: mio(f.ricavi) })));
+      if (f.per_ab) box.appendChild(el('small', {}, t('fin.pop', { n: sw(f.pop, 0), y })));
+      box.appendChild(el('small', {}, t('fin.source', { y })));
+      box.appendChild(el('a', { href: lang === 'en' ? f.page.en : f.page.it, target: '_blank', rel: 'noopener', ...(lang === 'en' ? {} : { hreflang: 'it' }) }, t('fin.link')));
+      card.appendChild(box);
+    }
     if (window.__cardExtra) { try { for (const row of window.__cardExtra(p)) card.appendChild(el('p', { class: 'live' }, row)); } catch (err) { /* live rows are optional */ } }
     if (p.source && p.source.url) {
       card.appendChild(el('a', { href: p.source.url, target: '_blank', rel: 'noopener' }, t('card.source', { label: srcLabel(p.source.label || 'Wikipedia') })));
     }
+    card.append(credLine());
     card.setAttribute('aria-label', name);
     card.classList.add('open');
     card.scrollTop = 0;
@@ -543,7 +675,7 @@ export async function initExplore({ world, view, map, clamp, draw, halt, toScree
     if (!nodes) return false;
     const top = card.scrollTop, x = el('button', { class: 'x', 'aria-label': t('close') }, '×');
     x.onclick = closeMob;
-    card.textContent = ''; card.append(x, ...nodes); card.setAttribute('aria-label', mob.name(mobSel)); card.scrollTop = top;
+    card.textContent = ''; card.append(x, ...nodes, credLine()); card.setAttribute('aria-label', mob.name(mobSel)); card.scrollTop = top;
     return true;
   }
   function closeMob() { if (!mobSel) return; mobSel.el.classList.remove('sel'); mobSel = null; card.classList.remove('open'); layout(true); }
@@ -618,7 +750,7 @@ export async function initExplore({ world, view, map, clamp, draw, halt, toScree
 
   // ---------- one panel at a time on phones: the viewer's panels (time machine, events, info) and these ----------
   const others = [['tm', 'tmb'], ['evp', 'evb'], ['about', 'info'], ['xmenu', 'more'], ['adesso', 'wx'], ['credtxt', 'fonti']].map(([p, b]) => [document.getElementById(p), b && document.getElementById(b)]).filter(o => o[0]);
-  const under = () => document.body.classList.toggle('ex-under', others.some(o => !o[0].hidden));
+  const under = () => { document.body.classList.toggle('ex-under', others.some(o => !o[0].hidden)); tabState(); };
   { const mo = new MutationObserver(under); for (const [p] of others) mo.observe(p, { attributes: true, attributeFilter: ['hidden'] }); }
   function panel(always) {                                  // one of ours opens: on a phone (or for a dropdown) the viewer's panels give way
     if (!phone() && !always) return;
@@ -672,11 +804,18 @@ export async function initExplore({ world, view, map, clamp, draw, halt, toScree
   const showList = on => { list.classList.toggle('open', on); document.body.classList.toggle('ex-typing', on); };
 
   // ---------- what to see, itineraries, near me: three buttons under the search box, and the sheet they open ----------
-  const bar = el('div', { id: 'ex-bar' }), menu = el('div', { id: 'ex-menu', role: 'menu', 'aria-label': t('bar.what') }), routesBox = el('div', { id: 'ex-routes' });
+  const bar = el('div', { id: 'ex-bar' }), menu = el('div', { id: 'ex-menu', role: 'menu', 'aria-label': t('bar.what') }), routesBox = el('div', { id: 'ex-routes', role: 'region', tabindex: '-1' });
   const button = (icon, label, attrs) => { const b = el('button', { type: 'button', ...attrs }); b.append(el('i', { 'aria-hidden': 'true' }, icon), el('span', {}, label)); bar.appendChild(b); return b; };
   const bWhat = button('🏰', t('bar.what') + ' ▾', { 'aria-haspopup': 'true', 'aria-expanded': 'false', 'aria-controls': 'ex-menu' });
   const bRoutes = button('🧭', t('bar.routes'), { 'aria-pressed': 'false' }), bNear = button('📍', t('bar.near'), { 'aria-pressed': 'false' });
   document.body.append(bar, menu, routesBox);
+  // on a phone "Cosa vedere" and "Itinerari" are Luoghi and Itinerari in the bar of sections (index.html: #tabs)
+  const tabPlaces = tabs && tabs.querySelector('[data-k="places"]'), tabRoutes = tabs && tabs.querySelector('[data-k="routes"]');
+  function tabState() {                                                 // which is open; set: a filter is on
+    const st = (b, on) => { if (b) { b.classList.toggle('on', on); b.setAttribute('aria-pressed', on); } };
+    st(tabPlaces, menu.classList.contains('open')); if (tabPlaces) tabPlaces.classList.toggle('set', mode === 'open' || !!cat);
+    st(tabRoutes, mode === 'routes' && !document.body.classList.contains('ex-under') && !menu.classList.contains('open'));
+  }
   (function sheet() { document.body.classList.toggle('ex-sheet', card.classList.contains('open') || routesBox.classList.contains('open')); setTimeout(sheet, 250); })();   // a bottom sheet is up (phones hide what it would cover)
   // [id, icon, name in the list, name on the button]
   const CATS = [['', '🗺️', t('cat.all'), t('bar.what')], ...['castelli', 'chiese', 'citta', 'gite'].map((c, i) => [c, ['🏰', '⛪', '🏛️', '🌲'][i], t('cat.' + c), t('cat.' + c + '.s')])];
@@ -692,7 +831,7 @@ export async function initExplore({ world, view, map, clamp, draw, halt, toScree
     const W = map.clientWidth, H = map.clientHeight, ph = phone();
     const side = ph ? 64 : 30;                                           // room for the names of the dots at the edges
     let l = side, r = W - side, t = bar.getBoundingClientRect().bottom + 24, b = H - (ph ? 110 : 70);
-    if (routesBox.classList.contains('open')) { placeCard(); const q = routesBox.getBoundingClientRect(); if (ph) b = q.top - 24; else l = q.right + 40; }
+    if (routesBox.classList.contains('open')) { placeCard(); const q = routesBox.getBoundingClientRect(); if (upright()) b = q.top - 24; else if (ph) r = q.left - 30; else l = q.right + 40; }
     const w = Math.max(120, r - l), h = Math.max(120, b - t);
     const z = Math.min(Z - 0.3, Z + Math.log2(Math.min(w / Math.max(60, x1 - x0), h / Math.max(60, y1 - y0)))), s = Math.pow(2, z - Z);
     flyTo((x0 + x1) / 2 - ((l + r) / 2 - W / 2) / s, (y0 + y1) / 2 - ((t + b) / 2 - H / 2) / s, z, jump);
@@ -727,7 +866,8 @@ export async function initExplore({ world, view, map, clamp, draw, halt, toScree
     return b;
   }
   const hm = n => n < 60 ? t('dur.min', { n }) : t('dur.h', { h: Math.floor(n / 60), m: String(n % 60).padStart(2, '0') });
-  const showRoutes = () => {
+  const showRoutes = () => { drawRoutes(); routesBox.append(credLine()); const h = routesBox.querySelector('h3'); if (h) routesBox.setAttribute('aria-label', h.textContent); };
+  const drawRoutes = () => {
     routesBox.textContent = '';
     if (!route) {
       routesBox.append(el('h3', {}, t('routes.title')), el('p', {}, routesNote));
@@ -821,23 +961,15 @@ export async function initExplore({ world, view, map, clamp, draw, halt, toScree
   function removeStop(id) { const i = mine.ids.indexOf(id); if (i < 0) return; mine.ids.splice(i, 1); delete mine.visit[id]; changed(); if (!route || !route.mine) toast(t('toast.removed')); }
   function openMine() { closeCard(); editing = true; setRoute(mineRoute()); renderSheet(); calcMine(mine.ids.length > 0); }
   // when each stop is reached and left, from the moment the map shows, and what will be closed by then
-  const toMin = s => +s.slice(0, 2) * 60 + +s.slice(3, 5);
-  function lastEntry(v, close) {                                        // "ultimo ingresso 15:30" in the published (Italian) text, when it goes with this closing time
-    for (const m of ((v.text || '') + ' ' + (v.extra || '')).matchAll(/ultim[oa] (?:ingresso|entrata)\D{0,12}(\d{1,2})[:.](\d{2})/gi)) {
-      const t = m[1].padStart(2, '0') + ':' + m[2], d = toMin(close) - toMin(t);
-      if (d > 0 && d <= 90) return t;
-    }
-    return '';
-  }
   function warnAt(p, arr, dep) {
-    const st = p && p.visit && openNow(p.visit, arr);
+    const st = p && p.visit && hoursAt(p.visit, arr);      // the hours themselves: arriving after the last entry is warned of below
     if (!st) return '';
     if (!st.open) return st.arrive || st.label;
-    const a = zhm(arr), d = zhm(dep), le = lastEntry(p.visit, st.until);
+    const a = zhm(arr), d = zhm(dep), le = st.last || lastEntry(p.visit, st.until);
     if (le && a > le) return t('warn.last', { le, a });
     if (!le && toMin(st.until) - toMin(a) < 30) return t('warn.closes.entry', { t: st.until });
     if (dep - arr >= 864e5 || d > st.until || d < a) return t('warn.closes.visit', { t: st.until });
-    return '';
+    return st.part ? t('warn.part' + sfx(st.part)) : '';                 // open, but only a part of it ("Aperte solo le corti")
   }
   function plan(R) {
     let t = nowMs(); const t0 = t;
@@ -931,7 +1063,7 @@ export async function initExplore({ world, view, map, clamp, draw, halt, toScree
     if (m !== 'routes' && route) setRoute(null);
     if (m !== 'open') openIds = null;
     mode = m;
-    routesBox.classList.toggle('open', !!m);
+    routesBox.classList.toggle('open', !!m); routesBox.classList.toggle('hello', m === 'hello');
     renderSheet();
     drawChips(); layout(true);
     if (m) panel();
@@ -941,7 +1073,8 @@ export async function initExplore({ world, view, map, clamp, draw, halt, toScree
     const top = routesBox.scrollTop, a = document.activeElement, keep = refocus || (routesBox.contains(a) && a.dataset.f) || '';
     refocus = '';
     routesBox.textContent = '';
-    if (mode === 'routes') showRoutes(); else if (mode === 'near') showNear(); else if (mode === 'open') showOpen(); else if (mode === 'hello') showHello();
+    if (mode === 'routes') drawRoutes(); else if (mode === 'near') showNear(); else if (mode === 'open') showOpen(); else if (mode === 'hello') showHello();
+    if (mode) { routesBox.append(credLine()); const h = routesBox.querySelector('h3'); if (h) routesBox.setAttribute('aria-label', h.textContent); }
     if (keep) { let f = routesBox.querySelector(`[data-f="${keep}"]`); if (f && f.disabled) f = f.parentNode.querySelector('button:not(:disabled)'); if (f) f.focus({ preventScroll: true }); }   // keyboard users stay where they were
     routesBox.scrollTop = top;
     placeCard();
@@ -956,7 +1089,7 @@ export async function initExplore({ world, view, map, clamp, draw, halt, toScree
   };
   const pickOpen = () => { closeCard(); cat = ''; setMode('open'); if (openIds.size) fit(markers.filter(m => openIds.has(m.p.id)).map(m => [m.p.x, m.p.y])); };
   function openMenu(on, byKey) {
-    menu.classList.toggle('open', on); bWhat.setAttribute('aria-expanded', on); document.body.classList.toggle('ex-menu', on);
+    menu.classList.toggle('open', on); bWhat.setAttribute('aria-expanded', on); document.body.classList.toggle('ex-menu', on); tabState();
     if (!on) return;
     showList(false); panel(true);
     fillMenu();
@@ -966,7 +1099,7 @@ export async function initExplore({ world, view, map, clamp, draw, halt, toScree
   function fillMenu() {                                                 // also again while open, when live entries come or go
     const all = [...menu.querySelectorAll('button')], f = all.indexOf(document.activeElement);
     menu.textContent = '';
-    const item = (icon, name, n, active, fn) => { const b = el('button', { type: 'button', role: 'menuitemradio', 'aria-checked': active, class: active ? 'on' : '' }); b.append(icon + ' ' + name + ' ', el('small', {}, '(' + n + ')')); b.onclick = () => { openMenu(false); bWhat.focus({ preventScroll: true }); fn(); }; menu.appendChild(b); };
+    const item = (icon, name, n, active, fn) => { const b = el('button', { type: 'button', role: 'menuitemradio', 'aria-checked': active, class: active ? 'on' : '' }); b.append(icon + ' ' + name + ' ', el('small', {}, '(' + n + ')')); b.onclick = () => { openMenu(false); opener().focus({ preventScroll: true }); fn(); }; menu.appendChild(b); };
     for (const [id, icon, name] of CATS) item(icon, name, id ? places.filter(p => inCat(p, id)).length : places.filter(p => !p.minor).length, mode !== 'open' && cat === id, () => pickCat(id));
     menu.appendChild(el('hr'));
     item('🕒', t('open.title'), openRows().length, mode === 'open', pickOpen);
@@ -979,18 +1112,23 @@ export async function initExplore({ world, view, map, clamp, draw, halt, toScree
   bWhat.onclick = e => openMenu(!menu.classList.contains('open'), e.detail === 0);
   bRoutes.onclick = () => { if (mode === 'routes') setMode(''); else { closeCard(); cat = ''; setMode('routes'); } };
   bNear.onclick = () => { if (mode === 'near') setMode(''); else { closeCard(); cat = ''; locate(); } };
+  const opener = () => (tabPlaces && tabPlaces.offsetWidth ? tabPlaces : bWhat);   // who opened the list: the focus goes back there
+  if (tabPlaces) tabPlaces.onclick = () => openMenu(!menu.classList.contains('open'), true);   // the focus goes into the list
+  // Itinerari, with the list under a card or under one of the viewer's panels: the list comes back, it does not close
+  if (tabRoutes) tabRoutes.onclick = () => { if (mode === 'routes' && (selected || document.body.classList.contains('ex-under'))) { closeCard(); panel(); } else bRoutes.click(); if (mode === 'routes') routesBox.focus({ preventScroll: true }); };
   menu.addEventListener('keydown', e => {                              // arrows move along the list, Escape goes back to the button
     const items = [...menu.querySelectorAll('button')], i = items.indexOf(document.activeElement);
     if (e.key === 'ArrowDown' || e.key === 'ArrowUp') { e.preventDefault(); items[(i + (e.key === 'ArrowDown' ? 1 : -1) + items.length) % items.length].focus(); }
-    else if (e.key === 'Escape') { e.stopPropagation(); openMenu(false); bWhat.focus(); }
+    else if (e.key === 'Escape') { e.stopPropagation(); openMenu(false); opener().focus(); }
   });
-  document.addEventListener('pointerdown', e => { if (menu.classList.contains('open') && !menu.contains(e.target) && !bWhat.contains(e.target)) openMenu(false); });
+  document.addEventListener('pointerdown', e => { if (menu.classList.contains('open') && !menu.contains(e.target) && !bWhat.contains(e.target) && !(tabPlaces && tabPlaces.contains(e.target))) openMenu(false); });
   function drawChips() {                                                // the buttons say what is active
     const open = mode === 'open', c = CATS.find(k => k[0] === cat) || TAGS.find(k => k[0] === cat) || MOB.find(k => k[0] === cat) || CATS[0];
     bWhat.firstChild.textContent = open ? '🕒' : cat ? c[1] : '🏰';
     bWhat.lastChild.textContent = (open ? t('open.s') : cat ? c[3] : t('bar.what')) + ' ▾';
     bWhat.classList.toggle('on', open || !!cat);
     for (const [b, on] of [[bRoutes, mode === 'routes'], [bNear, mode === 'near' || !!here]]) { b.classList.toggle('on', on); b.setAttribute('aria-pressed', on); }
+    tabState();
   }
   drawChips();
 
@@ -1006,11 +1144,15 @@ export async function initExplore({ world, view, map, clamp, draw, halt, toScree
     routesBox.append(el('h3', {}, t('open.title')), el('p', {}, t(Math.abs(nowMs() - Date.now()) > 45 * 60000 ? 'open.at.away' : 'open.at', { time: f({ hour: '2-digit', minute: '2-digit' }), day: f({ weekday: 'long', day: 'numeric', month: 'long' }) })));
     if (!rows.length) routesBox.append(el('p', { class: 'st' }, t('open.none')));
     const ol = el('ol');
-    for (const r of rows) { const li = el('li'); li.append(el('span', {}, pn(r.p)), el('small', {}, t('open.till', { t: r.st.until }))); li.onclick = () => { const m = markers.find(k => k.p === r.p); if (m) showPlace(m, Math.max(view.z, Z - 1.2)); }; ol.appendChild(li); }
+    for (const r of rows) { const li = el('li'); li.append(el('span', {}, pn(r.p)), el('small', {}, t('open.till' + sfx(r.st.part), { t: r.st.until }))); li.onclick = () => { const m = markers.find(k => k.p === r.p); if (m) showPlace(m, Math.max(view.z, Z - 1.2)); }; ol.appendChild(li); }
     if (rows.length) routesBox.appendChild(ol);
     routesBox.append(el('p', {}, t('open.count', { n: places.filter(p => p.visit && !p.minor).length })));
   }
   setInterval(() => { if (mode === 'open' && minuteKey() !== openKey) { renderSheet(); layout(true); } }, 15000);   // the clock and the time machine move on
+  setInterval(() => {                                       // and so do the open card's two "open / closed" badges
+    const st = selected && selected.p.visit ? openNow(selected.p.visit) : null;
+    for (const b of card.querySelectorAll('.ex-open, .vis > b')) { const top = b.classList.contains('ex-open'), s = st ? st.label + (top ? ' ›' : '') : ''; if (!st) b.remove(); else if (b.textContent !== s) { b.textContent = s; b.classList.toggle('yes', st.open); b.classList.toggle('no', !st.open); } }
+  }, 15000);
 
   // ---------- Vicino a me: the visitor's position (asked only on a tap), and the walks from there ----------
   let watch = null, resume = false, flyNext = false, nearMsg = '', walksTried = false, fixSeq = 0;
@@ -1031,7 +1173,7 @@ export async function initExplore({ world, view, map, clamp, draw, halt, toScree
   function forget() { stopWatch(); here = null; walks = null; walksTried = false; nearMsg = ''; layout(true); setMode(''); }
   function flyHere() {
     if (!here) return;
-    const z = Math.max(view.z, Z - 1.5), lift = phone() && routesBox.classList.contains('open') ? routesBox.offsetHeight / 2 / Math.pow(2, z - Z) : 0;
+    const z = Math.max(view.z, Z - 1.5), lift = upright() && routesBox.classList.contains('open') ? routesBox.offsetHeight / 2 / Math.pow(2, z - Z) : 0;
     flyTo(here.x, here.y + lift, z);
   }
   const refreshNear = () => {
@@ -1089,19 +1231,29 @@ export async function initExplore({ world, view, map, clamp, draw, halt, toScree
     acts.append(c1, c2); routesBox.appendChild(acts);
   }
 
-  // ---------- first visit: a small welcome, three lines and three chips ----------
+  // ---------- first visit: a small welcome. What this is in one sentence, the hour and the weather of now (it is live), one
+  // first thing to do; the rest is smaller, under it ----------
   function showHello() {
     const x = el('button', { class: 'x', type: 'button', 'aria-label': t('close') }, '×'); x.onclick = () => setMode('');
-    routesBox.append(x, el('h3', {}, t('hello.title')), el('p', {}, t('hello.text')));
+    const now = el('p', { class: 'ex-now' });
+    const tick = () => {                                      // the measured temperature and the weather once the live data are in (extras.js)
+      if (!now.isConnected) return;
+      const X = window.__extras, s = [t('hello.live', { time: zhm(Date.now()) }), ...(X && X.live() ? X.brief() : [])].join(' · ');
+      if (now.textContent !== s) now.textContent = s;
+      setTimeout(tick, 1000);
+    };
+    routesBox.append(x, el('h3', {}, t('hello.title')), el('p', {}, t('hello.what')), now); tick();
+    const go = el('button', { type: 'button', class: 'ex-go', title: t('tour.start.title') }, t('hello.tour'));
+    go.onclick = () => { setMode(''); import('./tour.js?v=20261126e').then(m => m.startTour()); };
+    const self = el('button', { type: 'button', class: 'ex-self', title: t('hello.explore.title') }, t('hello.self')); self.onclick = () => setMode('');
+    const first = el('div', { class: 'ex-first' }); first.append(go, self); routesBox.appendChild(first);
     const acts = el('div', { class: 'ex-acts' }), b = (label, title, fn) => { const k = el('button', { type: 'button', title }, label); k.onclick = fn; acts.appendChild(k); };
-    b(t('tour.start'), t('tour.start.title'), () => { setMode(''); import('./tour.js?v=20261121d').then(m => m.startTour()); });   // the guided tour of everything there is
     const c = routes.find(r => r.id === 'centro');
     // German nouns keep their capital after the colon
     if (c) b(t('hello.walk', { min: Math.round(c.walk / 5) * 5 }), t('hello.walk.title', { title: c.title, sub: lang === 'de' ? c.sub : c.sub.charAt(0).toLowerCase() + c.sub.slice(1) }), () => { setMode('routes'); pickRoute(c); });
     if (!document.body.classList.contains('era')) b(t('hello.now'), t('hello.now.title'), () => { setMode(''); openEvents(); });
-    b(t('hello.explore'), t('hello.explore.title'), () => setMode(''));
     routesBox.appendChild(acts);
-    // the language, once, here: four small chips (later in ⋯ 🌐); the welcome comes back in the language chosen
+    // the language, once, here: four small chips (later in ⋯ / Altro); the welcome comes back in the language chosen
     const lg = el('div', { class: 'ex-acts ex-lang', role: 'group', 'aria-label': t('menu.lang.group') });
     lg.appendChild(el('span', { 'aria-hidden': 'true' }, '🌐'));
     for (const code of LANGS) {
@@ -1201,7 +1353,7 @@ export async function initExplore({ world, view, map, clamp, draw, halt, toScree
   function showPlace(m, z, jump) {
     openCard(m);
     // on phones the card is a bottom sheet: aim a little lower so the marker stays clear of it
-    const lift = phone() ? card.offsetHeight / 2 / Math.pow(2, z - Z) : 0;
+    const lift = upright() ? card.offsetHeight / 2 / Math.pow(2, z - Z) : 0;
     flyTo(m.p.x, m.p.y + lift, z, jump);
   }
   function choose(it) {
@@ -1213,7 +1365,7 @@ export async function initExplore({ world, view, map, clamp, draw, halt, toScree
     pinAt = it.addr ? { x: it.x, y: it.y } : null;
     if (it.addr) pin.lastChild.textContent = it.name;
     if (it.marker && editing && !selected && !it.marker.stop && it.marker.p.e != null) {   // building an itinerary: the place found joins it
-      const p = it.marker.p, z = Math.max(view.z, Z - 1.2), lift = phone() ? routesBox.offsetHeight / 2 / Math.pow(2, z - Z) : 0;
+      const p = it.marker.p, z = Math.max(view.z, Z - 1.2), lift = upright() ? routesBox.offsetHeight / 2 / Math.pow(2, z - Z) : 0;
       addStop(p.id); clearSearch(); flyTo(p.x, p.y + lift, z);
     } else if (it.marker) showPlace(it.marker, Math.max(view.z, Z - 1));
     else {
@@ -1246,10 +1398,10 @@ export async function initExplore({ world, view, map, clamp, draw, halt, toScree
 
   window.addEventListener('keydown', e => {
     if (e.key === 'Escape') {                                            // closes the list of what to see, else the card, then the sheet
-      if (menu.classList.contains('open')) { openMenu(false); return; }
+      if (menu.classList.contains('open')) { openMenu(false); opener().focus(); return; }
       showList(false);
       if (selected || mobSel) closeCard();
-      else if (mode) setMode('');
+      else if (mode) { const back = mode === 'routes' && tabRoutes && tabRoutes.offsetWidth && (document.activeElement === document.body || routesBox.contains(document.activeElement)); setMode(''); if (back) tabRoutes.focus(); }
     }
     else if (e.key === '/' && document.activeElement !== input) { e.preventDefault(); input.focus(); input.select(); }
   });
